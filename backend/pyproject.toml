@@ -33,7 +33,7 @@ Homepage = "https://github.com/porthos42/promptvault"
 Issues = "https://github.com/porthos42/promptvault/issues"
 
 [dependency-groups]
-dev = ["pytest>=8", "httpx>=0.27", "ruff>=0.6", "mypy>=1.11"]
+dev = ["pytest>=8", "httpx>=0.27", "ruff>=0.6", "mypy>=2.4.0"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/promptvault"]
