@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "promptvault"
+version = "0.1.0"
+description = "Prompt Vault: a self-hosted, searchable prompt engineering library."
+license = { text = "MIT" }
+requires-python = ">=3.11"
+authors = [{ name = "Phillip Sutton" }]
+keywords = ["prompts", "prompt-engineering", "llm", "fastapi", "react"]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Framework :: FastAPI",
+]
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "sqlalchemy>=2.0.30",
+  "alembic>=1.13",
+  "pydantic>=2.7",
+  "pydantic-settings>=2.3",
+  "typer>=0.12",
+]
+
+[project.scripts]
+promptvault = "promptvault.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/porthos42/promptvault"
+Issues = "https://github.com/porthos42/promptvault/issues"
+
+[dependency-groups]
+dev = ["pytest>=8", "httpx>=0.27", "ruff>=0.6", "mypy>=1.11"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/promptvault"]
+# the built React app is gitignored but must ship in the wheel
+artifacts = ["src/promptvault/static"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+files = ["src"]

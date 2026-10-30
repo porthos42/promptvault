@@ -1,0 +1,15 @@
+# Run from the repo root:  docker compose -f docker/docker-compose.yml up --build
+services:
+  promptvault:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: promptvault:dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - pv-data:/data
+    restart: unless-stopped
+
+volumes:
+  pv-data:

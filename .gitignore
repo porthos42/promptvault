@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+frontend/dist/
+*.tsbuildinfo
+
+# Built frontend (copied into the Python package at build time)
+backend/src/promptvault/static/
+
+# Local data / secrets
+.env
+.env.*
+!.env.example
+*.db
+*.db-wal
+*.db-shm
+.promptvault/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
