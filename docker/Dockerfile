@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # Build from the repo root:  docker build -f docker/Dockerfile -t promptvault .
 
-FROM node:22-slim AS web
+FROM node:25-slim AS web
 WORKDIR /app/frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
