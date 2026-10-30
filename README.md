@@ -5,7 +5,7 @@
 
 A self-hosted, searchable prompt engineering library. The goal is hundreds of ready-to-use prompts across careers, marketing, coding, STEM, 3D printing, image/video generation and more, with full create/edit/delete, search, filtering and import. Single-user and local-first. Free and open source.
 
-> **Status: early development (M1b done).** The backend API and CLI work, including full-text search. The library UI, seed prompts and importers are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
+> **Status: early development (M1c done).** The backend API, CLI, full-text search and the library UI work. Seed prompts and importers are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
 
 **Stack:** Python 3.11+ (FastAPI, SQLAlchemy 2, Alembic, Typer), React 19 + TypeScript (Vite), SQLite with FTS5 by default.
 
@@ -21,6 +21,7 @@ Available now:
 - Hierarchical categories, normalized tags, filters and cursor pagination
 - Full-text search (SQLite FTS5): BM25 ranking with title/tag boosts, prefix and stemmed matching, "exact phrases", automatic typo correction, combinable with every filter, seven sort orders
 - Index kept in sync by triggers; trashed prompts are excluded from search
+- Library UI: category sidebar, URL-persisted filter bar (search, category, tags, difficulty, sort, favorites), virtualized infinite list, prompt detail with variable form, live preview and one-click copy, CodeMirror editor, Trash view, Ctrl+K palette, `/` to focus search, light/dark theme
 - Docker image, CI on Linux and Windows
 
 Planned: see [Roadmap](#roadmap).
@@ -37,7 +38,7 @@ cd backend && uv sync
 uv run promptvault serve                                # http://localhost:8080  (API docs at /docs)
 ```
 
-The web UI is currently a status page only. Use the CLI or `/docs` to work with prompts until the library UI lands (M1c).
+Open the UI at the same address. The CLI and `/docs` remain available for scripting.
 
 ### Development (hot reload)
 
@@ -114,7 +115,7 @@ Environment variables (prefix `PV_`) or a `.env` file. See [.env.example](.env.e
 | M0 | Repo, CI, schema, API/UI skeletons, Docker | Done |
 | M1a | Prompt/category/tag CRUD API + CLI | Done |
 | M1b | FTS5 search, filters, sorting | Done |
-| M1c | Library UI: browse, filter, detail, variable fill, copy | Next |
+| M1c | Library UI: browse, filter, detail, variable fill, copy | Done |
 | M2 | Seed schema and linter, then 5-10 prompts in each category (about 250) | Planned |
 | M3 | Importers (JSON, CSV/XLSX, Markdown, GitHub, URL), dedupe, export | Planned |
 | M4 | Published Docker image (GHCR), PyPI package, start scripts, release automation | Planned |

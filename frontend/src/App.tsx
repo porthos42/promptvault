@@ -1,34 +1,37 @@
-import { useEffect, useState } from 'react'
-import { api } from './api'
+import { lazy, Suspense } from 'react'
+import { createBrowserRouter, createMemoryRouter, RouterProvider, type RouteObject } from 'react-router'
+import Shell from './Shell'
+import Library from './pages/Library'
+import Trash from './pages/Trash'
 
-type Status = { state: 'loading' } | { state: 'ok'; version: string } | { state: 'down'; error: string }
+const Editor = lazy(() => import('./pages/Editor'))
+
+const editor = (
+  <Suspense fallback={<p className="empty">Loading editor...</p>}>
+    <Editor />
+  </Suspense>
+)
+
+export const routes: RouteObject[] = [
+  {
+    element: <Shell />,
+    children: [
+      { path: '/', element: <Library /> },
+      { path: '/p/:id', element: <Library /> },
+      { path: '/p/:id/edit', element: editor },
+      { path: '/new', element: editor },
+      { path: '/trash', element: <Trash /> },
+      { path: '*', element: <p className="empty">Not found.</p> },
+    ],
+  },
+]
+
+export function makeMemoryRouter(initial: string) {
+  return createMemoryRouter(routes, { initialEntries: [initial] })
+}
+
+const router = createBrowserRouter(routes)
 
 export default function App() {
-  const [status, setStatus] = useState<Status>({ state: 'loading' })
-
-  useEffect(() => {
-    let cancelled = false
-    Promise.all([api.health(), api.version()])
-      .then(([, v]) => !cancelled && setStatus({ state: 'ok', version: v.version }))
-      .catch((e: unknown) =>
-        !cancelled && setStatus({ state: 'down', error: e instanceof Error ? e.message : String(e) }),
-      )
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
-  return (
-    <main className="app">
-      <header>
-        <h1>Prompt Vault</h1>
-        <p className="tagline">Your searchable prompt engineering library.</p>
-      </header>
-      <section aria-live="polite" className="status" data-state={status.state}>
-        {status.state === 'loading' && 'Connecting to API...'}
-        {status.state === 'ok' && `API online (v${status.version})`}
-        {status.state === 'down' && `API unreachable: ${status.error}`}
-      </section>
-    </main>
-  )
+  return <RouterProvider router={router} />
 }
