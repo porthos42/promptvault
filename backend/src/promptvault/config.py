@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     log_level: str = "info"
     seed_on_start: bool = True
     auto_migrate: bool = True
+    trash_retention_days: int = 30  # soft-deleted prompts older than this are purged at start
     cors_origins: list[str] = Field(default_factory=list)
 
     @field_validator("data_dir", mode="before")

@@ -19,6 +19,7 @@ from sqlalchemy import (
     UniqueConstraint,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.types import TypeDecorator
 
 
 def _now() -> datetime:
@@ -27,6 +28,23 @@ def _now() -> datetime:
 
 def _uuid() -> str:
     return str(uuid.uuid4())
+
+
+class UTCDateTime(TypeDecorator[datetime]):
+    """Timezone-aware UTC datetimes (SQLite drops tzinfo, so restore it on read)."""
+
+    impl = DateTime(timezone=True)
+    cache_ok = True
+
+    def process_bind_param(self, value: datetime | None, dialect: Any) -> datetime | None:
+        if value is not None and value.tzinfo is not None:
+            return value.astimezone(UTC)
+        return value
+
+    def process_result_value(self, value: datetime | None, dialect: Any) -> datetime | None:
+        if value is not None and value.tzinfo is None:
+            return value.replace(tzinfo=UTC)
+        return value
 
 
 class Base(DeclarativeBase):
@@ -86,11 +104,11 @@ class Prompt(Base):
     rating: Mapped[int | None] = mapped_column(Integer, nullable=True)
     use_count: Mapped[int] = mapped_column(Integer, default=0)
     body_hash: Mapped[str] = mapped_column(String(64), index=True, default="")
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=_now)
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=_now, onupdate=_now
     )
-    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    deleted_at: Mapped[datetime | None] = mapped_column(UTCDateTime(), nullable=True)
 
     category: Mapped[Category | None] = relationship()
     tags: Mapped[list[Tag]] = relationship(secondary=prompt_tag)
@@ -107,6 +125,6 @@ class PromptRevision(Base):
     prompt_id: Mapped[str] = mapped_column(ForeignKey("prompt.id", ondelete="CASCADE"), index=True)
     version: Mapped[int] = mapped_column(Integer)
     snapshot: Mapped[dict[str, Any]] = mapped_column(JSON)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=_now)
 
     prompt: Mapped[Prompt] = relationship(back_populates="revisions")

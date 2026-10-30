@@ -13,9 +13,10 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from promptvault import __version__
-from promptvault.api import health
+from promptvault.api import categories, errors, health, prompts, tags
 from promptvault.config import Settings, get_settings
 from promptvault.db import make_engine, make_session_factory, run_migrations
+from promptvault.services.prompts import purge_trash
 
 log = logging.getLogger("promptvault")
 STATIC_DIR = Path(__file__).parent / "static"
@@ -26,9 +27,15 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     engine = make_engine(settings.resolved_database_url)
 
     @asynccontextmanager
-    async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         if settings.auto_migrate:
             run_migrations(settings.resolved_database_url)
+        if settings.trash_retention_days >= 0:
+            with app.state.session_factory() as session:
+                purged = purge_trash(session, settings.trash_retention_days)
+                session.commit()
+            if purged:
+                log.info("Purged %d trashed prompts", purged)
         yield
         engine.dispose()
 
@@ -45,7 +52,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             allow_headers=["*"],
         )
 
-    app.include_router(health.router, prefix="/api/v1")
+    errors.install(app)
+    for r in (health.router, prompts.router, categories.router, tags.router):
+        app.include_router(r, prefix="/api/v1")
 
     index = STATIC_DIR / "index.html"
     if index.is_file():
