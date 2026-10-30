@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Annotated, Literal
 
 from fastapi import APIRouter, Query, Response, status
@@ -45,6 +46,7 @@ def to_out(p: Prompt, version: int | None = None) -> PromptOut:
         is_favorite=p.is_favorite,
         rating=p.rating,
         use_count=p.use_count,
+        last_used_at=p.last_used_at,
         version=version,
         created_at=p.created_at,
         updated_at=p.updated_at,
@@ -55,6 +57,9 @@ def to_out(p: Prompt, version: int | None = None) -> PromptOut:
 @router.get("/prompts", response_model=PromptList)
 def list_prompts(
     db: DB,
+    q: Annotated[str | None, Query(max_length=300, description="Full-text search")] = None,
+    sort: Literal["relevance", "newest", "updated", "recent", "popular", "rating", "title"]
+    | None = None,
     category: str | None = None,
     tags: Annotated[list[str] | None, Query()] = None,
     tags_mode: Literal["all", "any"] = "all",
@@ -62,11 +67,23 @@ def list_prompts(
     prompt_type: Literal["system", "user", "template", "chain"] | None = None,
     favorite: bool | None = None,
     source: str | None = None,
+    model: Annotated[str | None, Query(description="Substring of model_hints")] = None,
+    has_variables: bool | None = None,
+    created_after: datetime | None = None,
+    created_before: datetime | None = None,
+    updated_after: datetime | None = None,
     trash: bool = False,
     limit: Annotated[int, Query(ge=1, le=200)] = 50,
     cursor: str | None = None,
 ) -> PromptList:
     filters = svc.ListFilters(
+        q=q,
+        sort=sort,
+        model=model,
+        has_variables=has_variables,
+        created_after=created_after,
+        created_before=created_before,
+        updated_after=updated_after,
         category=category,
         tags=tags or [],
         tags_mode=tags_mode,
@@ -76,8 +93,14 @@ def list_prompts(
         source=source,
         trash=trash,
     )
-    rows, total, nxt = svc.list_prompts(db, filters, limit, cursor)
-    return PromptList(items=[to_out(p) for p in rows], total=total, next_cursor=nxt)
+    res = svc.list_prompts(db, filters, limit, cursor)
+    return PromptList(
+        items=[to_out(p) for p in res.items],
+        total=res.total,
+        next_cursor=res.next_cursor,
+        sort=res.sort,
+        corrected_query=res.corrected_query,
+    )
 
 
 @router.post("/prompts", response_model=PromptOut, status_code=status.HTTP_201_CREATED)
@@ -154,6 +177,13 @@ def list_revisions(prompt_id: str, db: DB) -> list[RevisionOut]:
 @router.post("/prompts/{prompt_id}/revisions/{version}/restore", response_model=PromptOut)
 def restore_revision(prompt_id: str, version: int, db: DB) -> PromptOut:
     p = svc.restore_revision(db, svc.get_prompt(db, prompt_id), version)
+    return to_out(p, svc.current_version(db, p.id))
+
+
+@router.post("/prompts/{prompt_id}/use", response_model=PromptOut)
+def mark_used(prompt_id: str, db: DB) -> PromptOut:
+    """Record a use (e.g. the user copied the prompt): bumps use_count and last_used_at."""
+    p = svc.mark_used(db, svc.get_prompt(db, prompt_id))
     return to_out(p, svc.current_version(db, p.id))
 
 

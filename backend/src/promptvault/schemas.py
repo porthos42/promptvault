@@ -88,6 +88,7 @@ class PromptOut(BaseModel):
     is_favorite: bool
     rating: int | None
     use_count: int
+    last_used_at: datetime | None = None
     version: int | None = None
     created_at: datetime
     updated_at: datetime
@@ -98,6 +99,10 @@ class PromptList(BaseModel):
     items: list[PromptOut]
     total: int
     next_cursor: str | None
+    sort: str
+    corrected_query: str | None = Field(
+        default=None, description="Set when the query had typos and was auto-corrected"
+    )
 
 
 class RevisionOut(BaseModel):

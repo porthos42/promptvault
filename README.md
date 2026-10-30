@@ -5,7 +5,7 @@
 
 A self-hosted, searchable prompt engineering library. The goal is hundreds of ready-to-use prompts across careers, marketing, coding, STEM, 3D printing, image/video generation and more, with full create/edit/delete, search, filtering and import. Single-user and local-first. Free and open source.
 
-> **Status: early development (M1a done).** The backend API and CLI work. The library UI, search, seed prompts and importers are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
+> **Status: early development (M1b done).** The backend API and CLI work, including full-text search. The library UI, seed prompts and importers are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
 
 **Stack:** Python 3.11+ (FastAPI, SQLAlchemy 2, Alembic, Typer), React 19 + TypeScript (Vite), SQLite with FTS5 by default.
 
@@ -19,7 +19,8 @@ Available now:
 - `{{variable}}` detection from the prompt text, and a render endpoint that fills them in
 - Duplicate and bulk actions (tags, category, favorite, delete, restore)
 - Hierarchical categories, normalized tags, filters and cursor pagination
-- SQLite schema with an FTS5 full-text index (kept in sync by triggers; the search API is next)
+- Full-text search (SQLite FTS5): BM25 ranking with title/tag boosts, prefix and stemmed matching, "exact phrases", automatic typo correction, combinable with every filter, seven sort orders
+- Index kept in sync by triggers; trashed prompts are excluded from search
 - Docker image, CI on Linux and Windows
 
 Planned: see [Roadmap](#roadmap).
@@ -67,6 +68,7 @@ promptvault init | doctor | version
 
 promptvault add --title T --body "Rewrite {{bullet}}" -c category-slug -t tag -t tag
 promptvault list [-c slug] [-t tag] [--favorite] [--json]
+promptvault search "cold email" [-c slug] [-t tag] [--sort relevance|newest|updated|recent|popular|rating|title] [--json]
 promptvault show <id-or-prefix> [--json]
 promptvault edit <id-or-prefix> [--title ..] [--body-file f.md | --editor] [-t tag ...] [--favorite]
 promptvault rm <id> [--permanent]      # to Trash; --permanent only for trashed prompts
@@ -82,9 +84,9 @@ Interactive docs at `/docs` (OpenAPI). Errors are RFC 7807 `application/problem+
 
 | | |
 |---|---|
-| `GET/POST /api/v1/prompts` | list (filters: `category`, `tags`, `tags_mode`, `difficulty`, `prompt_type`, `favorite`, `source`, `trash`; cursor pagination) / create |
+| `GET/POST /api/v1/prompts` | list + search / create. Search: `q` (words, prefixes, `"phrases"`; typos are corrected and reported in `corrected_query`). Sort: `sort=relevance\|newest\|updated\|recent\|popular\|rating\|title`. Filters (combinable): `category`, `tags`, `tags_mode`, `difficulty`, `prompt_type`, `favorite`, `source`, `model`, `has_variables`, `created_after/before`, `updated_after`, `trash`. Cursor pagination |
 | `GET/PUT/PATCH/DELETE /api/v1/prompts/{id}` | read / replace / partial update / move to Trash (`?permanent=true` for trashed) |
-| `POST /api/v1/prompts/{id}/restore`, `/duplicate`, `/render` | restore from Trash, copy, fill variables |
+| `POST /api/v1/prompts/{id}/restore`, `/duplicate`, `/render`, `/use` | restore from Trash, copy, fill variables, record a use (drives `popular` / `recent` sorts) |
 | `GET /api/v1/prompts/{id}/revisions`, `POST .../revisions/{n}/restore` | history |
 | `POST /api/v1/prompts/bulk` | add/remove tags, set category, favorite, delete, restore |
 | `GET/POST/PATCH/DELETE /api/v1/categories[/{slug}]` | hierarchical categories |
@@ -111,7 +113,7 @@ Environment variables (prefix `PV_`) or a `.env` file. See [.env.example](.env.e
 |---|---|---|
 | M0 | Repo, CI, schema, API/UI skeletons, Docker | Done |
 | M1a | Prompt/category/tag CRUD API + CLI | Done |
-| M1b | FTS5 search, filters, sorting | Next |
+| M1b | FTS5 search, filters, sorting | Done |
 | M1c | Library UI: browse, filter, detail, variable fill, copy | Next |
 | M2 | Seed schema and linter, then 5-10 prompts in each category (about 250) | Planned |
 | M3 | Importers (JSON, CSV/XLSX, Markdown, GitHub, URL), dedupe, export | Planned |
@@ -135,6 +137,7 @@ The frontend builds into `backend/src/promptvault/static`, so a single process s
 
 ```bash
 cd backend && uv run pytest && uv run ruff check . && uv run ruff format --check . && uv run mypy
+PV_PERF=1 uv run pytest tests/test_search_perf.py -s   # optional: search latency at 10k prompts
 cd frontend && npm test && npm run lint && npm run typecheck
 ```
 

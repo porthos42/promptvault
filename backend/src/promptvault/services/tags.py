@@ -26,6 +26,18 @@ def normalize_many(names: list[str]) -> list[str]:
     return list(out)
 
 
+def tags_text(tags: list[Tag]) -> str:
+    """Denormalised tag names, indexed by FTS."""
+    return " ".join(sorted(t.name for t in tags))
+
+
+def _reindex(session: Session, prompts: list[Prompt]) -> None:
+    for p in prompts:
+        session.refresh(p, ["tags"])
+        p.tags_text = tags_text(p.tags)
+    session.flush()
+
+
 def get_or_create(session: Session, names: list[str]) -> list[Tag]:
     names = normalize_many(names)
     if not names:
@@ -70,19 +82,24 @@ def rename(session: Session, old: str, new: str) -> str:
     if new_name == tag.name:
         return new_name
     target = session.scalar(select(Tag).where(Tag.name == new_name))
+    affected = list(session.scalars(select(Prompt).where(Prompt.tags.any(Tag.id == tag.id))))
     if target is None:
         tag.name = new_name
     else:
-        for p in session.scalars(select(Prompt).where(Prompt.tags.any(Tag.id == tag.id))):
+        for p in affected:
             p.tags = [t for t in p.tags if t.id != tag.id]
             if target not in p.tags:
                 p.tags.append(target)
         session.flush()
         session.delete(tag)
     session.flush()
+    _reindex(session, affected)
     return new_name
 
 
 def delete(session: Session, name: str) -> None:
-    session.delete(_get(session, name))
+    tag = _get(session, name)
+    affected = list(session.scalars(select(Prompt).where(Prompt.tags.any(Tag.id == tag.id))))
+    session.delete(tag)
     session.flush()
+    _reindex(session, affected)

@@ -103,11 +103,11 @@ class Prompt(Base):
     is_favorite: Mapped[bool] = mapped_column(Boolean, default=False)
     rating: Mapped[int | None] = mapped_column(Integer, nullable=True)
     use_count: Mapped[int] = mapped_column(Integer, default=0)
+    last_used_at: Mapped[datetime | None] = mapped_column(UTCDateTime(), nullable=True)
+    tags_text: Mapped[str] = mapped_column(Text, default="")  # denormalised for FTS
     body_hash: Mapped[str] = mapped_column(String(64), index=True, default="")
     created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=_now)
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), default=_now, onupdate=_now
-    )
+    updated_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=_now, onupdate=_now)
     deleted_at: Mapped[datetime | None] = mapped_column(UTCDateTime(), nullable=True)
 
     category: Mapped[Category | None] = relationship()

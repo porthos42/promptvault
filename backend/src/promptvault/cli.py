@@ -148,14 +148,40 @@ def list_(
     """List prompts (newest first)."""
     with _db() as session:
         f = svc.ListFilters(category=category, tags=tag or [], favorite=True if favorite else None)
-        rows, total, _ = svc.list_prompts(session, f, limit)
-        if as_json:
-            typer.echo(json.dumps({"total": total, "items": [_summary(p) for p in rows]}, indent=2))
-            return
-        for p in rows:
-            cat = p.category.slug if p.category else "-"
-            typer.echo(f"{p.id[:8]}  {cat:<20.20} {p.title}")
-        typer.echo(f"({len(rows)} of {total})")
+        res = svc.list_prompts(session, f, limit)
+        _print_results(res, as_json)
+
+
+def _print_results(res: svc.ListResult, as_json: bool) -> None:
+    if as_json:
+        out: dict[str, Any] = {"total": res.total, "items": [_summary(p) for p in res.items]}
+        if res.corrected_query:
+            out["corrected_query"] = res.corrected_query
+        typer.echo(json.dumps(out, indent=2))
+        return
+    if res.corrected_query:
+        typer.echo(f"Showing results for: {res.corrected_query}")
+    for p in res.items:
+        cat = p.category.slug if p.category else "-"
+        typer.echo(f"{p.id[:8]}  {cat:<20.20} {p.title}")
+    typer.echo(f"({len(res.items)} of {res.total})")
+
+
+@app.command()
+def search(
+    query: Annotated[str, typer.Argument(help='Words to find; "quote" an exact phrase.')],
+    category: CategoryOpt = None,
+    tag: TagsOpt = None,
+    sort: Annotated[
+        str, typer.Option(help="relevance|newest|updated|recent|popular|rating|title")
+    ] = "relevance",
+    limit: Annotated[int, typer.Option(min=1, max=500)] = 20,
+    as_json: AsJson = False,
+) -> None:
+    """Full-text search (typo-tolerant), combinable with category and tag filters."""
+    with _db() as session:
+        f = svc.ListFilters(q=query, sort=sort, category=category, tags=tag or [])
+        _print_results(svc.list_prompts(session, f, limit), as_json)
 
 
 @app.command()
@@ -249,10 +275,10 @@ def restore(ident: str) -> None:
 def trash_list() -> None:
     """List prompts in Trash."""
     with _db() as session:
-        rows, total, _ = svc.list_prompts(session, svc.ListFilters(trash=True), 500)
-        for p in rows:
+        res = svc.list_prompts(session, svc.ListFilters(trash=True), 500)
+        for p in res.items:
             typer.echo(f"{p.id[:8]}  {p.deleted_at:%Y-%m-%d}  {p.title}")
-        typer.echo(f"({total} in Trash)")
+        typer.echo(f"({res.total} in Trash)")
 
 
 @trash_app.command("purge")

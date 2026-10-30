@@ -7,7 +7,9 @@ def test_create_detects_variables_and_starts_at_v1(client: TestClient) -> None:
     assert p["version"] == 1
     assert [v["name"] for v in p["variables"]] == ["bullet", "job_title"]
     assert p["tags"] == ["ats", "resume"]
-    assert p["deleted_at"] is None and p["created_at"].endswith(("Z", "+00:00"))
+    assert p["deleted_at"] is None
+    assert p["created_at"].endswith(("Z", "+00:00"))
+    assert p["updated_at"].endswith(("Z", "+00:00"))
     got = client.get(f"/api/v1/prompts/{p['id']}").json()
     assert got["title"] == BASE["title"]
 
