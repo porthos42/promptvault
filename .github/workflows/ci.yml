@@ -71,4 +71,4 @@ jobs:
           done
           [ -n "$ok" ] || { docker logs pv; exit 1; }
           # the seed library ships in the image and is loaded at start
-          docker exec pv promptvault list | grep -q "Resume Bullet Rewriter" || { docker logs pv; exit 1; }
+          docker exec pv promptvault list --limit 500 | grep -q "Resume Bullet Rewriter" || { docker logs pv; exit 1; }
