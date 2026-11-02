@@ -9,6 +9,7 @@ Trashed prompts are never matched (they are only reported as a warning on exact 
 from __future__ import annotations
 
 import bisect
+import sys
 from collections.abc import Iterable
 from dataclasses import dataclass
 from difflib import SequenceMatcher
@@ -52,6 +53,18 @@ def similarity(a: str, b: str) -> float:
     return matcher.ratio()
 
 
+def _may_overlap(a: frozenset[str], b: frozenset[str]) -> bool:
+    """Token-overlap prefilter on precomputed sets (the corpus-scale form of the check that
+    similarity() also makes), so scanning thousands of prompts does not re-tokenise each one."""
+    small, large = (a, b) if len(a) <= len(b) else (b, a)
+    if len(small) < _TOKEN_FLOOR:
+        return True
+    if len(small) / len(large) < _TOKEN_JACCARD_MIN:
+        return False
+    inter = len(small & large)
+    return inter / (len(a) + len(b) - inter) >= _TOKEN_JACCARD_MIN
+
+
 MatchKind = Literal["exact", "fuzzy"]
 
 
@@ -78,11 +91,16 @@ class DedupeResult:
     trashed_id: str | None = None  # exact hit on a prompt in Trash (informational only)
 
 
+def _tokens(text: str) -> frozenset[str]:
+    return frozenset(sys.intern(t) for t in text.split())
+
+
 @dataclass
 class _Entry:
     ref: str | int
     title: str
     text: str
+    tokens: frozenset[str]
 
 
 class _Corpus:
@@ -98,11 +116,14 @@ class _Corpus:
         self._entries.insert(pos, entry)
 
     def best(self, text: str) -> tuple[_Entry, float] | None:
+        tokens = _tokens(text)
         n = len(text)
         lo = bisect.bisect_left(self._lengths, int(n * MIN_LENGTH_RATIO))
         hi = bisect.bisect_right(self._lengths, int(n / MIN_LENGTH_RATIO) + 1)
         found: tuple[_Entry, float] | None = None
         for entry in self._entries[lo:hi]:
+            if not _may_overlap(tokens, entry.tokens):  # same test as in similarity(), no re-split
+                continue
             score = similarity(text, entry.text)
             if score >= FUZZY_THRESHOLD and (found is None or score > found[1]):
                 found = (entry, score)
@@ -115,7 +136,8 @@ class Deduper:
         self._live = _Corpus()
         for e in live:
             self._live_by_hash.setdefault(e.body_hash or body_hash(e.body), e)
-            self._live.add(_Entry(e.id, e.title, compare_text(e.body)))
+            text = compare_text(e.body)
+            self._live.add(_Entry(e.id, e.title, text, _tokens(text)))
         self._trashed = trashed_hashes or {}
         self._batch = _Corpus()
         self._batch_by_hash: dict[str, tuple[int, str]] = {}
@@ -139,5 +161,5 @@ class Deduper:
             entry, score = fuzzy
             return DedupeResult(Match("fuzzy", score, entry.title, batch_index=int(entry.ref)))
         self._batch_by_hash[digest] = (index, title)
-        self._batch.add(_Entry(index, title, text))
+        self._batch.add(_Entry(index, title, text, _tokens(text)))
         return DedupeResult(trashed_id=self._trashed.get(digest))
