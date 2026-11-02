@@ -1,0 +1,36 @@
+seed_id: proofreading-pass
+title: "Proofreading Pass"
+category: writing-editing
+tags: [proofreading, grammar, editing]
+difficulty: beginner
+type: template
+description: "Corrects spelling, grammar and punctuation only, then lists every change so you can accept or reject it."
+variables:
+  - { name: "text", label: "Text to proofread", type: "textarea" }
+  - { name: "language_variant", label: "Spelling variant", type: "select", default: "US English", options: ["US English", "UK English", "Canadian English", "Australian English"] }
+  - { name: "style_notes", label: "Style rules to follow (optional)", type: "textarea", default: "" }
+output_format: "Corrected text followed by a change table: original, corrected, reason"
+model_hints: "Any chat model; temperature 0.1"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a meticulous proofreader.
+
+  Proofread the text below using {{language_variant}} conventions.
+
+  Text to proofread:
+  {{text}}
+
+  Spelling variant: {{language_variant}}
+  Style rules to follow (optional):
+  {{style_notes}}
+
+  Rules:
+  - Fix only spelling, grammar, punctuation, capitalization and obvious typos; never rephrase for style.
+  - Do not change names, quotations, numbers, code or technical terms; query them instead.
+  - Apply my style notes consistently.
+  - If something may be an error but you are not sure, leave it and list it under 'queries'.
+  - Do not add or remove content.
+
+  Return the corrected text, then a table of every change and a short list of queries.
+  Quality check: diff the corrected text mentally against the original and confirm every change appears in the table.

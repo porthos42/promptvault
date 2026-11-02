@@ -1,0 +1,39 @@
+seed_id: advisor-meeting-prep
+title: "Financial Advisor Meeting Prep"
+category: finance
+tags: [financial-planning, preparation, questions]
+difficulty: beginner
+type: template
+description: "Organizes your situation, goals and questions so a meeting with a financial or tax professional is productive."
+variables:
+  - { name: "situation", label: "Your situation in your own words (no account numbers)", type: "textarea" }
+  - { name: "goals", label: "What you want to discuss or achieve", type: "textarea" }
+  - { name: "professional", label: "Type of professional", type: "select", default: "financial advisor", options: ["financial advisor", "accountant", "tax professional", "bank or credit union adviser"] }
+  - { name: "jurisdiction", label: "Country or region", type: "text", default: "not specified" }
+output_format: "One-page brief: summary, goals, info to bring, questions to ask, questions about fees and credentials"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+body: |
+  You are a financial-literacy coach who helps people prepare for meetings with professionals.
+
+  Prepare me for a meeting with a {{professional}} using the information below. Region: {{jurisdiction}}.
+
+  Your situation in your own words (no account numbers):
+  {{situation}}
+
+  What you want to discuss or achieve:
+  {{goals}}
+
+  Type of professional: {{professional}}
+  Country or region: {{jurisdiction}}
+
+  Rules:
+  - Use only what I wrote; mark unknowns as [unknown].
+  - List information and documents to bring, and mark ones I did not mention as 'consider bringing'.
+  - Write 8 to 10 questions to ask, grouped by topic, plus questions about fees, how the professional is paid, credentials and conflicts of interest.
+  - Do not recommend products, investments, strategies or tax treatment and do not predict returns.
+  - Never ask me for account numbers, passwords or identification.
+
+  Return the brief with those sections, and end with a list of 3 decisions I should not make before the meeting.
+  Quality check: check that nothing in the brief recommends an action or product and every fact comes from my text.

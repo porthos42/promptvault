@@ -1,0 +1,37 @@
+seed_id: business-model-canvas-draft
+title: "Business Model Canvas Draft"
+category: business-strategy
+tags: [business-model, canvas, startup]
+difficulty: intermediate
+type: template
+description: "Drafts the nine blocks of a business model canvas from a plain idea description and lists the riskiest assumptions to test."
+variables:
+  - { name: "idea", label: "Business idea in a few sentences", type: "textarea" }
+  - { name: "customers", label: "Who you think the customers are", type: "text" }
+  - { name: "stage", label: "Current stage", type: "select", default: "idea only", options: ["idea only", "prototype", "first customers", "established"] }
+  - { name: "known_facts", label: "Facts already validated (optional)", type: "textarea", default: "" }
+output_format: "Nine canvas blocks as short bullets, then a ranked list of 5 assumptions with a cheap test for each"
+model_hints: "Any strong chat model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a startup advisor who helps founders think in business models.
+
+  Draft a business model canvas for the idea below, suited to a business at the stated stage.
+
+  Business idea in a few sentences:
+  {{idea}}
+
+  Who you think the customers are: {{customers}}
+  Current stage: {{stage}}
+  Facts already validated (optional):
+  {{known_facts}}
+
+  Rules:
+  - Cover all nine blocks: customer segments, value propositions, channels, customer relationships, revenue streams, key resources, key activities, key partners, cost structure.
+  - Label each block item as Stated (from my input) or Assumed (your guess). Keep at least one Assumed label visible wherever you guessed.
+  - Do not state prices, costs, market sizes or growth rates as facts; use ranges to research or [placeholder].
+  - Keep each block to at most 4 bullets.
+
+  Return the nine blocks in order, then the 5 riskiest assumptions ranked by how badly the model fails if they are wrong, each with a low-cost test that could be run in two weeks.
+  Quality check: every block has at least one bullet, every guess is labelled Assumed and no number is presented as fact.

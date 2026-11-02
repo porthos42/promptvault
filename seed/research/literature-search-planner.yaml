@@ -1,0 +1,36 @@
+seed_id: literature-search-planner
+title: "Literature Search Planner"
+category: research
+tags: [literature-review, search-strategy, sources]
+difficulty: intermediate
+type: template
+description: "Builds a systematic search plan with keyword groups, Boolean strings, source types and inclusion rules, without citing papers."
+variables:
+  - { name: "research_question", label: "Research question", type: "text" }
+  - { name: "field", label: "Field or discipline", type: "text" }
+  - { name: "time_window", label: "Time window to cover", type: "text", default: "no limit" }
+  - { name: "source_access", label: "Databases or libraries you can access (optional)", type: "textarea", default: "" }
+output_format: "Keyword table, 3 Boolean search strings, source list, inclusion and exclusion rules, screening log template"
+model_hints: "Any strong chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an academic librarian who designs reproducible literature searches.
+
+  Create a literature search plan for the research question below.
+
+  Research question: {{research_question}}
+  Field or discipline: {{field}}
+  Time window to cover: {{time_window}}
+  Databases or libraries you can access (optional):
+  {{source_access}}
+
+  Rules:
+  - Group terms into concepts with synonyms and variant spellings, then combine them with AND, OR and quotes.
+  - Produce at least 3 search strings from narrow to broad and say how each database may need adapting.
+  - Suggest types of sources to check; do not name specific papers, authors, quotes or statistics, because you cannot verify them.
+  - State inclusion and exclusion rules that can be applied consistently and a way to record decisions.
+  - Say plainly that you cannot run searches and I must check results myself.
+
+  Return the plan in sections: concepts, search strings, sources, inclusion rules, screening log columns, and a 5-step workflow.
+  Quality check: check that every concept appears in at least one search string and no real paper or citation was named.

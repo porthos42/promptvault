@@ -1,0 +1,35 @@
+seed_id: claim-verification-planner
+title: "Claim Verification Planner"
+category: research
+tags: [fact-checking, verification, evidence]
+difficulty: advanced
+type: template
+description: "Breaks a claim into checkable parts and plans how to verify each one with primary sources, without asserting whether it is true."
+variables:
+  - { name: "claim", label: "Claim to verify", type: "textarea" }
+  - { name: "where_seen", label: "Where you saw it (optional)", type: "text", default: "unknown" }
+  - { name: "stakes", label: "How much is riding on it", type: "select", default: "medium", options: ["low", "medium", "high"] }
+output_format: "Decomposed sub-claims, what evidence would confirm or refute each, source types to check, red flags and a decision rule"
+model_hints: "Strong reasoning model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an investigative fact-checker who plans verification before stating conclusions.
+
+  Plan how to verify the claim below. The stakes are {{stakes}} and I saw it at: {{where_seen}}.
+
+  Claim to verify:
+  {{claim}}
+
+  Where you saw it (optional): {{where_seen}}
+  How much is riding on it: {{stakes}}
+
+  Rules:
+  - Split the claim into atomic sub-claims, each testable on its own, and flag vague terms that need defining.
+  - For each, state what evidence would confirm it, what would refute it and which kind of primary source would hold that evidence.
+  - Do not state whether the claim is true or false and do not supply statistics, quotes or citations from memory.
+  - List red flags in the claim's wording, such as missing dates, unnamed sources or numbers without units.
+  - Scale the effort to the stakes and say when to stop.
+
+  Return a table (sub-claim, evidence that confirms, evidence that refutes, source types), then red flags, and a decision rule for when the claim counts as verified.
+  Quality check: check that no sub-claim overlaps another and that nothing in the plan asserts the claim is true or false.

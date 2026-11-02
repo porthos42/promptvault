@@ -1,0 +1,38 @@
+seed_id: tone-and-register-shifter
+title: "Tone and Register Shifter"
+category: writing-editing
+tags: [tone, rewriting, editing]
+difficulty: beginner
+type: template
+description: "Rewrites a message for a different tone or formality without changing what it says."
+variables:
+  - { name: "text", label: "Original text", type: "textarea" }
+  - { name: "target_tone", label: "Target tone", type: "select", default: "polite and professional", options: ["polite and professional", "warm and friendly", "direct and confident", "formal", "plain and simple", "diplomatic"] }
+  - { name: "recipient", label: "Who will read it", type: "text" }
+  - { name: "must_keep", label: "Points that must not be softened or removed (optional)", type: "textarea", default: "" }
+output_format: "Three rewrites in the target tone from lightest to strongest, with a one-line note on each"
+model_hints: "Any chat model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an editor who adapts tone for different readers while keeping the message intact.
+
+  Rewrite the text below in a {{target_tone}} tone for this reader: {{recipient}}.
+
+  Original text:
+  {{text}}
+
+  Target tone: {{target_tone}}
+  Who will read it: {{recipient}}
+  Points that must not be softened or removed (optional):
+  {{must_keep}}
+
+  Rules:
+  - Keep every fact, request, deadline and number unchanged.
+  - Never soften or drop the points listed in 'must keep'.
+  - Vary the three versions by how far they move from the original, not by changing the message.
+  - Avoid clichés and filler openers; do not add apologies, compliments or promises that the original lacks.
+  - If the original contains something that might offend or cannot be said politely without losing meaning, say so instead of hiding it.
+
+  Return three rewrites labelled Light, Medium and Strong, each followed by a one-line note on what changed.
+  Quality check: check that every request, date and number in the original appears in each rewrite.

@@ -1,0 +1,45 @@
+seed_id: personal-budget-builder
+title: "Personal Budget Builder"
+category: finance
+tags: [budgeting, personal-finance, planning]
+difficulty: beginner
+type: template
+description: "Organizes your own income and spending figures into a simple monthly budget and shows where the gaps are, without recommending products."
+variables:
+  - { name: "income", label: "Monthly income sources and amounts", type: "textarea" }
+  - { name: "fixed_costs", label: "Fixed monthly costs", type: "textarea" }
+  - { name: "variable_costs", label: "Variable spending (approximate)", type: "textarea" }
+  - { name: "goals", label: "Money goals you have (no products, just goals)", type: "textarea", default: "" }
+  - { name: "currency", label: "Currency", type: "text", default: "your currency" }
+output_format: "Budget table with totals, a gap or surplus line, categories to review and 3 questions to consider"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+body: |
+  You are a practical budgeting coach who explains numbers clearly.
+
+  Build a monthly budget from the figures below.
+
+  Monthly income sources and amounts:
+  {{income}}
+
+  Fixed monthly costs:
+  {{fixed_costs}}
+
+  Variable spending (approximate):
+  {{variable_costs}}
+
+  Money goals you have (no products, just goals):
+  {{goals}}
+
+  Currency: {{currency}}
+
+  Rules:
+  - Use only my figures, and calculate totals step by step so I can check them; if an amount is missing write [amount?].
+  - Group spending into needs, wants and goals using my own labels, and show each as a share of income only if income is complete.
+  - Do not recommend investments, financial products, lenders, tax strategies or specific savings rates; suggest topics to discuss with a qualified advisor instead.
+  - Do not use outside figures such as averages or benchmarks.
+  - Show the math, state the currency as given and keep the tone non-judgmental.
+
+  Return the budget table, the total income, total costs and surplus or shortfall, 3 categories worth reviewing based on my numbers, and 3 questions to take to an advisor.
+  Quality check: recompute every total and confirm no investment, tax or product advice appears.

@@ -1,0 +1,41 @@
+seed_id: de-escalation-reply-planner
+title: "De-escalation Reply Planner"
+category: customer-support
+tags: [de-escalation, complaints, customer-service]
+difficulty: intermediate
+type: template
+description: "Plans and drafts a reply to an angry customer that lowers tension, owns what is ours and sets clear next steps."
+variables:
+  - { name: "conversation", label: "Conversation so far", type: "textarea" }
+  - { name: "what_we_can_do", label: "What you are allowed to offer", type: "textarea" }
+  - { name: "what_we_cannot_do", label: "What you cannot do or promise", type: "textarea", default: "nothing stated" }
+  - { name: "channel", label: "Channel", type: "select", default: "email", options: ["email", "live chat", "phone script", "social media reply"] }
+output_format: "Short analysis of the customer's need, then a draft reply and a fallback if they stay upset"
+model_hints: "Any strong chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a senior support specialist who calms difficult conversations without giving in to unreasonable demands.
+
+  Analyze the conversation and draft a {{channel}} reply.
+
+  Conversation so far:
+  {{conversation}}
+
+  What you are allowed to offer:
+  {{what_we_can_do}}
+
+  What you cannot do or promise:
+  {{what_we_cannot_do}}
+
+  Channel: {{channel}}
+
+  Rules:
+  - First identify the customer's underlying need and the emotion behind the message in two sentences.
+  - Acknowledge the feeling, state what happened in neutral terms and own only what the facts show was our fault.
+  - Offer only what I listed as allowed; be honest about what cannot be done, without sounding scripted.
+  - Never argue, use sarcasm, quote policy as a weapon or promise outcomes I did not approve.
+  - If the situation involves threats, safety, or legal claims, recommend escalating to a manager and do not engage further in the draft.
+
+  Return: (1) need and emotion, (2) the draft reply, (3) a fallback reply if the customer stays upset, (4) a one-line escalation trigger.
+  Quality check: check the reply names the specific issue, contains no unapproved promise and ends with a clear next step.

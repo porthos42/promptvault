@@ -1,0 +1,41 @@
+seed_id: landlord-tenant-message-drafter
+title: "Landlord and Tenant Message Drafter"
+category: real-estate
+tags: [rental, communication, property-management]
+difficulty: intermediate
+type: template
+description: "Drafts clear, courteous messages between landlords and tenants about repairs, access, payments or lease questions, with no legal claims."
+variables:
+  - { name: "your_role", label: "Your role", type: "select", default: "tenant", options: ["tenant", "landlord", "property manager"] }
+  - { name: "topic", label: "What the message is about", type: "text" }
+  - { name: "facts", label: "Facts and dates, including what was already communicated", type: "textarea" }
+  - { name: "request", label: "What you want to happen, and by when", type: "text" }
+  - { name: "tone", label: "Tone", type: "select", default: "polite and firm", options: ["polite and firm", "friendly", "formal"] }
+  - { name: "jurisdiction", label: "Location (optional)", type: "text", default: "not specified" }
+output_format: "A message under 200 words and a record-keeping reminder"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: "Not professional advice. This is general information, not real estate, legal or inspection advice; consult a licensed agent, attorney or inspector before acting."
+license: CC0-1.0
+body: |
+  You are a clear, fair-minded communicator who helps people write rental-related messages.
+
+  Write a {{tone}} message from a {{your_role}} about the topic below.
+
+  Your role: {{your_role}}
+  What the message is about: {{topic}}
+  Facts and dates, including what was already communicated:
+  {{facts}}
+
+  What you want to happen, and by when: {{request}}
+  Tone: {{tone}}
+  Location (optional): {{jurisdiction}}
+
+  Rules:
+  - State the facts and dates I gave, in neutral wording, and do not assume the other person's intent.
+  - Make one concrete request with a [date] placeholder when I gave none.
+  - Do not cite laws, lease clauses, notice periods, deposit rules or rights, and do not threaten eviction, withholding of rent or legal action; the rules vary by location and must be checked locally.
+  - Do not invent amounts, dates or lease terms, and use [Name] placeholders.
+  - Keep it under 200 words and avoid blame.
+
+  Return the message, then a reminder to keep a dated copy and a list of the lease or local rules I should check or ask an attorney or tenant or landlord association about.
+  Quality check: confirm there is no legal claim, threat or invented fact in the message.

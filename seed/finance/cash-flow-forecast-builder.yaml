@@ -1,0 +1,45 @@
+seed_id: cash-flow-forecast-builder
+title: "Cash Flow Forecast Builder"
+category: finance
+tags: [cash-flow, forecasting, planning]
+difficulty: advanced
+type: chain
+description: "A three-step chain that structures your own assumptions into a month-by-month cash flow table and tests simple what-if scenarios."
+variables:
+  - { name: "starting_cash", label: "Starting cash balance", type: "text" }
+  - { name: "inflows", label: "Expected cash inflows by month, with your assumptions", type: "textarea" }
+  - { name: "outflows", label: "Expected cash outflows by month, with your assumptions", type: "textarea" }
+  - { name: "months", label: "Number of months", type: "number", default: "6" }
+  - { name: "scenario", label: "What-if to test (for example a late-paying customer)", type: "text", default: "inflows 20% lower" }
+output_format: "Three labelled steps: assumptions list, month-by-month table with running balance, scenario comparison"
+model_hints: "Strong reasoning model; temperature 0.1"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+body: |
+  You are a careful analyst who builds transparent cash flow models from the owner's own assumptions.
+
+  Work through the three steps for a {{months}}-month forecast starting from the stated cash balance.
+
+  Starting cash balance: {{starting_cash}}
+  Expected cash inflows by month, with your assumptions:
+  {{inflows}}
+
+  Expected cash outflows by month, with your assumptions:
+  {{outflows}}
+
+  Number of months: {{months}}
+  What-if to test (for example a late-paying customer): {{scenario}}
+
+  Step 1 - Assumptions: restate my inputs as a numbered list and flag anything missing or inconsistent.
+  Step 2 - Forecast: build a month-by-month table with opening balance, inflows, outflows, closing balance.
+  Step 3 - Scenario: apply the what-if to the table, compare the closing balances with Step 2 and name the first month where the result differs materially.
+
+  Rules:
+  - Use only the starting cash, inflows and outflows I provide; do not add or estimate any missing amount, and write [missing] instead.
+  - Show the arithmetic for each running balance so I can verify it.
+  - Make every assumption explicit and label it 'given by me'.
+  - Do not advise on loans, investments, taxes or whether the business is healthy; only describe what the numbers show.
+  - Point out months where the balance goes negative and say what assumption drives it.
+
+  Return the three steps as labelled sections in markdown, ending with 3 questions for an accountant or advisor.
+  Quality check: recalculate every running balance from the starting cash and confirm the scenario table changes only the stated input.

@@ -1,0 +1,44 @@
+seed_id: lawyer-meeting-prep-brief
+title: "Lawyer Meeting Prep Brief"
+category: legal
+tags: [legal, preparation, organization]
+difficulty: beginner
+type: template
+description: "Organizes your facts, documents and goals into a one-page brief so a first meeting with a lawyer is efficient."
+variables:
+  - { name: "situation", label: "Describe what happened or what you need", type: "textarea" }
+  - { name: "timeline", label: "Key events and dates you know", type: "textarea" }
+  - { name: "documents", label: "Documents you have (optional)", type: "textarea", default: "" }
+  - { name: "goal", label: "What outcome you hope for", type: "text" }
+  - { name: "jurisdiction", label: "Where this happened or where you live", type: "text", default: "not specified" }
+output_format: "One-page brief: summary, timeline, documents to bring, goals, unknowns, questions to ask"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: "Not professional advice. This is general information, not legal advice; consult a qualified lawyer licensed in your jurisdiction before acting."
+license: CC0-1.0
+body: |
+  You are an organized legal intake assistant who helps people prepare for consultations.
+
+  Prepare a brief for my meeting with a lawyer from the information below.
+
+  Describe what happened or what you need:
+  {{situation}}
+
+  Key events and dates you know:
+  {{timeline}}
+
+  Documents you have (optional):
+  {{documents}}
+
+  What outcome you hope for: {{goal}}
+  Where this happened or where you live: {{jurisdiction}}
+
+  Rules:
+  - Use only the facts I give; separate facts from my opinions and from things I am unsure about.
+  - Build a dated timeline and mark any date or event that is missing as [unknown].
+  - List the documents to bring, including those I did not mention that are commonly useful for this kind of matter, labelled 'consider bringing'.
+  - Do not state what the law is or how a court or regulator would decide; the rules differ by jurisdiction, so name the jurisdiction I gave (or ask for it) and tell me to confirm with a qualified lawyer.
+  - Do not name laws, claims or likely outcomes, and do not assess who is right.
+  - Do not include private data beyond what I supplied; keep names as I wrote them.
+
+  Return the brief with the six sections, then 8 questions I can ask the lawyer, including one about costs and next steps.
+  Quality check: check that every fact in the brief traces to my text and no legal conclusion appears.

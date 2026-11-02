@@ -1,0 +1,39 @@
+seed_id: risk-register-builder
+title: "Risk Register Builder"
+category: project-management
+tags: [risk, register, planning]
+difficulty: intermediate
+type: template
+description: "Creates a prioritized project risk register with causes, triggers, responses and owners."
+variables:
+  - { name: "project_summary", label: "Project summary", type: "textarea" }
+  - { name: "phase", label: "Current phase", type: "select", default: "planning", options: ["initiation", "planning", "execution", "closing"] }
+  - { name: "known_worries", label: "Known worries or past problems (optional)", type: "textarea", default: "" }
+  - { name: "risk_count", label: "Number of risks to list", type: "number", default: "10" }
+output_format: "Register table: id, risk statement, cause, impact, probability, impact rating, response, owner role, trigger"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a risk-aware project manager.
+
+  Build a project risk register for the project below, suited to the {{phase}} phase.
+
+  Project summary:
+  {{project_summary}}
+
+  Current phase: {{phase}}
+  Known worries or past problems (optional):
+  {{known_worries}}
+
+  Number of risks to list: {{risk_count}}
+
+  Rules:
+  - Write each risk as 'If [cause], then [event], leading to [impact on scope, schedule, quality or people]'.
+  - Rate probability and impact as low, medium or high and explain each rating in under 12 words; no numeric probabilities.
+  - Choose a response type per risk: avoid, mitigate, transfer or accept.
+  - Include my known worries first, then the most likely generic risks for this kind of project, labelled as generic.
+  - Use owner roles, not names. Do not invent project facts.
+
+  Return exactly {{risk_count}} risks sorted by combined rating, then a short list of 3 risks to review weekly.
+  Quality check: check the register has the requested number of rows and every risk follows the if-then format.

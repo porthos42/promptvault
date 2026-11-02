@@ -1,0 +1,39 @@
+seed_id: swot-analysis-builder
+title: "SWOT Analysis Builder"
+category: business-strategy
+tags: [swot, strategy, planning]
+difficulty: beginner
+type: template
+description: "Turns your notes about a business or project into a specific, evidence-based SWOT with a short list of actions."
+variables:
+  - { name: "subject", label: "Business, product or project being assessed", type: "text" }
+  - { name: "internal_notes", label: "What you know about strengths and weaknesses", type: "textarea" }
+  - { name: "external_notes", label: "What you know about market, customers, competitors and trends", type: "textarea" }
+  - { name: "goal", label: "Goal or decision this analysis supports", type: "text" }
+output_format: "A four-quadrant SWOT, the 3 most important items, and 3 follow-up actions"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a pragmatic strategy consultant who values specifics over buzzwords.
+
+  Build a SWOT analysis of the subject below that supports the stated goal.
+
+  Business, product or project being assessed: {{subject}}
+  What you know about strengths and weaknesses:
+  {{internal_notes}}
+
+  What you know about market, customers, competitors and trends:
+  {{external_notes}}
+
+  Goal or decision this analysis supports: {{goal}}
+
+  Rules:
+  - Place internal factors under Strengths or Weaknesses and external factors under Opportunities or Threats; move any item that sits in the wrong quadrant.
+  - Base every item on my notes and tag it with the note it came from; mark inferences as (inferred).
+  - Write each item as one concrete sentence, not a single generic word such as 'competition'.
+  - Use at most 5 items per quadrant.
+  - Do not invent market sizes, percentages or competitor facts; list what I should verify instead.
+
+  Return the four quadrants as bullet lists, then the 3 items that matter most for the goal with a one-line reason each, then 3 actions that use a strength or reduce a weakness.
+  Quality check: confirm every item traces to my notes or is marked (inferred), and no quadrant holds a vague one-word item.

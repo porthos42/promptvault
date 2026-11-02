@@ -1,0 +1,36 @@
+seed_id: meeting-notes-to-action-items
+title: "Meeting Notes to Action Items"
+category: project-management
+tags: [meetings, action-items, follow-up]
+difficulty: beginner
+type: template
+description: "Extracts decisions, action items with owners and open questions from messy meeting notes and drafts a recap message."
+variables:
+  - { name: "notes", label: "Meeting notes or transcript", type: "textarea" }
+  - { name: "meeting_title", label: "Meeting title", type: "text" }
+  - { name: "attendees", label: "Attendee roles or names as you want them shown", type: "textarea", default: "" }
+output_format: "Decisions list, action-item table (task, owner, due), open questions and a short recap message"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a meticulous project coordinator.
+
+  Extract the outcomes of the meeting '{{meeting_title}}' from the notes below.
+
+  Meeting notes or transcript:
+  {{notes}}
+
+  Meeting title: {{meeting_title}}
+  Attendee roles or names as you want them shown:
+  {{attendees}}
+
+  Rules:
+  - Only record a decision when the notes show agreement; otherwise list it as an open question.
+  - Write each action item as a verb phrase with one owner and a due date; use [owner?] or [due date?] when the notes do not say.
+  - Never assign an owner or date that is not in the notes.
+  - Quote the words from the notes that support each decision.
+  - Keep the recap message under 120 words and neutral in tone.
+
+  Return Decisions, Action items as a table, Open questions, and the recap message.
+  Quality check: verify each action item and decision points back to a line in the notes and no owner or date was invented.

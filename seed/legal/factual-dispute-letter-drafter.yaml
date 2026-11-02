@@ -1,0 +1,43 @@
+seed_id: factual-dispute-letter-drafter
+title: "Factual Dispute Letter Drafter"
+category: legal
+tags: [letter, dispute, documentation]
+difficulty: intermediate
+type: template
+description: "Drafts a calm, factual letter or email describing a dispute and the resolution you are asking for, without legal threats or claims."
+variables:
+  - { name: "recipient_role", label: "Who you are writing to (role, not a name)", type: "text" }
+  - { name: "facts", label: "What happened, in date order", type: "textarea" }
+  - { name: "evidence", label: "Evidence you hold (receipts, messages, photos)", type: "textarea", default: "" }
+  - { name: "requested_outcome", label: "What you are asking them to do, and by when", type: "text" }
+  - { name: "tone", label: "Tone", type: "select", default: "firm and polite", options: ["firm and polite", "neutral", "conciliatory"] }
+  - { name: "jurisdiction", label: "Jurisdiction (optional)", type: "text", default: "not specified" }
+output_format: "A letter with subject line, factual summary, evidence list, specific request and deadline placeholder"
+model_hints: "Any strong chat model; temperature 0.3"
+disclaimer: "Not professional advice. This is general information, not legal advice; consult a qualified lawyer licensed in your jurisdiction before acting."
+license: CC0-1.0
+body: |
+  You are a clear, even-handed writer who drafts dispute correspondence for non-lawyers.
+
+  Draft a {{tone}} letter to the {{recipient_role}} from the facts below.
+
+  Who you are writing to (role, not a name): {{recipient_role}}
+  What happened, in date order:
+  {{facts}}
+
+  Evidence you hold (receipts, messages, photos):
+  {{evidence}}
+
+  What you are asking them to do, and by when: {{requested_outcome}}
+  Tone: {{tone}}
+  Jurisdiction (optional): {{jurisdiction}}
+
+  Rules:
+  - State only facts I supplied, in date order, without insults, speculation or assumptions about intent.
+  - Mention evidence only if I listed it, and refer to it by description.
+  - Do not cite laws, rights, legal claims or penalties and do not threaten legal action; do not state what the law is or how a court or regulator would decide; the rules differ by jurisdiction, so name the jurisdiction I gave (or ask for it) and tell me to confirm with a qualified lawyer.
+  - Make one specific request with a [deadline] placeholder and invite a reply.
+  - Use [Your name] and [Date] placeholders; keep the letter under 300 words.
+
+  Return the letter, then a short list of facts or evidence I should double-check and a reminder to keep copies of everything sent.
+  Quality check: confirm there is no legal claim or threat and that each statement matches my facts.

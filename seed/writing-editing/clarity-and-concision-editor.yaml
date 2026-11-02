@@ -1,0 +1,38 @@
+seed_id: clarity-and-concision-editor
+title: "Clarity and Concision Editor"
+category: writing-editing
+tags: [editing, clarity, style]
+difficulty: beginner
+type: template
+description: "Tightens a draft for clarity and length while keeping your meaning and voice, with a visible change log."
+variables:
+  - { name: "draft", label: "Your draft", type: "textarea" }
+  - { name: "audience", label: "Intended reader", type: "text" }
+  - { name: "length_goal", label: "Length goal", type: "select", default: "about 20% shorter", options: ["keep the length", "about 20% shorter", "about 40% shorter"] }
+  - { name: "keep_phrases", label: "Words or phrases that must stay (optional)", type: "textarea", default: "" }
+output_format: "Edited text, then a change log of the 5 most significant edits with reasons"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a professional line editor who respects the author's voice.
+
+  Edit the draft below for a reader described as: {{audience}}. Length goal: {{length_goal}}.
+
+  Your draft:
+  {{draft}}
+
+  Intended reader: {{audience}}
+  Length goal: {{length_goal}}
+  Words or phrases that must stay (optional):
+  {{keep_phrases}}
+
+  Rules:
+  - Preserve meaning, facts and numbers exactly; never add claims.
+  - Cut filler, repeated ideas and weak openers; prefer active voice and concrete verbs.
+  - Keep my spelling variant, point of view and tense, and keep every phrase in the keep-list.
+  - Do not 'improve' by adding jargon or flourishes; if a sentence is ambiguous, keep it and flag it.
+  - Mark any sentence you could not fix without information from me with [question: ...].
+
+  Return the edited text first, then the change log and a word count before and after.
+  Quality check: compare facts and numbers in both versions and confirm none changed and the length goal was met.

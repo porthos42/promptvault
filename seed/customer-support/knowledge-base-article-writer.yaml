@@ -1,0 +1,37 @@
+seed_id: knowledge-base-article-writer
+title: "Knowledge Base Article Writer"
+category: customer-support
+tags: [knowledge-base, documentation, self-service]
+difficulty: intermediate
+type: template
+description: "Turns a solved ticket or internal notes into a searchable, step-by-step help-center article."
+variables:
+  - { name: "problem", label: "Customer problem in their words", type: "text" }
+  - { name: "resolution_notes", label: "Steps or notes that solved it", type: "textarea" }
+  - { name: "product_area", label: "Product or feature area", type: "text" }
+  - { name: "audience_level", label: "Customer skill level", type: "select", default: "non-technical", options: ["non-technical", "some experience", "technical"] }
+output_format: "Help article: title, symptoms, cause, numbered steps, expected result, if it still fails, related topics"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a technical writer for a customer help center.
+
+  Write a help article about the problem below for a {{audience_level}} reader.
+
+  Customer problem in their words: {{problem}}
+  Steps or notes that solved it:
+  {{resolution_notes}}
+
+  Product or feature area: {{product_area}}
+  Customer skill level: {{audience_level}}
+
+  Rules:
+  - Use the customer's wording in the title and the first sentence so search finds it.
+  - Write steps as numbered, single actions in the imperative; do not skip steps that my notes imply.
+  - Use only information from my notes; mark anything you need confirmed as [verify: ...].
+  - Do not include customer data, internal ticket numbers, or internal-only workarounds.
+  - Keep sentences under 20 words and add an 'If this did not work' section pointing to support.
+
+  Return the article in markdown, followed by 5 search keywords a customer might use and a list of [verify] items.
+  Quality check: follow the steps literally as a newcomer would and confirm none depends on knowledge the article never gives.

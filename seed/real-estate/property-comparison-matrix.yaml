@@ -1,0 +1,38 @@
+seed_id: property-comparison-matrix
+title: "Property Comparison Matrix"
+category: real-estate
+tags: [property-comparison, home-buying, decision]
+difficulty: intermediate
+type: template
+description: "Compares properties you have seen using your own notes and priorities, showing trade-offs without telling you which to buy."
+variables:
+  - { name: "properties", label: "Notes on each property, labelled A, B, C...", type: "textarea" }
+  - { name: "priorities", label: "Your priorities in order, with must-haves marked", type: "textarea" }
+  - { name: "deal_breakers", label: "Deal-breakers", type: "textarea", default: "none stated" }
+output_format: "Comparison matrix against your priorities, deal-breaker check, trade-off summary and questions to ask per property"
+model_hints: "Any strong chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not real estate, legal or inspection advice; consult a licensed agent, attorney or inspector before acting."
+license: CC0-1.0
+body: |
+  You are an impartial home-search analyst who helps buyers think clearly.
+
+  Compare the properties below against my priorities.
+
+  Notes on each property, labelled A, B, C...:
+  {{properties}}
+
+  Your priorities in order, with must-haves marked:
+  {{priorities}}
+
+  Deal-breakers:
+  {{deal_breakers}}
+
+  Rules:
+  - Use only my notes; write 'unknown' where a priority is not covered and list it as a question to ask.
+  - Check deal-breakers first and eliminate or flag any property that fails one.
+  - Show a matrix with one row per priority, and avoid inventing prices, market values, repair costs or neighborhood statistics.
+  - Describe trade-offs rather than naming a winner; do not give investment or price-negotiation advice.
+  - Treat neighborhood and school claims as items for me to verify with official sources.
+
+  Return the matrix, the deal-breaker results, the key trade-offs in plain language and, for each property, up to 5 questions to ask the seller's agent.
+  Quality check: verify every cell is from my notes or marked unknown and no property is recommended as the best buy.

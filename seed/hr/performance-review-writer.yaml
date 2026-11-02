@@ -1,0 +1,46 @@
+seed_id: performance-review-writer
+title: "Performance Review Writer"
+category: hr
+tags: [performance-review, feedback, management]
+difficulty: intermediate
+type: template
+description: "Drafts a balanced, evidence-based performance review from a manager's notes, with development goals."
+variables:
+  - { name: "employee_role", label: "Employee's role (no names needed)", type: "text" }
+  - { name: "period", label: "Review period", type: "text" }
+  - { name: "achievements", label: "Observed achievements with examples", type: "textarea" }
+  - { name: "gaps", label: "Areas needing improvement with examples", type: "textarea" }
+  - { name: "expectations", label: "Role expectations or goals set earlier (optional)", type: "textarea", default: "" }
+  - { name: "tone", label: "Tone", type: "select", default: "supportive and direct", options: ["supportive and direct", "formal", "coaching-focused"] }
+output_format: "Review with summary, strengths, development areas with evidence, 3 goals and a closing note"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an experienced people manager who writes fair, specific reviews.
+
+  Draft a performance review for the period below in a {{tone}} tone.
+
+  Employee's role (no names needed): {{employee_role}}
+  Review period: {{period}}
+  Observed achievements with examples:
+  {{achievements}}
+
+  Areas needing improvement with examples:
+  {{gaps}}
+
+  Role expectations or goals set earlier (optional):
+  {{expectations}}
+
+  Tone: {{tone}}
+
+  Rules:
+  - Describe behavior and results, never personality or personal characteristics.
+  - Back every statement with an example from my notes; if an example is missing, add a question for me instead of inventing one.
+  - Give the same level of specificity to strengths and development areas.
+  - Do not mention protected characteristics, health, family or personal circumstances. Do not recommend pay, promotion or termination decisions.
+  - Write goals that are specific and checkable, with [date] placeholders.
+  - Follow local employment law and company policy; suggest the manager check both before sharing.
+
+  Return the review, then a list of any claim for which my notes gave no evidence.
+  Quality check: confirm each strength and gap cites an example and that the language is about behavior rather than the person.

@@ -1,0 +1,39 @@
+seed_id: neighborhood-research-checklist
+title: "Neighborhood Research Checklist"
+category: real-estate
+tags: [neighborhood, due-diligence, home-buying]
+difficulty: intermediate
+type: template
+description: "Builds a personalized checklist of what to research and which official sources to check about a neighborhood, without supplying any data."
+variables:
+  - { name: "area", label: "Area you are considering", type: "text" }
+  - { name: "priorities", label: "What matters to you in a place to live", type: "textarea" }
+  - { name: "household_needs", label: "Practical needs (commute, accessibility, pets, remote work, and so on)", type: "textarea", default: "" }
+  - { name: "purpose", label: "Purpose", type: "select", default: "buying to live there", options: ["buying to live there", "renting", "moving for work", "just exploring"] }
+output_format: "Checklist by theme with what to look for, where to check, in-person visit tasks and questions for locals"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: "Not professional advice. This is general information, not real estate, legal or inspection advice; consult a licensed agent, attorney or inspector before acting."
+license: CC0-1.0
+body: |
+  You are a relocation researcher who helps people investigate an area before committing.
+
+  Create a research checklist for {{area}} based on my priorities, for someone {{purpose}}.
+
+  Area you are considering: {{area}}
+  What matters to you in a place to live:
+  {{priorities}}
+
+  Practical needs (commute, accessibility, pets, remote work, and so on):
+  {{household_needs}}
+
+  Purpose: {{purpose}}
+
+  Rules:
+  - Do not state facts about the area, such as crime, school quality, prices, flood risk or development plans; you may be out of date and may be wrong.
+  - For each topic describe what to look for and the type of official or local source to check, such as the local planning office or public records.
+  - Cover only themes that relate to my priorities and needs, and add a section of tasks for a visit at different times of day.
+  - Do not make judgments about the people who live in an area and do not recommend or steer toward or away from neighborhoods by demographics.
+  - Leave a blank 'what I found' column for me to complete.
+
+  Return the checklist as a table with columns: theme, what to check, where to check, what I found. Then give 8 questions to ask neighbors or local professionals.
+  Quality check: check that no sentence states a fact about the area and each row names a type of source.

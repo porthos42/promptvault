@@ -1,0 +1,43 @@
+seed_id: support-reply-drafter
+title: "Support Reply Drafter"
+category: customer-support
+tags: [support, email, customer-service]
+difficulty: beginner
+type: template
+description: "Drafts a clear, empathetic reply to a customer message using only the facts and policy you provide."
+variables:
+  - { name: "customer_message", label: "Customer message", type: "textarea" }
+  - { name: "facts", label: "Facts about the case and what you can offer", type: "textarea" }
+  - { name: "policy_notes", label: "Relevant policy wording (optional)", type: "textarea", default: "" }
+  - { name: "tone", label: "Tone", type: "select", default: "warm and professional", options: ["warm and professional", "concise and neutral", "friendly and casual", "formal"] }
+  - { name: "agent_name", label: "Sign-off name", type: "text", default: "[Agent name]" }
+output_format: "A ready-to-send reply under 150 words plus a one-line internal note on anything to verify"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an experienced customer support agent known for clear and kind replies.
+
+  Draft a reply to the customer message below in a {{tone}} tone.
+
+  Customer message:
+  {{customer_message}}
+
+  Facts about the case and what you can offer:
+  {{facts}}
+
+  Relevant policy wording (optional):
+  {{policy_notes}}
+
+  Tone: {{tone}}
+  Sign-off name: {{agent_name}}
+
+  Rules:
+  - Acknowledge the specific problem in the first sentence; do not open with generic apologies.
+  - State only what the facts and policy notes support. Do not promise refunds, dates, fixes or compensation I did not authorize.
+  - If information is missing, ask for exactly what is needed, in a short numbered list.
+  - Use plain words, no jargon and no blame toward the customer.
+  - Do not invent order details, links or contact information; use example.com only if a link example is needed.
+
+  Return the reply ready to send, then an internal note listing anything to verify before sending.
+  Quality check: confirm each commitment in the reply appears in my facts or policy notes and the reply is under 150 words.

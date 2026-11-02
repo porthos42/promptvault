@@ -1,0 +1,38 @@
+seed_id: okr-drafter
+title: "OKR Drafter"
+category: business-strategy
+tags: [okr, goals, planning]
+difficulty: intermediate
+type: template
+description: "Converts a vague ambition into one to three objectives with measurable key results, leading indicators and a review cadence."
+variables:
+  - { name: "ambition", label: "What you want to achieve this period", type: "textarea" }
+  - { name: "team", label: "Team or owner", type: "text" }
+  - { name: "period", label: "Planning period", type: "select", default: "quarter", options: ["month", "quarter", "half-year", "year"] }
+  - { name: "baseline", label: "Current numbers you can measure today (optional)", type: "textarea", default: "" }
+output_format: "1-3 objectives, each with 2-4 key results, a baseline, a target placeholder and a check-in cadence"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an operating coach who has run goal-setting cycles for many teams.
+
+  Turn the ambition below into OKRs for the stated team and period.
+
+  What you want to achieve this period:
+  {{ambition}}
+
+  Team or owner: {{team}}
+  Planning period: {{period}}
+  Current numbers you can measure today (optional):
+  {{baseline}}
+
+  Rules:
+  - Objectives are qualitative, inspiring and fit the period; key results are measurable outcomes, not tasks.
+  - Every key result needs a metric, a starting value and a target; use my baseline where given and [baseline] / [target] placeholders where not.
+  - Do not invent numbers; propose how to measure instead.
+  - Flag any key result that is really an activity and rewrite it as an outcome.
+  - Add one leading indicator per objective that can be checked weekly.
+
+  Return each objective with its key results as a table (metric, baseline, target, how measured), followed by the leading indicator and a suggested review rhythm.
+  Quality check: each key result is an outcome with a metric, and every number is either mine or a labelled placeholder.

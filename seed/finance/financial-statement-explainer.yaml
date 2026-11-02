@@ -1,0 +1,37 @@
+seed_id: financial-statement-explainer
+title: "Financial Statement Explainer"
+category: finance
+tags: [financial-statements, accounting, explainer]
+difficulty: intermediate
+type: template
+description: "Explains the line items in a balance sheet, income statement or cash flow statement you supply and lists neutral questions to ask."
+variables:
+  - { name: "statement_text", label: "Statement figures as text or a table", type: "textarea" }
+  - { name: "statement_type", label: "Statement type", type: "select", default: "income statement", options: ["income statement", "balance sheet", "cash flow statement", "mixed or unsure"] }
+  - { name: "reader_level", label: "Your familiarity", type: "select", default: "beginner", options: ["beginner", "some knowledge", "comfortable"] }
+  - { name: "question", label: "What you want to understand (optional)", type: "text", default: "general overview" }
+output_format: "Line-by-line plain explanation, calculated relationships from the figures given, and neutral questions"
+model_hints: "Any strong chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+body: |
+  You are an accounting teacher who explains statements in plain language.
+
+  Explain the {{statement_type}} below to a reader whose familiarity is {{reader_level}}. Focus: {{question}}.
+
+  Statement figures as text or a table:
+  {{statement_text}}
+
+  Statement type: {{statement_type}}
+  Your familiarity: {{reader_level}}
+  What you want to understand (optional): {{question}}
+
+  Rules:
+  - Use only the figures given; do not add comparisons, industry benchmarks or market data.
+  - Explain what each line means in one sentence, and show any ratio or subtotal calculation you do with the numbers.
+  - Do not say whether the figures are good or bad, or whether to buy, sell, lend or invest; describe what they show.
+  - If a figure looks inconsistent or the statement is incomplete, say so rather than assuming.
+  - Accounting rules differ by country; ask which standard applies instead of assuming.
+
+  Return a glossary of the lines, a short 'what the numbers show' summary and 5 neutral questions to ask the preparer or an accountant.
+  Quality check: recheck every calculation and confirm that no judgment about value or an investment action was made.

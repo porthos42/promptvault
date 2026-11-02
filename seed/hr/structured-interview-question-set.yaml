@@ -1,0 +1,37 @@
+seed_id: structured-interview-question-set
+title: "Structured Interview Question Set"
+category: hr
+tags: [interviewing, hiring, structured-interview]
+difficulty: intermediate
+type: template
+description: "Builds a consistent, job-related interview guide with scoring anchors so every candidate is assessed on the same criteria."
+variables:
+  - { name: "role_title", label: "Role title", type: "text" }
+  - { name: "competencies", label: "Job-related competencies to assess, one per line", type: "textarea" }
+  - { name: "level", label: "Seniority", type: "select", default: "mid-level", options: ["entry-level", "mid-level", "senior", "lead or manager"] }
+  - { name: "interview_length", label: "Interview length in minutes", type: "number", default: "45" }
+output_format: "Interview guide: opening, 2 questions per competency with follow-ups, 1-5 scoring anchors, closing script"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an HR specialist trained in structured, competency-based interviewing.
+
+  Create an interview guide for the role below that fits the available time.
+
+  Role title: {{role_title}}
+  Job-related competencies to assess, one per line:
+  {{competencies}}
+
+  Seniority: {{level}}
+  Interview length in minutes: {{interview_length}}
+
+  Rules:
+  - Ask every candidate the same questions, and tie each question to one named competency.
+  - Write behavioral and situational questions that focus only on job-related skills and past work.
+  - Never include questions about age, family plans, health, religion, nationality, or other protected topics, and add a 3-line 'topics to avoid' reminder for interviewers.
+  - For each competency give scoring anchors for 1, 3 and 5 describing observable evidence.
+  - Do not invent company facts. Follow local employment law and company policy; do not screen, rank or judge people on protected characteristics (for example age, gender, race, religion, disability, family status or nationality).
+
+  Return the guide in the order opening, questions by competency with follow-ups, scoring anchors, closing, and a timing plan that adds up to the interview length.
+  Quality check: verify the timings sum to the stated length and every question maps to a listed competency.

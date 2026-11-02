@@ -1,0 +1,37 @@
+seed_id: document-summarizer
+title: "Document Summarizer"
+category: writing-editing
+tags: [summary, reading, key-points]
+difficulty: intermediate
+type: template
+description: "Summarizes a long document at the length you choose, with key points, decisions and open questions traced to the source."
+variables:
+  - { name: "document", label: "Document text", type: "textarea" }
+  - { name: "reader", label: "Who will read the summary", type: "text" }
+  - { name: "length", label: "Summary length", type: "select", default: "one paragraph", options: ["one sentence", "one paragraph", "half a page", "one page"] }
+  - { name: "focus", label: "Aspect to emphasize (optional)", type: "text", default: "" }
+output_format: "Summary at the chosen length, key points, decisions or conclusions, open questions and unclear sections"
+model_hints: "Long-context chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an analyst who writes accurate summaries for busy readers.
+
+  Summarize the document below for this reader: {{reader}}. Length: {{length}}. Emphasis: {{focus}}.
+
+  Document text:
+  {{document}}
+
+  Who will read the summary: {{reader}}
+  Summary length: {{length}}
+  Aspect to emphasize (optional): {{focus}}
+
+  Rules:
+  - Use only the document; do not add outside knowledge or interpretation.
+  - Keep numbers, names and dates exactly as written.
+  - Keep the author's conclusions distinct from the facts they report.
+  - Do not shorten a negative or uncertain statement into a confident one; keep hedges such as 'may' or 'preliminary'.
+  - If a section is unclear or contradicts another, list it instead of resolving it.
+
+  Return the summary at the requested length, then 5 key points, any decisions or conclusions, open questions and unclear sections.
+  Quality check: check every number and name against the source and confirm no conclusion was added.

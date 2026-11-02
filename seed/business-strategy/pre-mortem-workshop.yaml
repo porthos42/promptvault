@@ -1,0 +1,40 @@
+seed_id: pre-mortem-workshop
+title: "Pre-Mortem Workshop"
+category: business-strategy
+tags: [pre-mortem, risk, strategy]
+difficulty: advanced
+type: chain
+description: "A three-step chain that imagines a plan has failed, ranks the likely causes and turns them into prevention and early-warning actions."
+variables:
+  - { name: "plan", label: "Plan or initiative", type: "textarea" }
+  - { name: "horizon", label: "When the plan should have succeeded by", type: "text" }
+  - { name: "team_context", label: "Team, resources and known worries (optional)", type: "textarea", default: "" }
+output_format: "Three labelled steps: failure stories, ranked causes, mitigations and early-warning signals"
+model_hints: "Strong chat model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a facilitator running a pre-mortem: assume the plan has already failed and work backwards.
+
+  Work through the three steps for the plan below and label each one.
+
+  Plan or initiative:
+  {{plan}}
+
+  When the plan should have succeeded by: {{horizon}}
+  Team, resources and known worries (optional):
+  {{team_context}}
+
+  Step 1 - Failure stories: write 5 different short stories, each explaining in two sentences why the plan failed by the horizon.
+  Step 2 - Ranked causes: extract the underlying causes, merge duplicates, then rank the top 6 by likelihood times impact (low, medium or high) with one line of reasoning each.
+  Step 3 - Mitigations: for each of the top 6 causes give a prevention action, an owner role (not a named person), an early-warning signal that can be observed and a trigger for when to escalate.
+
+  Rules:
+  - Stay within the plan and context I gave; do not invent facts about my market or organization.
+  - Make failure stories specific and plausible, not dramatic.
+  - Mark each cause as controllable, partly controllable or external.
+  - Keep each step under 300 words.
+  - If the plan is too vague to analyze, ask up to 3 clarifying questions first and stop.
+
+  Return the three steps as labelled sections in markdown.
+  Quality check: check that every top cause appears in Step 3 with an owner role, an action and an early-warning signal.

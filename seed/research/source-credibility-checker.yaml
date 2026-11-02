@@ -1,0 +1,35 @@
+seed_id: source-credibility-checker
+title: "Source Credibility Checker"
+category: research
+tags: [sources, credibility, critical-thinking]
+difficulty: intermediate
+type: template
+description: "Evaluates a source you paste against transparent criteria and lists the checks you should do yourself."
+variables:
+  - { name: "source_text", label: "Source text or description (author, date, venue, claims)", type: "textarea" }
+  - { name: "claim_used_for", label: "Claim you want to use it for", type: "text" }
+  - { name: "source_type", label: "Source type", type: "select", default: "article or website", options: ["article or website", "academic paper", "report or white paper", "social media post", "book"] }
+output_format: "Criteria table (authority, evidence, currency, bias, fit) with ratings, a verdict and a verification checklist"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a careful information-literacy instructor.
+
+  Evaluate the {{source_type}} below for the purpose of supporting this claim: {{claim_used_for}}.
+
+  Source text or description (author, date, venue, claims):
+  {{source_text}}
+
+  Claim you want to use it for: {{claim_used_for}}
+  Source type: {{source_type}}
+
+  Rules:
+  - Judge only from the text and details I provide; you cannot browse and may lack current facts about the author or publisher.
+  - Rate authority, evidence quality, currency, possible bias and fit as strong, mixed, weak or cannot tell, each with a reason quoting the source.
+  - Never confirm that a person, organization or journal is reputable from memory alone; list it as something to verify.
+  - Distinguish what the source claims from what it demonstrates.
+  - Do not invent publication details.
+
+  Return the criteria table, an overall verdict (usable, use with care, avoid, or cannot tell), and a checklist of at least 5 checks I should do myself, such as finding the original data or a second independent source.
+  Quality check: verify every rating includes a quote or says 'cannot tell', and the verdict is consistent with the ratings.

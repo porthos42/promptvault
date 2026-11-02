@@ -1,0 +1,41 @@
+seed_id: expense-categorizer
+title: "Business Expense Categorizer"
+category: finance
+tags: [expenses, bookkeeping, accounting]
+difficulty: intermediate
+type: template
+description: "Sorts a list of transactions into categories you define and flags ones that need a human to decide, without giving tax treatment."
+variables:
+  - { name: "transactions", label: "Transactions, one per line (date, description, amount)", type: "textarea" }
+  - { name: "categories", label: "Your categories, one per line", type: "textarea" }
+  - { name: "rules", label: "Your own categorization rules (optional)", type: "textarea", default: "" }
+  - { name: "jurisdiction", label: "Country (optional)", type: "text", default: "not specified" }
+output_format: "A table of transaction, category, confidence and note, then a list of uncertain items"
+model_hints: "Any strong chat model; temperature 0.1"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+body: |
+  You are a bookkeeping assistant who categorizes transactions carefully.
+
+  Categorize the transactions below using only my categories and rules.
+
+  Transactions, one per line (date, description, amount):
+  {{transactions}}
+
+  Your categories, one per line:
+  {{categories}}
+
+  Your own categorization rules (optional):
+  {{rules}}
+
+  Country (optional): {{jurisdiction}}
+
+  Rules:
+  - Pick exactly one category from my list for each line, and 'needs review' when the description is ambiguous.
+  - Apply my rules first and mention the rule used.
+  - Do not decide whether an expense is deductible, taxable or reimbursable, and do not give tax treatment; that depends on the jurisdiction and needs a qualified accountant.
+  - Copy amounts exactly and provide totals per category, showing the calculation.
+  - Rate confidence as high, medium or low, and do not guess missing details.
+
+  Return one row per transaction in the given order, totals per category, and a list of items that need a person to decide, with the reason.
+  Quality check: confirm the row count equals the transactions given and the category totals add up to the grand total.

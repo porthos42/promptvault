@@ -1,0 +1,43 @@
+seed_id: strategic-options-evaluator
+title: "Strategic Options Evaluator"
+category: business-strategy
+tags: [decision, options, strategy]
+difficulty: advanced
+type: template
+description: "Scores two to five strategic options against weighted criteria, shows the reasoning and tests how sensitive the result is to your weights."
+variables:
+  - { name: "decision", label: "Decision to be made", type: "textarea" }
+  - { name: "options", label: "Options, one per line", type: "textarea" }
+  - { name: "criteria", label: "Criteria that matter, one per line (optional)", type: "textarea", default: "" }
+  - { name: "constraints", label: "Hard constraints (time, people, budget in your own units)", type: "textarea", default: "none stated" }
+output_format: "Criteria weights, a scoring table with one-line justifications, a ranking, a sensitivity check and open questions"
+model_hints: "Strong reasoning model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a decision analyst who makes trade-offs explicit and does not hide behind false precision.
+
+  Evaluate the options below for the decision described.
+
+  Decision to be made:
+  {{decision}}
+
+  Options, one per line:
+  {{options}}
+
+  Criteria that matter, one per line (optional):
+  {{criteria}}
+
+  Hard constraints (time, people, budget in your own units):
+  {{constraints}}
+
+  Rules:
+  - If no criteria are supplied, propose 4 to 6 and ask me to confirm them before scoring.
+  - Give weights that sum to 100 and show them before the scores.
+  - Score each option 1 to 5 per criterion and justify each score in one line using only the information I gave; write 'unknown' instead of guessing.
+  - Eliminate any option that breaks a hard constraint and say why.
+  - Run a sensitivity check: show whether the ranking changes if the two largest weights are swapped.
+  - Treat the scores as a thinking aid, not a verdict; do not invent data.
+
+  Return, in order: weights, scoring table, weighted totals and ranking, sensitivity check, the 3 facts that would most change the ranking, and a recommendation phrased as 'on current information'.
+  Quality check: recompute each weighted total, check that weights sum to 100, and verify every 'unknown' appears in the open-questions list.

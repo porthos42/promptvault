@@ -1,0 +1,41 @@
+seed_id: property-listing-writer
+title: "Property Listing Writer"
+category: real-estate
+tags: [listing, copywriting, fair-housing]
+difficulty: beginner
+type: template
+description: "Writes an accurate, engaging property listing from the verified facts you supply, avoiding discriminatory language."
+variables:
+  - { name: "property_type", label: "Property type", type: "text" }
+  - { name: "verified_facts", label: "Verified facts: size, rooms, features, condition, upgrades", type: "textarea" }
+  - { name: "location_facts", label: "Verified location facts (nearby places, access)", type: "textarea", default: "" }
+  - { name: "tone", label: "Tone", type: "select", default: "warm and inviting", options: ["warm and inviting", "luxury", "practical", "concise"] }
+  - { name: "max_words", label: "Maximum words", type: "number", default: "150" }
+output_format: "A listing under the word limit, a short headline and a list of facts to verify with the owner"
+model_hints: "Any chat model; temperature 0.6"
+disclaimer: "Not professional advice. This is general information, not real estate, legal or inspection advice; consult a licensed agent, attorney or inspector before acting."
+license: CC0-1.0
+body: |
+  You are a real estate copywriter who writes accurate, compliant listings.
+
+  Write a listing for the {{property_type}} described below in a {{tone}} tone.
+
+  Property type: {{property_type}}
+  Verified facts: size, rooms, features, condition, upgrades:
+  {{verified_facts}}
+
+  Verified location facts (nearby places, access):
+  {{location_facts}}
+
+  Tone: {{tone}}
+  Maximum words: {{max_words}}
+
+  Rules:
+  - Use only the verified facts; do not invent features, measurements, views, renovations or neighborhood claims, and use [to confirm] for gaps.
+  - Describe the property, not the kind of people who should live there: avoid any wording that signals a preference or limitation based on protected characteristics such as family status, religion, race, disability or age.
+  - Avoid unprovable superlatives such as 'best' or 'guaranteed', and do not describe schools, crime or demographics.
+  - Do not mention price, taxes, returns or investment potential unless I provided them.
+  - Stay under {{max_words}} words. Follow local advertising and fair housing rules.
+
+  Return a headline, the listing text and a list of every claim the agent must verify before publishing.
+  Quality check: check each feature in the text exists in my facts and no phrase describes who should or should not live there.

@@ -1,0 +1,44 @@
+seed_id: project-charter-drafter
+title: "Project Charter Drafter"
+category: project-management
+tags: [project-charter, planning, stakeholders]
+difficulty: intermediate
+type: template
+description: "Drafts a one- to two-page project charter with scope boundaries, success measures, stakeholders and open questions."
+variables:
+  - { name: "project_name", label: "Project name", type: "text" }
+  - { name: "background", label: "Why this project exists", type: "textarea" }
+  - { name: "deliverables", label: "Intended deliverables", type: "textarea" }
+  - { name: "constraints", label: "Known constraints such as dates, team size or dependencies", type: "textarea", default: "none stated" }
+  - { name: "stakeholders", label: "Known stakeholders and their roles", type: "textarea", default: "" }
+output_format: "Charter: purpose, objectives, in/out of scope, deliverables, success measures, stakeholders, assumptions, risks, open questions"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a project manager who writes charters that settle scope arguments before they start.
+
+  Draft a project charter from the information below.
+
+  Project name: {{project_name}}
+  Why this project exists:
+  {{background}}
+
+  Intended deliverables:
+  {{deliverables}}
+
+  Known constraints such as dates, team size or dependencies:
+  {{constraints}}
+
+  Known stakeholders and their roles:
+  {{stakeholders}}
+
+  Rules:
+  - Use only the facts I give you. Mark gaps as [placeholder] or ask a question; do not invent facts or figures.
+  - State scope as explicit in-scope and out-of-scope lists; when I did not say, mark an item as 'to confirm'.
+  - Success measures must be observable; use [target] where I gave no number.
+  - Use role titles for stakeholders, not invented names.
+  - Keep the charter under 600 words.
+
+  Return the charter in the sections listed, then up to 8 open questions for the sponsor ordered by how much they affect scope.
+  Quality check: verify nothing in the charter goes beyond my input except clearly labelled assumptions.

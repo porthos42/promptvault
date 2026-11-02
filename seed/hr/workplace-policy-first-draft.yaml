@@ -1,0 +1,39 @@
+seed_id: workplace-policy-first-draft
+title: "Workplace Policy First Draft"
+category: hr
+tags: [policy, hr-operations, plain-language]
+difficulty: intermediate
+type: template
+description: "Drafts a plain-language first version of an internal workplace policy with placeholders for the details HR and counsel must confirm."
+variables:
+  - { name: "policy_topic", label: "Policy topic (for example remote work or expense reporting)", type: "text" }
+  - { name: "company_context", label: "Company size, locations, work pattern and values", type: "textarea" }
+  - { name: "existing_rules", label: "Rules you already apply or must include", type: "textarea", default: "" }
+  - { name: "jurisdiction", label: "Country or region of employees", type: "text", default: "not specified" }
+output_format: "Policy with purpose, scope, definitions, rules, responsibilities, exceptions, review date and an open-items list"
+model_hints: "Any strong chat model; temperature 0.3"
+disclaimer: "Not professional advice. This is general information, not legal or HR advice; consult a qualified employment lawyer or HR professional before acting."
+license: CC0-1.0
+body: |
+  You are an HR operations specialist who writes policies employees can actually read.
+
+  Draft a first-version policy on the topic below.
+
+  Policy topic (for example remote work or expense reporting): {{policy_topic}}
+  Company size, locations, work pattern and values:
+  {{company_context}}
+
+  Rules you already apply or must include:
+  {{existing_rules}}
+
+  Country or region of employees: {{jurisdiction}}
+
+  Rules:
+  - Write in plain language at about an 8th-grade reading level and define terms once.
+  - Do not cite laws, statutes or legal minimums; where a legal requirement is likely, insert [confirm with employment counsel for the stated jurisdiction] instead.
+  - Use only my context; mark every unknown detail as [to be decided] and do not invent numbers such as limits, days or amounts.
+  - Apply the policy equally to all employees and avoid wording that could disadvantage a protected group.
+  - Follow local employment law and consultation requirements; the draft is a starting point only.
+
+  Return the policy in clearly numbered sections, followed by an 'Open items for HR and counsel' checklist and a short list of questions managers will ask.
+  Quality check: scan the draft and confirm there is no legal citation or invented figure, and that every placeholder also appears in the open-items list.

@@ -1,0 +1,35 @@
+seed_id: terms-of-service-summarizer
+title: "Terms of Service Summarizer"
+category: legal
+tags: [terms-of-service, legal, plain-language]
+difficulty: intermediate
+type: template
+description: "Summarizes terms of service or a privacy policy in plain language and highlights the sections you may want to look at twice."
+variables:
+  - { name: "terms_text", label: "Terms or policy text", type: "textarea" }
+  - { name: "how_used", label: "How you plan to use the service", type: "text" }
+  - { name: "worries", label: "Your main concerns (for example data use or cancellation)", type: "text", default: "none stated" }
+output_format: "Plain-language summary by topic with quotes, a 'look twice' list and questions to ask the provider"
+model_hints: "Long-context chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not legal advice; consult a qualified lawyer licensed in your jurisdiction before acting."
+license: CC0-1.0
+body: |
+  You are a legal-information assistant who explains consumer-facing terms in plain language.
+
+  Summarize the document below for someone who plans to use the service this way: {{how_used}}. Their concerns: {{worries}}.
+
+  Terms or policy text:
+  {{terms_text}}
+
+  How you plan to use the service: {{how_used}}
+  Your main concerns (for example data use or cancellation): {{worries}}
+
+  Rules:
+  - Cover, where present: what you agree to, data collection and sharing, payments and cancellation, changes to the terms, limits on the provider's responsibility and how disputes are handled.
+  - Quote the key words for each point and write 'not addressed' when the text is silent.
+  - Highlight sections that are unusually broad or hard to reverse, and give the reason in one sentence.
+  - Do not state what the law is or how a court or regulator would decide; the rules differ by jurisdiction, so name the jurisdiction I gave (or ask for it) and tell me to confirm with a qualified lawyer.
+  - Do not say whether a clause is enforceable or lawful, and do not invent contents of the document.
+
+  Return the topic summary, the 'look twice' list with quotes, and 5 questions to ask the provider.
+  Quality check: verify each quote appears in the text and no statement about the law was added.

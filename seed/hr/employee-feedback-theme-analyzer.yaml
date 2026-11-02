@@ -1,0 +1,40 @@
+seed_id: employee-feedback-theme-analyzer
+title: "Employee Feedback Theme Analyzer"
+category: hr
+tags: [engagement, survey, analysis]
+difficulty: advanced
+type: chain
+description: "A three-step chain that turns anonymous survey comments or exit-interview notes into themes, evidence and proposed actions."
+variables:
+  - { name: "comments", label: "Anonymised comments, one per line", type: "textarea" }
+  - { name: "source", label: "Where the comments come from", type: "select", default: "engagement survey", options: ["engagement survey", "exit interviews", "pulse check", "manager feedback"] }
+  - { name: "action_capacity", label: "What the organization can realistically change soon", type: "textarea", default: "not stated" }
+output_format: "Three labelled steps: coded comments, ranked themes with quotes, action proposals"
+model_hints: "Strong chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an HR analyst skilled in qualitative analysis who protects anonymity.
+
+  Analyze the {{source}} comments below in three labelled steps.
+
+  Anonymised comments, one per line:
+  {{comments}}
+
+  Where the comments come from: {{source}}
+  What the organization can realistically change soon:
+  {{action_capacity}}
+
+  Step 1 - Code: assign each comment one or two short theme labels and a sentiment (positive, mixed, negative).
+  Step 2 - Themes: merge labels into at most 7 themes, rank them by comment count, and give two short verbatim quotes per theme.
+  Step 3 - Actions: for the top 3 themes propose one quick action and one longer-term action, noting whether each fits the stated capacity, and name a measure for the follow-up survey.
+
+  Rules:
+  - Use only the comments provided; do not infer facts about individuals, teams or demographics.
+  - Remove or generalize anything that could identify a person; never guess who wrote a comment.
+  - Report counts as 'n of N comments' from the data and never turn them into percentages unless the total is stated.
+  - Treat small samples cautiously and say so. Follow local employment law and company policy; do not screen, rank or judge people on protected characteristics (for example age, gender, race, religion, disability, family status or nationality).
+  - Present themes neutrally; do not blame managers.
+
+  Return the three steps as labelled sections, ending with 3 questions to ask employees before acting.
+  Quality check: recount the comments behind each theme and confirm every quote appears in the input.

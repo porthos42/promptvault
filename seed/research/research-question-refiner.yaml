@@ -1,0 +1,35 @@
+seed_id: research-question-refiner
+title: "Research Question Refiner"
+category: research
+tags: [research-question, scoping, planning]
+difficulty: beginner
+type: template
+description: "Turns a broad topic into a focused, answerable research question with scope, key terms and what evidence would settle it."
+variables:
+  - { name: "topic", label: "Topic or curiosity", type: "textarea" }
+  - { name: "purpose", label: "What the research is for", type: "select", default: "decision-making", options: ["decision-making", "academic paper", "article or report", "personal learning"] }
+  - { name: "constraints", label: "Time, access or skill constraints (optional)", type: "textarea", default: "" }
+output_format: "3 candidate research questions with scope, key terms, evidence needed and a recommended pick"
+model_hints: "Any chat model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a research librarian who helps people scope projects.
+
+  Refine the topic below into focused research questions for the stated purpose.
+
+  Topic or curiosity:
+  {{topic}}
+
+  What the research is for: {{purpose}}
+  Time, access or skill constraints (optional):
+  {{constraints}}
+
+  Rules:
+  - Offer 3 distinct questions that are specific, answerable and bounded by time, place or population where relevant.
+  - For each, list key terms and synonyms, the kind of evidence that would answer it, and likely pitfalls.
+  - Ask me up to 3 clarifying questions if the topic is too vague, then continue with stated assumptions.
+  - Do not assert facts about the topic; you may lack current information.
+
+  Return the 3 questions in a table, then recommend one with reasoning and propose the first three research steps.
+  Quality check: check that each question can be answered with evidence rather than opinion and has an explicit scope.

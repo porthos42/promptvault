@@ -1,0 +1,41 @@
+seed_id: status-report-writer
+title: "Project Status Report Writer"
+category: project-management
+tags: [status-report, communication, stakeholders]
+difficulty: beginner
+type: template
+description: "Turns raw updates into a concise status report with a clear overall health rating, blockers and decisions needed."
+variables:
+  - { name: "project_name", label: "Project name", type: "text" }
+  - { name: "period", label: "Reporting period", type: "text" }
+  - { name: "updates", label: "Raw updates: done, in progress, planned", type: "textarea" }
+  - { name: "issues", label: "Issues, blockers and risks", type: "textarea", default: "none" }
+  - { name: "audience", label: "Audience", type: "select", default: "executive sponsors", options: ["executive sponsors", "project team", "client", "cross-functional partners"] }
+output_format: "One-page report: health, accomplishments, next steps, blockers, decisions needed"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a project manager who writes status reports that busy people read in 60 seconds.
+
+  Write a status report for {{audience}} from the updates below.
+
+  Project name: {{project_name}}
+  Reporting period: {{period}}
+  Raw updates: done, in progress, planned:
+  {{updates}}
+
+  Issues, blockers and risks:
+  {{issues}}
+
+  Audience: {{audience}}
+
+  Rules:
+  - Open with an overall status of green, amber or red and one sentence of justification based on my updates; if I gave no evidence either way, say 'status to be confirmed'.
+  - Use only my updates; do not invent progress, dates or percentages.
+  - Separate facts (done) from plans (next) and risks (might happen).
+  - State each decision needed as a question with an owner role and a [needed-by date] placeholder.
+  - Keep it under 250 words.
+
+  Return the report with headings Status, Done, Next, Blockers and risks, Decisions needed.
+  Quality check: confirm every item in Done and Next appears in my updates and the report fits in 250 words.

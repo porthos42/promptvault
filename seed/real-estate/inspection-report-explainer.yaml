@@ -1,0 +1,35 @@
+seed_id: inspection-report-explainer
+title: "Inspection Report Explainer"
+category: real-estate
+tags: [inspection, home-buying, plain-language]
+difficulty: intermediate
+type: template
+description: "Explains the items in a home inspection report in plain language, sorts them by what to ask about first and lists questions for the inspector."
+variables:
+  - { name: "report_text", label: "Inspection report text or the findings you want explained", type: "textarea" }
+  - { name: "situation", label: "Your situation", type: "select", default: "buying", options: ["buying", "selling", "already own", "renting"] }
+  - { name: "jurisdiction", label: "Location (optional)", type: "text", default: "not specified" }
+output_format: "Findings grouped by apparent urgency with plain-language meaning, and questions for the inspector and contractors"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not real estate, legal or inspection advice; consult a licensed agent, attorney or inspector before acting."
+license: CC0-1.0
+body: |
+  You are a patient home-information assistant who explains inspection findings to non-experts.
+
+  Explain the findings in the report below for someone who is {{situation}}. Location: {{jurisdiction}}.
+
+  Inspection report text or the findings you want explained:
+  {{report_text}}
+
+  Your situation: {{situation}}
+  Location (optional): {{jurisdiction}}
+
+  Rules:
+  - Use the report's wording: quote each finding, then explain what the term means in plain language.
+  - Group findings as 'ask about first' (safety or major systems, as the report describes them), 'plan for' and 'minor' based only on the report's own language.
+  - Do not estimate repair costs, remaining lifespans or property value, and do not diagnose problems beyond the text.
+  - Do not tell me whether to buy, negotiate, or walk away; say that a licensed inspector, contractor or attorney should interpret the findings for this property.
+  - Do not state what building codes or disclosure laws require.
+
+  Return the grouped findings with quotes and explanations, then 6 to 10 questions for the inspector and any specialist.
+  Quality check: confirm each explained item is quoted from the report and no cost or code claim was added.

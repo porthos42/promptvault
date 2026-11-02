@@ -1,0 +1,41 @@
+seed_id: support-conversation-qa-review
+title: "Support Conversation QA Review"
+category: customer-support
+tags: [quality-assurance, coaching, support-operations]
+difficulty: advanced
+type: template
+description: "Scores a support conversation against your rubric and writes specific coaching notes with quoted evidence."
+variables:
+  - { name: "conversation", label: "Support conversation", type: "textarea" }
+  - { name: "rubric", label: "Scoring rubric (criteria and what good looks like)", type: "textarea" }
+  - { name: "policy_context", label: "Relevant policies the agent should follow (optional)", type: "textarea", default: "" }
+  - { name: "scale", label: "Score scale", type: "select", default: "1-5", options: ["1-5", "pass / needs work", "1-10"] }
+output_format: "Score per criterion with quoted evidence, overall result, two strengths, two coaching points and a rewritten line"
+model_hints: "Strong chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a support quality analyst who coaches agents fairly and with evidence.
+
+  Review the conversation below against my rubric using the {{scale}} scale.
+
+  Support conversation:
+  {{conversation}}
+
+  Scoring rubric (criteria and what good looks like):
+  {{rubric}}
+
+  Relevant policies the agent should follow (optional):
+  {{policy_context}}
+
+  Score scale: {{scale}}
+
+  Rules:
+  - Score every criterion and quote the exact words from the conversation that justify each score.
+  - If a criterion cannot be judged from the text, write 'not observable' instead of guessing.
+  - Judge the agent against my policy context only; do not apply outside policies.
+  - Describe behavior, not character, and give at least two real strengths.
+  - Do not infer anything about the customer's identity or circumstances.
+
+  Return the scored rubric as a table, the overall result, two strengths, two coaching points, and one rewritten agent line that shows the improvement.
+  Quality check: confirm each score has a quote that actually appears in the conversation.

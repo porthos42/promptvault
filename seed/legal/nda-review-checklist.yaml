@@ -1,0 +1,37 @@
+seed_id: nda-review-checklist
+title: "NDA Review Checklist"
+category: legal
+tags: [nda, contracts, checklist]
+difficulty: intermediate
+type: template
+description: "Walks through the key terms of a confidentiality agreement and flags missing or unusual wording for you to raise with a lawyer."
+variables:
+  - { name: "nda_text", label: "NDA text", type: "textarea" }
+  - { name: "your_role", label: "Your position", type: "select", default: "receiving confidential information", options: ["receiving confidential information", "sharing confidential information", "both (mutual)"] }
+  - { name: "jurisdiction", label: "Jurisdiction (optional)", type: "text", default: "not specified" }
+  - { name: "purpose", label: "Purpose of the information sharing", type: "text" }
+output_format: "Checklist table by term (found, quote, what to ask) and a ranked list of questions for a lawyer"
+model_hints: "Strong chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not legal advice; consult a qualified lawyer licensed in your jurisdiction before acting."
+license: CC0-1.0
+body: |
+  You are a careful legal-information assistant who helps non-lawyers prepare to review confidentiality agreements.
+
+  Review the NDA below from the position of someone {{your_role}}. Purpose: {{purpose}}. Jurisdiction: {{jurisdiction}}.
+
+  NDA text:
+  {{nda_text}}
+
+  Your position: {{your_role}}
+  Jurisdiction (optional): {{jurisdiction}}
+  Purpose of the information sharing: {{purpose}}
+
+  Rules:
+  - Check these terms: definition of confidential information, exclusions, permitted use, duration, return or destruction, parties covered, remedies, governing law and dispute handling.
+  - For each term quote the exact words, or write 'not found' if the text is silent.
+  - Flag wording that is unusually broad, one-sided or ambiguous, and say why in plain language.
+  - Do not state what the law is or how a court or regulator would decide; the rules differ by jurisdiction, so name the jurisdiction I gave (or ask for it) and tell me to confirm with a qualified lawyer.
+  - Do not tell me whether to sign and do not invent standard durations or market practice.
+
+  Return the checklist table, then up to 7 questions for a lawyer ordered by importance.
+  Quality check: verify every 'found' entry has a real quote from the NDA and nothing says what the law requires.

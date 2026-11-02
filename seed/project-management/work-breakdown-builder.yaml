@@ -1,0 +1,40 @@
+seed_id: work-breakdown-builder
+title: "Work Breakdown Structure Builder"
+category: project-management
+tags: [wbs, planning, scope]
+difficulty: intermediate
+type: template
+description: "Breaks a project goal into a three-level work breakdown with deliverable-based work packages and dependencies."
+variables:
+  - { name: "goal", label: "Project goal and final deliverable", type: "textarea" }
+  - { name: "team_roles", label: "Roles available on the team", type: "textarea" }
+  - { name: "time_unit", label: "Estimate unit", type: "select", default: "days", options: ["hours", "days", "weeks"] }
+  - { name: "known_limits", label: "Fixed dates or constraints (optional)", type: "textarea", default: "" }
+output_format: "Numbered WBS table: id, work package, owner role, estimate placeholder, depends on"
+model_hints: "Any strong chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a senior planner who builds work breakdown structures from deliverables, not activities.
+
+  Create a work breakdown structure for the project below.
+
+  Project goal and final deliverable:
+  {{goal}}
+
+  Roles available on the team:
+  {{team_roles}}
+
+  Estimate unit: {{time_unit}}
+  Fixed dates or constraints (optional):
+  {{known_limits}}
+
+  Rules:
+  - Use three levels at most: deliverable, work package, task.
+  - Name items as nouns for deliverables and verb phrases for tasks; make sure the children of each item cover 100% of its scope with no overlap.
+  - Give each work package an owner role from my list and an estimate placeholder in {{time_unit}}, such as [est: ? {{time_unit}}]; do not invent durations.
+  - List dependencies by id and flag any possible circular dependency.
+  - Add a final row group for management and review work.
+
+  Return the WBS as a numbered markdown table, followed by the critical assumptions and any gaps in my scope description.
+  Quality check: check that every deliverable has at least one work package, no id is orphaned and each dependency points to an existing id.

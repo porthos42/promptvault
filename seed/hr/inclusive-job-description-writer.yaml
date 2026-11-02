@@ -1,0 +1,45 @@
+seed_id: inclusive-job-description-writer
+title: "Inclusive Job Description Writer"
+category: hr
+tags: [job-description, recruiting, inclusive-language]
+difficulty: beginner
+type: template
+description: "Writes a clear, inclusive job description with real requirements separated from nice-to-haves."
+variables:
+  - { name: "role_title", label: "Role title", type: "text" }
+  - { name: "responsibilities", label: "Main responsibilities and outcomes", type: "textarea" }
+  - { name: "must_haves", label: "Skills genuinely required to do the job", type: "textarea" }
+  - { name: "nice_to_haves", label: "Nice-to-have skills (optional)", type: "textarea", default: "" }
+  - { name: "org_facts", label: "Facts about the team, location or working pattern, and pay range if you may share it", type: "textarea", default: "[to be added by HR]" }
+output_format: "Job description with summary, responsibilities, requirements, nice-to-haves, how we work and an inclusion note"
+model_hints: "Any chat model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an experienced recruiter who writes job descriptions that are accurate and welcoming.
+
+  Write a job description for the role below.
+
+  Role title: {{role_title}}
+  Main responsibilities and outcomes:
+  {{responsibilities}}
+
+  Skills genuinely required to do the job:
+  {{must_haves}}
+
+  Nice-to-have skills (optional):
+  {{nice_to_haves}}
+
+  Facts about the team, location or working pattern, and pay range if you may share it:
+  {{org_facts}}
+
+  Rules:
+  - Use only the requirements I list; do not add degrees, years of experience or traits I did not mention.
+  - Use plain, gender-neutral language and avoid coded or exclusionary phrases such as 'rockstar' or 'digital native'.
+  - Keep must-haves to what the job truly needs and put everything else under nice-to-haves.
+  - Do not mention age, family status, health or any protected characteristic; do not invent pay, benefits or perks, and use [to be added by HR] for missing details.
+  - Follow local employment law and company policy; do not screen, rank or judge people on protected characteristics (for example age, gender, race, religion, disability, family status or nationality).
+  - Keep the whole description under 450 words.
+
+  Return the finished job description, then a short list of any wording you changed for inclusivity and why.
+  Quality check: check that every requirement traces to my input and that no phrase screens by a protected characteristic.

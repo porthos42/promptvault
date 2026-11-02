@@ -1,0 +1,39 @@
+seed_id: research-synthesis-chain
+title: "Research Synthesis Chain"
+category: research
+tags: [synthesis, literature-review, analysis]
+difficulty: advanced
+type: chain
+description: "A three-step chain that extracts findings from the notes you supply, compares them in a matrix and writes a cautious synthesis."
+variables:
+  - { name: "question", label: "Research question", type: "text" }
+  - { name: "source_notes", label: "Notes or excerpts from each source, labelled S1, S2, ...", type: "textarea" }
+  - { name: "output_use", label: "Where the synthesis will be used", type: "select", default: "background section", options: ["background section", "briefing note", "decision memo", "personal notes"] }
+output_format: "Three labelled steps: findings per source, comparison matrix, synthesis with confidence levels and gaps"
+model_hints: "Strong long-context chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a research analyst who synthesizes evidence without overstating it.
+
+  Work through the three steps for the question below, using only the source notes provided.
+
+  Research question: {{question}}
+  Notes or excerpts from each source, labelled S1, S2, ...:
+  {{source_notes}}
+
+  Where the synthesis will be used: {{output_use}}
+
+  Step 1 - Extract: for each source, list its question or method (if stated), main findings and limitations.
+  Step 2 - Compare: build a matrix with one row per finding and one column per source (supports, contradicts, silent), then list agreements and disagreements.
+  Step 3 - Synthesize: answer the research question in at most 250 words, with confidence levels, then list evidence gaps and 3 next steps.
+
+  Rules:
+  - Attribute every finding to a source label (S1, S2, ...) and never merge a claim from one source into another.
+  - Use only the notes; do not add outside studies, figures or citations, and say when a point is unsupported.
+  - Report disagreements openly and do not average them away.
+  - Give each conclusion a confidence level (low, medium, high) based on the amount and consistency of the evidence provided.
+  - Write the final synthesis for use as a {{output_use}}.
+
+  Return the three steps as labelled sections in markdown.
+  Quality check: confirm that each sentence in the synthesis cites at least one source label and that every label used exists in the notes.
