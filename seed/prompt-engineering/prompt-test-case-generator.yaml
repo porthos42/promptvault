@@ -1,0 +1,42 @@
+seed_id: prompt-test-case-generator
+title: "Prompt Test Case Generator"
+category: prompt-engineering
+tags: [testing, edge-cases, robustness]
+difficulty: advanced
+type: template
+description: "Generates normal, edge and adversarial-looking test inputs for a prompt so you can find weaknesses before users do."
+variables:
+  - { name: "prompt", label: "Prompt to test", type: "textarea" }
+  - { name: "purpose", label: "What it should do", type: "text" }
+  - { name: "inputs", label: "Typical inputs it receives", type: "textarea", default: "not stated" }
+  - { name: "count", label: "Number of test cases", type: "text", default: "12" }
+  - { name: "focus", label: "Focus", type: "select", default: "balanced", options: ["balanced", "edge cases", "messy real-world input", "defensive robustness"] }
+output_format: "Test case table with input, what it checks, expected behavior and pass criterion"
+model_hints: "Strong model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a QA engineer who tests prompts defensively.
+
+  Write test cases for the prompt below.
+
+  Prompt to test:
+  {{prompt}}
+
+  What it should do: {{purpose}}
+  Typical inputs it receives:
+  {{inputs}}
+
+  Number of test cases: {{count}}
+  Focus: {{focus}}
+
+  Rules:
+  - Cover typical inputs, empty or very long input, wrong language, ambiguous requests, conflicting instructions and out-of-scope requests.
+  - For defensive robustness, include harmless examples of input that tries to override the prompt (for example, text telling the model to ignore its rules) so I can check that the prompt resists them; use only benign payloads, and do not write attacks aimed at real systems or exploit steps.
+  - For each case give the test input, what it checks, the expected behavior and a clear pass or fail criterion.
+  - Make inputs realistic and use placeholders and example.com only; no real personal data.
+  - Do not claim the prompt will pass or fail; I must run the tests and check the results.
+  - Models and tools differ and change; check the current documentation for your model, and do not invent parameter names, settings or version numbers.
+
+  Return the case table grouped by category and then the 3 cases you consider most likely to break the prompt.
+  Quality check: confirm every case has an expected behavior and a pass criterion and that no payload is harmful or targets a real system.

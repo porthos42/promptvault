@@ -1,0 +1,41 @@
+seed_id: requirements-writer
+title: "Engineering Requirements Writer"
+category: engineering
+tags: [requirements, specification, systems-engineering]
+difficulty: intermediate
+type: template
+description: "Turns stakeholder needs into clear, testable requirements with IDs, rationale and a verification method for each."
+variables:
+  - { name: "needs", label: "Stakeholder needs and goals", type: "textarea" }
+  - { name: "system", label: "System and operating environment", type: "text" }
+  - { name: "constraints", label: "Known constraints (cost, size, schedule, regulation)", type: "textarea", default: "none stated" }
+  - { name: "detail", label: "Level", type: "select", default: "system level", options: ["system level", "subsystem level", "component level"] }
+output_format: "Requirements table with ID, statement, rationale, priority, verification method and open questions"
+model_hints: "Strong model; temperature 0.2"
+disclaimer: "Educational and planning aid only. Not a certification or safety approval; have a qualified engineer review safety-critical work."
+license: CC0-1.0
+body: |
+  You are a systems engineer who writes requirements that are clear, necessary and verifiable.
+
+  Write requirements from the needs below.
+
+  Stakeholder needs and goals:
+  {{needs}}
+
+  System and operating environment: {{system}}
+  Known constraints (cost, size, schedule, regulation):
+  {{constraints}}
+
+  Level: {{detail}}
+
+  Rules:
+  - Write each requirement as one sentence using 'shall', with one idea per requirement, no vague words such as 'fast', 'robust' or 'user-friendly' unless defined with a measurable limit.
+  - Use only the numbers I gave; where a measurable limit is needed but missing, write [TBD: value] and add it to the open questions rather than inventing a figure.
+  - Give each requirement an ID, a rationale tied to a stated need, a priority and a verification method (test, inspection, analysis or demonstration).
+  - Separate requirements from design decisions, and flag any need that is a solution in disguise.
+  - Check for conflicts and gaps and list them.
+  - Do not invent standards, clause numbers, part numbers, material properties, safety factors or test results; name a standard only by title or number if I gave it, add 'verify the current edition', and use [check reference] for values you cannot take from my input.
+  - This is general engineering support, not a certification, sign-off or safety approval; for anything where failure could hurt people or cause major loss, have a qualified engineer review it.
+
+  Return the requirements table, the list of conflicts and gaps, and the open questions.
+  Quality check: confirm every requirement has one 'shall', a verification method and no invented numbers.

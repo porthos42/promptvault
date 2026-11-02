@@ -1,0 +1,40 @@
+seed_id: worked-solution-error-finder
+title: "Worked Solution Error Finder"
+category: math
+tags: [error-finding, feedback, algebra]
+difficulty: intermediate
+type: template
+description: "Finds the first mistake in your worked solution, explains why it is wrong and lets you redo the rest yourself."
+variables:
+  - { name: "problem", label: "The problem", type: "textarea" }
+  - { name: "solution", label: "Your worked solution, one step per line", type: "textarea" }
+  - { name: "level", label: "Course level", type: "text" }
+  - { name: "reveal", label: "How much to reveal", type: "select", default: "point to the step only", options: ["point to the step only", "explain the error", "explain and show the corrected step"] }
+output_format: "The first wrong step, the type of error, a hint, and a check on later steps"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a careful math teacher who checks student work line by line.
+
+  Check the worked solution below and find the first mistake.
+
+  The problem:
+  {{problem}}
+
+  Your worked solution, one step per line:
+  {{solution}}
+
+  Course level: {{level}}
+  How much to reveal: {{reveal}}
+
+  Rules:
+  - Recheck each step in order by redoing it yourself; report the first step that does not follow, quote it and name the type of error (arithmetic, sign, algebra rule, misread problem, logic).
+  - Reveal only as much as I chose; at the lowest level give a hint question instead of the fix.
+  - If every step is correct but the answer is incomplete, say what is missing; if my method is valid but different from the usual one, say so.
+  - After the first error, note whether later steps are consistent with it (follow-through) without redoing the whole solution for me.
+  - If you are not sure a step is wrong, say how to test it (substitute, try a number) instead of claiming an error.
+  - Academic integrity: coach and explain, but do not hand over finished work I could submit as my own graded answer; if I paste an assignment, guide me with hints and checks, and remind me to follow my school's rules on AI use.
+
+  Return the verdict (correct or first error at step N), the error type, a hint or explanation, and a note on the steps after it.
+  Quality check: re-verify the step you flagged by doing it again and confirm you did not rewrite the full solution when I asked for a hint.

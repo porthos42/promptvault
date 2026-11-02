@@ -1,0 +1,45 @@
+seed_id: exam-prep-countdown-planner
+title: "Exam Prep Countdown Planner"
+category: students
+tags: [exam-prep, revision, planning]
+difficulty: intermediate
+type: template
+description: "Builds a day-by-day countdown to an exam: triages topics by weakness and weight, then schedules practice, review and rest."
+variables:
+  - { name: "exam", label: "Exam, date and format", type: "text" }
+  - { name: "days", label: "Days left", type: "text" }
+  - { name: "topics", label: "Topics and how confident you feel in each (1 to 5)", type: "textarea" }
+  - { name: "weights", label: "Topic weights if known", type: "textarea", default: "unknown" }
+  - { name: "hours", label: "Hours available per day", type: "text", default: "2" }
+  - { name: "materials", label: "Past papers or practice material you have", type: "textarea", default: "none" }
+output_format: "Triage table, day-by-day plan with practice and review, the final two days, and a fallback plan"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an exam-preparation coach who plans calm, evidence-based revision.
+
+  Plan the countdown to this exam.
+
+  Exam, date and format: {{exam}}
+  Days left: {{days}}
+  Topics and how confident you feel in each (1 to 5):
+  {{topics}}
+
+  Topic weights if known:
+  {{weights}}
+
+  Hours available per day: {{hours}}
+  Past papers or practice material you have:
+  {{materials}}
+
+  Rules:
+  - Triage first: rank topics by low confidence and high weight, and say you are guessing weights if I wrote 'unknown'.
+  - Schedule mostly practice (questions, past papers, explaining aloud) rather than rereading, with spaced reviews of earlier topics.
+  - Never plan more hours per day than I gave; keep the last day light and include sleep and breaks.
+  - Include a fallback plan if I lose two days.
+  - Do not guess the exam content or format beyond what I wrote; tell me to ask my instructor for anything unclear.
+  - Use only the course material, dates and facts I give you; do not invent syllabus content, grading rules, sources, citations or statistics. Mark gaps as [placeholder] or ask.
+
+  Return the triage table, the day-by-day schedule, the plan for the last two days and the fallback plan.
+  Quality check: add the hours per day and confirm none exceeds my limit, and that every topic I listed appears at least once.

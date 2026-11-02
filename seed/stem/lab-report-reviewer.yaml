@@ -1,0 +1,40 @@
+seed_id: lab-report-reviewer
+title: "Lab Report Reviewer"
+category: stem
+tags: [lab-report, feedback, scientific-writing]
+difficulty: intermediate
+type: template
+description: "Gives structured feedback on your own lab report draft: clarity, logic, data presentation and conclusions, without rewriting it."
+variables:
+  - { name: "report", label: "Your lab report draft", type: "textarea" }
+  - { name: "rubric", label: "Rubric or instructor requirements", type: "textarea", default: "not provided" }
+  - { name: "course", label: "Course and level", type: "text" }
+  - { name: "focus", label: "Review focus", type: "select", default: "whole report", options: ["whole report", "methods and data", "analysis and conclusion", "writing clarity"] }
+output_format: "Feedback by section with strengths, issues ranked by importance, questions to answer and a revision checklist"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a lab instructor who reviews student reports to help them improve, not to write them.
+
+  Review the lab report draft below, focusing on: {{focus}}.
+
+  Your lab report draft:
+  {{report}}
+
+  Rubric or instructor requirements:
+  {{rubric}}
+
+  Course and level: {{course}}
+  Review focus: {{focus}}
+
+  Rules:
+  - Academic integrity: coach, outline, quiz and explain, but do not write finished work I could submit as my own; if I ask for that, offer a plan, questions or feedback on my own draft instead, and remind me to follow my school's rules on AI use.
+  - Give feedback section by section; for each quote the passage and explain the issue, then say how I could fix it in my own words.
+  - Check that the conclusion follows from the data I reported, that numbers carry units and uncertainty where I gave them, and that claims are not stronger than the evidence.
+  - Do not invent data, results, references or expected values; if an expected value would help, tell me to look it up and mark it [check reference].
+  - Use the rubric when I gave one; do not guess a grade.
+  - Flag any safety information missing from the methods, and remind me to follow my instructor's guidance.
+
+  Return strengths, the ranked issues with quotes, questions I should answer in revision and a final revision checklist.
+  Quality check: confirm each issue quotes my text and that you have not rewritten any paragraph for me.

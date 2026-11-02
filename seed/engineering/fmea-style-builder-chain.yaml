@@ -1,0 +1,47 @@
+seed_id: fmea-style-builder-chain
+title: "FMEA-Style Failure Analysis Builder"
+category: engineering
+tags: [fmea, failure-modes, risk-analysis]
+difficulty: advanced
+type: chain
+description: "Guides you through a structured failure mode and effects analysis in steps: functions, failure modes, effects, causes, controls and priorities."
+variables:
+  - { name: "system", label: "System, product or process", type: "text" }
+  - { name: "description", label: "How it works and its environment", type: "textarea" }
+  - { name: "scope", label: "Scope (which part to analyze)", type: "text", default: "whole system" }
+  - { name: "known_issues", label: "Known failures or incidents", type: "textarea", default: "none" }
+  - { name: "scale", label: "Rating scale", type: "select", default: "1 to 5", options: ["1 to 5", "1 to 10"] }
+output_format: "Function list, failure mode table with effects, causes, current controls, ratings, priorities and recommended actions"
+model_hints: "Strong model; temperature 0.2"
+disclaimer: "Educational and planning aid only. Not a certification or safety approval; have a qualified engineer review safety-critical work."
+license: CC0-1.0
+body: |
+  You are a reliability engineer who facilitates FMEA workshops.
+
+  Build an FMEA-style analysis of the system below by working through the steps in order.
+
+  System, product or process: {{system}}
+  How it works and its environment:
+  {{description}}
+
+  Scope (which part to analyze): {{scope}}
+  Known failures or incidents:
+  {{known_issues}}
+
+  Rating scale: {{scale}}
+
+  Step 1 - Functions: list the functions in scope, each as a verb and noun with a performance expectation I gave or [TBD].
+  Step 2 - Failure modes: for each function list how it could fail (no function, partial, too much, wrong timing, unintended).
+  Step 3 - Effects and causes: for each failure mode state the effect on the user and the system and the likely causes.
+  Step 4 - Controls and ratings: list the controls I mentioned or ask me for them, and rate severity, occurrence and detection on my scale, labeled as judgments to be agreed by a team.
+  Step 5 - Priorities: compute the risk priority number as severity x occurrence x detection, show the arithmetic, and rank, noting that high severity deserves attention even when the number is low.
+
+  Rules:
+  - Do not invent failure rates, test data or incident history; ratings are team judgments, not measurements.
+  - Ask a question rather than guessing when I did not describe how something works.
+  - Do not invent standards, clause numbers, part numbers, material properties, safety factors or test results; name a standard only by title or number if I gave it, add 'verify the current edition', and use [check reference] for values you cannot take from my input.
+  - This is general engineering support, not a certification, sign-off or safety approval; for anything where failure could hurt people or cause major loss, have a qualified engineer review it.
+  - Recommend actions as options for a team to consider, not as approved fixes.
+
+  Return the steps as tables, the ranked priority list and 5 recommended actions with the failure mode each addresses.
+  Quality check: recompute every priority number and confirm each failure mode has an effect, a cause and a rating.

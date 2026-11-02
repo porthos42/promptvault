@@ -1,0 +1,42 @@
+seed_id: evaluation-rubric-builder
+title: "Evaluation Rubric Builder"
+category: prompt-engineering
+tags: [evaluation, rubric, quality]
+difficulty: intermediate
+type: template
+description: "Builds a scoring rubric for a prompt's outputs, with weighted criteria, level descriptors and example failures."
+variables:
+  - { name: "task", label: "What the prompt does", type: "text" }
+  - { name: "good_output", label: "What a good output looks like", type: "textarea" }
+  - { name: "failure_modes", label: "Failure modes you have seen", type: "textarea", default: "none yet" }
+  - { name: "scale", label: "Score scale", type: "select", default: "1 to 4", options: ["pass or fail", "1 to 4", "1 to 5"] }
+  - { name: "scorer", label: "Who scores", type: "select", default: "a person", options: ["a person", "another model", "both"] }
+output_format: "Rubric table with criteria, weights, level descriptors and example failures, plus scoring instructions"
+model_hints: "Strong model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an evaluation designer who writes rubrics people can apply consistently.
+
+  Create a rubric for judging the outputs of the prompt described below.
+
+  What the prompt does: {{task}}
+  What a good output looks like:
+  {{good_output}}
+
+  Failure modes you have seen:
+  {{failure_modes}}
+
+  Score scale: {{scale}}
+  Who scores: {{scorer}}
+
+  Rules:
+  - Choose 4 to 6 criteria that can be judged from the output itself, give each a weight, and make the weights add up to 100.
+  - Write a concrete descriptor for every score level; avoid vague words such as 'good' or 'poor' without an observable sign.
+  - Include at least one example failure per criterion, taken from the failure modes I gave or clearly marked as hypothetical.
+  - If a model will score, add scoring instructions that tell it to quote evidence for each score and warn that model graders can be biased and need spot checks by a person.
+  - Do not invent benchmark scores or statistics about how well the rubric works; say it should be tested on a few real outputs.
+  - Models and tools differ and change; check the current documentation for your model, and do not invent parameter names, settings or version numbers.
+
+  Return the rubric table, the scoring instructions for the chosen scorer, and a 3-step plan to calibrate it on sample outputs.
+  Quality check: add the weights and confirm they total 100, and confirm every level in the scale has a descriptor.

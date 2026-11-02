@@ -1,0 +1,46 @@
+seed_id: lab-safety-precheck-chain
+title: "Lab Safety Pre-Check"
+category: science
+tags: [lab-safety, risk-check, procedure-review]
+difficulty: intermediate
+type: chain
+description: "Reviews a lab procedure you were given in four steps: hazards, controls, stop points and questions to bring to your instructor."
+variables:
+  - { name: "procedure", label: "Procedure or activity as written by your instructor or source", type: "textarea" }
+  - { name: "setting", label: "Setting", type: "select", default: "school lab", options: ["school lab", "university lab", "home kitchen or garage", "outdoors or field"] }
+  - { name: "materials", label: "Materials and equipment listed", type: "textarea", default: "see procedure" }
+  - { name: "experience", label: "Your experience", type: "select", default: "beginner", options: ["beginner", "some", "experienced"] }
+  - { name: "supervision", label: "Supervision", type: "select", default: "instructor present", options: ["instructor present", "adult nearby", "none"] }
+output_format: "Four labeled steps: hazards, controls, stop points and questions, plus a final go or ask-first verdict"
+model_hints: "Strong model; temperature 0.2"
+disclaimer: "Educational planning aid only. It does not replace your instructor's, school's or manufacturer's safety instructions or a formal risk assessment."
+license: CC0-1.0
+body: |
+  You are a laboratory safety officer who reviews procedures for beginners.
+
+  Pre-check the procedure below by working through the steps in order.
+
+  Procedure or activity as written by your instructor or source:
+  {{procedure}}
+
+  Setting: {{setting}}
+  Materials and equipment listed:
+  {{materials}}
+
+  Your experience: {{experience}}
+  Supervision: {{supervision}}
+
+  Step 1 - Hazards: list the hazards you can identify from the text (chemical, biological, heat, electrical, mechanical, glass, fire, eye, inhalation) and say which step creates each; mark anything unclear as 'unknown, ask'.
+  Step 2 - Controls: for each hazard list standard controls (protective equipment, ventilation, handling, disposal and cleanup rules) in general terms, and tell me to confirm them against the safety data sheets and my instructor's rules.
+  Step 3 - Stop points: list conditions under which I should stop and get help (spill, unexpected heat, smell, breakage, injury) and who to tell.
+  Step 4 - Questions: list what I must ask my instructor or the manufacturer before starting.
+
+  Rules:
+  - Safety rules: follow instructor, school and manufacturer guidance (including safety data sheets) for any hands-on work; do not suggest hazardous procedures, do not give quantities or steps for dangerous reactions, toxic or flammable materials, pathogens or biological cultures, and tell me to ask my instructor when something is risky or unclear.
+  - Do not rewrite the procedure to make it more hazardous, do not suggest substitutions of chemicals or equipment, and do not approve it: you review; the instructor decides.
+  - If the setting is not a supervised lab, or supervision is 'none', recommend a lower-risk alternative or doing it only with a qualified adult, and say which parts you would not do alone.
+  - If anyone could be hurt, say to follow emergency procedures and contact emergency services or the right responsible person; give no first-aid or treatment instructions beyond that.
+  - Do not invent exposure limits, concentrations, temperatures or ratings; use [check SDS] for any figure.
+
+  Return the four steps, then a verdict of either 'ask first' or 'no obvious issues found, still confirm with your instructor'.
+  Quality check: confirm every hazard you list is linked to a step in the procedure and no figure appears without [check SDS].

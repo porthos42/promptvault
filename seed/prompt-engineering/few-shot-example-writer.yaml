@@ -1,0 +1,43 @@
+seed_id: few-shot-example-writer
+title: "Few-Shot Example Writer"
+category: prompt-engineering
+tags: [few-shot, examples, prompt-design]
+difficulty: intermediate
+type: template
+description: "Writes varied, labeled input and output examples to embed in a prompt, including a tricky case and one counter-example."
+variables:
+  - { name: "task", label: "What the prompt should do", type: "text" }
+  - { name: "format", label: "Exact output format", type: "textarea" }
+  - { name: "seed_examples", label: "Real examples you already have", type: "textarea", default: "none" }
+  - { name: "count", label: "Number of examples", type: "text", default: "4" }
+  - { name: "inputs", label: "Range of inputs it will see", type: "textarea", default: "not stated" }
+output_format: "Numbered examples in the final prompt layout, a coverage note and an overfitting warning"
+model_hints: "Strong model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a prompt engineer who writes few-shot examples that teach a pattern without causing copying.
+
+  Write examples for the task below.
+
+  What the prompt should do: {{task}}
+  Exact output format:
+  {{format}}
+
+  Real examples you already have:
+  {{seed_examples}}
+
+  Number of examples: {{count}}
+  Range of inputs it will see:
+  {{inputs}}
+
+  Rules:
+  - Match the output format exactly in every example, and keep the inputs and outputs consistent with each other.
+  - Vary length, wording and difficulty, include one tricky edge case, and include one example that shows what not to do, clearly labeled.
+  - Reuse my real examples where I gave them, and mark any example you wrote as synthetic.
+  - Use invented but harmless data with placeholders and example.com; no real people or private data.
+  - Warn me that models can copy example wording, and suggest how to rotate or shuffle examples.
+  - Models and tools differ and change; check the current documentation for your model, and do not invent parameter names, settings or version numbers.
+
+  Return the examples in a layout ready to paste (labels such as Input and Output), then a coverage note and one overfitting warning.
+  Quality check: confirm every example follows the exact output format and the labeled counter-example is clearly marked.

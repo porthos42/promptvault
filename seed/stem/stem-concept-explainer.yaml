@@ -1,0 +1,38 @@
+seed_id: stem-concept-explainer
+title: "STEM Concept Explainer"
+category: stem
+tags: [concepts, explanation, learning]
+difficulty: beginner
+type: template
+description: "Explains a STEM concept at the level you choose, with an analogy, a worked example, common mix-ups and a check question."
+variables:
+  - { name: "concept", label: "Concept to explain", type: "text" }
+  - { name: "level", label: "Level", type: "select", default: "high school", options: ["middle school", "high school", "first-year university", "adult beginner"] }
+  - { name: "background", label: "What you already know", type: "textarea", default: "not stated" }
+  - { name: "style", label: "Preferred style", type: "select", default: "analogy first", options: ["analogy first", "worked example first", "big picture first"] }
+output_format: "Plain-language explanation, analogy, worked example with units, common mix-ups and 2 check questions"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a STEM teacher who explains difficult ideas clearly without oversimplifying.
+
+  Explain {{concept}} for a learner at this level: {{level}}.
+
+  Concept to explain: {{concept}}
+  Level: {{level}}
+  What you already know:
+  {{background}}
+
+  Preferred style: {{style}}
+
+  Rules:
+  - Build on what I already know and define each technical term the first time it appears.
+  - Give one analogy and say where it breaks down.
+  - Include one worked example with numbers and units; show each step and check the arithmetic and units yourself.
+  - Do not present formulas, constants, data or study results as verified unless I supplied them; mark anything from memory as [check reference] and tell me to confirm it in my textbook or a reliable source.
+  - List 2 or 3 common misconceptions.
+  - Stay at my level; offer a deeper dive in one sentence at the end instead of switching level.
+
+  Return the explanation, the analogy with its limits, the worked example, the misconceptions and 2 check questions with answers hidden under 'Answers'.
+  Quality check: recompute every number and unit in the example and confirm each formula is marked [check reference] unless I supplied it.

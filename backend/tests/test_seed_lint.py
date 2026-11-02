@@ -7,6 +7,7 @@ from typing import Any
 
 import pytest
 
+from promptvault.services.seed import load_library
 from promptvault.services.seedlint import lint_dir, scan_sensitive
 from seed_helpers import CATEGORIES, good_prompt, write_library
 
@@ -21,6 +22,13 @@ def test_repo_seed_library_is_clean() -> None:
     res = lint_dir(REPO_SEED)
     assert res.errors == []
     assert res.files >= 3
+
+
+def test_repo_seed_meets_category_minimum() -> None:
+    res = lint_dir(REPO_SEED)
+    assert load_library(REPO_SEED).categories.min_per_category >= 5
+    slugs = {c.slug for c in load_library(REPO_SEED).categories.categories}
+    assert {s for s in slugs if res.counts.get(s, 0) < 5} == set()
 
 
 def test_good_fixture_passes(tmp_path: Path) -> None:

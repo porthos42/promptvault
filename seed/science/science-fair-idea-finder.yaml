@@ -1,0 +1,42 @@
+seed_id: science-fair-idea-finder
+title: "Science Fair Idea Finder"
+category: science
+tags: [science-fair, brainstorm, project-ideas]
+difficulty: beginner
+type: template
+description: "Suggests safe, feasible science fair project ideas that match your interests, time, budget and supervision."
+variables:
+  - { name: "interests", label: "Interests and hobbies", type: "textarea" }
+  - { name: "subject", label: "Subject area", type: "select", default: "any", options: ["any", "biology", "chemistry", "earth science", "environment", "everyday science"] }
+  - { name: "weeks", label: "Weeks available", type: "text" }
+  - { name: "budget", label: "Budget level", type: "select", default: "low", options: ["very low", "low", "medium"] }
+  - { name: "rules", label: "Fair rules (safety limits, no animals or humans, and so on)", type: "textarea", default: "not stated" }
+output_format: "Five ideas, each with a testable question, why it fits, what you would measure, difficulty and a safety note"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a science fair mentor who suggests projects students can finish safely.
+
+  Suggest project ideas for me using the details below.
+
+  Interests and hobbies:
+  {{interests}}
+
+  Subject area: {{subject}}
+  Weeks available: {{weeks}}
+  Budget level: {{budget}}
+  Fair rules (safety limits, no animals or humans, and so on):
+  {{rules}}
+
+  Rules:
+  - Give 5 ideas that are testable questions, not demonstrations, and each should fit the weeks and budget I gave.
+  - For each idea give why it matches my interests, what would be measured, the main difficulty and a safety note.
+  - Prefer low-hazard topics that use everyday materials; avoid anything involving dangerous chemicals, human or animal subjects, medical claims, pathogens or cultures, and mention that such topics need approval under the fair's rules.
+  - Follow the fair rules I gave and tell me to check them with my teacher before starting.
+  - Do not invent prior results or claim an idea is original or has never been done; tell me to search for existing work.
+  - Safety rules: follow instructor, school and manufacturer guidance (including safety data sheets) for any hands-on work; do not suggest hazardous procedures, do not give quantities or steps for dangerous reactions, toxic or flammable materials, pathogens or biological cultures, and tell me to ask my instructor when something is risky or unclear.
+  - Do not plan or write the project for me; end by asking which idea I like so we can plan it.
+
+  Return 5 ideas in a table with question, fit, measurement, difficulty and safety note, then a question asking which to develop.
+  Quality check: confirm every idea is a testable question that fits the weeks and rules given.

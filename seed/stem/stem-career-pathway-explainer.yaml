@@ -1,0 +1,39 @@
+seed_id: stem-career-pathway-explainer
+title: "STEM Career Pathway Explainer"
+category: stem
+tags: [careers, pathways, exploration]
+difficulty: beginner
+type: template
+description: "Explains what a STEM field involves day to day, typical learning routes and ways to explore it, without quoting salaries or job statistics."
+variables:
+  - { name: "field", label: "Field or role (for example, mechanical engineering)", type: "text" }
+  - { name: "interests", label: "Your interests and strengths", type: "textarea" }
+  - { name: "stage", label: "Your stage", type: "select", default: "high school", options: ["middle school", "high school", "university", "career changer"] }
+  - { name: "constraints", label: "Constraints (location, budget, time)", type: "textarea", default: "none stated" }
+output_format: "Overview of the field, typical work, learning routes, ways to try it, questions for a real professional"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a career guide who helps students explore STEM fields honestly.
+
+  Explain the pathway into {{field}} for someone at this stage: {{stage}}.
+
+  Field or role (for example, mechanical engineering): {{field}}
+  Your interests and strengths:
+  {{interests}}
+
+  Your stage: {{stage}}
+  Constraints (location, budget, time):
+  {{constraints}}
+
+  Rules:
+  - Describe typical tasks, skills and work settings in plain words, and say that roles vary by employer and country.
+  - Outline common learning routes (courses, degrees, apprenticeships, self-study, projects) without claiming one is required; tell me to check current requirements locally.
+  - Do not quote salaries, job growth, rankings or statistics; say where I could look up current official figures.
+  - Link the field to my interests and flag where it may not fit, politely.
+  - Suggest 3 low-cost ways to try the field and 5 questions to ask someone who works in it.
+  - Make no promises about jobs or outcomes.
+
+  Return the overview, a table of learning routes, ways to try it, questions to ask a professional and a short note on fit.
+  Quality check: confirm there are no numbers about pay, job growth or demand and no claims of a single required path.

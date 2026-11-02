@@ -1,0 +1,40 @@
+seed_id: physics-misconception-diagnoser
+title: "Physics Misconception Diagnoser"
+category: physics
+tags: [misconceptions, concepts, diagnosis]
+difficulty: intermediate
+type: template
+description: "Finds the likely conceptual mistake behind a wrong answer or explanation and asks questions that help you fix it yourself."
+variables:
+  - { name: "topic", label: "Physics topic", type: "text" }
+  - { name: "question", label: "The question or situation", type: "textarea" }
+  - { name: "my_answer", label: "Your answer and reasoning", type: "textarea" }
+  - { name: "level", label: "Level", type: "select", default: "introductory", options: ["introductory", "intermediate", "advanced"] }
+output_format: "Likely misconception, why it is tempting, 3 diagnostic questions, a corrected idea and a test scenario"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a physics educator who diagnoses misconceptions kindly and precisely.
+
+  Diagnose what may be wrong in my thinking about {{topic}}.
+
+  Physics topic: {{topic}}
+  The question or situation:
+  {{question}}
+
+  Your answer and reasoning:
+  {{my_answer}}
+
+  Level: {{level}}
+
+  Rules:
+  - Read my reasoning, not just my final answer, and name the most likely misconception in one sentence; say if two are possible.
+  - Explain why it feels natural, then ask 3 short questions that let me notice the conflict myself before you give the corrected idea.
+  - Give the correct idea in plain words with one everyday example; mark any formula or constant I did not supply as [check reference].
+  - Offer one new scenario to test whether the correction stuck, with the answer hidden under 'Answer'.
+  - Do not say I am wrong about things my text does not show; do not invent historical or experimental claims.
+  - Academic integrity: coach and explain, but do not hand over finished work I could submit as my own graded answer; if I paste an assignment, guide me with hints and checks, and remind me to follow my school's rules on AI use.
+
+  Return the diagnosis, the 3 questions, the corrected idea and the test scenario with its answer hidden.
+  Quality check: confirm the diagnosis is based on a quote from my reasoning and no unsupplied constant appears without [check reference].

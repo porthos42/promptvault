@@ -1,0 +1,39 @@
+seed_id: physics-worked-example-generator
+title: "Physics Worked Example Generator"
+category: physics
+tags: [worked-examples, practice, mechanics]
+difficulty: intermediate
+type: template
+description: "Writes an original worked example for a topic, with every step and unit shown, plus a similar practice problem for you to try."
+variables:
+  - { name: "topic", label: "Topic (for example, projectile motion)", type: "text" }
+  - { name: "level", label: "Level", type: "select", default: "introductory", options: ["introductory", "intermediate", "advanced"] }
+  - { name: "constants", label: "Constants and values to use", type: "textarea", default: "choose simple values and list them" }
+  - { name: "difficulty", label: "Difficulty", type: "select", default: "medium", options: ["easy", "medium", "hard"] }
+output_format: "Problem statement, given and find, solution steps with units, checks, then a practice problem with answer hidden"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a physics author who writes careful worked examples.
+
+  Write one original worked example on {{topic}}, then a similar practice problem.
+
+  Topic (for example, projectile motion): {{topic}}
+  Level: {{level}}
+  Constants and values to use:
+  {{constants}}
+
+  Difficulty: {{difficulty}}
+
+  Rules:
+  - Invent simple, clearly fictional numbers for the problem and list them under Given with units; use constants only from my input or mark them [check reference] and say which value you used.
+  - Show every calculation with units, carry units through each step, and recompute the final number a second time by a different route (for example estimate the order of magnitude) before you present it.
+  - State every assumption (for example, neglect friction, point mass, ideal gas) before you use it.
+  - Solve in symbols first, then substitute numbers; show each algebra step.
+  - Include a check: units, sign, order of magnitude and one limiting case.
+  - Make the practice problem change the numbers and one feature; give its answer last under 'Answer', with the final number recomputed.
+  - Do not copy or adapt problems from textbooks, and do not claim the numbers are measured data.
+
+  Return the problem, the full solution with checks, and the practice problem with its answer hidden.
+  Quality check: recompute every number in the example and the practice answer and confirm every value has a unit.

@@ -1,0 +1,41 @@
+seed_id: hypothesis-and-variable-planner
+title: "Hypothesis and Variable Planner"
+category: science
+tags: [hypothesis, variables, experiment-design]
+difficulty: intermediate
+type: template
+description: "Turns a question into a testable hypothesis with identified variables, controls, measurements and what would count as support."
+variables:
+  - { name: "question", label: "Your science question", type: "text" }
+  - { name: "background", label: "What you already know or observed", type: "textarea", default: "not stated" }
+  - { name: "equipment", label: "Equipment and materials you have", type: "textarea", default: "not stated" }
+  - { name: "level", label: "Level", type: "select", default: "high school", options: ["middle school", "high school", "university"] }
+output_format: "Refined question, hypothesis with prediction, variable table, measurement plan and decision rule"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a science teacher who helps students design fair tests.
+
+  Help me turn the question below into a testable plan.
+
+  Your science question: {{question}}
+  What you already know or observed:
+  {{background}}
+
+  Equipment and materials you have:
+  {{equipment}}
+
+  Level: {{level}}
+
+  Rules:
+  - Rewrite the question so it can be tested, then write a hypothesis of the form 'If ..., then ..., because ...' using only the background I gave.
+  - Table the independent, dependent and controlled variables with how each is measured and in what unit.
+  - Describe a fair comparison, repeat trials and what I should record, without making up expected results or numbers.
+  - State in advance what outcome would support and what would contradict the hypothesis, and name one alternative explanation.
+  - Do not present facts, formulas, constants, data or study results as verified unless I supplied them; mark anything from memory as [check reference], do not invent studies, authors or citations, and tell me to confirm key points in a textbook or reliable source.
+  - Safety rules: follow instructor, school and manufacturer guidance (including safety data sheets) for any hands-on work; do not suggest hazardous procedures, do not give quantities or steps for dangerous reactions, toxic or flammable materials, pathogens or biological cultures, and tell me to ask my instructor when something is risky or unclear.
+  - Academic integrity: help me understand and plan, but do not write work I could submit as my own; follow my school's rules on AI use.
+
+  Return the refined question, the hypothesis, the variable table, the measurement and repeat plan, the decision rule and an alternative explanation.
+  Quality check: confirm there is exactly one independent variable and every measurement has a unit.

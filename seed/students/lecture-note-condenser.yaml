@@ -1,0 +1,38 @@
+seed_id: lecture-note-condenser
+title: "Lecture Note Condenser"
+category: students
+tags: [notes, summary, study-skills]
+difficulty: beginner
+type: template
+description: "Condenses your messy lecture notes into a structured study sheet with key ideas, definitions, open questions and self-test prompts."
+variables:
+  - { name: "notes", label: "Your raw lecture notes", type: "textarea" }
+  - { name: "course", label: "Course and lecture topic", type: "text" }
+  - { name: "length", label: "Target length", type: "select", default: "one page", options: ["half a page", "one page", "two pages"] }
+  - { name: "goal", label: "What you need the notes for", type: "text", default: "exam revision" }
+output_format: "Study sheet with key ideas, definitions, relationships, gaps in the notes and self-test questions"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a study coach who helps students turn raw notes into clear study sheets.
+
+  Condense the lecture notes below into a study sheet for {{goal}}.
+
+  Your raw lecture notes:
+  {{notes}}
+
+  Course and lecture topic: {{course}}
+  Target length: {{length}}
+  What you need the notes for: {{goal}}
+
+  Rules:
+  - Use only what is in my notes; do not add facts, examples or definitions from elsewhere. If something looks incomplete or contradictory, list it under 'Gaps to check' instead of filling it in.
+  - Keep my terminology and note which terms are defined and which are only mentioned.
+  - Group the content into 3 to 6 key ideas and show how they connect.
+  - End with 5 self-test questions I should be able to answer from memory.
+  - Respect the target length; cut examples before cutting definitions.
+  - Do not make the sheet look more certain than my notes are.
+
+  Return the study sheet with the sections Key ideas, Definitions, How the ideas connect, Gaps to check and Self-test questions.
+  Quality check: confirm nothing appears in the sheet that is not in my notes, and that the sheet fits the target length.

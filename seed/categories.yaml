@@ -2,8 +2,8 @@
 # Existing categories in a user's database are never renamed or moved by the loader.
 #
 # min_per_category: the CI linter fails when any category listed below has fewer prompts.
-# It is 0 while the library is being written (M2b-e); raise it to 5 when every category is full.
-min_per_category: 0
+# It is 5 now that every category is filled (M2e); the library was written in M2b-e with a 0 minimum.
+min_per_category: 5
 
 groups:
   - { slug: career, name: Career }

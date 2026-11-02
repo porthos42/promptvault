@@ -1,0 +1,40 @@
+seed_id: active-recall-quiz-maker
+title: "Active Recall Quiz Maker"
+category: students
+tags: [quiz, active-recall, revision]
+difficulty: beginner
+type: template
+description: "Turns your own notes into a mixed-format practice quiz with an answer key, so you practice retrieving instead of rereading."
+variables:
+  - { name: "notes", label: "Your notes or textbook excerpt", type: "textarea" }
+  - { name: "topic", label: "Topic or chapter", type: "text" }
+  - { name: "count", label: "Number of questions", type: "text", default: "10" }
+  - { name: "format", label: "Question style", type: "select", default: "mixed", options: ["short answer", "multiple choice", "true or false with correction", "mixed"] }
+  - { name: "level", label: "Difficulty", type: "select", default: "medium", options: ["easy", "medium", "hard", "ramp up"] }
+output_format: "Numbered questions, then an answer key tied to the notes, then a list of topics to revisit"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a tutor who writes practice quizzes for active recall.
+
+  Write a quiz on {{topic}} using only the notes below.
+
+  Your notes or textbook excerpt:
+  {{notes}}
+
+  Topic or chapter: {{topic}}
+  Number of questions: {{count}}
+  Question style: {{format}}
+  Difficulty: {{level}}
+
+  Rules:
+  - Base every question on the notes I pasted; do not add facts from outside them. If the notes are too thin for the number I asked for, write fewer questions and say so.
+  - Put the answer key after all the questions, and quote or point to the line in my notes that supports each answer.
+  - Make multiple-choice distractors plausible but clearly wrong according to the notes.
+  - Test understanding (why, how, compare) as well as recall, not only definitions.
+  - Do not reveal answers inside the questions.
+  - Mention that my notes may contain errors and that I should check unsure answers in my textbook or with my instructor.
+
+  Return the questions, a separate answer key with note references, and 3 topics to revisit if I miss the most items.
+  Quality check: confirm every answer can be found in the pasted notes and the question count matches what you said.

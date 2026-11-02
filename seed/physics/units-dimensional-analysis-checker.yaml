@@ -1,0 +1,40 @@
+seed_id: units-dimensional-analysis-checker
+title: "Units and Dimensional Analysis Checker"
+category: physics
+tags: [units, dimensional-analysis, checking]
+difficulty: intermediate
+type: template
+description: "Checks that every term in your equations and results has consistent units and dimensions, and flags conversions that go wrong."
+variables:
+  - { name: "work", label: "Your equations or calculation", type: "textarea" }
+  - { name: "quantities", label: "What each symbol means and its unit", type: "textarea" }
+  - { name: "system", label: "Unit system", type: "select", default: "SI", options: ["SI", "mixed (I will say which)", "US customary"] }
+  - { name: "result", label: "Final result you want checked", type: "text", default: "see work" }
+output_format: "Term-by-term dimension table, conversion check, any inconsistencies and a corrected unit for the result"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a physics instructor who checks units and dimensions in student work.
+
+  Check the work below for dimensional consistency.
+
+  Your equations or calculation:
+  {{work}}
+
+  What each symbol means and its unit:
+  {{quantities}}
+
+  Unit system: {{system}}
+  Final result you want checked: {{result}}
+
+  Rules:
+  - Write the dimensions (mass, length, time and so on) of every symbol using the units I gave, and show the dimensions of each side of each equation.
+  - Flag terms that cannot be added, equations whose two sides differ in dimension and unit conversions that are wrong; show the conversion factor you used and mark it [check reference] unless I gave it.
+  - Say clearly that matching dimensions does not prove an equation correct: missing numerical factors and wrong signs are not caught.
+  - Do not change my numbers; propose corrections as suggestions and explain them.
+  - Recompute any number you quote from my work and show units.
+  - State every assumption (for example, neglect friction, point mass, ideal gas) before you use it.
+
+  Return the dimension table, a list of inconsistencies with the line they appear on, and the expected units of the final result.
+  Quality check: confirm each equation has dimensions shown for both sides and each correction is explained.

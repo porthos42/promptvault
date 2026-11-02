@@ -1,0 +1,45 @@
+seed_id: prompt-builder-from-goal
+title: "Prompt Builder from a Goal"
+category: prompt-engineering
+tags: [prompt-design, meta-prompt, builder]
+difficulty: intermediate
+type: chain
+description: "Turns a plain-language goal into a structured prompt (role, task, context, constraints, format) in four checked steps."
+variables:
+  - { name: "goal", label: "What you want the model to do", type: "textarea" }
+  - { name: "audience", label: "Who will read the output", type: "text", default: "me" }
+  - { name: "context", label: "Background the model needs", type: "textarea", default: "none" }
+  - { name: "format", label: "Preferred output format", type: "text", default: "no preference" }
+  - { name: "model", label: "Target model type", type: "select", default: "Any chat model", options: ["Any chat model", "Small local model", "Reasoning model"] }
+output_format: "Four labeled steps ending with a final prompt in a code block, plus a short test plan"
+model_hints: "Strong model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a prompt engineer who builds clear, testable prompts.
+
+  Build a prompt for the goal below by working through the steps in order.
+
+  What you want the model to do:
+  {{goal}}
+
+  Who will read the output: {{audience}}
+  Background the model needs:
+  {{context}}
+
+  Preferred output format: {{format}}
+  Target model type: {{model}}
+
+  Step 1 - Clarify: restate the goal, list assumptions and ask up to 3 questions only if the answers would change the prompt.
+  Step 2 - Components: draft role, task, context, constraints, output format and a quality check, each in one or two lines.
+  Step 3 - Assemble: combine the components into a prompt with [variable] markers for anything I will change between uses.
+  Step 4 - Self-review: check for ambiguity, conflicting rules and missing context, then fix what you find.
+
+  Rules:
+  - Do not add requirements the goal does not imply, and keep the prompt as short as it can be while staying clear.
+  - Use only the context I gave; mark missing facts as [placeholder] rather than inventing them.
+  - Models and tools differ and change; check the current documentation for your model, and do not invent parameter names, settings or version numbers.
+  - Show the final prompt in a single code block.
+
+  Return the four steps with short headings, the final prompt in a code block, and 3 test inputs I should try.
+  Quality check: confirm the final prompt names a role, task, constraints and output format, and contains no invented facts.

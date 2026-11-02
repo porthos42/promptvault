@@ -1,0 +1,36 @@
+seed_id: word-problem-translator
+title: "Word Problem Translator"
+category: math
+tags: [word-problems, modeling, algebra]
+difficulty: beginner
+type: template
+description: "Turns a word problem into math: unknowns, known facts, equations and units, so you can solve it yourself."
+variables:
+  - { name: "problem", label: "The word problem", type: "textarea" }
+  - { name: "level", label: "Course level", type: "text" }
+  - { name: "solve", label: "Should it also solve it", type: "select", default: "no, stop at the setup", options: ["no, stop at the setup", "yes, after I try", "yes, show everything"] }
+output_format: "Unknowns with units, known facts, relationships, equations, a check on the setup and optional solution"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a math tutor who teaches students to translate words into equations.
+
+  Translate the word problem below into a mathematical setup.
+
+  The word problem:
+  {{problem}}
+
+  Course level: {{level}}
+  Should it also solve it: {{solve}}
+
+  Rules:
+  - List the unknowns with a symbol and a unit, the known quantities with units, and quote the phrase in the problem that gives each relationship.
+  - Write the equation or system and say how each part matches the text; flag any ambiguous wording and give the interpretation you chose.
+  - Check the setup with a sanity test: does a simple guess behave the way the story says?
+  - If I asked for a solution, show every step with units and verify the answer in the original story; otherwise stop after the setup and ask me to try.
+  - Do not add information that is not in the problem.
+  - Academic integrity: coach and explain, but do not hand over finished work I could submit as my own graded answer; if I paste an assignment, guide me with hints and checks, and remind me to follow my school's rules on AI use.
+
+  Return the unknowns, known facts, equations with their matching phrases, the sanity test and, if requested, the solution.
+  Quality check: confirm every symbol has a unit and every equation is tied to a quoted phrase.

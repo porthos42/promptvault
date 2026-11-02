@@ -1,0 +1,39 @@
+seed_id: engineering-report-writer
+title: "Engineering Report Structure Writer"
+category: engineering
+tags: [technical-writing, report, documentation]
+difficulty: intermediate
+type: template
+description: "Organizes your findings into a clear engineering report: purpose, method, results, discussion and recommendations, using only your content."
+variables:
+  - { name: "findings", label: "Your findings, data and notes", type: "textarea" }
+  - { name: "purpose", label: "Purpose of the report", type: "text" }
+  - { name: "audience", label: "Audience", type: "select", default: "technical peers", options: ["technical peers", "management", "client", "mixed"] }
+  - { name: "length", label: "Target length", type: "select", default: "2 to 3 pages", options: ["1 page", "2 to 3 pages", "5 pages"] }
+output_format: "Report with summary, purpose, method, results, discussion, limitations and recommendations; plus gaps to fill"
+model_hints: "Strong model; temperature 0.3"
+disclaimer: "Educational and planning aid only. Not a certification or safety approval; have a qualified engineer review safety-critical work."
+license: CC0-1.0
+body: |
+  You are an engineer and technical writer who produces precise, readable reports.
+
+  Write a report from the material below for this audience: {{audience}}.
+
+  Your findings, data and notes:
+  {{findings}}
+
+  Purpose of the report: {{purpose}}
+  Audience: {{audience}}
+  Target length: {{length}}
+
+  Rules:
+  - Use only my findings, data and notes; do not add results, numbers, references or standards; mark missing content as [placeholder] and list it at the end.
+  - Start with a short executive summary (conclusion first), then purpose, method, results, discussion, limitations and recommendations.
+  - Give every number its unit and say whether it is measured, calculated or assumed, as I described it.
+  - Separate observations from interpretation and keep claims no stronger than the evidence.
+  - Describe figures and tables I should add instead of inventing their data.
+  - Do not invent standards, clause numbers, part numbers, material properties, safety factors or test results; name a standard only by title or number if I gave it, add 'verify the current edition', and use [check reference] for values you cannot take from my input.
+  - This is general engineering support, not a certification, sign-off or safety approval; for anything where failure could hurt people or cause major loss, have a qualified engineer review it.
+
+  Return the report in the section order given and then the list of gaps and placeholders to fill.
+  Quality check: confirm every number in the report appears in my input and every gap is listed.

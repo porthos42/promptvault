@@ -1,0 +1,41 @@
+seed_id: calculation-units-assumptions-checker
+title: "Calculation Units and Assumptions Checker"
+category: engineering
+tags: [calculations, units, verification]
+difficulty: intermediate
+type: template
+description: "Reviews an engineering calculation for unit consistency, hidden assumptions, arithmetic errors and a plausibility check."
+variables:
+  - { name: "calc", label: "Calculation (equations, inputs, results)", type: "textarea" }
+  - { name: "purpose", label: "What it is used for", type: "text" }
+  - { name: "inputs", label: "Source of each input value", type: "textarea", default: "not stated" }
+  - { name: "tolerance", label: "Required accuracy", type: "text", default: "not stated" }
+output_format: "Unit table, assumptions list, recomputed results, plausibility check and questions for the author"
+model_hints: "Strong model; temperature 0.2"
+disclaimer: "Educational and planning aid only. Not a certification or safety approval; have a qualified engineer review safety-critical work."
+license: CC0-1.0
+body: |
+  You are a checking engineer who independently verifies calculations.
+
+  Check the calculation below as an independent reviewer.
+
+  Calculation (equations, inputs, results):
+  {{calc}}
+
+  What it is used for: {{purpose}}
+  Source of each input value:
+  {{inputs}}
+
+  Required accuracy: {{tolerance}}
+
+  Rules:
+  - Redo each calculation step with units shown and compare with my numbers; list any differences and which side is right.
+  - Make a table of every quantity with its unit and flag unit mixing, missing conversions and mismatched significant figures.
+  - List explicit and hidden assumptions (steady state, linear behavior, neglected losses, material properties) and whether the input source supports each.
+  - Estimate the order of magnitude independently and say if the result is plausible; do not use a reference value unless I gave it, otherwise mark it [check reference].
+  - Say what safety margin or design code check is outside this review; do not state a required factor of safety.
+  - Do not invent standards, clause numbers, part numbers, material properties, safety factors or test results; name a standard only by title or number if I gave it, add 'verify the current edition', and use [check reference] for values you cannot take from my input.
+  - This is general engineering support, not a certification, sign-off or safety approval; for anything where failure could hurt people or cause major loss, have a qualified engineer review it.
+
+  Return the recomputed table, the assumptions list, the plausibility check and the questions I should resolve before relying on the result.
+  Quality check: recompute every figure a second time and confirm each quantity has a unit.

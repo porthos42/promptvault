@@ -20,7 +20,7 @@ from promptvault.services.seed import SeedLibrary, SeedPrompt, load_library
 
 ALLOWED_LICENSES = {"CC0-1.0", "MIT", "Apache-2.0", "CC-BY-4.0", "CC-BY-SA-4.0"}
 OWN_LICENSE = "CC0-1.0"  # prompts under other licences are third-party: source + URL required
-TARGET_PER_CATEGORY = 5  # the v1 minimum, reported (not enforced) until min_per_category is raised
+TARGET_PER_CATEGORY = 5  # the v1 minimum, reported when min_per_category is lowered below it
 
 # Categories (and tags) whose prompts must carry a "Not professional advice" disclaimer.
 DISCLAIMER_CATEGORIES = {"legal", "finance", "real-estate"}

@@ -1,0 +1,40 @@
+seed_id: experiment-data-sanity-check
+title: "Experiment Data Sanity Check"
+category: stem
+tags: [data, analysis, lab-work]
+difficulty: intermediate
+type: template
+description: "Checks the numbers you measured for outliers, unit slips, trends and arithmetic mistakes, without inventing expected values."
+variables:
+  - { name: "data", label: "Your measurements (with units)", type: "textarea" }
+  - { name: "setup", label: "What you measured and how", type: "textarea" }
+  - { name: "expectation", label: "Expected value or trend, if you know it", type: "text", default: "unknown" }
+  - { name: "instrument", label: "Instrument precision, if known", type: "text", default: "unknown" }
+output_format: "Table of checks with findings, suspicious values and reasons, recomputed summary numbers and questions"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a careful experimental scientist reviewing a student's data.
+
+  Check the data below for problems before it is analyzed.
+
+  Your measurements (with units):
+  {{data}}
+
+  What you measured and how:
+  {{setup}}
+
+  Expected value or trend, if you know it: {{expectation}}
+  Instrument precision, if known: {{instrument}}
+
+  Rules:
+  - Recompute the mean, range and any totals from my numbers, show the arithmetic with units, and compare with anything I stated.
+  - Look for unit mixups, copy errors, values far from the others and trends that break; explain why each looks suspicious, but never delete or change a value.
+  - Use only the expected value I gave; if I wrote 'unknown', do not supply one from memory; say what reference to check instead.
+  - Do not claim a value is wrong, only that it deserves a second look, and suggest a way to recheck it.
+  - Comment on precision only against the instrument precision I gave, and report results with sensible significant figures.
+  - Keep to the numbers in the data; do not fabricate additional trials.
+
+  Return a table of checks, the list of suspicious values with reasons, the recomputed summary values and 3 questions to ask about the setup.
+  Quality check: recompute each summary number a second time and confirm every figure has its unit.

@@ -1,0 +1,39 @@
+seed_id: math-concept-explainer
+title: "Math Concept Explainer"
+category: math
+tags: [concepts, explanation, examples]
+difficulty: beginner
+type: template
+description: "Explains a math concept with intuition, a visual description, two worked examples and common errors at your level."
+variables:
+  - { name: "concept", label: "Concept (for example, the chain rule)", type: "text" }
+  - { name: "level", label: "Your level", type: "select", default: "high school", options: ["middle school", "high school", "first-year university", "adult beginner"] }
+  - { name: "known", label: "What you already understand", type: "textarea", default: "not stated" }
+  - { name: "struggle", label: "What confuses you", type: "textarea", default: "not sure" }
+output_format: "Intuition, definition, visual description, two worked examples with checks, common errors and practice questions"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a math teacher who explains ideas with intuition before formalism.
+
+  Explain {{concept}} to a learner at this level: {{level}}.
+
+  Concept (for example, the chain rule): {{concept}}
+  Your level: {{level}}
+  What you already understand:
+  {{known}}
+
+  What confuses you:
+  {{struggle}}
+
+  Rules:
+  - Start from what I already understand and address what confuses me directly.
+  - Give the intuition, then the precise statement, then describe a picture or diagram in words.
+  - Include two worked examples, the second a little harder; show every step and verify each answer.
+  - Name 2 or 3 common errors and why they are tempting.
+  - State formulas only if you are sure of them; otherwise write [check reference], and do not call anything a theorem unless it is one.
+  - End with 3 practice questions with answers hidden under 'Answers', each answer verified.
+
+  Return the explanation in the order intuition, statement, picture, examples, common errors, practice questions.
+  Quality check: recheck every worked example and practice answer by substitution or a second method.

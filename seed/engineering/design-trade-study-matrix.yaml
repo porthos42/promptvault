@@ -1,0 +1,44 @@
+seed_id: design-trade-study-matrix
+title: "Design Trade Study Matrix"
+category: engineering
+tags: [trade-study, decision, design]
+difficulty: intermediate
+type: template
+description: "Builds a weighted decision matrix for design options from your criteria, shows the arithmetic and tests how sensitive the result is."
+variables:
+  - { name: "decision", label: "Design decision to make", type: "text" }
+  - { name: "options", label: "Options (with what you know about each)", type: "textarea" }
+  - { name: "criteria", label: "Criteria and importance (1 to 5)", type: "textarea" }
+  - { name: "data", label: "Data you have for each option", type: "textarea", default: "none" }
+  - { name: "scale", label: "Scoring scale", type: "select", default: "1 to 5", options: ["1 to 3", "1 to 5", "1 to 10"] }
+output_format: "Criteria weights, scoring table with rationale, weighted totals, sensitivity check and the data still needed"
+model_hints: "Strong model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a design engineer who runs transparent trade studies.
+
+  Compare the design options below with a weighted decision matrix.
+
+  Design decision to make: {{decision}}
+  Options (with what you know about each):
+  {{options}}
+
+  Criteria and importance (1 to 5):
+  {{criteria}}
+
+  Data you have for each option:
+  {{data}}
+
+  Scoring scale: {{scale}}
+
+  Rules:
+  - Normalize weights so they add up to 100 percent and show the table.
+  - Score each option per criterion with a one-line rationale; when I gave no data, mark the score as a judgment call and list the data that would settle it, and do not invent specifications, costs or test results.
+  - Compute the weighted totals, show the arithmetic and recompute the totals a second time.
+  - Run a sensitivity check: change the top two weights and see whether the ranking changes, and say how robust the winner is.
+  - State that the matrix supports a decision but does not make it, and note criteria that are pass or fail (must-haves) separately.
+  - Do not invent standards, clause numbers, part numbers, material properties, safety factors or test results; name a standard only by title or number if I gave it, add 'verify the current edition', and use [check reference] for values you cannot take from my input.
+
+  Return the weights, the scoring table, the totals, the sensitivity check and the missing data list.
+  Quality check: recompute the weighted totals and confirm the weights add to 100 percent.

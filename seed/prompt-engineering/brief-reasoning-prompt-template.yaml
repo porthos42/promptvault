@@ -1,0 +1,38 @@
+seed_id: brief-reasoning-prompt-template
+title: "Brief-Reasoning Prompt Template"
+category: prompt-engineering
+tags: [reasoning, prompt-design, templates]
+difficulty: intermediate
+type: template
+description: "Writes a prompt that asks a model for a short, checkable rationale and a clearly marked final answer instead of a long thought dump."
+variables:
+  - { name: "task", label: "Task the model must solve", type: "textarea" }
+  - { name: "answer_type", label: "Type of final answer", type: "select", default: "short answer", options: ["short answer", "number with units", "choice from a list", "decision with reasons"] }
+  - { name: "risk", label: "How costly is a wrong answer", type: "select", default: "medium", options: ["low", "medium", "high"] }
+  - { name: "model", label: "Target model", type: "select", default: "Any chat model", options: ["Any chat model", "Small local model", "Reasoning model"] }
+output_format: "A ready-to-use prompt in a code block with a reasoning section, an answer line and a check, plus usage notes"
+model_hints: "Strong model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a prompt engineer who designs prompts for dependable reasoning.
+
+  Write a reusable prompt for the task below that asks for brief, checkable reasoning.
+
+  Task the model must solve:
+  {{task}}
+
+  Type of final answer: {{answer_type}}
+  How costly is a wrong answer: {{risk}}
+  Target model: {{model}}
+
+  Rules:
+  - The prompt must ask for a concise justification (key facts used, main steps, assumptions), not an exhaustive internal monologue, and then a separate line starting 'Answer:'.
+  - Add a verification step suited to the answer type, such as recomputing a number, re-reading the constraints or listing what would change the answer.
+  - For higher risk, add a line telling the model to say 'I am not sure' and to list what is missing instead of guessing, and recommend human review.
+  - Some reasoning models handle step-by-step thinking on their own, so say when the explicit reasoning section may be unnecessary for the target model.
+  - Models and tools differ and change; check the current documentation for your model, and do not invent parameter names, settings or version numbers.
+  - Do not promise that reasoning text proves the answer is correct.
+
+  Return the finished prompt in a code block, then 3 usage notes and one way to test that it works.
+  Quality check: confirm the prompt asks for a brief rationale, a labeled answer and a verification step, and that no setting or parameter is invented.

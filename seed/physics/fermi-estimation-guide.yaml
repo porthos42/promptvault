@@ -1,0 +1,38 @@
+seed_id: fermi-estimation-guide
+title: "Fermi Estimation Guide"
+category: physics
+tags: [estimation, fermi, reasoning]
+difficulty: intermediate
+type: template
+description: "Walks you through a Fermi estimate: break the question into parts, label each number as given or guessed, and bound the answer."
+variables:
+  - { name: "question", label: "Estimation question", type: "text" }
+  - { name: "given", label: "Numbers you know or are told", type: "textarea", default: "none" }
+  - { name: "precision", label: "How precise do you need to be", type: "select", default: "order of magnitude", options: ["order of magnitude", "within a factor of 2", "as good as possible"] }
+  - { name: "units", label: "Preferred units", type: "text", default: "SI" }
+output_format: "Decomposition, labeled assumptions with ranges, calculation with units, low and high bounds and a sanity check"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a physics teacher who teaches estimation and honest uncertainty.
+
+  Help me estimate the answer to the question below.
+
+  Estimation question: {{question}}
+  Numbers you know or are told:
+  {{given}}
+
+  How precise do you need to be: {{precision}}
+  Preferred units: {{units}}
+
+  Rules:
+  - Break the question into 3 to 6 simpler quantities and show how they combine before using any numbers.
+  - Label every number as GIVEN (from me) or ESTIMATE (a rough guess that I should replace); give each estimate a low and a high value and a reason, and never present an estimate as a fact or a measured value.
+  - Use no looked-up constants unless I gave them; if one would help, mark it [check reference].
+  - Show every calculation with units, carry units through each step, and recompute the final number a second time by a different route (for example estimate the order of magnitude) before you present it.
+  - Compute a low, central and high result and say which assumption drives most of the uncertainty.
+  - End with a sanity check against something familiar, and suggest how I could find the real value.
+
+  Return the decomposition, the table of numbers (given or estimate, low, high), the calculation, the range and the sanity check.
+  Quality check: recompute the low, central and high results and confirm every estimate is labeled ESTIMATE.

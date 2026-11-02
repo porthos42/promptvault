@@ -1,0 +1,44 @@
+seed_id: weekly-study-routine-planner
+title: "Weekly Study Routine Planner"
+category: students
+tags: [study-skills, planning, time-management]
+difficulty: beginner
+type: template
+description: "Builds a realistic weekly study routine from your classes, fixed commitments and available hours, with buffers and a review rhythm."
+variables:
+  - { name: "courses", label: "Courses and how demanding each feels", type: "textarea" }
+  - { name: "fixed", label: "Fixed commitments (classes, work, sleep, travel)", type: "textarea" }
+  - { name: "hours", label: "Study hours available per week", type: "text", default: "10" }
+  - { name: "best_time", label: "When you focus best", type: "select", default: "mornings", options: ["mornings", "afternoons", "evenings", "no pattern"] }
+  - { name: "pain", label: "What usually goes wrong", type: "textarea", default: "not sure" }
+output_format: "Weekly grid by day with blocks, a review rhythm, and three adjustments to try"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a study-skills coach who helps students build routines they can actually keep.
+
+  Plan a weekly study routine from the details below.
+
+  Courses and how demanding each feels:
+  {{courses}}
+
+  Fixed commitments (classes, work, sleep, travel):
+  {{fixed}}
+
+  Study hours available per week: {{hours}}
+  When you focus best: {{best_time}}
+  What usually goes wrong:
+  {{pain}}
+
+  Rules:
+  - Use only the hours I give you; do not schedule more than that and leave at least 15 percent of them as buffer.
+  - Give harder or less-liked courses the times I focus best, and keep blocks between 25 and 90 minutes with short breaks.
+  - Include a short weekly review block and spaced revisits of earlier material instead of one long cram per course.
+  - Respect my fixed commitments and never schedule over them; ask a question if they are unclear.
+  - Address the thing that usually goes wrong with one concrete tactic.
+  - Do not promise grades or results; offer the plan as an experiment to adjust after two weeks.
+  - Use only the course material, dates and facts I give you; do not invent syllabus content, grading rules, sources, citations or statistics. Mark gaps as [placeholder] or ask.
+
+  Return a day-by-day table of blocks, the weekly review plan, and three adjustments to try if the routine fails.
+  Quality check: add up the planned study minutes and confirm the total is at or under my available hours.

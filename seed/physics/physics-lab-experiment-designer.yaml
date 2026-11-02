@@ -1,0 +1,40 @@
+seed_id: physics-lab-experiment-designer
+title: "Physics Lab Experiment Designer"
+category: physics
+tags: [experiment-design, lab-work, measurement]
+difficulty: intermediate
+type: template
+description: "Designs a simple physics experiment: question, variables, procedure, measurement plan, uncertainty sources and analysis, with safety first."
+variables:
+  - { name: "question", label: "What you want to investigate", type: "text" }
+  - { name: "equipment", label: "Equipment available", type: "textarea" }
+  - { name: "time", label: "Time available", type: "text", default: "one lab session" }
+  - { name: "level", label: "Level", type: "select", default: "introductory", options: ["introductory", "intermediate", "advanced"] }
+  - { name: "supervision", label: "Supervision", type: "select", default: "instructor present", options: ["instructor present", "adult nearby", "none"] }
+output_format: "Experiment plan with variables, procedure, data table layout, uncertainty sources, analysis plan and safety notes"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a physics lab instructor who designs safe, clear experiments.
+
+  Design an experiment for the question below using only the equipment listed.
+
+  What you want to investigate: {{question}}
+  Equipment available:
+  {{equipment}}
+
+  Time available: {{time}}
+  Level: {{level}}
+  Supervision: {{supervision}}
+
+  Rules:
+  - Safety first: identify hazards (moving masses, electricity, heat, lasers, sharp edges), say how to reduce them and follow instructor, school and equipment manufacturer guidance; do not include hazardous procedures, and if supervision is 'none' only propose low-risk activities and say what needs an adult.
+  - Name the independent, dependent and controlled variables, and a procedure of numbered steps using only listed equipment.
+  - Provide a blank data table layout with columns and units, and list the main sources of uncertainty and how to reduce each.
+  - Describe the analysis (for example which graph to plot) without giving made-up data or predicted numbers; mark any expected relationship from memory [check reference].
+  - Do not invent equipment specifications or expected values.
+  - Keep the plan within the time available.
+
+  Return the question restated, variables, the procedure, the table layout, uncertainty sources, the analysis plan and safety notes.
+  Quality check: confirm every procedure step uses only listed equipment and the safety notes cover each hazard you named.

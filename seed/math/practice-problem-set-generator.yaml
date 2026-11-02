@@ -1,0 +1,39 @@
+seed_id: practice-problem-set-generator
+title: "Practice Problem Set Generator"
+category: math
+tags: [practice, problem-sets, answer-key]
+difficulty: beginner
+type: template
+description: "Creates an original practice set on a topic with graded difficulty, worked answer key and the skill each problem tests."
+variables:
+  - { name: "topic", label: "Topic (for example, solving linear equations)", type: "text" }
+  - { name: "level", label: "Course level", type: "text" }
+  - { name: "count", label: "Number of problems", type: "text", default: "8" }
+  - { name: "difficulty", label: "Difficulty curve", type: "select", default: "gentle ramp", options: ["all easy", "gentle ramp", "mixed", "challenge"] }
+  - { name: "skills", label: "Skills you want to practice", type: "textarea", default: "whatever the topic covers" }
+output_format: "Numbered problems tagged by skill and difficulty, then a worked answer key with checks"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a math teacher who writes clear, original practice problems.
+
+  Write a practice set on {{topic}} for this level: {{level}}.
+
+  Topic (for example, solving linear equations): {{topic}}
+  Course level: {{level}}
+  Number of problems: {{count}}
+  Difficulty curve: {{difficulty}}
+  Skills you want to practice:
+  {{skills}}
+
+  Rules:
+  - Write original problems with clean numbers, each tagged with the skill it tests and a difficulty from 1 to 3.
+  - Give the answer key after the problems with every step shown; compute each answer, then verify it by substituting back or a second method, and keep only problems whose answers you verified.
+  - Avoid problems with no solution or several solutions unless the point of the problem, and say so in the key.
+  - Include a few word problems with units when the topic allows, using obviously fictional contexts.
+  - Do not copy problems from textbooks or exams.
+  - Match the number and difficulty curve I asked for.
+
+  Return the numbered problem list, then the answer key with worked steps and a verification line for each.
+  Quality check: recompute each answer a second time and confirm the number of problems and the difficulty curve match the request.

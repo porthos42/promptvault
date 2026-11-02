@@ -5,7 +5,7 @@
 
 A self-hosted, searchable prompt engineering library. The goal is hundreds of ready-to-use prompts across careers, marketing, coding, STEM, 3D printing, image/video generation and more, with full create/edit/delete, search, filtering and import. Single-user and local-first. Free and open source.
 
-> **Status: early development (M2d done).** The backend API, CLI, full-text search, the library UI and the seed-library machinery (schema, linter, loader, reset) work. The seed library itself is still being written (171 prompts so far: 29 of 35 categories are filled with 6-7 each; the Education categories and Prompt Engineering are still to come) and importers are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
+> **Status: early development (M2e done).** The backend API, CLI, full-text search, the library UI and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importers are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
 
 **Stack:** Python 3.11+ (FastAPI, SQLAlchemy 2, Alembic, Typer), React 19 + TypeScript (Vite), SQLite with FTS5 by default.
 
@@ -121,7 +121,7 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 - **Loading** is keyed by `seed_id` and idempotent. A prompt you have not edited is upgraded when a new version ships its newer text; one you have edited (content, tags, category) is never overwritten, and a prompt you moved to Trash is not brought back. Favorites, ratings and use counts do not count as edits. Categories that already exist are never renamed or moved.
 - **Reset to original**: `promptvault seed --reset <id>`, `--reset-category <slug>`, or the API above. The reset becomes a new revision, so your version stays in history.
 - **Linter**: `cd backend && uv run python ../tools/lint_seed.py` checks required fields, variable declarations against `{{placeholders}}`, duplicate ids and titles, length limits, licence/source, the quality bar (role, task, constraints, output format, an example or quality check), a disclaimer for legal/finance/medical-adjacent prompts, and PII/secret patterns. CI runs it.
-- **Per-category minimum**: `min_per_category` in `seed/categories.yaml` makes the linter fail when any category has fewer prompts than that. It is `0` (reported, not enforced) until the library is complete in M2e, because a half-written library would fail a minimum of 5 in every category. Try it now with `--min-per-category 5`.
+- **Per-category minimum**: `min_per_category` in `seed/categories.yaml` makes the linter fail when any category has fewer prompts than that. It is `5`, so CI fails if any category drops below five prompts. Override it for one run with `--min-per-category N`.
 - A seed prompt you permanently delete is recreated by the next load; move it to Trash instead.
 
 ## Roadmap
@@ -136,8 +136,8 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 | M2b | Seed prompts: Career and Growth (10 categories, 6-7 each) | Done |
 | M2c | Seed prompts: Business and Professional (9 categories, 6 each, disclaimers on legal, finance and real estate) | Done |
 | M2d | Seed prompts: Creative and Technical (9 categories, 6 each, safety rules in the prompt bodies) | Done |
-| M2e | Remaining categories (Education, Prompt Engineering), then enforce the per-category minimum (about 250 in total) | Planned |
-| M3 | Importers (JSON, CSV/XLSX, Markdown, GitHub, URL), dedupe, export | Planned |
+| M2e | Seed prompts: Education and Prompt Engineering (7 categories, 213 prompts in total), per-category minimum of 5 enforced | Done |
+| M3 | Importers (JSON, CSV/XLSX, Markdown, GitHub, URL), dedupe, export | Next |
 | M4 | Published Docker image (GHCR), PyPI package, start scripts, release automation | Planned |
 | M5 | Polish and v1.0: accessibility, performance, end-to-end tests | Planned |
 | v1.5 | Run panel (test prompts against an LLM), semantic search, executables | Backlog |
