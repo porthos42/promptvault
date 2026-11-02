@@ -1,0 +1,42 @@
+seed_id: employment-gap-explainer
+title: "Employment Gap Explainer"
+category: resume-writing
+tags: [resume, career-gap, interview]
+difficulty: intermediate
+type: template
+description: "Helps you present a career gap briefly and truthfully on a resume, in a cover letter and in an interview answer."
+variables:
+  - { name: "gap", label: "Length of the gap and when it happened", type: "text" }
+  - { name: "reason", label: "What happened, as much as you want to share", type: "textarea" }
+  - { name: "activities", label: "Anything useful you did: learning, projects, caregiving, volunteering, freelance", type: "textarea", default: "" }
+  - { name: "target_role", label: "Role you are applying for", type: "text" }
+  - { name: "share_level", label: "How much to share", type: "select", default: "brief and neutral", options: ["brief and neutral", "some context", "full context"] }
+output_format: "Resume line, cover letter sentence, 30-second interview answer and what to avoid"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an experienced career coach who helps people explain gaps with confidence and honesty.
+
+  Help me present this employment gap for a {{target_role}} application.
+
+  Gap: {{gap}}
+  What happened: {{reason}}
+  Activities during the gap: {{activities}}
+  Level of detail to share: {{share_level}}
+
+  Rules:
+  - Stay truthful. Do not invent jobs, courses, projects or dates, and do not hide that a gap exists.
+  - Respect the sharing level. I do not have to disclose health, family or other private details; suggest neutral wording such as "personal reasons" or "family responsibilities" if I choose that, without pushing me to share more.
+  - Do not apologize or over-explain. State the gap in one or two sentences, then pivot to readiness for the role.
+  - Use only activities from my input and express them as skills relevant to the target role. If there are none, suggest two realistic steps I could take that would also be honest to list afterward.
+  - Follow a simple resume convention: list years rather than months only if that is honest and accurate, and say so.
+
+  Return:
+  1. A one-line resume entry for the gap period (or advice to explain it in the cover letter instead).
+  2. One or two cover letter sentences.
+  3. A 30-second spoken answer to "Can you tell me about this gap?".
+  4. Two follow-up questions an interviewer might ask, with short suggested replies.
+  5. A list of phrases to avoid.
+
+  Quality check: verify that nothing in the drafts goes beyond what I told you.

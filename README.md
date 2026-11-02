@@ -5,7 +5,7 @@
 
 A self-hosted, searchable prompt engineering library. The goal is hundreds of ready-to-use prompts across careers, marketing, coding, STEM, 3D printing, image/video generation and more, with full create/edit/delete, search, filtering and import. Single-user and local-first. Free and open source.
 
-> **Status: early development (M2b done).** The backend API, CLI, full-text search, the library UI and the seed-library machinery (schema, linter, loader, reset) work. The seed library itself is still being written (62 prompts so far: all 10 Career and Growth categories have 6 each) and importers are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
+> **Status: early development (M2b done).** The backend API, CLI, full-text search, the library UI and the seed-library machinery (schema, linter, loader, reset) work. The seed library itself is still being written (64 prompts so far: all 10 Career and Growth categories have 6-7 each) and importers are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
 
 **Stack:** Python 3.11+ (FastAPI, SQLAlchemy 2, Alembic, Typer), React 19 + TypeScript (Vite), SQLite with FTS5 by default.
 
@@ -133,7 +133,7 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 | M1b | FTS5 search, filters, sorting | Done |
 | M1c | Library UI: browse, filter, detail, variable fill, copy | Done |
 | M2a | Seed schema, linter, idempotent loader, reset to original, CI check | Done |
-| M2b | Seed prompts: Career and Growth (10 categories, 6 each) | Done |
+| M2b | Seed prompts: Career and Growth (10 categories, 6-7 each) | Done |
 | M2c-e | 5-10 prompts in each remaining category (about 250 in total) | Planned |
 | M3 | Importers (JSON, CSV/XLSX, Markdown, GitHub, URL), dedupe, export | Planned |
 | M4 | Published Docker image (GHCR), PyPI package, start scripts, release automation | Planned |
