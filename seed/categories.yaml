@@ -1,0 +1,61 @@
+# Category tree for the seed library (docs/SPEC.md section 3.8). Categories are data, not code.
+# Existing categories in a user's database are never renamed or moved by the loader.
+#
+# min_per_category: the CI linter fails when any category listed below has fewer prompts.
+# It is 0 while the library is being written (M2b-e); raise it to 5 when every category is full.
+min_per_category: 0
+
+groups:
+  - { slug: career, name: Career }
+  - { slug: growth, name: Growth }
+  - { slug: business, name: Business }
+  - { slug: professional, name: Professional }
+  - { slug: creative, name: Creative }
+  - { slug: technical, name: Technical }
+  - { slug: education, name: Education }
+  - { slug: meta, name: Meta }
+
+categories:
+  # Career
+  - { slug: resume-writing, name: Resume Writing, group: career }
+  - { slug: job-interviews, name: Job Interviews, group: career }
+  - { slug: job-searching, name: Job Searching, group: career }
+  - { slug: networking-linkedin, name: Networking & LinkedIn, group: career }
+  # Growth
+  - { slug: marketing, name: Marketing, group: growth }
+  - { slug: sales, name: Sales, group: growth }
+  - { slug: seo, name: SEO, group: growth }
+  - { slug: social-media, name: Social Media, group: growth }
+  - { slug: branding, name: Branding, group: growth }
+  - { slug: e-commerce, name: E-commerce, group: growth }
+  # Business
+  - { slug: business-strategy, name: Business Strategy, group: business }
+  - { slug: hr, name: HR, group: business }
+  - { slug: finance, name: Finance, group: business }
+  - { slug: project-management, name: Project Management, group: business }
+  - { slug: customer-support, name: Customer Support, group: business }
+  # Professional
+  - { slug: legal, name: Legal, group: professional }
+  - { slug: real-estate, name: Real Estate, group: professional }
+  - { slug: writing-editing, name: Writing & Editing, group: professional }
+  - { slug: research, name: Research, group: professional }
+  # Creative
+  - { slug: image-generation, name: Image Generation, group: creative }
+  - { slug: video-generation, name: Video Generation, group: creative }
+  - { slug: design, name: Design, group: creative }
+  - { slug: music-audio, name: Music & Audio, group: creative }
+  # Technical
+  - { slug: coding, name: Coding, group: technical }
+  - { slug: devops, name: DevOps, group: technical }
+  - { slug: data-analytics, name: Data & Analytics, group: technical }
+  - { slug: embedded-electronics, name: Embedded/Electronics, group: technical }
+  - { slug: 3d-printing, name: 3D Printing, group: technical }
+  # Education
+  - { slug: students, name: Students, group: education }
+  - { slug: stem, name: STEM, group: education }
+  - { slug: physics, name: Physics, group: education }
+  - { slug: math, name: Math, group: education }
+  - { slug: science, name: Science, group: education }
+  - { slug: engineering, name: Engineering, group: education }
+  # Meta
+  - { slug: prompt-engineering, name: Prompt Engineering, group: meta }

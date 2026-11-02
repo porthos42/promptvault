@@ -105,3 +105,25 @@ def test_use_count_updates_do_not_reindex(tmp_path: Path) -> None:
         with engine.connect() as c:
             n = c.execute(text("SELECT count(*) FROM prompt_fts WHERE prompt_fts MATCH 'beta'"))
             assert n.scalar() == 1
+
+
+def test_0003_adds_and_drops_seed_hash_keeping_fts(tmp_path: Path) -> None:
+    url = _url(tmp_path)
+    run_migrations(url)
+    engine = make_engine(url)
+    assert "seed_hash" in {c["name"] for c in inspect(engine).get_columns("prompt")}
+    downgrade(url, "0002")
+    engine.dispose()
+    engine = make_engine(url)
+    assert "seed_hash" not in {c["name"] for c in inspect(engine).get_columns("prompt")}
+    with engine.begin() as c:  # FTS triggers must survive the column drop
+        c.execute(
+            text(
+                "INSERT INTO prompt (id, title, body, description, variables, created_at, "
+                "updated_at) VALUES ('p1', 'Alpha', 'beta gamma', '', '[]', '2026-01-01', "
+                "'2026-01-01')"
+            )
+        )
+    with engine.connect() as c:
+        n = c.execute(text("SELECT count(*) FROM prompt_fts WHERE prompt_fts MATCH 'beta'"))
+        assert n.scalar() == 1

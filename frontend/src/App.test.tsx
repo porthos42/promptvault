@@ -8,6 +8,8 @@ import type { Prompt } from './api'
 function prompt(over: Partial<Prompt> = {}): Prompt {
   return {
     id: 'p1',
+    seed_id: 'cold-email',
+    seed_modified: false,
     title: 'Cold email',
     body: 'Write to {{name}} about {{topic}}.',
     description: 'Outreach helper',
@@ -33,9 +35,11 @@ function prompt(over: Partial<Prompt> = {}): Prompt {
 
 let calls: { method: string; url: string }[]
 let trashed: Prompt[]
+let p1Modified: boolean
 
 beforeEach(() => {
   calls = []
+  p1Modified = false
   trashed = [prompt({ id: 't1', title: 'Old draft', deleted_at: '2026-01-02T00:00:00Z' })]
   vi.stubGlobal(
     'fetch',
@@ -52,9 +56,13 @@ beforeEach(() => {
         return json([{ slug: 'sales', name: 'Sales', parent: null, icon: null, prompt_count: 1 }])
       if (url.includes('/use')) return json(prompt({ use_count: 1 }))
       if (url.match(/\/prompts\/t1\/restore/)) return json(prompt({ id: 't1' }))
-      if (url.match(/\/prompts\/p1$/)) return json(prompt())
+      if (url.match(/\/prompts\/p1\/reset/)) {
+        p1Modified = false
+        return json(prompt())
+      }
+      if (url.match(/\/prompts\/p1$/)) return json(prompt({ seed_modified: p1Modified }))
       if (url.startsWith('/api/v1/prompts')) {
-        const items = url.includes('trash=true') ? trashed : [prompt()]
+        const items = url.includes('trash=true') ? trashed : [prompt({ seed_modified: p1Modified })]
         return json({ items, total: items.length, next_cursor: null, sort: 'relevance', corrected_query: null })
       }
       return json({}, 404)
@@ -91,6 +99,22 @@ describe('Library UI', () => {
     await user.click(screen.getByRole('button', { name: 'Copy' }))
     await waitFor(() => expect(writeText).toHaveBeenCalledWith('Write to Ada about pricing.'))
     await waitFor(() => expect(calls.some((c) => c.method === 'POST' && c.url.endsWith('/p1/use'))).toBe(true))
+  })
+
+  it('offers Reset to original only for edited seed prompts', async () => {
+    const user = userEvent.setup()
+    const first = renderAt('/p/p1')
+    await screen.findByLabelText('Name')
+    expect(screen.queryByRole('button', { name: 'Reset to original' })).not.toBeInTheDocument()
+    first.unmount()
+
+    p1Modified = true
+    renderAt('/p/p1')
+    await user.click(await screen.findByRole('button', { name: 'Reset to original' }))
+    await waitFor(() =>
+      expect(calls.some((c) => c.method === 'POST' && c.url === '/api/v1/prompts/p1/reset')).toBe(true),
+    )
+    await waitFor(() => expect(screen.queryByRole('button', { name: 'Reset to original' })).not.toBeInTheDocument())
   })
 
   it('opens the command palette with Ctrl+K and searches', async () => {

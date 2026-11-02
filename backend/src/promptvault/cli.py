@@ -20,6 +20,7 @@ from promptvault.db import make_engine, make_session_factory, run_migrations
 from promptvault.schemas import PromptCreate, PromptPatch
 from promptvault.services import categories as cat_svc
 from promptvault.services import prompts as svc
+from promptvault.services import seed as seed_svc
 from promptvault.services import tags as tag_svc
 from promptvault.services.errors import DomainError
 
@@ -371,6 +372,41 @@ def init() -> None:
     s.data_dir.mkdir(parents=True, exist_ok=True)
     run_migrations(s.resolved_database_url)
     typer.echo(f"Database ready: {s.resolved_database_url}")
+    if s.seed_on_start:
+        _seed()
+
+
+def _seed() -> None:
+    s = get_settings()
+    with _db() as session:
+        report = seed_svc.sync_from_settings(session, s)
+    typer.echo(f"Seed library: {report.summary()}" if report else "Seed library: none found")
+
+
+@app.command()
+def seed(
+    reset: Annotated[
+        list[str] | None,
+        typer.Option("--reset", help="Reset one seeded prompt (id or prefix) to the original."),
+    ] = None,
+    reset_category: Annotated[
+        list[str] | None,
+        typer.Option("--reset-category", help="Reset every seeded prompt of a category slug."),
+    ] = None,
+) -> None:
+    """Load the seed library (idempotent; your edits are kept), or reset seeded prompts."""
+    if not reset and not reset_category:
+        _seed()
+        return
+    s = get_settings()
+    lib = seed_svc.library_from_settings(s)
+    with _db() as session:
+        for ident in reset or []:
+            p = seed_svc.reset_prompt(session, svc.resolve_prompt(session, ident), lib)
+            typer.echo(f"Reset {p.id}  {p.title}")
+        for slug in reset_category or []:
+            rep = seed_svc.reset_category(session, slug, lib)
+            typer.echo(f"Category {slug}: {rep.summary()}")
 
 
 @app.command()

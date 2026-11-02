@@ -5,7 +5,7 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, Query, Response, status
 
-from promptvault.api.deps import DB
+from promptvault.api.deps import DB, Seeds
 from promptvault.models import Prompt
 from promptvault.schemas import (
     BulkOut,
@@ -21,6 +21,7 @@ from promptvault.schemas import (
     RevisionOut,
 )
 from promptvault.services import prompts as svc
+from promptvault.services import seed as seed_svc
 
 router = APIRouter(tags=["prompts"])
 
@@ -29,6 +30,7 @@ def to_out(p: Prompt, version: int | None = None) -> PromptOut:
     return PromptOut(
         id=p.id,
         seed_id=p.seed_id,
+        seed_modified=seed_svc.is_modified(p),
         title=p.title,
         body=p.body,
         description=p.description,
@@ -163,6 +165,13 @@ def restore_prompt(prompt_id: str, db: DB) -> PromptOut:
 )
 def duplicate_prompt(prompt_id: str, db: DB) -> PromptOut:
     p = svc.duplicate_prompt(db, svc.get_prompt(db, prompt_id))
+    return to_out(p, svc.current_version(db, p.id))
+
+
+@router.post("/prompts/{prompt_id}/reset", response_model=PromptOut)
+def reset_to_original(prompt_id: str, db: DB, seeds: Seeds) -> PromptOut:
+    """Restore a seeded prompt to the content shipped with this version (kept as a revision)."""
+    p = seed_svc.reset_prompt(db, svc.get_prompt(db, prompt_id), seeds)
     return to_out(p, svc.current_version(db, p.id))
 
 

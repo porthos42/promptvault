@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     database_url: str | None = None
     log_level: str = "info"
     seed_on_start: bool = True
+    seed_dir: Path | None = None  # default: bundled seed/ (package) or the repo's seed/ folder
     auto_migrate: bool = True
     trash_retention_days: int = 30  # soft-deleted prompts older than this are purged at start
     cors_origins: list[str] = Field(default_factory=list)

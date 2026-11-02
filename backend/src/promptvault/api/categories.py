@@ -3,10 +3,11 @@ from __future__ import annotations
 from fastapi import APIRouter, Response, status
 from sqlalchemy import select
 
-from promptvault.api.deps import DB
+from promptvault.api.deps import DB, Seeds
 from promptvault.models import Category
-from promptvault.schemas import CategoryCreate, CategoryOut, CategoryPatch
+from promptvault.schemas import CategoryCreate, CategoryOut, CategoryPatch, SeedReportOut
 from promptvault.services import categories as svc
+from promptvault.services import seed as seed_svc
 
 router = APIRouter(tags=["categories"])
 
@@ -61,3 +62,9 @@ def update_category(slug: str, body: CategoryPatch, db: DB) -> CategoryOut:
 def delete_category(slug: str, db: DB) -> Response:
     svc.delete_category(db, svc.get_by_slug(db, slug))
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.post("/categories/{slug}/reset-seed", response_model=SeedReportOut)
+def reset_category_seed(slug: str, db: DB, seeds: Seeds) -> SeedReportOut:
+    """Reset every seeded prompt of the category to the shipped content (restores trashed ones)."""
+    return SeedReportOut(**vars(seed_svc.reset_category(db, slug, seeds)))

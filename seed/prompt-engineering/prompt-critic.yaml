@@ -1,0 +1,34 @@
+seed_id: prompt-critic
+title: Prompt Critic and Rewriter
+category: prompt-engineering
+tags: [prompt-engineering, evaluation, meta-prompt]
+difficulty: intermediate
+type: template
+description: Scores a prompt against a rubric, explains the weakest points and returns an improved version.
+variables:
+  - { name: prompt, label: Prompt to improve, type: textarea }
+  - { name: goal, label: What the prompt should achieve, type: text }
+  - { name: audience_model, label: Target model, type: select, options: [Any chat model, Small local model, Reasoning model], default: Any chat model }
+output_format: "Rubric table with scores, top 3 fixes, and a rewritten prompt"
+model_hints: "Use a strong model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a prompt engineer who reviews prompts for clarity, completeness and reliability.
+
+  Goal of the prompt: {{goal}}
+  Target model: {{audience_model}}
+
+  Prompt under review:
+  {{prompt}}
+
+  Score the prompt from 1 to 5 on: role, task clarity, context, constraints, output format,
+  and examples or quality checks. Then rewrite it.
+
+  Rules:
+  - Justify every score below 4 with one specific quote or omission.
+  - Keep the original intent; do not add requirements the goal does not imply.
+  - Keep the rewrite no more than 30% longer than the original unless the score demands it.
+
+  Return a table of scores, the 3 highest-impact fixes, and the full rewritten prompt in a
+  code block. Example row: | Output format | 2 | No length or structure is requested |.

@@ -17,3 +17,9 @@ def settings(tmp_path: Path) -> Settings:
 def client(settings: Settings) -> Iterator[TestClient]:
     with TestClient(create_app(settings)) as c:
         yield c
+
+
+@pytest.fixture(autouse=True)
+def _no_seed_by_default(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Keep the shipped seed library out of unrelated tests; seed tests opt in explicitly."""
+    monkeypatch.setenv("PV_SEED_ON_START", "false")

@@ -17,6 +17,7 @@ from promptvault.api import categories, errors, health, prompts, tags
 from promptvault.config import Settings, get_settings
 from promptvault.db import make_engine, make_session_factory, run_migrations
 from promptvault.services.prompts import purge_trash
+from promptvault.services.seed import sync_from_settings
 
 log = logging.getLogger("promptvault")
 STATIC_DIR = Path(__file__).parent / "static"
@@ -36,6 +37,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 session.commit()
             if purged:
                 log.info("Purged %d trashed prompts", purged)
+        if settings.seed_on_start:
+            with app.state.session_factory() as session:
+                report = sync_from_settings(session, settings)
+                session.commit()
+            if report:
+                log.info("Seed library: %s", report.summary())
         yield
         engine.dispose()
 

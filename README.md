@@ -5,7 +5,7 @@
 
 A self-hosted, searchable prompt engineering library. The goal is hundreds of ready-to-use prompts across careers, marketing, coding, STEM, 3D printing, image/video generation and more, with full create/edit/delete, search, filtering and import. Single-user and local-first. Free and open source.
 
-> **Status: early development (M1c done).** The backend API, CLI, full-text search and the library UI work. Seed prompts and importers are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
+> **Status: early development (M2a done).** The backend API, CLI, full-text search, the library UI and the seed-library machinery (schema, linter, loader, reset) work. The seed library itself is still being written (3 sample prompts so far) and importers are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
 
 **Stack:** Python 3.11+ (FastAPI, SQLAlchemy 2, Alembic, Typer), React 19 + TypeScript (Vite), SQLite with FTS5 by default.
 
@@ -22,6 +22,7 @@ Available now:
 - Full-text search (SQLite FTS5): BM25 ranking with title/tag boosts, prefix and stemmed matching, "exact phrases", automatic typo correction, combinable with every filter, seven sort orders
 - Index kept in sync by triggers; trashed prompts are excluded from search
 - Library UI: category sidebar, URL-persisted filter bar (search, category, tags, difficulty, sort, favorites), virtualized infinite list, prompt detail with variable form, live preview and one-click copy, CodeMirror editor, Trash view, Ctrl+K palette, `/` to focus search, light/dark theme
+- Seed library machinery: YAML prompt files, a CI linter, an idempotent loader that never overwrites your edits, and "Reset to original" per prompt or per category
 - Docker image, CI on Linux and Windows
 
 Planned: see [Roadmap](#roadmap).
@@ -66,6 +67,7 @@ Data lives in `/data` (a named volume). The CLI works inside the container: `doc
 ```
 promptvault serve [--host H] [--port P] [--reload]
 promptvault init | doctor | version
+promptvault seed [--reset ID ...] [--reset-category SLUG ...]   # load seed prompts / reset to original
 
 promptvault add --title T --body "Rewrite {{bullet}}" -c category-slug -t tag -t tag
 promptvault list [-c slug] [-t tag] [--favorite] [--json]
@@ -90,7 +92,9 @@ Interactive docs at `/docs` (OpenAPI). Errors are RFC 7807 `application/problem+
 | `POST /api/v1/prompts/{id}/restore`, `/duplicate`, `/render`, `/use` | restore from Trash, copy, fill variables, record a use (drives `popular` / `recent` sorts) |
 | `GET /api/v1/prompts/{id}/revisions`, `POST .../revisions/{n}/restore` | history |
 | `POST /api/v1/prompts/bulk` | add/remove tags, set category, favorite, delete, restore |
+| `POST /api/v1/prompts/{id}/reset` | restore a seeded prompt to the shipped content (new revision). `seed_modified` on a prompt tells the UI when to offer it |
 | `GET/POST/PATCH/DELETE /api/v1/categories[/{slug}]` | hierarchical categories |
+| `POST /api/v1/categories/{slug}/reset-seed` | reset every seeded prompt in a category (also restores trashed or deleted ones) |
 | `GET /api/v1/tags`, `PUT/DELETE /api/v1/tags/{name}` | list, rename (merges), delete |
 | `DELETE /api/v1/trash` | purge Trash (`?older_than_days=N`); items older than `PV_TRASH_RETENTION_DAYS` (30) are purged at start |
 
@@ -105,8 +109,20 @@ Environment variables (prefix `PV_`) or a `.env` file. See [.env.example](.env.e
 | `PV_DATA_DIR` | `~/.promptvault` | Holds the SQLite database |
 | `PV_DATABASE_URL` | SQLite in the data dir | Any SQLAlchemy URL (Postgres support is planned, not yet tested) |
 | `PV_TRASH_RETENTION_DAYS` | `30` | Trashed prompts older than this are purged at start |
+| `PV_SEED_ON_START` | `true` | Load/upgrade the seed library at start and on `promptvault init` (idempotent) |
+| `PV_SEED_DIR` | bundled `seed/` | Alternative seed folder |
 | `PV_LOG_LEVEL` | `info` | |
 | `PV_CORS_ORIGINS` | none | JSON list, for a separately hosted UI |
+
+## Seed library
+
+Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of [SPEC Appendix A](docs/SPEC.md), and `seed/categories.yaml` declares the category tree (8 groups, 35 categories). Content is CC0.
+
+- **Loading** is keyed by `seed_id` and idempotent. A prompt you have not edited is upgraded when a new version ships its newer text; one you have edited (content, tags, category) is never overwritten, and a prompt you moved to Trash is not brought back. Favorites, ratings and use counts do not count as edits. Categories that already exist are never renamed or moved.
+- **Reset to original**: `promptvault seed --reset <id>`, `--reset-category <slug>`, or the API above. The reset becomes a new revision, so your version stays in history.
+- **Linter**: `cd backend && uv run python ../tools/lint_seed.py` checks required fields, variable declarations against `{{placeholders}}`, duplicate ids and titles, length limits, licence/source, the quality bar (role, task, constraints, output format, an example or quality check), a disclaimer for legal/finance/medical-adjacent prompts, and PII/secret patterns. CI runs it.
+- **Per-category minimum**: `min_per_category` in `seed/categories.yaml` makes the linter fail when any category has fewer prompts than that. It is `0` (reported, not enforced) until the library is complete in M2e, because a half-written library would fail a minimum of 5 in every category. Try it now with `--min-per-category 5`.
+- A seed prompt you permanently delete is recreated by the next load; move it to Trash instead.
 
 ## Roadmap
 
@@ -116,7 +132,8 @@ Environment variables (prefix `PV_`) or a `.env` file. See [.env.example](.env.e
 | M1a | Prompt/category/tag CRUD API + CLI | Done |
 | M1b | FTS5 search, filters, sorting | Done |
 | M1c | Library UI: browse, filter, detail, variable fill, copy | Done |
-| M2 | Seed schema and linter, then 5-10 prompts in each category (about 250) | Planned |
+| M2a | Seed schema, linter, idempotent loader, reset to original, CI check | Done |
+| M2b-e | 5-10 prompts in each of the 35 categories (about 250) | Planned |
 | M3 | Importers (JSON, CSV/XLSX, Markdown, GitHub, URL), dedupe, export | Planned |
 | M4 | Published Docker image (GHCR), PyPI package, start scripts, release automation | Planned |
 | M5 | Polish and v1.0: accessibility, performance, end-to-end tests | Planned |
@@ -129,6 +146,8 @@ backend/    FastAPI app, models, services, CLI, Alembic migrations, tests   (src
 frontend/   Vite + React + TypeScript UI
 docker/     Dockerfile and compose file
 docs/       Product and technical spec
+seed/       Seed prompts (YAML) and categories.yaml
+tools/      Build-time tooling (lint_seed.py)
 .github/    CI workflow, Dependabot, PR template
 ```
 

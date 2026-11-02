@@ -12,6 +12,8 @@ export type Variable = {
 }
 export type Prompt = {
   id: string
+  seed_id: string | null
+  seed_modified: boolean
   title: string
   body: string
   description: string
@@ -102,6 +104,7 @@ export const api = {
   deletePrompt: (id: string, permanent = false) =>
     request<void>('DELETE', `/prompts/${id}${permanent ? '?permanent=true' : ''}`),
   restorePrompt: (id: string) => request<Prompt>('POST', `/prompts/${id}/restore`),
+  resetPrompt: (id: string) => request<Prompt>('POST', `/prompts/${id}/reset`),
   duplicatePrompt: (id: string) => request<Prompt>('POST', `/prompts/${id}/duplicate`),
   markUsed: (id: string) => request<Prompt>('POST', `/prompts/${id}/use`),
   emptyTrash: () => request<{ purged: number }>('DELETE', '/trash'),

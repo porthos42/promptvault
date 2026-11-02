@@ -71,6 +71,7 @@ class PromptOut(BaseModel):
 
     id: str
     seed_id: str | None
+    seed_modified: bool = False  # seeded prompt edited by the user (Reset to original applies)
     title: str
     body: str
     description: str
@@ -166,6 +167,17 @@ class TagOut(BaseModel):
 
 class TagRename(BaseModel):
     name: str = Field(min_length=1, max_length=100)
+
+
+class SeedReportOut(BaseModel):
+    categories_created: int
+    created: int
+    updated: int
+    unchanged: int
+    kept_edited: int
+    kept_trashed: int
+    invalid_files: int
+    reset: int
 
 
 class PurgeOut(BaseModel):

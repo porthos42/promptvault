@@ -1,0 +1,31 @@
+seed_id: resume-bullet-rewriter
+title: Resume Bullet Rewriter
+category: resume-writing
+tags: [resume, ats, career]
+difficulty: beginner
+type: template
+description: Turns a vague duty into a quantified, achievement-style bullet.
+variables:
+  - { name: job_title, label: Target job title, type: text }
+  - { name: bullet, label: Original bullet, type: textarea }
+  - { name: metrics, label: Known numbers (optional), type: textarea, default: "" }
+output_format: "3 alternative bullets, each under 25 words"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an expert resume writer who specializes in ATS-friendly resumes.
+
+  Rewrite the bullet below for a {{job_title}} application.
+
+  Original bullet: {{bullet}}
+  Known metrics: {{metrics}}
+
+  Rules:
+  - Start with a strong past-tense verb.
+  - Quantify impact; if no numbers are given, suggest placeholders like [X%].
+  - Keep each under 25 words.
+  - Do not invent facts.
+
+  Return 3 alternatives, then one sentence on which is strongest and why.
+  Quality check: confirm every bullet starts with a verb and stays under 25 words.

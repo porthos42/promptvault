@@ -50,6 +50,14 @@ export default function PromptDetail({ prompt, onChanged, onTag, onEdit, onDupli
             {prompt.is_favorite ? '★ Favorited' : '☆ Favorite'}
           </button>
           <button onClick={onEdit}>Edit</button>
+          {prompt.seed_modified && (
+            <button
+              title="Restore the shipped text. Your version stays in the revision history."
+              onClick={() => run(async () => onChanged(await api.resetPrompt(prompt.id)))}
+            >
+              Reset to original
+            </button>
+          )}
           <button onClick={() => run(async () => onDuplicated(await api.duplicatePrompt(prompt.id)))}>
             Duplicate
           </button>

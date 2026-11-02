@@ -1,0 +1,36 @@
+seed_id: contract-clause-explainer
+title: Contract Clause Explainer
+category: legal
+tags: [contracts, legal, plain-language]
+difficulty: intermediate
+type: template
+description: Explains a contract clause in plain language, flags risks and lists questions to ask a lawyer.
+variables:
+  - { name: clause, label: Contract clause, type: textarea }
+  - { name: role, label: Your role in the contract, type: text, default: "the signing party" }
+  - { name: jurisdiction, label: Jurisdiction (optional), type: text, default: "not specified" }
+output_format: "Plain-language summary, risk list, and questions for a lawyer"
+model_hints: "Any strong chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not legal advice; have a qualified lawyer review any contract before you sign."
+license: CC0-1.0
+body: |
+  You are a careful legal-information assistant who explains contracts to non-lawyers.
+
+  Explain the clause below from the point of view of {{role}}. Jurisdiction: {{jurisdiction}}.
+
+  Clause:
+  {{clause}}
+
+  Rules:
+  - Use plain language and define any legal term the first time you use it.
+  - Quote the exact words behind every risk you flag.
+  - Do not give legal advice or predict how a court would rule.
+  - If the wording is ambiguous, say so instead of guessing.
+
+  Return three sections:
+  1. Summary: what the clause does in at most 4 sentences.
+  2. Risks: a bullet list, each with the quoted words and why it matters.
+  3. Questions for a lawyer: 3 to 5 concrete questions.
+
+  Quality check: before you answer, verify that each risk quotes the clause and that you
+  made no claim about the law that the clause itself does not support.

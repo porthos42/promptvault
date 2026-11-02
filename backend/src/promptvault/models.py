@@ -85,6 +85,7 @@ class Prompt(Base):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=_uuid)
     seed_id: Mapped[str | None] = mapped_column(String(200), unique=True, nullable=True)
+    seed_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
     title: Mapped[str] = mapped_column(String(300))
     body: Mapped[str] = mapped_column(Text)
     description: Mapped[str] = mapped_column(Text, default="")

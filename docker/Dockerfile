@@ -15,6 +15,7 @@ ENV PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 \
 WORKDIR /app
 COPY backend/pyproject.toml ./pyproject.toml
 COPY backend/src ./src
+COPY seed ./src/promptvault/seed
 COPY --from=web /app/backend/src/promptvault/static ./src/promptvault/static
 RUN pip install . && rm -rf /app/src /app/pyproject.toml \
     && useradd --uid 10001 --no-create-home --home-dir /data promptvault \
