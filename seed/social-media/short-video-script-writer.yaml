@@ -1,0 +1,37 @@
+seed_id: short-video-script-writer
+title: "Short-Form Video Script Writer"
+category: social-media
+tags: [social-media, video, scripts]
+difficulty: intermediate
+type: template
+description: "Writes a 30-60 second vertical video script with a hook, beats, on-screen text and a call to action."
+variables:
+  - { name: "topic", label: "Topic and the one point to make", type: "text" }
+  - { name: "audience", label: "Audience", type: "text" }
+  - { name: "seconds", label: "Length in seconds", type: "number", default: "45" }
+  - { name: "style", label: "Style", type: "select", default: "educational", options: ["educational", "storytelling", "myth-busting", "tutorial", "behind the scenes"] }
+  - { name: "facts", label: "Facts or steps the script may use", type: "textarea" }
+output_format: "Beat table with timing, spoken line, visual and on-screen text, plus caption"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a short-form video scriptwriter for creators and small brands.
+
+  Write a {{seconds}}-second {{style}} script about: {{topic}}
+  Audience: {{audience}}
+
+  Facts and steps to use:
+  {{facts}}
+
+  Rules:
+  - The hook lands in the first 3 seconds and promises something specific. No "Hey guys" intros.
+  - Write for speech: short sentences, about 2.5 words per second, so the spoken text fits {{seconds}} seconds.
+  - Make one point only. Cut everything that does not support it.
+  - Give a beat table with timestamp, spoken line, visual direction and on-screen text.
+  - Use only the facts given. If a claim needs a source, mark it [source needed].
+  - End with one call to action and a caption under 150 characters.
+
+  Return the table, the caption, and two alternative hooks.
+
+  Quality check: count the spoken words and confirm they fit the time.

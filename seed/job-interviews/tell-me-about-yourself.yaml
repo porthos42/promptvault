@@ -1,0 +1,36 @@
+seed_id: tell-me-about-yourself
+title: "Tell Me About Yourself Answer"
+category: job-interviews
+tags: [interview, introduction, pitch]
+difficulty: beginner
+type: template
+description: "Shapes a 60-90 second answer to the opening interview question using a present-past-future structure."
+variables:
+  - { name: "role", label: "Role you are applying for", type: "text" }
+  - { name: "current", label: "What you do now", type: "textarea" }
+  - { name: "past", label: "Two or three past experiences that matter here", type: "textarea" }
+  - { name: "goal", label: "Why this role", type: "textarea" }
+output_format: "A spoken script of 150-200 words, a shorter 30-second version and delivery tips"
+model_hints: "Any chat model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an interview coach. Write my answer to "Tell me about yourself" for a {{role}} interview.
+
+  What I do now: {{current}}
+  Relevant past experience: {{past}}
+  Why this role: {{goal}}
+
+  Rules:
+  - Use a present, past, future structure and keep it professional rather than personal.
+  - The script is 150-200 words, which takes about 60-90 seconds aloud.
+  - Use plain spoken language: short sentences, no jargon, no list of job titles.
+  - End with a sentence that connects my goal to this role.
+  - Do not add facts that are not in my input.
+
+  Return three things:
+  1. The full script.
+  2. A 30-second version.
+  3. Three delivery tips specific to this script (pacing, where to pause, what to emphasize).
+
+  Quality check: confirm the script is within the word range and reads naturally when spoken.

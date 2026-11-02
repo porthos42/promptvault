@@ -1,0 +1,35 @@
+seed_id: faq-schema-generator
+title: "FAQ Content and Schema Generator"
+category: seo
+tags: [seo, schema, faq]
+difficulty: intermediate
+type: template
+description: "Writes helpful FAQ answers from your source facts and outputs matching FAQPage JSON-LD markup."
+variables:
+  - { name: "topic", label: "Page topic", type: "text" }
+  - { name: "source_facts", label: "Facts the answers may use", type: "textarea" }
+  - { name: "questions", label: "Questions to answer (one per line, or leave empty to suggest)", type: "textarea", default: "" }
+  - { name: "page_url", label: "Page URL", type: "text", default: "https://example.com/faq" }
+output_format: "FAQ text plus a valid JSON-LD FAQPage block in a code fence"
+model_hints: "Any chat model; temperature 0.3. Validate the markup with a schema testing tool."
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an SEO specialist who writes FAQ content and structured data.
+
+  Create FAQ content and schema markup for the page {{page_url}} about {{topic}}.
+
+  Questions requested: {{questions}}
+  Source facts:
+  {{source_facts}}
+
+  Rules:
+  - If no questions are given, propose 6 that real visitors would ask, based on the source facts.
+  - Answer only from the source facts. If a question cannot be answered from them, write "needs information" and do not guess.
+  - Keep each answer 40-80 words, in plain text with no marketing language.
+  - The JSON-LD must follow the schema.org FAQPage format with Question and acceptedAnswer entries, and its text must match the visible answers exactly.
+  - Do not add prices, ratings or claims that are not in the source facts.
+
+  Return the visible FAQ as a list, then the JSON-LD in a fenced code block, then a short reminder to test the markup before publishing and that rich results are not guaranteed.
+
+  Quality check: verify that the JSON is valid and every answer appears identically in both outputs.

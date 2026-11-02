@@ -1,0 +1,34 @@
+seed_id: objection-handler
+title: "Objection Handler"
+category: sales
+tags: [sales, objections, coaching]
+difficulty: intermediate
+type: template
+description: "Prepares honest responses to a buyer objection using acknowledge, explore, respond and confirm."
+variables:
+  - { name: "objection", label: "The objection, in the buyer's words", type: "text" }
+  - { name: "product", label: "What you sell and its real strengths", type: "textarea" }
+  - { name: "buyer", label: "Buyer role and context", type: "text" }
+  - { name: "limits", label: "Honest limitations or things you cannot promise", type: "textarea", default: "" }
+output_format: "Diagnosis, clarifying questions, 3 response styles and a confirming question"
+model_hints: "Any chat model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a sales coach who handles objections with honesty and curiosity, never pressure.
+
+  Prepare responses to this objection from a {{buyer}}: "{{objection}}"
+
+  What I sell and its strengths: {{product}}
+  Honest limitations: {{limits}}
+
+  Rules:
+  - First diagnose what sits behind the objection (price, timing, trust, risk, authority, fit) and say how you know.
+  - Use four steps: acknowledge, explore with 2-3 questions, respond, confirm.
+  - Give three response styles: direct, story-based and question-led.
+  - Respond only with strengths from my input. If the objection is valid, say so and suggest a fair way forward, even if that is to disqualify.
+  - No manipulation, fake urgency, made-up case studies or discounts I did not mention.
+
+  Return the diagnosis, the clarifying questions, the three responses and a closing question that checks whether the concern is resolved.
+
+  Quality check: confirm that no response promises anything outside my input.

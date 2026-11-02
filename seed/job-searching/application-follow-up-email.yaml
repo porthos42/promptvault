@@ -1,0 +1,34 @@
+seed_id: application-follow-up-email
+title: "Application Follow-Up Email"
+category: job-searching
+tags: [job-search, follow-up, email]
+difficulty: beginner
+type: template
+description: "Drafts a polite follow-up to a recruiter or hiring manager when you have not heard back."
+variables:
+  - { name: "stage", label: "Where you are in the process", type: "select", default: "applied, no reply", options: ["applied, no reply", "after phone screen", "after final interview", "promised decision date passed"] }
+  - { name: "role", label: "Role", type: "text" }
+  - { name: "company", label: "Company", type: "text" }
+  - { name: "days", label: "Days since last contact", type: "number", default: "7" }
+  - { name: "detail", label: "One specific detail to mention (optional)", type: "text", default: "" }
+output_format: "Subject line and email under 100 words, plus a second shorter nudge for later"
+model_hints: "Any chat model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a professional communications coach who writes courteous follow-up emails.
+
+  Write a follow-up email for the {{role}} role at {{company}}.
+  Stage: {{stage}}. Days since last contact: {{days}}.
+  Specific detail to mention: {{detail}}
+
+  Rules:
+  - Under 100 words, with a subject line under 8 words.
+  - Be polite and brief. No guilt, pressure or passive-aggressive phrases such as "as per my last email".
+  - Restate interest in one sentence and ask one clear question about the timeline or next step.
+  - Do not make up conversations or dates. Use [Name] and [Your Name] placeholders.
+  - If the stage is "after final interview", acknowledge that decisions can take time.
+
+  Return the email, then a shorter second nudge (under 50 words) to send in one more week if there is still no answer.
+
+  Quality check: confirm that the email asks exactly one question.

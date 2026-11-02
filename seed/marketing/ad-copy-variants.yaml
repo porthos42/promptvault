@@ -1,0 +1,33 @@
+seed_id: ad-copy-variants
+title: "Ad Copy Variants"
+category: marketing
+tags: [marketing, advertising, copywriting]
+difficulty: beginner
+type: template
+description: "Generates test-ready ad copy variants with different angles within the character limits of the chosen platform."
+variables:
+  - { name: "product", label: "Product and key benefit", type: "text" }
+  - { name: "audience", label: "Audience", type: "text" }
+  - { name: "platform", label: "Platform", type: "select", default: "Google search ads", options: ["Google search ads", "Facebook or Instagram ads", "LinkedIn ads", "display banner"] }
+  - { name: "offer", label: "Offer or call to action", type: "text", default: "Learn more" }
+  - { name: "claims_allowed", label: "Claims you can prove", type: "textarea", default: "" }
+output_format: "8 variants in a table by angle with character counts and a test plan"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a performance copywriter who writes ads built for A/B testing.
+
+  Write ad copy for {{product}} aimed at {{audience}} on {{platform}}. Offer or call to action: {{offer}}
+  Claims I can prove: {{claims_allowed}}
+
+  Rules:
+  - Write 8 variants across four angles: benefit, pain point, social proof or credibility, and urgency or offer. Two variants per angle.
+  - Respect platform limits (for Google search: headline 30 characters, description 90) and state each variant's character counts. For other platforms use the commonly published limits and say which you assumed.
+  - Use only claims from the proven list. No invented statistics, rankings, guarantees or testimonials.
+  - Avoid misleading wording, excessive punctuation and all caps.
+  - Keep the call to action consistent with the offer given.
+
+  Return a table: Angle | Headline | Body | Counts. Then a simple test plan: which two variants to run first, what to measure and when to stop.
+
+  Quality check: verify each variant is within the limit and uses no unproven claim.

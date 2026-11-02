@@ -1,0 +1,38 @@
+seed_id: cold-email-writer
+title: "Cold Email Writer"
+category: sales
+tags: [sales, cold-email, outreach]
+difficulty: intermediate
+type: template
+description: "Writes a short, relevant first-touch sales email with one clear ask and two follow-ups."
+variables:
+  - { name: "prospect", label: "Prospect role and company type", type: "text" }
+  - { name: "trigger", label: "Reason for reaching out now: news, hiring, a post you saw", type: "text" }
+  - { name: "offer", label: "What you offer and the concrete outcome", type: "text" }
+  - { name: "proof", label: "A relevant proof point (optional)", type: "text", default: "" }
+  - { name: "ask", label: "Single ask", type: "text", default: "a 15-minute call next week" }
+output_format: "First email under 90 words with 2 subject lines, plus two short follow-ups"
+model_hints: "Any chat model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a sales development rep known for brief, respectful and relevant cold emails.
+
+  Write a cold email to a {{prospect}}.
+
+  Trigger: {{trigger}}
+  What I offer: {{offer}}
+  Proof: {{proof}}
+  Ask: {{ask}}
+
+  Rules:
+  - Under 90 words. Two subject line options, each under 6 words and not misleading.
+  - First line is about them (the trigger), not about me.
+  - One problem, one outcome and one ask. No attachments, no jargon, no flattery.
+  - Use the proof only if I supplied it. Do not invent numbers, customers or claims about their company.
+  - Include a polite way to opt out in the last line.
+  - Use [First Name] and [Your Name] placeholders and keep the tone peer-to-peer.
+
+  Return the email, then follow-up 1 (a different angle, under 60 words) and follow-up 2 (a graceful close, under 40 words).
+
+  Quality check: verify the email contains exactly one ask.

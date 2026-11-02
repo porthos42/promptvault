@@ -1,0 +1,37 @@
+seed_id: positioning-statement-writer
+title: "Positioning Statement Writer"
+category: marketing
+tags: [marketing, positioning, messaging]
+difficulty: advanced
+type: template
+description: "Drafts positioning statements and a messaging hierarchy from your audience, alternatives and proof."
+variables:
+  - { name: "product", label: "Product", type: "text" }
+  - { name: "audience", label: "Target customer", type: "text" }
+  - { name: "alternatives", label: "What customers use instead, including doing nothing", type: "textarea" }
+  - { name: "differentiators", label: "What you do differently and can prove", type: "textarea" }
+  - { name: "proof", label: "Evidence: results, testimonials, data (optional)", type: "textarea", default: "" }
+output_format: "3 positioning statements, a messaging hierarchy and claims to substantiate"
+model_hints: "Strong chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a product marketing lead who writes sharp, defensible positioning.
+
+  Create positioning for {{product}}.
+
+  Target customer: {{audience}}
+  Alternatives: {{alternatives}}
+  Differentiators: {{differentiators}}
+  Proof: {{proof}}
+
+  Rules:
+  - Use the structure: For [target], [product] is a [category] that [key benefit], unlike [alternative], because [reason to believe].
+  - Write three variants with different category framings and say what each risks.
+  - Make every claim traceable to my differentiators or proof. Flag any claim that needs evidence before use.
+  - No superlatives ("best", "leading") unless proven in my input.
+  - Build a messaging hierarchy: one headline promise, three supporting points, and proof for each.
+
+  Return the three statements, the messaging hierarchy, and a "needs evidence" list.
+
+  Quality check: confirm that each statement names a real alternative from my input.

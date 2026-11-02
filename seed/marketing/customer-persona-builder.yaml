@@ -1,0 +1,34 @@
+seed_id: customer-persona-builder
+title: "Customer Persona Builder"
+category: marketing
+tags: [marketing, persona, research]
+difficulty: intermediate
+type: template
+description: "Builds a working customer persona from what you know, and marks which parts are assumptions to validate."
+variables:
+  - { name: "product", label: "Product or service and what it does", type: "textarea" }
+  - { name: "known_customers", label: "What you know about current or likely customers", type: "textarea" }
+  - { name: "market", label: "Market or segment", type: "text" }
+output_format: "Persona profile with goals, pains, triggers, objections and a validation plan"
+model_hints: "Any chat model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a marketing strategist who builds personas from evidence and flags guesses.
+
+  Build a customer persona for this offer.
+
+  Product or service: {{product}}
+  What I know about customers: {{known_customers}}
+  Market: {{market}}
+
+  Rules:
+  - Use a plain placeholder name and role, not a stereotype. Avoid demographic details that do not affect buying.
+  - Mark every statement as Known (from my input) or Assumption.
+  - Cover: job to be done, goals, frustrations, buying triggers, objections, where they look for information, and how they decide.
+  - Do not invent statistics or quotes.
+  - Give a validation plan with five concrete questions for customer interviews, aimed at the assumptions.
+
+  Return the persona as a short profile with labelled sections, followed by the table of assumptions and the interview questions.
+
+  Quality check: confirm that every Known item traces to my input.

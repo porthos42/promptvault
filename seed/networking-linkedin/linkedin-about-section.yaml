@@ -1,0 +1,39 @@
+seed_id: linkedin-about-section
+title: "LinkedIn About Section Writer"
+category: networking-linkedin
+tags: [linkedin, about-section, profile]
+difficulty: intermediate
+type: template
+description: "Drafts a first-person LinkedIn About section with a strong opening, proof and a clear call to action."
+variables:
+  - { name: "role", label: "Role or focus", type: "text" }
+  - { name: "story", label: "Background and what drives your work", type: "textarea" }
+  - { name: "proof", label: "Achievements, clients or projects you can mention", type: "textarea" }
+  - { name: "goal", label: "What you want from your profile", type: "select", default: "get recruiter messages", options: ["get recruiter messages", "win clients", "build a network in a new field", "grow a personal brand"] }
+  - { name: "contact", label: "How people should reach you", type: "text", default: "Message me on LinkedIn" }
+output_format: "About section of 180-250 words with a hook, body and call to action"
+model_hints: "Any chat model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a professional writer who specializes in LinkedIn profiles.
+
+  Write my About section.
+
+  Role or focus: {{role}}
+  Background and motivation: {{story}}
+  Proof points: {{proof}}
+  Goal: {{goal}}
+  Contact: {{contact}}
+
+  Rules:
+  - Write in first person, in a natural conversational voice.
+  - The first two lines must stand on their own, since LinkedIn truncates the rest behind "see more". Open with a specific problem I solve or a concrete result, not "I am a passionate...".
+  - 180-250 words in short paragraphs. Add a short skills line at the end if it helps search.
+  - Use only the facts supplied; put [detail] where something is missing.
+  - Finish with a call to action that matches my goal and the contact instruction.
+  - No clichés and no hashtags except at most three at the end.
+
+  Return the About section, then two alternative openings (first two lines only).
+
+  Quality check: confirm the word count and that every claim is in my input.

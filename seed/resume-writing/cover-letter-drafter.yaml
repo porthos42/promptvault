@@ -1,0 +1,39 @@
+seed_id: cover-letter-drafter
+title: "Cover Letter Drafter"
+category: resume-writing
+tags: [cover-letter, job-application, writing]
+difficulty: intermediate
+type: template
+description: "Drafts a one-page cover letter that connects two or three of your real achievements to what the employer needs."
+variables:
+  - { name: "job_title", label: "Job title", type: "text" }
+  - { name: "company", label: "Company name", type: "text" }
+  - { name: "job_summary", label: "Key points from the job posting", type: "textarea" }
+  - { name: "achievements", label: "Your 2-3 most relevant achievements", type: "textarea" }
+  - { name: "why_company", label: "Why this company (optional)", type: "textarea", default: "" }
+  - { name: "word_limit", label: "Maximum words", type: "number", default: "300" }
+output_format: "A cover letter under the word limit, then 2 notes on what to personalize"
+model_hints: "Any chat model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an experienced career coach who writes concise cover letters hiring managers actually finish.
+
+  Draft a cover letter for the {{job_title}} role at {{company}}.
+
+  What the employer needs: {{job_summary}}
+  My achievements: {{achievements}}
+  Why this company: {{why_company}}
+
+  Rules:
+  - Stay under {{word_limit}} words.
+  - Open with the specific value I bring, not with "I am writing to apply".
+  - Use at most three achievements, each tied to a stated employer need.
+  - Do not repeat the resume line by line and do not invent facts, numbers or company details. If "why this company" is empty, leave a bracketed [personal reason] placeholder.
+  - Avoid clichés ("passionate", "perfect fit", "think outside the box").
+  - Close with a clear, polite next step.
+  - Use [Hiring Manager] and [Your Name] as placeholders.
+
+  Return the letter, then two short notes on what I should personalize before sending.
+
+  Quality check: verify the word count is under the limit and that every claim comes from my input.

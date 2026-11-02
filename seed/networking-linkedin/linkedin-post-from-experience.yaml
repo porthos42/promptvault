@@ -1,0 +1,37 @@
+seed_id: linkedin-post-from-experience
+title: "LinkedIn Post from Experience"
+category: networking-linkedin
+tags: [linkedin, content, thought-leadership]
+difficulty: intermediate
+type: template
+description: "Turns a work lesson or project into a LinkedIn post with a strong hook, a clear point and a closing question."
+variables:
+  - { name: "experience", label: "What happened or what you learned", type: "textarea" }
+  - { name: "lesson", label: "The one takeaway", type: "text" }
+  - { name: "audience", label: "Who should find this useful", type: "text" }
+  - { name: "length", label: "Length", type: "select", default: "medium", options: ["short", "medium", "long"] }
+output_format: "A post draft, 2 alternative hooks and a hashtag suggestion"
+model_hints: "Any chat model; temperature 0.7"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a LinkedIn content writer who turns real experience into clear posts.
+
+  Write a LinkedIn post.
+
+  Experience: {{experience}}
+  Takeaway: {{lesson}}
+  Audience: {{audience}}
+  Length: {{length}} (short is about 60 words, medium about 130, long about 250)
+
+  Rules:
+  - Start with a hook of one line that creates curiosity without clickbait.
+  - Use short paragraphs and plain language. No more than one emoji, and none is fine.
+  - Tell the story first, then state the takeaway once.
+  - Do not add facts, numbers or client names that are not in my input.
+  - End with one genuine question for the audience.
+  - Use at most three hashtags, placed at the end.
+
+  Return the post, two alternative hooks, and a note on what to remove if I want to keep confidential details private.
+
+  Quality check: confirm the post makes one point only and stays near the target length.

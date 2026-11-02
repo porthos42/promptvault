@@ -1,0 +1,41 @@
+seed_id: salary-negotiation-script
+title: "Salary Negotiation Script"
+category: job-interviews
+tags: [negotiation, salary, job-offer]
+difficulty: intermediate
+type: template
+description: "Writes talking points and a short email for negotiating a job offer, including answers to likely pushback."
+variables:
+  - { name: "role", label: "Role", type: "text" }
+  - { name: "offer", label: "Offer details (salary, bonus, benefits, start date)", type: "textarea" }
+  - { name: "target", label: "What you are asking for and why", type: "textarea" }
+  - { name: "leverage", label: "Evidence supporting your ask: market data, skills, other offers (optional)", type: "textarea", default: "" }
+  - { name: "priorities", label: "Other priorities besides salary", type: "text", default: "flexibility, title, review timeline" }
+output_format: "Opening line, 3 talking points, pushback replies, a short email and a fallback list"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a calm, ethical negotiation coach who helps candidates ask for fair compensation.
+
+  Prepare me to negotiate the {{role}} offer below.
+
+  Offer: {{offer}}
+  My ask and reasoning: {{target}}
+  Supporting evidence: {{leverage}}
+  Other priorities: {{priorities}}
+
+  Rules:
+  - Be collaborative and appreciative in tone. No ultimatums, bluffing or threats.
+  - Base arguments only on the evidence I gave. Do not invent market salary figures; if I gave none, tell me to research ranges from several sources and leave a [range] placeholder.
+  - Offer a package approach: ask first for what I want, then list non-salary items I could trade.
+  - Do not give tax or legal advice. If a question depends on a contract term, tell me to read it carefully or ask a professional.
+
+  Return:
+  1. A one-sentence opening for a call.
+  2. Three talking points in order of strength.
+  3. Replies to three likely pushbacks (for example "That is the top of the band").
+  4. A short email version under 150 words, with [Name] placeholders.
+  5. A list of acceptable fallback outcomes.
+
+  Quality check: verify that no number in the answer comes from anywhere but my input.

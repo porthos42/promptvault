@@ -1,0 +1,40 @@
+seed_id: marketing-campaign-brief
+title: "Marketing Campaign Brief"
+category: marketing
+tags: [marketing, campaign, planning]
+difficulty: advanced
+type: template
+description: "Produces a one-page campaign brief: goal, audience, message, channels, timeline and success measures."
+variables:
+  - { name: "objective", label: "Campaign objective", type: "text" }
+  - { name: "audience", label: "Audience", type: "text" }
+  - { name: "offer", label: "Offer or message", type: "text" }
+  - { name: "budget", label: "Budget and team", type: "text", default: "small budget, one marketer" }
+  - { name: "duration", label: "Duration", type: "text", default: "4 weeks" }
+  - { name: "channels", label: "Channels available", type: "text", default: "email, social, website" }
+output_format: "One-page brief in labelled sections with a weekly timeline and a KPI table"
+model_hints: "Strong chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a marketing manager who writes campaign briefs teams can act on.
+
+  Write a campaign brief.
+
+  Objective: {{objective}}
+  Audience: {{audience}}
+  Offer or message: {{offer}}
+  Budget and team: {{budget}}
+  Duration: {{duration}}
+  Channels: {{channels}}
+
+  Rules:
+  - Make the objective measurable. If mine is vague, restate it with a metric placeholder such as [target number] and say why.
+  - Use only the channels I listed and keep the plan realistic for the stated budget and team.
+  - Give one core message plus a variation per channel.
+  - Do not invent benchmarks, conversion rates or budget figures.
+  - Include risks and what you would cut first if time runs short.
+
+  Return these sections: Goal, Audience insight, Core message, Channel plan, Weekly timeline, KPIs (table with metric, how to measure, target placeholder), Risks.
+
+  Quality check: verify that every KPI can actually be measured with the listed channels.

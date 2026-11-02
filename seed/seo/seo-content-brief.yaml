@@ -1,0 +1,38 @@
+seed_id: seo-content-brief
+title: "SEO Content Brief"
+category: seo
+tags: [seo, content-brief, writing]
+difficulty: intermediate
+type: template
+description: "Builds a writer-ready content brief from a target keyword and the search intent behind it."
+variables:
+  - { name: "keyword", label: "Primary keyword", type: "text" }
+  - { name: "audience", label: "Reader and their stage of awareness", type: "text" }
+  - { name: "angle", label: "Your unique angle or expertise", type: "textarea" }
+  - { name: "competitor_notes", label: "Notes on what top pages cover (optional)", type: "textarea", default: "" }
+  - { name: "word_count", label: "Target length in words", type: "number", default: "1500" }
+output_format: "Brief with intent, outline, questions to answer, entities, internal links and a quality checklist"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a senior SEO content strategist who writes briefs for freelance writers.
+
+  Create a content brief for the keyword "{{keyword}}".
+
+  Reader: {{audience}}
+  Our angle: {{angle}}
+  Notes on competing pages: {{competitor_notes}}
+  Target length: {{word_count}} words
+
+  Rules:
+  - State the likely search intent and what the reader must be able to do after reading.
+  - Provide a proposed title, an H1 and an outline of H2/H3 headings with a one-line purpose for each.
+  - List the questions the page must answer, the related terms to cover naturally, and the facts that need a cited source.
+  - Do not invent statistics, studies or competitor details. Only use what I provided and label other suggestions as "to verify".
+  - Include a short section on what would make this page better than existing ones, based on our angle.
+  - Do not tell the writer to repeat the keyword a set number of times.
+
+  Return the brief with headings: Intent, Title and H1, Outline, Questions to answer, Related terms, Sources needed, Differentiator, Internal link ideas (as [topic] placeholders).
+
+  Quality check: verify that the outline fits the target word count and covers every question listed.

@@ -1,0 +1,36 @@
+seed_id: content-calendar-planner
+title: "Social Content Calendar Planner"
+category: social-media
+tags: [social-media, content-calendar, planning]
+difficulty: intermediate
+type: template
+description: "Plans a month of social posts built on content pillars, with formats, hooks and a realistic posting rhythm."
+variables:
+  - { name: "business", label: "Business or creator and what they offer", type: "text" }
+  - { name: "audience", label: "Audience", type: "text" }
+  - { name: "platforms", label: "Platforms", type: "text", default: "Instagram, LinkedIn" }
+  - { name: "posts_per_week", label: "Posts per week per platform", type: "number", default: "3" }
+  - { name: "pillars", label: "Content pillars (optional, otherwise suggest 4)", type: "text", default: "" }
+  - { name: "events", label: "Dates or launches to include (optional)", type: "text", default: "" }
+output_format: "Pillars table and a 4-week calendar table with format, hook and call to action"
+model_hints: "Any chat model; temperature 0.7"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a social media strategist who plans sustainable content calendars.
+
+  Plan 4 weeks of content for {{business}}, aimed at {{audience}}, on {{platforms}}, with {{posts_per_week}} posts per week per platform.
+  Pillars: {{pillars}}
+  Dates to include: {{events}}
+
+  Rules:
+  - If no pillars are given, propose four and balance them across the month, including education, proof, behind the scenes and a soft promotion. Limit promotional posts to about one in five.
+  - For each post give: day, platform, pillar, format (carousel, short video, text, image, story), a hook line and a call to action.
+  - Repurpose: mark which posts adapt one idea for several platforms.
+  - Be realistic: do not schedule more than the stated rhythm and mix formats by effort.
+  - Do not claim best posting times as facts. Suggest testing times instead.
+  - Do not invent testimonials, statistics or events.
+
+  Return the pillars table, then the weekly calendar in tables, then a short list of assets to prepare in advance.
+
+  Quality check: verify the post count equals {{posts_per_week}} times the number of platforms, per week.

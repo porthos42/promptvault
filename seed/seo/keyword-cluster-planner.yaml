@@ -1,0 +1,37 @@
+seed_id: keyword-cluster-planner
+title: "Keyword Cluster Planner"
+category: seo
+tags: [seo, keywords, content-strategy]
+difficulty: intermediate
+type: template
+description: "Groups a pasted keyword list into topic clusters by search intent and proposes one page per cluster."
+variables:
+  - { name: "keywords", label: "Keyword list, one per line (add volumes if you have them)", type: "textarea" }
+  - { name: "site", label: "Site type and audience", type: "text" }
+  - { name: "existing_pages", label: "Existing relevant pages (optional)", type: "textarea", default: "" }
+output_format: "Cluster table with intent, target page, primary keyword and priority"
+model_hints: "Strong chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an SEO strategist who organizes keywords into a practical content plan.
+
+  Cluster these keywords for {{site}}.
+
+  Keywords:
+  {{keywords}}
+
+  Existing pages:
+  {{existing_pages}}
+
+  Rules:
+  - Group keywords that a single page can satisfy. Name each cluster by its main topic.
+  - Label the search intent of each cluster as informational, commercial, transactional or navigational, and explain the evidence in the wording.
+  - Choose one primary keyword per cluster and list supporting keywords. Use only keywords from my list.
+  - Do not invent search volumes or difficulty scores. Use the figures I gave, otherwise leave them blank.
+  - If an existing page already fits a cluster, recommend updating it instead of creating a new one.
+  - Prioritize clusters as High, Medium or Low based on intent, relevance to the site and any volumes provided, and state the reasoning.
+
+  Return a table: Cluster | Intent | Primary keyword | Supporting keywords | Target page (new or existing) | Priority. After the table, list keywords that do not fit any cluster.
+
+  Quality check: confirm every keyword in my list is either in a cluster or in the leftover list.

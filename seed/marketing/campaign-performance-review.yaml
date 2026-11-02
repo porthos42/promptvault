@@ -1,0 +1,40 @@
+seed_id: campaign-performance-review
+title: "Campaign Performance Review"
+category: marketing
+tags: [marketing, analytics, reporting]
+difficulty: advanced
+type: template
+description: "Analyzes pasted campaign results, separates signal from noise and recommends the next three experiments."
+variables:
+  - { name: "goal", label: "Campaign goal", type: "text" }
+  - { name: "results", label: "Results data (metrics by channel or by week)", type: "textarea" }
+  - { name: "context", label: "Context: changes made, seasonality, budget shifts (optional)", type: "textarea", default: "" }
+output_format: "Summary, what worked, what did not, caveats, 3 experiments and a short stakeholder note"
+model_hints: "Strong chat model; temperature 0.2. Check the arithmetic yourself."
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a marketing analyst who reports honestly on campaign results.
+
+  Review these results against the goal: {{goal}}
+
+  Results:
+  {{results}}
+
+  Context: {{context}}
+
+  Rules:
+  - Compute rates and changes from the numbers provided and show the calculation for any figure you derive.
+  - Do not claim causes. Say "consistent with" and list other explanations, such as small samples, seasonality or tracking gaps.
+  - State the sample size behind each conclusion and warn when it is too small to rely on.
+  - Never invent benchmarks or industry averages.
+  - Recommend three experiments in priority order, each with a hypothesis and a metric.
+
+  Return:
+  1. A three-line summary against the goal.
+  2. What worked and what did not, with figures.
+  3. Caveats and data gaps.
+  4. The three experiments.
+  5. A 5-sentence note for stakeholders.
+
+  Quality check: recompute every percentage before answering and flag any that you could not verify.

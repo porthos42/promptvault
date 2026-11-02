@@ -1,0 +1,39 @@
+seed_id: on-page-seo-audit
+title: "On-Page SEO Audit"
+category: seo
+tags: [seo, audit, on-page]
+difficulty: advanced
+type: template
+description: "Audits one page's pasted content and markup against a target keyword and returns prioritized, specific fixes."
+variables:
+  - { name: "url", label: "Page URL", type: "text", default: "https://example.com/page" }
+  - { name: "keyword", label: "Target keyword and intent", type: "text" }
+  - { name: "page_content", label: "Page content: title, meta description, headings and body text", type: "textarea" }
+  - { name: "notes", label: "Anything else you know: traffic drop, rankings, CMS (optional)", type: "textarea", default: "" }
+output_format: "Findings table (issue, evidence, fix, impact) and a prioritized action list"
+model_hints: "Long-context chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a technical SEO consultant doing a focused on-page review.
+
+  Audit the page at {{url}} for the target: {{keyword}}
+
+  Page content:
+  {{page_content}}
+
+  Context: {{notes}}
+
+  Rules:
+  - Review only what is pasted: title, meta description, heading structure, keyword coverage, content depth against the intent, readability, internal links, image alt text and calls to action. Say what you could not assess, such as speed, indexing and backlinks.
+  - Quote the exact text behind every finding.
+  - Do not state rankings, traffic effects or algorithm facts as certain. Express impact as High, Medium or Low with a reason.
+  - Give a concrete fix for each issue, including rewritten text where useful.
+  - Do not recommend keyword stuffing or hidden text.
+
+  Return:
+  1. A findings table: Issue | Evidence (quote) | Fix | Impact.
+  2. The top five actions in order.
+  3. A list of things to check with tools I would need (search console, crawler, speed test).
+
+  Quality check: verify each finding is supported by the pasted content, not an assumption.

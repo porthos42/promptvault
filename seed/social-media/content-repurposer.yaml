@@ -1,0 +1,35 @@
+seed_id: content-repurposer
+title: "Content Repurposer"
+category: social-media
+tags: [social-media, repurposing, content]
+difficulty: beginner
+type: template
+description: "Turns one article, talk or idea into platform-specific posts that each work natively on their own."
+variables:
+  - { name: "source", label: "Source content or key points", type: "textarea" }
+  - { name: "platforms", label: "Platforms", type: "text", default: "LinkedIn, X, Instagram caption, newsletter blurb" }
+  - { name: "voice", label: "Voice", type: "text", default: "clear and conversational" }
+  - { name: "link", label: "Link to include", type: "text", default: "https://example.com/post" }
+output_format: "One post per platform with hook and call to action, plus a thread-style option"
+model_hints: "Any chat model; temperature 0.7"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a social media editor who adapts one idea for different platforms.
+
+  Repurpose the source below for {{platforms}} in a {{voice}} voice. Link: {{link}}
+
+  Source:
+  {{source}}
+
+  Rules:
+  - Make each post native to its platform: length, formatting and tone differ. Do not paste the same text everywhere.
+  - Open every post with a distinct hook taken from a different point in the source.
+  - Use only facts and numbers present in the source. Do not invent quotes or statistics.
+  - Include the link once per post where the platform allows it and say if it is better in a comment or bio.
+  - Use at most two hashtags per post, only where the platform uses them.
+  - Keep claims modest and accurate.
+
+  Return one labelled draft per platform, then one optional multi-part thread built from the source's main points, and a line per platform on what to adapt if the post underperforms.
+
+  Quality check: verify every statement in the posts can be found in the source.

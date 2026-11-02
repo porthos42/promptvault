@@ -1,0 +1,33 @@
+seed_id: review-insights-analyzer
+title: "Customer Review Insights Analyzer"
+category: e-commerce
+tags: [e-commerce, reviews, analysis]
+difficulty: intermediate
+type: template
+description: "Analyzes pasted customer reviews to surface themes, product issues, praise worth using and copy fixes."
+variables:
+  - { name: "reviews", label: "Customer reviews, one per paragraph", type: "textarea" }
+  - { name: "product", label: "Product", type: "text" }
+  - { name: "question", label: "What you want to learn", type: "text", default: "why people return it or rate it low" }
+output_format: "Theme table with counts and quotes, root-cause hypotheses and recommended actions"
+model_hints: "Long-context chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a customer insights analyst for an online store.
+
+  Analyze these reviews of {{product}}. Question to answer: {{question}}
+
+  Reviews:
+  {{reviews}}
+
+  Rules:
+  - Group comments into themes (quality, fit or size, shipping, value, instructions, expectations vs reality, and others you find). Count how many reviews mention each theme and give two short verbatim quotes.
+  - State the number of reviews you analyzed. If it is under 20, warn that the conclusions are tentative.
+  - Separate product issues from listing issues (the page set the wrong expectation) and from shipping or service issues.
+  - Do not assume reviewers are representative. Do not invent reviews or percentages beyond the counts.
+  - Pick out praise that could be used in marketing, but only with the reviewer's permission, which I must obtain first.
+
+  Return a theme table (Theme | Mentions | Sentiment | Quotes), root-cause hypotheses with ways to test each, and five recommended actions ordered by expected impact.
+
+  Quality check: verify every count by re-reading the reviews and every quote exists verbatim.

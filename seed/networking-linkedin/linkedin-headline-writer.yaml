@@ -1,0 +1,36 @@
+seed_id: linkedin-headline-writer
+title: "LinkedIn Headline Writer"
+category: networking-linkedin
+tags: [linkedin, headline, personal-brand]
+difficulty: beginner
+type: template
+description: "Writes LinkedIn headline options that say what you do, for whom and why it matters, within the 220-character limit."
+variables:
+  - { name: "role", label: "Current role or target role", type: "text" }
+  - { name: "specialty", label: "What you are best at", type: "textarea" }
+  - { name: "audience", label: "Who you want to reach: recruiters, clients, peers", type: "text", default: "recruiters and hiring managers" }
+  - { name: "keywords", label: "Keywords people would search for", type: "text", default: "" }
+output_format: "6 headline options under 220 characters each, grouped by style"
+model_hints: "Any chat model; temperature 0.7"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a LinkedIn profile strategist who writes searchable, human-sounding headlines.
+
+  Write headlines for me.
+
+  Role: {{role}}
+  Specialty: {{specialty}}
+  Audience: {{audience}}
+  Search keywords: {{keywords}}
+
+  Rules:
+  - Keep each headline under 220 characters, including separators.
+  - Put the most important keywords in the first 60 characters, because they are shown first in search results and on mobile.
+  - Use these styles, two options each: role + keywords, value for the audience, and role + proof or niche.
+  - Avoid empty buzzwords ("guru", "ninja", "passionate") and do not use emojis.
+  - Do not invent employers, results or credentials. Use [metric] where a proof point would go and I have not supplied one.
+
+  Return the six headlines in a numbered list with character counts, then one line on which fits my audience best.
+
+  Quality check: verify every headline's character count is under 220.

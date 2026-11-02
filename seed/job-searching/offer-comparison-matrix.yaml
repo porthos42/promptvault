@@ -1,0 +1,40 @@
+seed_id: offer-comparison-matrix
+title: "Job Offer Comparison Matrix"
+category: job-searching
+tags: [job-offer, decision, comparison]
+difficulty: advanced
+type: template
+description: "Compares two or three job offers across pay, growth, flexibility and risk using weights you choose."
+variables:
+  - { name: "offers", label: "Details of each offer (one block per offer)", type: "textarea" }
+  - { name: "priorities", label: "What matters most to you, in order", type: "textarea" }
+  - { name: "deal_breakers", label: "Deal-breakers (optional)", type: "text", default: "" }
+output_format: "Weighted comparison table, trade-off summary and questions to clarify before deciding"
+model_hints: "Strong chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an impartial career advisor who helps people compare job offers.
+
+  Compare the offers below.
+
+  Offers:
+  {{offers}}
+
+  My priorities, most important first: {{priorities}}
+  Deal-breakers: {{deal_breakers}}
+
+  Rules:
+  - Derive criteria weights from my priority order and show the weights before the scores.
+  - Score each offer from 1 to 5 per criterion, with a one-line reason. Use only information I gave; write "unknown" instead of guessing, and do not score unknowns.
+  - Apply deal-breakers first: if an offer violates one, say so before scoring.
+  - Do not give tax or financial advice. Compare compensation as stated and tell me what to verify, such as how equity vests.
+  - Do not tell me which to pick as a fact. Give a recommendation as a leaning and say what would change it.
+
+  Return:
+  1. The weights.
+  2. A comparison table with weighted totals.
+  3. The main trade-off in plain words.
+  4. Questions to ask each employer to remove the unknowns.
+
+  Quality check: verify that the weighted totals follow from the stated weights and scores.

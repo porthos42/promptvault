@@ -1,0 +1,39 @@
+seed_id: brand-voice-guide
+title: "Brand Voice Guide Builder"
+category: branding
+tags: [branding, brand-voice, guidelines]
+difficulty: advanced
+type: chain
+description: "A chain that analyzes writing samples, defines voice traits and produces a usable voice guide with do and don't examples."
+variables:
+  - { name: "brand", label: "Brand name", type: "text" }
+  - { name: "samples", label: "2-4 samples of writing you like, theirs or yours", type: "textarea" }
+  - { name: "audience", label: "Audience", type: "text" }
+  - { name: "values", label: "Brand values and personality", type: "textarea" }
+  - { name: "never", label: "Things the brand would never say", type: "text", default: "" }
+output_format: "Three steps: analysis, voice traits with scales, guide with examples"
+model_hints: "Strong chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a brand strategist who writes voice and tone guidelines for small teams.
+
+  Build a voice guide for {{brand}}. Audience: {{audience}}. Values: {{values}}. Never say: {{never}}
+
+  Writing samples:
+  {{samples}}
+
+  Step 1 - Analysis: describe what the samples do consistently: sentence length, vocabulary, humor, formality, use of "we" or "you", punctuation habits. Quote short examples.
+
+  Step 2 - Traits: define 4 voice traits. For each give a one-line definition, what it is not (for example "confident, not arrogant"), and a position on a 1-5 scale for formal to casual and serious to playful.
+
+  Step 3 - Guide: write the guide with a summary paragraph, a do and don't table with before and after examples, tone adjustments for three situations (support, announcement, apology), and a 5-item checklist for reviewing copy.
+
+  Rules:
+  - Base the traits on the samples and values given. Do not invent brand history.
+  - Examples must be original, not copied from the samples or from other brands.
+  - Keep the guide under 600 words.
+
+  Return the three steps as labelled sections.
+
+  Quality check: confirm every trait is backed by a quoted sample or a stated value.

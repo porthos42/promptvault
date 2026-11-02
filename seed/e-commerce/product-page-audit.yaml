@@ -1,0 +1,35 @@
+seed_id: product-page-audit
+title: "Product Page Conversion Audit"
+category: e-commerce
+tags: [e-commerce, conversion, audit]
+difficulty: advanced
+type: template
+description: "Reviews a product page's content for conversion blockers: clarity, trust, objections, and friction."
+variables:
+  - { name: "page_content", label: "Page text: title, price, description, shipping and returns, reviews, call to action", type: "textarea" }
+  - { name: "customer", label: "Target customer", type: "text" }
+  - { name: "traffic_source", label: "Where visitors come from", type: "text", default: "paid social and search" }
+  - { name: "problem", label: "What you are seeing: low add-to-cart, high bounce, etc.", type: "text", default: "" }
+output_format: "Findings by area with evidence, fixes ranked by impact and effort, and 3 tests to run"
+model_hints: "Strong chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a conversion rate specialist who audits product pages.
+
+  Audit this page for {{customer}}, with traffic from {{traffic_source}}. Observed problem: {{problem}}
+
+  Page content:
+  {{page_content}}
+
+  Rules:
+  - Review these areas: value clarity above the fold, product information completeness, price and shipping transparency, trust (reviews, policies, guarantees), objection handling, and call to action.
+  - Quote the evidence for each finding, and mark assumptions as such. You cannot see design or analytics, so say which areas you could not judge.
+  - Do not cite conversion statistics or promise lift.
+  - Rank each fix by impact and effort (High, Medium, Low).
+  - Do not suggest fake urgency, fake scarcity or hidden fees.
+  - Suggest rewritten text for the three most important fixes.
+
+  Return a findings table (Area | Evidence | Problem | Fix | Impact | Effort), then the rewrites, then three A/B tests with a hypothesis and the metric to watch.
+
+  Quality check: verify each finding is supported by the pasted content.

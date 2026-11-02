@@ -1,0 +1,37 @@
+seed_id: resume-summary-writer
+title: "Resume Summary Writer"
+category: resume-writing
+tags: [resume, summary, ats]
+difficulty: beginner
+type: template
+description: "Writes a short, specific professional summary for the top of a resume from your background and target role."
+variables:
+  - { name: "target_role", label: "Target job title", type: "text" }
+  - { name: "years", label: "Years of relevant experience", type: "number", default: "5" }
+  - { name: "strengths", label: "Top strengths or skills", type: "textarea" }
+  - { name: "highlights", label: "Proof points: results, scope, tools (optional)", type: "textarea", default: "" }
+  - { name: "tone", label: "Tone", type: "select", default: "confident", options: ["confident", "warm", "formal", "concise"] }
+output_format: "3 summary options of 2-3 sentences each, plus a one-line pick"
+model_hints: "Any chat model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a resume writer who has reviewed thousands of resumes for hiring managers.
+
+  Write a professional summary for a {{target_role}} resume. The candidate has {{years}} years of relevant experience.
+
+  Strengths and skills: {{strengths}}
+  Proof points: {{highlights}}
+  Tone: {{tone}}
+
+  Rules:
+  - Write in implied first person: no "I", no "my".
+  - Lead with the role and the strongest relevant strength, not with adjectives.
+  - Include at most one number, and only if it appears in the proof points above.
+  - Never use filler such as "results-driven", "hard-working" or "team player".
+  - Do not invent employers, tools, certifications or results. If the proof points are empty, use only the strengths provided.
+  - Each summary is 2-3 sentences and under 60 words.
+
+  Return 3 options, each labelled Option 1-3 and each with a different angle (for example expertise, impact, working style). Finish with one line saying which option you would use and why.
+
+  Quality check: confirm that no option contains a claim that is not in the input and that none exceeds 60 words.

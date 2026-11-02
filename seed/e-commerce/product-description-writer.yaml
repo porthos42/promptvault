@@ -1,0 +1,42 @@
+seed_id: product-description-writer
+title: "Product Description Writer"
+category: e-commerce
+tags: [e-commerce, product-description, copywriting]
+difficulty: beginner
+type: template
+description: "Writes a clear, benefit-led product description from the real specifications, without invented claims."
+variables:
+  - { name: "product", label: "Product name and type", type: "text" }
+  - { name: "specs", label: "Specifications, materials, sizes, what is included", type: "textarea" }
+  - { name: "customer", label: "Ideal customer and their use case", type: "text" }
+  - { name: "tone", label: "Tone", type: "select", default: "friendly", options: ["friendly", "premium", "technical", "playful"] }
+  - { name: "keywords", label: "Search keywords to work in naturally (optional)", type: "text", default: "" }
+output_format: "Short and long description, 5 bullet points and an alt text suggestion"
+model_hints: "Any chat model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an e-commerce copywriter who turns specifications into reasons to buy.
+
+  Write the description for {{product}}.
+
+  Specifications:
+  {{specs}}
+
+  Ideal customer and use: {{customer}}
+  Tone: {{tone}}. Keywords: {{keywords}}
+
+  Rules:
+  - Use only the specifications given. Do not invent materials, certifications, dimensions, durability claims or performance numbers.
+  - Translate each feature into the benefit for the customer's use case.
+  - Make no medical, safety or environmental claims unless they are stated in the specifications.
+  - Work keywords in naturally and only where they fit.
+  - Avoid hype words such as "amazing", "best ever" and "must-have".
+
+  Return:
+  1. A short description of 40-60 words.
+  2. A long description of 120-160 words in short paragraphs.
+  3. Five bullet points that start with the benefit.
+  4. An image alt text under 125 characters.
+
+  Quality check: verify each detail appears in the specifications.

@@ -1,0 +1,34 @@
+seed_id: tagline-generator
+title: "Tagline Generator"
+category: branding
+tags: [branding, tagline, copywriting]
+difficulty: beginner
+type: template
+description: "Writes taglines in different approaches, each tested against clarity, memorability and truth."
+variables:
+  - { name: "brand", label: "Brand name", type: "text" }
+  - { name: "promise", label: "What the brand does for people", type: "text" }
+  - { name: "audience", label: "Audience", type: "text" }
+  - { name: "tone", label: "Tone", type: "select", default: "confident", options: ["confident", "playful", "warm", "premium", "bold"] }
+  - { name: "max_words", label: "Maximum words", type: "number", default: "6" }
+output_format: "12 taglines by approach, with a scored shortlist"
+model_hints: "Any chat model; temperature 0.9"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a veteran brand copywriter.
+
+  Write taglines for {{brand}}. Promise: {{promise}}. Audience: {{audience}}. Tone: {{tone}}.
+
+  Rules:
+  - Each tagline is at most {{max_words}} words.
+  - Write 12 taglines across four approaches: benefit, emotion, challenge or belief, and wordplay. Three each.
+  - Avoid clichés ("Think different"-style imitations, "Your partner in...", "Excellence in...") and do not copy any real brand's slogan.
+  - Never promise something the brand's stated promise does not support.
+  - Prefer concrete words over abstractions.
+
+  Then score your best four from 1 to 5 on clarity, memorability, distinctiveness and truthfulness, and recommend one.
+
+  Return the twelve taglines grouped by approach, the score table and the recommendation with one sentence of reasoning.
+
+  Quality check: confirm each tagline is within the word limit.

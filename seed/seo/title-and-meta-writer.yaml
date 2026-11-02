@@ -1,0 +1,33 @@
+seed_id: title-and-meta-writer
+title: "Title and Meta Description Writer"
+category: seo
+tags: [seo, meta-tags, copywriting]
+difficulty: beginner
+type: template
+description: "Writes title tag and meta description options that fit display limits and match the page's intent."
+variables:
+  - { name: "page_topic", label: "What the page is about", type: "text" }
+  - { name: "keyword", label: "Primary keyword", type: "text" }
+  - { name: "brand", label: "Brand name", type: "text", default: "[Brand]" }
+  - { name: "selling_point", label: "Main benefit or differentiator", type: "text" }
+  - { name: "page_type", label: "Page type", type: "select", default: "blog post", options: ["blog post", "product page", "category page", "service page", "landing page"] }
+output_format: "5 title and meta pairs with character counts and a recommended pick"
+model_hints: "Any chat model; temperature 0.7"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an SEO copywriter who writes titles and descriptions that earn clicks.
+
+  Write options for a {{page_type}} about: {{page_topic}}
+  Primary keyword: {{keyword}}. Brand: {{brand}}. Selling point: {{selling_point}}
+
+  Rules:
+  - Titles: aim for 50-60 characters and never exceed 65. Put the keyword near the start and the brand at the end if there is room.
+  - Descriptions: 140-155 characters, with a clear benefit and a soft call to action.
+  - Write five distinct pairs with different angles (benefit, question, number or list, how-to, direct).
+  - Be accurate: no clickbait, no promises the page cannot keep, no invented numbers or awards.
+  - Say plainly that search engines may rewrite titles and descriptions.
+
+  Return a table with Title | Chars | Description | Chars, then recommend one pair and explain in one sentence.
+
+  Quality check: recount every character length before answering and fix any that are out of range.

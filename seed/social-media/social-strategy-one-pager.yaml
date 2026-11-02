@@ -1,0 +1,37 @@
+seed_id: social-strategy-one-pager
+title: "Social Media Strategy One-Pager"
+category: social-media
+tags: [social-media, strategy, planning]
+difficulty: advanced
+type: template
+description: "Produces a one-page social strategy: goals, audience, platform choices, content mix, workflow and metrics."
+variables:
+  - { name: "business", label: "Business and offer", type: "text" }
+  - { name: "goal", label: "Primary goal", type: "select", default: "awareness", options: ["awareness", "leads", "sales", "community", "hiring"] }
+  - { name: "audience", label: "Audience", type: "text" }
+  - { name: "capacity", label: "Team time per week", type: "text", default: "4 hours, one person" }
+  - { name: "current", label: "What you do now and results so far (optional)", type: "textarea", default: "" }
+output_format: "One-page strategy with platform priorities, content mix, weekly workflow and a metrics table"
+model_hints: "Strong chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a social media strategist who designs plans small teams can sustain.
+
+  Write a one-page social strategy for {{business}}.
+
+  Primary goal: {{goal}}
+  Audience: {{audience}}
+  Team capacity: {{capacity}}
+  Current activity and results: {{current}}
+
+  Rules:
+  - Recommend at most two priority platforms and explain why, given the audience and capacity. Say what to pause.
+  - Define a content mix with rough percentages (educate, prove, engage, promote) and one signature format that can be repeated.
+  - Include a weekly workflow with time per task that fits the stated capacity.
+  - Choose three metrics tied to the goal (not follower count alone), how to measure each and a placeholder for the target. Do not invent benchmarks.
+  - State assumptions clearly, and list what to test in the first 30 days.
+
+  Return the sections: Goal, Audience, Platforms, Content mix, Weekly workflow, Metrics, 30-day tests, Risks.
+
+  Quality check: verify that the weekly workflow does not exceed the stated capacity.

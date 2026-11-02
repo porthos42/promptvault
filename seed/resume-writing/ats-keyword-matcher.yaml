@@ -1,0 +1,38 @@
+seed_id: ats-keyword-matcher
+title: "ATS Keyword Matcher"
+category: resume-writing
+tags: [resume, ats, keywords]
+difficulty: intermediate
+type: template
+description: "Compares a resume to a job posting and lists matched, missing and weak keywords with honest ways to address gaps."
+variables:
+  - { name: "job_posting", label: "Job posting text", type: "textarea" }
+  - { name: "resume_text", label: "Resume text", type: "textarea" }
+output_format: "Table of keywords with status, plus a prioritized fix list"
+model_hints: "Long-context chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an applicant-tracking-system (ATS) specialist and technical recruiter.
+
+  Compare the resume to the job posting and report keyword coverage.
+
+  Job posting:
+  {{job_posting}}
+
+  Resume:
+  {{resume_text}}
+
+  Rules:
+  - Extract only keywords that appear in the posting: skills, tools, methods, credentials, and role-specific terms. Ignore generic words.
+  - Treat clear synonyms and spelled-out forms as matches (for example "search engine optimization" and "SEO") and say so.
+  - Mark each keyword as Matched, Weak (appears once or only in a skills list with no supporting bullet) or Missing.
+  - Never suggest adding a keyword for a skill the resume gives no evidence of. For those, say "gap: do not claim unless true".
+  - Do not guess how any particular ATS scores resumes.
+
+  Return:
+  1. A table with columns Keyword | Where in posting (required or preferred) | Status | Evidence in resume.
+  2. The 5 highest-priority fixes, each naming the resume section to change and a suggested truthful rewrite.
+  3. A list of true gaps the candidate should address in a cover letter or by learning.
+
+  Quality check: before answering, verify that every Matched keyword has quoted evidence from the resume.

@@ -1,0 +1,38 @@
+seed_id: proposal-executive-summary
+title: "Proposal Executive Summary"
+category: sales
+tags: [sales, proposal, writing]
+difficulty: advanced
+type: template
+description: "Writes a client-centered executive summary for a proposal: problem, solution, outcomes, scope and next step."
+variables:
+  - { name: "client", label: "Client name and industry", type: "text" }
+  - { name: "problem", label: "The client's problem in their words", type: "textarea" }
+  - { name: "solution", label: "Your proposed solution and scope", type: "textarea" }
+  - { name: "outcomes", label: "Expected outcomes you can support", type: "textarea" }
+  - { name: "timeline", label: "Timeline and investment, as agreed", type: "text" }
+output_format: "One-page executive summary with headings and a next-step section"
+model_hints: "Strong chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a proposal writer who writes executive summaries decision makers read.
+
+  Write the executive summary for a proposal to {{client}}.
+
+  Their problem: {{problem}}
+  Proposed solution and scope: {{solution}}
+  Expected outcomes: {{outcomes}}
+  Timeline and investment: {{timeline}}
+
+  Rules:
+  - Start with the client's situation and the cost of inaction, in their language, before you describe the solution.
+  - Keep it to one page (about 350 words) with headings: Situation, Approach, Outcomes, Scope and Timeline, Next Step.
+  - State outcomes only if they are in my input and label estimates as estimates. Do not guarantee results.
+  - Write "what is not included" if the scope text implies exclusions.
+  - No jargon or filler. Quote prices only as given.
+  - Leave [placeholders] for anything missing, rather than inventing it.
+
+  Return the executive summary and a short list of questions I should confirm with the client before sending.
+
+  Quality check: confirm that every number and commitment matches my input.

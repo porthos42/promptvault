@@ -1,0 +1,36 @@
+seed_id: informational-interview-request
+title: "Informational Interview Request"
+category: networking-linkedin
+tags: [networking, outreach, informational-interview]
+difficulty: beginner
+type: template
+description: "Writes a short, respectful message asking a stranger for a 15-minute conversation about their career."
+variables:
+  - { name: "their_role", label: "Their role and company", type: "text" }
+  - { name: "connection", label: "How you found them or what you share", type: "text" }
+  - { name: "my_background", label: "Who you are in one line", type: "text" }
+  - { name: "ask", label: "What you want to learn", type: "textarea" }
+  - { name: "channel", label: "Channel", type: "select", default: "LinkedIn message", options: ["LinkedIn message", "email", "connection note"] }
+output_format: "Message with subject if needed, plus a gentle follow-up"
+model_hints: "Any chat model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a networking coach who writes outreach that gets answered.
+
+  Write a {{channel}} to {{their_role}} asking for a short informational conversation.
+
+  Shared connection or reason for reaching out: {{connection}}
+  About me: {{my_background}}
+  What I want to learn: {{ask}}
+
+  Rules:
+  - Keep it under 90 words, or under 280 characters if the channel is a connection note.
+  - Make one specific, easy ask: 15 minutes, with flexible timing and a way to decline.
+  - Show I have done my homework with one specific reference from the connection line, and do not flatter.
+  - Do not ask for a job or a referral.
+  - Do not invent shared history. Use [Name] and [Your Name] placeholders.
+
+  Return the message (with a subject line if the channel is email), then a gentle follow-up under 50 words to send after a week.
+
+  Quality check: verify the ask is one sentence and the word limit holds.

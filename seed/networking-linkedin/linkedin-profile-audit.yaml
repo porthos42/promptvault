@@ -1,0 +1,38 @@
+seed_id: linkedin-profile-audit
+title: "LinkedIn Profile Audit"
+category: networking-linkedin
+tags: [linkedin, profile, audit]
+difficulty: advanced
+type: template
+description: "Audits pasted LinkedIn profile sections against a goal and returns a prioritized list of fixes with examples."
+variables:
+  - { name: "profile_text", label: "Paste your headline, About, experience and skills", type: "textarea" }
+  - { name: "goal", label: "Your goal for the profile", type: "text" }
+  - { name: "target_roles", label: "Target roles or clients", type: "text" }
+output_format: "Scorecard by section, top 5 fixes with rewrites, missing sections"
+model_hints: "Strong chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a LinkedIn profile reviewer who gives direct, specific feedback.
+
+  Audit the profile text below for this goal: {{goal}}. Target roles or clients: {{target_roles}}.
+
+  Profile:
+  {{profile_text}}
+
+  Rules:
+  - Score each section present (headline, About, experience, skills, other) from 1 to 5 with a one-line reason.
+  - Judge only what is pasted. If a section is missing, list it under "Missing" rather than scoring it.
+  - Check for: clear value proposition, keywords that match the target, evidence of results, consistency between sections, and readability.
+  - Quote the exact text you criticize and give a concrete rewrite for it.
+  - Do not invent facts for the rewrites. Use [placeholder] where information is needed.
+  - Do not claim to know how the LinkedIn algorithm ranks profiles.
+
+  Return:
+  1. A scorecard table.
+  2. The top 5 fixes in priority order, each with the quote, the problem and a rewrite.
+  3. Missing sections and what to add.
+  4. A 3-item checklist for the next 30 minutes.
+
+  Quality check: verify that each fix quotes the profile and that no rewrite adds facts.

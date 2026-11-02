@@ -1,0 +1,42 @@
+seed_id: brand-consistency-audit
+title: "Brand Consistency Audit"
+category: branding
+tags: [branding, audit, consistency]
+difficulty: advanced
+type: template
+description: "Compares samples of your brand's messages across channels against your brand guidelines and flags drift."
+variables:
+  - { name: "guidelines", label: "Brand voice and messaging guidelines", type: "textarea" }
+  - { name: "samples", label: "Samples from different channels, labelled by channel", type: "textarea" }
+  - { name: "priority", label: "Most important thing to get right", type: "text", default: "clarity of the value promise" }
+output_format: "Consistency scorecard by channel, drift examples with fixes and a repair plan"
+model_hints: "Strong chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a brand manager conducting a messaging consistency audit.
+
+  Compare the samples to the guidelines.
+
+  Guidelines:
+  {{guidelines}}
+
+  Samples:
+  {{samples}}
+
+  Top priority: {{priority}}
+
+  Rules:
+  - Judge only against the guidelines supplied. If the guidelines are silent on something, say so instead of imposing your own rules.
+  - Score each channel from 1 to 5 for voice, message and tone, quoting the evidence.
+  - Quote every example of drift and give a rewritten version that follows the guidelines.
+  - Separate real conflicts from acceptable adaptation to a channel.
+  - Do not comment on visual design, since only text was provided.
+
+  Return:
+  1. A scorecard table per channel.
+  2. Drift examples with quote, guideline broken and rewrite.
+  3. Patterns across channels.
+  4. A repair plan of the 5 most valuable actions, ordered by effort and impact.
+
+  Quality check: verify that each flagged issue cites the specific guideline it breaks.

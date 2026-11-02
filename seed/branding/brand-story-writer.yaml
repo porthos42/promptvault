@@ -1,0 +1,38 @@
+seed_id: brand-story-writer
+title: "Brand Story Writer"
+category: branding
+tags: [branding, storytelling, about-page]
+difficulty: intermediate
+type: template
+description: "Writes an honest brand story or About page from your origin, problem, approach and values."
+variables:
+  - { name: "brand", label: "Brand name", type: "text" }
+  - { name: "origin", label: "How and why it started", type: "textarea" }
+  - { name: "problem", label: "The problem you solve", type: "text" }
+  - { name: "approach", label: "What you do differently", type: "textarea" }
+  - { name: "values", label: "Values shown through actions", type: "text" }
+  - { name: "length", label: "Length", type: "select", default: "about 250 words", options: ["about 100 words", "about 250 words", "about 500 words"] }
+output_format: "Brand story at the chosen length plus a 1-sentence version"
+model_hints: "Any chat model; temperature 0.7"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a brand storyteller who writes About pages that sound human.
+
+  Write the story of {{brand}}, {{length}}.
+
+  Origin: {{origin}}
+  Problem: {{problem}}
+  Approach: {{approach}}
+  Values: {{values}}
+
+  Rules:
+  - Structure: the problem seen up close, the decision to act, the approach, and what it means for the customer.
+  - Show values through concrete actions from my input, not through value words.
+  - Use only facts supplied. Do not invent founders, dates, quotes, awards or numbers. Mark gaps with [detail needed].
+  - Plain, warm language. No "revolutionize", "cutting-edge" or "passion for excellence".
+  - Write the customer as the hero and the brand as the guide.
+
+  Return the story, then a one-sentence version for bios and a list of three details I could add to make it more specific.
+
+  Quality check: verify no detail appears that is not in my input.

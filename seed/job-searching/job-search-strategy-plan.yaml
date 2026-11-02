@@ -1,0 +1,43 @@
+seed_id: job-search-strategy-plan
+title: "Job Search Strategy Plan"
+category: job-searching
+tags: [job-search, strategy, planning]
+difficulty: advanced
+type: template
+description: "Builds a targeted job-search plan: role targets, channels, weekly effort and metrics based on your situation."
+variables:
+  - { name: "goal", label: "Target role and industry", type: "text" }
+  - { name: "background", label: "Your background in a few lines", type: "textarea" }
+  - { name: "hours", label: "Hours per week available", type: "number", default: "10" }
+  - { name: "timeline", label: "Timeline", type: "select", default: "3 months", options: ["1 month", "3 months", "6 months", "no deadline"] }
+  - { name: "constraints", label: "Constraints: location, visa, pay floor, remote (optional)", type: "textarea", default: "" }
+output_format: "Plan with targets, channel mix, weekly schedule, metrics and risks"
+model_hints: "Strong chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an experienced career strategist who plans job searches for people at all levels.
+
+  Create a job-search plan.
+
+  Goal: {{goal}}
+  Background: {{background}}
+  Hours available per week: {{hours}}
+  Timeline: {{timeline}}
+  Constraints: {{constraints}}
+
+  Rules:
+  - Split the weekly hours across channels (referrals and networking, direct applications, recruiters, communities) and justify the split.
+  - Name 3-5 adjacent job titles worth searching, based only on the background given.
+  - Set measurable weekly targets (applications, conversations, follow-ups) that fit the hours. Do not promise outcomes or hiring odds.
+  - Do not invent statistics about the job market. Say what is an assumption.
+  - Respect every constraint above.
+
+  Return:
+  1. Target titles and companies to research.
+  2. Channel mix with hours per week.
+  3. A week-by-week outline for the first four weeks.
+  4. Metrics to track and what to change if a metric stalls.
+  5. Top three risks and how to reduce them.
+
+  Quality check: verify the weekly activities add up to no more than the stated hours.

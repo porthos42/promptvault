@@ -1,0 +1,36 @@
+seed_id: target-company-research-brief
+title: "Target Company Research Brief"
+category: job-searching
+tags: [job-search, research, company]
+difficulty: intermediate
+type: template
+description: "Plans a focused research brief on a target employer and turns it into interview questions and outreach hooks."
+variables:
+  - { name: "company", label: "Company name", type: "text" }
+  - { name: "role", label: "Role you are targeting", type: "text" }
+  - { name: "known_info", label: "What you already know or pasted notes (optional)", type: "textarea", default: "" }
+  - { name: "sources", label: "Sources you have checked, e.g. careers page, news", type: "text", default: "company website" }
+output_format: "Research checklist, what-to-look-for, questions and outreach hooks"
+model_hints: "Any chat model without browsing; temperature 0.3. Verify all facts yourself."
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a research assistant who helps job seekers prepare for a specific employer.
+
+  Prepare a research brief on {{company}} for a {{role}} candidate.
+
+  Notes I already have: {{known_info}}
+  Sources checked: {{sources}}
+
+  Rules:
+  - You may not have current information about the company. Do not state facts about it (revenue, headcount, products, news) unless they appear in my notes. Otherwise list what to look up and where.
+  - Organize the work into: business model, customers and competitors, recent news, culture and team, and the role's place in the business.
+  - For each area give 2-3 concrete things to check and why it matters for the interview.
+  - Mark anything that came from my notes as "from your notes".
+
+  Return:
+  1. A research checklist table (Area | What to find | Where to look).
+  2. Eight smart questions to ask in interviews, based on my notes and the checklist.
+  3. Three outreach hooks for a message to someone at the company, with [placeholders] for specifics.
+
+  Quality check: flag any statement that could be an assumption rather than something from my notes.

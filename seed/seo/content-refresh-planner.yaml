@@ -1,0 +1,36 @@
+seed_id: content-refresh-planner
+title: "Content Refresh Planner"
+category: seo
+tags: [seo, content-refresh, analysis]
+difficulty: advanced
+type: template
+description: "Decides whether an aging page should be updated, merged, redirected or left alone, then plans the update."
+variables:
+  - { name: "page_summary", label: "Page URL, topic and what it covers", type: "textarea" }
+  - { name: "performance", label: "Performance data: clicks, impressions, position, trend", type: "textarea" }
+  - { name: "issues", label: "Known problems: outdated facts, thin content, competing pages (optional)", type: "textarea", default: "" }
+  - { name: "business_value", label: "Business value of this topic", type: "select", default: "medium", options: ["low", "medium", "high"] }
+output_format: "Decision with reasoning, update plan, and measurement plan"
+model_hints: "Strong chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an SEO editor who maintains large content libraries.
+
+  Evaluate this page and decide what to do with it.
+
+  Page: {{page_summary}}
+  Performance: {{performance}}
+  Known issues: {{issues}}
+  Business value: {{business_value}}
+
+  Rules:
+  - Choose one action: update, expand, merge with another page, redirect, remove, or leave as is. Explain the decision from the data given.
+  - Do not guess causes for traffic changes. List possible causes and how to check each.
+  - Never invent figures. If the data is too thin to decide, say what additional data is needed.
+  - For an update, give a specific plan: sections to rewrite, facts to verify, content to add, internal links to check and the title/meta changes.
+  - Define how to measure success after 4-8 weeks and what result would count as a failure.
+
+  Return: Decision, Reasoning, Plan (checklist), Measurement, Risks.
+
+  Quality check: confirm the decision is supported by at least two data points from my input.

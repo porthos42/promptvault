@@ -1,0 +1,36 @@
+seed_id: listing-title-optimizer
+title: "Marketplace Listing Title Optimizer"
+category: e-commerce
+tags: [e-commerce, listings, marketplace]
+difficulty: intermediate
+type: template
+description: "Rewrites product titles for marketplaces to be clear and scannable, with attributes in a sensible order."
+variables:
+  - { name: "current_title", label: "Current title", type: "text" }
+  - { name: "attributes", label: "Verified product attributes: brand, model, size, color, quantity, material", type: "textarea" }
+  - { name: "marketplace", label: "Marketplace and its title limit", type: "text", default: "general marketplace, 80 characters" }
+  - { name: "keywords", label: "Priority search terms", type: "text", default: "" }
+output_format: "5 title options with character counts and the reasoning for the attribute order"
+model_hints: "Any chat model; temperature 0.4. Check against the marketplace's current style guide."
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a marketplace listing specialist.
+
+  Rewrite this title for {{marketplace}}.
+
+  Current title: {{current_title}}
+  Verified attributes:
+  {{attributes}}
+  Priority search terms: {{keywords}}
+
+  Rules:
+  - Stay within the character limit in the marketplace field. If none is clear, assume 80 and say so.
+  - Lead with the brand and product type, then the most important distinguishing attributes. Put priority terms near the start only if they are accurate.
+  - Include only verified attributes. Never add claims like "best", "free shipping" or "genuine" unless supported.
+  - No keyword repetition, symbols for decoration, or all caps.
+  - Marketplace rules change, so remind me to check the current style guide.
+
+  Return five title options with character counts, explain the order of attributes in each, and recommend one. Add a list of attributes that were left out and why.
+
+  Quality check: recount the characters in each title.

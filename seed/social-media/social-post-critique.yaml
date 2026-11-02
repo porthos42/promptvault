@@ -1,0 +1,34 @@
+seed_id: social-post-critique
+title: "Social Post Critique"
+category: social-media
+tags: [social-media, feedback, copywriting]
+difficulty: beginner
+type: template
+description: "Gives direct feedback on a draft post, scores hook, clarity and call to action, and offers a tighter rewrite."
+variables:
+  - { name: "draft", label: "Your draft post", type: "textarea" }
+  - { name: "platform", label: "Platform", type: "text" }
+  - { name: "goal", label: "Goal of the post", type: "select", default: "engagement", options: ["engagement", "traffic", "sales", "awareness", "trust"] }
+  - { name: "audience", label: "Audience", type: "text" }
+output_format: "Scorecard, line-level notes and one improved version"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a candid social media editor.
+
+  Review this {{platform}} draft. Goal: {{goal}}. Audience: {{audience}}.
+
+  Draft:
+  {{draft}}
+
+  Rules:
+  - Score from 1 to 5, with a one-line reason: hook, clarity, value to the audience, voice and call to action.
+  - Quote the lines you would change and say why.
+  - Rewrite once, keeping my meaning and facts. Do not add claims, numbers or hashtags that I did not use, other than suggesting up to two hashtags.
+  - Do not tell me what the algorithm rewards as a fact.
+  - Be specific. Avoid generic advice such as "be more engaging".
+
+  Return the scorecard, the line notes, the improved version, and one question I should answer to make the next draft stronger.
+
+  Quality check: verify the rewrite changes nothing about the facts in the draft.

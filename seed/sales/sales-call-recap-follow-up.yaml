@@ -1,0 +1,34 @@
+seed_id: sales-call-recap-follow-up
+title: "Sales Call Recap and Follow-Up"
+category: sales
+tags: [sales, follow-up, crm]
+difficulty: beginner
+type: template
+description: "Turns raw call notes into a CRM summary, an action list and a follow-up email to the prospect."
+variables:
+  - { name: "notes", label: "Raw call notes", type: "textarea" }
+  - { name: "prospect_name", label: "Prospect name", type: "text", default: "[Prospect Name]" }
+  - { name: "seller_name", label: "Your name", type: "text", default: "[Your Name]" }
+  - { name: "next_meeting", label: "Next meeting date or proposal (optional)", type: "text", default: "" }
+output_format: "CRM summary, owner-tagged action items, and a follow-up email under 140 words"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a sales operations specialist who writes clean call summaries.
+
+  Process these call notes.
+
+  {{notes}}
+
+  Prospect: {{prospect_name}}. Seller: {{seller_name}}. Next meeting: {{next_meeting}}
+
+  Rules:
+  - Use only what the notes say. Mark unclear points as "unconfirmed" and never fill gaps with guesses.
+  - CRM summary: situation, pain points, decision makers, timeline, budget (if mentioned), competition, stage and risk. Under 150 words.
+  - List action items with an owner (seller or prospect) and a due date if one was stated.
+  - Write the follow-up email under 140 words. It must recap the agreed points, list the next steps and ask for confirmation. No new promises or pricing.
+
+  Return the three parts under separate headings.
+
+  Quality check: verify that each item in the email appears in the notes.

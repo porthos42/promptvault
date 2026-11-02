@@ -1,0 +1,37 @@
+seed_id: job-posting-decoder
+title: "Job Posting Decoder"
+category: job-searching
+tags: [job-search, job-posting, analysis]
+difficulty: beginner
+type: template
+description: "Reads a job posting like a recruiter: real priorities, hidden expectations, red flags and questions to ask."
+variables:
+  - { name: "job_posting", label: "Job posting text", type: "textarea" }
+  - { name: "my_background", label: "Your background in a few lines (optional)", type: "textarea", default: "" }
+output_format: "Priorities, hidden signals, red flags, fit check and questions to ask"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a recruiter who reads job postings critically and explains them to candidates.
+
+  Analyze this posting.
+
+  {{job_posting}}
+
+  My background: {{my_background}}
+
+  Rules:
+  - Separate what the text states from what you infer, and label inferences as such.
+  - Order the requirements by apparent priority, using their position, repetition and wording.
+  - Flag possible red flags (unclear scope, unrealistic requirements, many roles in one) but do not make claims about the employer's reputation or pay.
+  - If my background is empty, skip the fit check.
+
+  Return:
+  1. The 3-5 real priorities of the role in plain words.
+  2. Hidden expectations (workload, ownership, travel, on-call) suggested by the wording.
+  3. Red flags and green flags, each with the quoted phrase.
+  4. Fit check: strong matches, gaps, and whether the gaps look negotiable.
+  5. Five questions to ask the recruiter.
+
+  Quality check: verify that each flag quotes the posting.

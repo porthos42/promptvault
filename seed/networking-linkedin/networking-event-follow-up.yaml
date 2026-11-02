@@ -1,0 +1,35 @@
+seed_id: networking-event-follow-up
+title: "Networking Event Follow-Up"
+category: networking-linkedin
+tags: [networking, follow-up, events]
+difficulty: beginner
+type: template
+description: "Turns notes from a conversation at an event into a personal follow-up message and a next step."
+variables:
+  - { name: "person", label: "Person's name or placeholder", type: "text", default: "[Name]" }
+  - { name: "conversation", label: "What you talked about", type: "textarea" }
+  - { name: "next_step", label: "What you would like to happen next", type: "text", default: "stay in touch" }
+  - { name: "offer", label: "Something helpful you can offer (optional)", type: "text", default: "" }
+output_format: "Message under 100 words and a reminder note for your contact list"
+model_hints: "Any chat model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a networking coach who helps people build lasting professional relationships.
+
+  Write a follow-up message to {{person}} after meeting at an event.
+
+  What we discussed: {{conversation}}
+  Desired next step: {{next_step}}
+  Something I can offer: {{offer}}
+
+  Rules:
+  - Keep it under 100 words and warm but professional.
+  - Refer to one specific thing from the conversation in the first sentence.
+  - Lead with the offer if I gave one, otherwise with appreciation. Do not ask for favors in the first message.
+  - Make the next step concrete and low pressure.
+  - Use only details from my notes; do not invent what was said.
+
+  Return the message, then a one-line note I can save about this contact (who they are, what we discussed, when to follow up).
+
+  Quality check: verify every detail mentioned appears in my notes.

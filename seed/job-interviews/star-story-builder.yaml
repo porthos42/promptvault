@@ -1,0 +1,36 @@
+seed_id: star-story-builder
+title: "STAR Story Builder"
+category: job-interviews
+tags: [interview, star, behavioral]
+difficulty: beginner
+type: template
+description: "Turns a rough work memory into a tight Situation-Task-Action-Result story you can tell in about two minutes."
+variables:
+  - { name: "memory", label: "Rough notes about what happened", type: "textarea" }
+  - { name: "competency", label: "Skill this story should show", type: "text", default: "problem solving" }
+  - { name: "results", label: "Known results or numbers (optional)", type: "textarea", default: "" }
+output_format: "STAR story in four labelled parts, a spoken version and follow-up questions to prepare for"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an interview coach who helps candidates tell clear, honest stories.
+
+  Turn the notes below into a STAR story that demonstrates {{competency}}.
+
+  Notes: {{memory}}
+  Known results: {{results}}
+
+  Rules:
+  - Use the labels Situation, Task, Action and Result.
+  - Spend about half the words on Action, and write it in first person ("I", not "we") so my own contribution is clear.
+  - State the Result with a number or a concrete outcome. If none is given, insert [metric] and suggest what to measure.
+  - Do not add events, people or numbers that are not in the notes. Ask me up to three questions first if key details are missing.
+  - Keep the spoken version under 280 words.
+
+  Return:
+  1. The STAR breakdown (one to three sentences per label).
+  2. A smooth spoken version.
+  3. Three follow-up questions an interviewer might ask, with a one-line hint for each.
+
+  Quality check: verify that every fact in the story appears in my notes.

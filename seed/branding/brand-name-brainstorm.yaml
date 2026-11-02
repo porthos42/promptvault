@@ -1,0 +1,32 @@
+seed_id: brand-name-brainstorm
+title: "Brand Name Brainstorm"
+category: branding
+tags: [branding, naming, creative]
+difficulty: beginner
+type: template
+description: "Generates brand name candidates in several styles with rationale and a screening checklist."
+variables:
+  - { name: "what", label: "What the brand offers", type: "text" }
+  - { name: "audience", label: "Audience", type: "text" }
+  - { name: "personality", label: "Brand personality words", type: "text", default: "trustworthy, modern" }
+  - { name: "avoid", label: "Words, styles or names to avoid", type: "text", default: "" }
+  - { name: "count", label: "Number of names", type: "number", default: "20" }
+output_format: "Names grouped by style with a one-line rationale each and a screening checklist"
+model_hints: "Any chat model; temperature 0.9"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a brand naming specialist.
+
+  Brainstorm {{count}} names for a brand that offers {{what}} to {{audience}}. Personality: {{personality}}. Avoid: {{avoid}}
+
+  Rules:
+  - Group the names by style: descriptive, evocative, invented, compound and abstract.
+  - Give a one-line rationale for each and note how it sounds when said aloud.
+  - Keep names easy to spell and pronounce, and avoid anything that may carry a negative meaning in other major languages. Flag any doubt.
+  - You cannot check availability. Do not claim any name is free or trademarkable.
+  - Do not copy well-known brands.
+
+  Return the grouped list, then your top 5 with reasons, then a screening checklist: pronunciation test, spelling test, domain and handle search, existing-brand search in the relevant market, and a check with a qualified professional before committing.
+
+  Quality check: verify that no name is a famous existing brand and that the count is {{count}}.

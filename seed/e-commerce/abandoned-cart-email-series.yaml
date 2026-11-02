@@ -1,0 +1,37 @@
+seed_id: abandoned-cart-email-series
+title: "Abandoned Cart Email Series"
+category: e-commerce
+tags: [e-commerce, email, retention]
+difficulty: intermediate
+type: chain
+description: "A chain that plans a 3-email abandoned cart flow, then writes each email honestly without fake urgency."
+variables:
+  - { name: "store", label: "Store name and what it sells", type: "text" }
+  - { name: "brand_voice", label: "Brand voice", type: "text", default: "friendly and straightforward" }
+  - { name: "incentive", label: "Incentive you are willing to offer (or none)", type: "text", default: "none" }
+  - { name: "policies", label: "Shipping and returns facts to mention", type: "textarea" }
+  - { name: "sender", label: "Sender name", type: "text", default: "[Store Team]" }
+output_format: "Plan table and 3 emails with subject, preview text, body and call to action"
+model_hints: "Any chat model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an e-commerce lifecycle marketer who writes helpful cart reminders.
+
+  Step 1 - Plan a 3-email flow for {{store}}: timing, goal and angle for each email. Use these angles: a simple reminder, answering concerns, and a last helpful nudge.
+
+  Step 2 - Write the three emails in the voice "{{brand_voice}}", signed {{sender}}.
+
+  Incentive allowed: {{incentive}}
+  Shipping and returns facts: {{policies}}
+
+  Rules:
+  - Each email is under 120 words with a subject line under 45 characters and a preview text.
+  - Use merge-tag placeholders such as [First Name], [Product Name], [Cart Link] and [unsubscribe link].
+  - Mention the incentive only in the last email, and only if one is allowed.
+  - Use the policy facts as given. No fake countdowns, false scarcity, or claims such as "selling fast" unless I say it is true.
+  - One call to action per email.
+
+  Return the plan as a table and then the three emails.
+
+  Quality check: verify that no email contains a claim that is not in my input.

@@ -1,0 +1,39 @@
+seed_id: career-change-narrative
+title: "Career Change Narrative"
+category: resume-writing
+tags: [career-change, resume, storytelling]
+difficulty: advanced
+type: template
+description: "Builds a coherent story for a career switch: transferable skills, a bridge, and ready-to-use lines for resume and interviews."
+variables:
+  - { name: "old_field", label: "Current or previous field", type: "text" }
+  - { name: "new_field", label: "Target field or role", type: "text" }
+  - { name: "transferable", label: "Skills and experience you think transfer", type: "textarea" }
+  - { name: "bridge", label: "Courses, projects or volunteering in the new field (optional)", type: "textarea", default: "" }
+  - { name: "motivation", label: "Why you are changing", type: "textarea" }
+output_format: "Narrative in 4 parts plus a 2-sentence summary and a 30-second spoken version"
+model_hints: "Strong chat model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a career coach who helps people change fields and sound credible doing it.
+
+  Build a career-change narrative from {{old_field}} to {{new_field}}.
+
+  Transferable skills and experience: {{transferable}}
+  Bridging work in the new field: {{bridge}}
+  Motivation: {{motivation}}
+
+  Rules:
+  - Be honest: present the switch as a deliberate move toward something, not an escape from the old field.
+  - Map each transferable skill to a specific need in {{new_field}}. Drop skills you cannot connect.
+  - Do not invent credentials, projects or years of experience. If the bridging work is empty, name two realistic steps to build it.
+  - Avoid apologizing or over-explaining; no negative comments about the old field.
+
+  Return these parts:
+  1. The story arc in 4 short paragraphs: where I started, what I learned, the pivot, why this role now.
+  2. A 2-sentence resume summary.
+  3. A 30-second spoken answer to "Why are you changing careers?".
+  4. Three gaps an employer might worry about, each with a one-line way to address it.
+
+  Quality check: confirm that every skill named in the story appears in my input.

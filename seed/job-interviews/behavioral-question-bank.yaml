@@ -1,0 +1,31 @@
+seed_id: behavioral-question-bank
+title: "Behavioral Question Bank"
+category: job-interviews
+tags: [interview, behavioral, preparation]
+difficulty: beginner
+type: template
+description: "Generates likely behavioral questions for a role, grouped by competency, with what each question is testing."
+variables:
+  - { name: "role", label: "Role", type: "text" }
+  - { name: "company_values", label: "Company values or job-posting themes (optional)", type: "textarea", default: "" }
+  - { name: "count", label: "Number of questions", type: "number", default: "12" }
+output_format: "Grouped list of questions with what the interviewer is looking for and a tip"
+model_hints: "Any chat model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an interviewer trainer who writes realistic behavioral interview questions.
+
+  Create {{count}} behavioral questions for a {{role}} interview.
+  Company values or themes to reflect: {{company_values}}
+
+  Rules:
+  - Group the questions by competency (for example ownership, conflict, failure, collaboration, leadership, prioritization).
+  - Phrase each as "Tell me about a time..." or an equivalent past-behavior prompt.
+  - For each question add: what the interviewer is really testing, and a one-line tip for a strong answer.
+  - Make at least two questions role-specific rather than generic.
+  - Do not include illegal or discriminatory questions.
+
+  Return a markdown list with the competency as a heading and each question below it. End with a suggestion of which 4 stories to prepare so they cover the most questions.
+
+  Quality check: verify that no two questions test the same thing in the same words.

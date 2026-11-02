@@ -1,0 +1,36 @@
+seed_id: discovery-call-planner
+title: "Discovery Call Planner"
+category: sales
+tags: [sales, discovery, questions]
+difficulty: intermediate
+type: template
+description: "Plans a discovery call with an agenda, open questions by topic and signals that show whether to continue."
+variables:
+  - { name: "prospect", label: "Prospect role, company type and size", type: "text" }
+  - { name: "what_you_know", label: "What you already know", type: "textarea" }
+  - { name: "solution", label: "What you sell, in one or two lines", type: "text" }
+  - { name: "call_length", label: "Call length in minutes", type: "number", default: "30" }
+output_format: "Agenda with timings, 10-12 questions by topic, red and green signals, and next-step options"
+model_hints: "Any chat model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a seasoned sales coach who teaches consultative discovery.
+
+  Plan a {{call_length}}-minute discovery call.
+
+  Prospect: {{prospect}}
+  Known so far: {{what_you_know}}
+  My solution: {{solution}}
+
+  Rules:
+  - Build an agenda with timings that sum to the call length, leaving at least 5 minutes for next steps.
+  - Write 10-12 open-ended questions grouped by topic: current situation, problems and impact, decision process, timeline and budget, success criteria.
+  - Do not repeat what I already know; use it to ask sharper follow-ups.
+  - No leading questions and no pitching in the first half of the call.
+  - List green signals (worth pursuing) and red signals (disqualifying), based on my solution only.
+  - Do not assume facts about the prospect that are not in my input.
+
+  Return the agenda, the questions, the signals, and three options for next steps depending on how the call goes.
+
+  Quality check: verify the agenda timings add up to {{call_length}} minutes.

@@ -1,0 +1,44 @@
+seed_id: resume-tailor-to-job-description
+title: "Tailor Resume to a Job Description"
+category: resume-writing
+tags: [resume, tailoring, job-application]
+difficulty: advanced
+type: chain
+description: "A three-step chain that analyzes a posting, maps your experience to it and rewrites your resume sections truthfully."
+variables:
+  - { name: "job_posting", label: "Job posting text", type: "textarea" }
+  - { name: "resume_text", label: "Current resume text", type: "textarea" }
+  - { name: "extra_experience", label: "Relevant experience not on your resume (optional)", type: "textarea", default: "" }
+output_format: "Three labelled steps: requirements, evidence map, rewritten sections"
+model_hints: "Strong chat model; temperature 0.3; run all steps in one reply or one step per turn"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a senior resume writer who tailors resumes without exaggerating.
+
+  Work through the three steps in order and label each one.
+
+  Job posting:
+  {{job_posting}}
+
+  Current resume:
+  {{resume_text}}
+
+  Extra experience the candidate says is true:
+  {{extra_experience}}
+
+  Step 1 - Requirements: list the 6-10 most important requirements and the language the employer uses for them. Mark each as must-have or nice-to-have.
+
+  Step 2 - Evidence map: for each requirement, quote the resume line (or the extra experience) that proves it. If there is none, write "no evidence".
+
+  Step 3 - Rewrite: rewrite the summary and the bullets that map to must-have requirements, reusing the employer's wording only where it is accurate. Keep the original order of jobs and dates.
+
+  Rules:
+  - Do not invent skills, titles, dates, employers or numbers. Use placeholders like [X%] when a metric is missing.
+  - Keep each bullet under 28 words and start it with a past-tense verb (present tense for the current job).
+  - Show the original and the rewrite side by side for every changed bullet.
+  - Finish with a short list of requirements that remain unmet.
+
+  Return the three steps as labelled sections in markdown.
+
+  Quality check: confirm that each rewritten bullet traces back to a line in Step 2.

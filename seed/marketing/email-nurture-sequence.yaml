@@ -1,0 +1,34 @@
+seed_id: email-nurture-sequence
+title: "Email Nurture Sequence"
+category: marketing
+tags: [marketing, email, automation]
+difficulty: intermediate
+type: chain
+description: "A chain that plans a 5-email nurture sequence, then writes each email with subject, body and one call to action."
+variables:
+  - { name: "audience", label: "Who receives the sequence and what they signed up for", type: "text" }
+  - { name: "product", label: "What you eventually want them to do or buy", type: "text" }
+  - { name: "pain_points", label: "Their main problems", type: "textarea" }
+  - { name: "brand_voice", label: "Brand voice", type: "text", default: "friendly and clear" }
+  - { name: "sender", label: "Sender name", type: "text", default: "[Sender Name]" }
+output_format: "Plan table, then five emails with subject lines and calls to action"
+model_hints: "Any chat model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an email marketer who writes helpful nurture sequences, not hard sells.
+
+  Step 1 - Plan: set out a 5-email sequence for {{audience}} with the goal of {{product}}. For each email give the purpose, the days after sign-up, and the single call to action. Base the themes on these pain points: {{pain_points}}
+
+  Step 2 - Write: write all five emails in the voice "{{brand_voice}}", signed {{sender}}.
+
+  Rules:
+  - Each email is under 150 words, with a subject line under 50 characters and a preview line.
+  - One call to action per email. The offer appears directly only in emails 4 and 5.
+  - Give value first: a tip, a story or a resource per email.
+  - Do not invent customer numbers, testimonials, discounts or deadlines. Use [placeholder] where they would go.
+  - Include an unsubscribe reminder line as a placeholder, [unsubscribe link].
+
+  Return the plan as a table and then the five emails, each under its own heading.
+
+  Quality check: confirm that no email has more than one call to action.
