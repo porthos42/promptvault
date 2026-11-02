@@ -5,7 +5,7 @@
 
 A self-hosted, searchable prompt engineering library. The goal is hundreds of ready-to-use prompts across careers, marketing, coding, STEM, 3D printing, image/video generation and more, with full create/edit/delete, search, filtering and import. Single-user and local-first. Free and open source.
 
-> **Status: early development (M2e done).** The backend API, CLI, full-text search, the library UI and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importers are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
+> **Status: early development (M2f done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importers are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
 
 **Stack:** Python 3.11+ (FastAPI, SQLAlchemy 2, Alembic, Typer), React 19 + TypeScript (Vite), SQLite with FTS5 by default.
 
@@ -137,6 +137,7 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 | M2c | Seed prompts: Business and Professional (9 categories, 6 each, disclaimers on legal, finance and real estate) | Done |
 | M2d | Seed prompts: Creative and Technical (9 categories, 6 each, safety rules in the prompt bodies) | Done |
 | M2e | Seed prompts: Education and Prompt Engineering (7 categories, 213 prompts in total), per-category minimum of 5 enforced | Done |
+| M2f | UI declutter: design tokens, grouped sidebar, Filters control and chips, calmer rows and detail pane, responsive layout (frontend only) | Done |
 | M3 | Importers (JSON, CSV/XLSX, Markdown, GitHub, URL), dedupe, export | Next |
 | M4 | Published Docker image (GHCR), PyPI package, start scripts, release automation | Planned |
 | M5 | Polish and v1.0: accessibility, performance, end-to-end tests | Planned |
