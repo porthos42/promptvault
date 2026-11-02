@@ -23,6 +23,7 @@ export default function Trash() {
         <h2>Trash</h2>
         <span className="dim">{feed.total} item{feed.total === 1 ? '' : 's'}. Trash is purged after 30 days.</span>
         <button
+          className="danger"
           disabled={feed.total === 0}
           onClick={() => {
             if (window.confirm('Permanently delete everything in Trash?')) void act(() => api.emptyTrash())
@@ -53,6 +54,7 @@ export default function Trash() {
               Restore
             </button>
             <button
+              className="quiet danger"
               onClick={(e) => {
                 e.stopPropagation()
                 if (window.confirm(`Permanently delete "${p.title}"?`))

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { api, type Prompt } from '../api'
 import { renderTemplate } from '../lib/template'
 
@@ -9,14 +9,28 @@ type Props = {
   onEdit: () => void
   onDuplicated: (p: Prompt) => void
   onDeleted: () => void
+  onBack?: () => void
 }
 
-export default function PromptDetail({ prompt, onChanged, onTag, onEdit, onDuplicated, onDeleted }: Props) {
+export default function PromptDetail({ prompt, onChanged, onTag, onEdit, onDuplicated, onDeleted, onBack }: Props) {
   const [values, setValues] = useState<Record<string, string>>({})
   const [copied, setCopied] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [menu, setMenu] = useState(false)
+  const [details, setDetails] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   const { text, missing } = renderTemplate(prompt.body, prompt.variables, values)
+
+  useEffect(() => {
+    if (!menu) return
+    menuRef.current?.querySelector<HTMLElement>('[role="menuitem"]')?.focus()
+    const onDown = (e: MouseEvent) => {
+      if (!menuRef.current?.contains(e.target as Node)) setMenu(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [menu])
 
   const run = async (fn: () => Promise<unknown>) => {
     setError(null)
@@ -36,41 +50,89 @@ export default function PromptDetail({ prompt, onChanged, onTag, onEdit, onDupli
       onChanged(updated)
     })
 
+  const item = (label: string, fn: () => Promise<unknown>, className?: string) => (
+    <button
+      role="menuitem"
+      className={`quiet ${className ?? ''}`}
+      onClick={() => {
+        setMenu(false)
+        void run(fn)
+      }}
+    >
+      {label}
+    </button>
+  )
+
   return (
     <article className="detail">
-      <header>
-        <h2>{prompt.title}</h2>
-        <div className="toolbar">
-          <button
-            aria-pressed={prompt.is_favorite}
-            onClick={() =>
-              run(async () => onChanged(await api.patchPrompt(prompt.id, { is_favorite: !prompt.is_favorite })))
-            }
-          >
-            {prompt.is_favorite ? '★ Favorited' : '☆ Favorite'}
+      <header className="detail-head">
+        {onBack && (
+          <button className="back quiet" onClick={onBack}>
+            ← All prompts
           </button>
-          <button onClick={onEdit}>Edit</button>
-          {prompt.seed_modified && (
+        )}
+        <div className="title-row">
+          <h2>{prompt.title}</h2>
+          <div className="toolbar">
             <button
-              title="Restore the shipped text. Your version stays in the revision history."
-              onClick={() => run(async () => onChanged(await api.resetPrompt(prompt.id)))}
+              className="icon quiet"
+              aria-label="Favorite"
+              title={prompt.is_favorite ? 'Remove from favorites' : 'Add to favorites'}
+              aria-pressed={prompt.is_favorite}
+              onClick={() =>
+                run(async () => onChanged(await api.patchPrompt(prompt.id, { is_favorite: !prompt.is_favorite })))
+              }
             >
-              Reset to original
+              {prompt.is_favorite ? '★' : '☆'}
             </button>
-          )}
-          <button onClick={() => run(async () => onDuplicated(await api.duplicatePrompt(prompt.id)))}>
-            Duplicate
-          </button>
-          <button
-            onClick={() =>
-              run(async () => {
-                await api.deletePrompt(prompt.id)
-                onDeleted()
-              })
-            }
-          >
-            Delete
-          </button>
+            <button onClick={onEdit}>Edit</button>
+            <div ref={menuRef} style={{ display: 'contents' }}>
+              <button
+                className="icon quiet"
+                aria-label="More actions"
+                aria-haspopup="menu"
+                aria-expanded={menu}
+                onClick={() => setMenu((o) => !o)}
+              >
+                ⋯
+              </button>
+              {menu && (
+                <div
+                  className="menu"
+                  role="menu"
+                  aria-label="More actions"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') {
+                      setMenu(false)
+                      menuRef.current?.querySelector<HTMLElement>('[aria-haspopup]')?.focus()
+                    }
+                  }}
+                >
+                  {item('Duplicate', async () => onDuplicated(await api.duplicatePrompt(prompt.id)))}
+                  {prompt.seed_modified &&
+                    item('Reset to original', async () => onChanged(await api.resetPrompt(prompt.id)))}
+                  {item(
+                    'Move to trash',
+                    async () => {
+                      await api.deletePrompt(prompt.id)
+                      onDeleted()
+                    },
+                    'danger',
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        {prompt.description && <p className="lede">{prompt.description}</p>}
+        <div className="subtitle">
+          {prompt.category && <span>{prompt.category.name}</span>}
+          <span>· {prompt.difficulty}</span>
+          {prompt.tags.map((t) => (
+            <button key={t} className="chip plain" onClick={() => onTag(t)}>
+              #{t}
+            </button>
+          ))}
         </div>
       </header>
 
@@ -79,23 +141,12 @@ export default function PromptDetail({ prompt, onChanged, onTag, onEdit, onDupli
           {error}
         </p>
       )}
-      {prompt.description && <p>{prompt.description}</p>}
       {prompt.disclaimer && (
-        <p className="disclaimer" role="note">
+        <p className="notice" role="note">
+          <strong>Note: </strong>
           {prompt.disclaimer}
         </p>
       )}
-      <p className="meta">
-        {prompt.category && <span className="chip">{prompt.category.name}</span>}
-        <span className="chip dim">{prompt.difficulty}</span>
-        {prompt.model_hints && <span className="chip dim">{prompt.model_hints}</span>}
-        {prompt.tags.map((t) => (
-          <button key={t} className="chip dim" onClick={() => onTag(t)}>
-            #{t}
-          </button>
-        ))}
-        <span className="dim">Used {prompt.use_count}×</span>
-      </p>
 
       {prompt.variables.length > 0 && (
         <form className="varform" onSubmit={(e) => e.preventDefault()} aria-label="Variables">
@@ -131,7 +182,7 @@ export default function PromptDetail({ prompt, onChanged, onTag, onEdit, onDupli
       )}
 
       <section aria-label="Preview">
-        <div className="preview-head">
+        <div className="section-head">
           <h3>Preview</h3>
           {missing.length > 0 && <span className="dim">Missing: {missing.join(', ')}</span>}
           <button className="primary" onClick={copy}>
@@ -141,6 +192,44 @@ export default function PromptDetail({ prompt, onChanged, onTag, onEdit, onDupli
         <pre className="preview" data-testid="preview">
           {text}
         </pre>
+      </section>
+
+      <section>
+        <button
+          className="quiet details-toggle"
+          aria-expanded={details}
+          aria-controls="prompt-details"
+          onClick={() => setDetails((o) => !o)}
+        >
+          <span aria-hidden="true">{details ? '▾' : '▸'}</span> Details
+        </button>
+        {details && (
+          <dl id="prompt-details" className="details-list">
+            <dt>Source</dt>
+            <dd>
+              {prompt.seed_id ? 'Shipped prompt' : 'Your prompt'}
+              {prompt.seed_modified ? ' (edited)' : ''}
+            </dd>
+            <dt>Used</dt>
+            <dd>
+              {prompt.use_count} time{prompt.use_count === 1 ? '' : 's'}
+            </dd>
+            <dt>Updated</dt>
+            <dd>{new Date(prompt.updated_at).toLocaleDateString()}</dd>
+            {prompt.model_hints && (
+              <>
+                <dt>Model hints</dt>
+                <dd>{prompt.model_hints}</dd>
+              </>
+            )}
+            {prompt.output_format && (
+              <>
+                <dt>Output format</dt>
+                <dd>{prompt.output_format}</dd>
+              </>
+            )}
+          </dl>
+        )}
       </section>
     </article>
   )

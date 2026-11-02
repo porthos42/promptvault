@@ -95,7 +95,9 @@ export default function Editor() {
 
   return (
     <form className="editor" onSubmit={save}>
-      <h2>{id ? 'Edit prompt' : 'New prompt'}</h2>
+      <header className="page-head">
+        <h2>{id ? 'Edit prompt' : 'New prompt'}</h2>
+      </header>
       {error && (
         <p role="alert" className="error">
           {error}
@@ -158,11 +160,11 @@ export default function Editor() {
         <label htmlFor="f-disc">Disclaimer</label>
         <input id="f-disc" value={draft.disclaimer} onChange={(e) => set('disclaimer', e.target.value)} />
       </div>
-      <div className="toolbar">
+      <div className="editor-actions">
         <button className="primary" type="submit" disabled={saving || !draft.title.trim() || !draft.body.trim()}>
           {saving ? 'Saving...' : 'Save'}
         </button>
-        <button type="button" onClick={() => navigate(id ? `/p/${id}` : '/')}>
+        <button type="button" className="quiet" onClick={() => navigate(id ? `/p/${id}` : '/')}>
           Cancel
         </button>
       </div>

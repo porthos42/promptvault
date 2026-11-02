@@ -80,7 +80,7 @@ export default function Library() {
   }
 
   return (
-    <div className="library">
+    <div className={id ? 'library has-detail' : 'library'}>
       <section className="list-pane">
         <FilterBar
           filters={filters}
@@ -122,6 +122,7 @@ export default function Library() {
             }}
             onTag={(t) => change({ tags: filters.tags.includes(t) ? filters.tags : [...filters.tags, t] })}
             onEdit={() => navigate(`/p/${selected.id}/edit`)}
+            onBack={() => navigate({ pathname: '/', search })}
             onDuplicated={(p) => {
               refresh()
               navigate({ pathname: `/p/${p.id}`, search })
@@ -132,7 +133,7 @@ export default function Library() {
             }}
           />
         ) : (
-          !detailError && <p className="empty">Select a prompt to view, fill variables and copy.</p>
+          !detailError && !id && <p className="empty">Select a prompt to view, fill variables and copy.</p>
         )}
       </section>
     </div>

@@ -70,11 +70,12 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
               onClick={() => open(p)}
             >
               <strong>{p.title}</strong>
-              <span className="dim">{p.category?.name}</span>
+              <span className="dim small">{p.category?.name}</span>
             </li>
           ))}
           {items.length === 0 && <li className="dim">No results</li>}
         </ul>
+        <p className="palette-hint dim">↑↓ to move, Enter to open, Esc to close</p>
       </div>
     </div>
   )
