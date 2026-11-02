@@ -182,3 +182,94 @@ class SeedReportOut(BaseModel):
 
 class PurgeOut(BaseModel):
     purged: int
+
+
+# ---- import (docs/SPEC.md 3.5) --------------------------------------------------------------
+
+DupAction = Literal["skip", "replace", "keep_both"]
+
+
+class ImportRequest(BaseModel):
+    importer: str = Field(min_length=1, max_length=100, description="Registered importer name")
+    source: Any = Field(description="Importer-specific source (passthrough: a list of prompts)")
+
+
+class CommitRequest(ImportRequest):
+    default_action: DupAction = Field(default="skip", description="Applied to every duplicate")
+    actions: dict[int, DupAction] = Field(
+        default_factory=dict, description="Per-row override, keyed by the row index from preview"
+    )
+    confirm_license: bool = Field(
+        default=False, description="Import rows whose license is missing or unclear"
+    )
+    confirmed_rows: list[int] = Field(
+        default_factory=list, description="Confirm the license of individual rows only"
+    )
+
+
+class DraftOut(BaseModel):
+    title: str
+    body: str
+    description: str
+    category: str | None
+    tags: list[str]
+    difficulty: str | None
+    prompt_type: str | None
+    model_hints: str | None
+    output_format: str | None
+    disclaimer: str | None
+    source_url: str | None
+    license: str | None
+    variables: list[str]
+
+
+class MatchOut(BaseModel):
+    kind: Literal["exact", "fuzzy"]
+    score: float
+    title: str
+    prompt_id: str | None = Field(description="Set when the duplicate is an existing prompt")
+    batch_index: int | None = Field(description="Set when it duplicates an earlier row")
+
+
+class PreviewRow(BaseModel):
+    index: int
+    status: Literal["new", "duplicate", "invalid"]
+    errors: list[str]
+    warnings: list[str]
+    needs_license_confirm: bool
+    draft: DraftOut
+    match: MatchOut | None
+
+
+class PreviewOut(BaseModel):
+    importer: str
+    total: int
+    new: int
+    duplicate: int
+    invalid: int
+    needs_license_confirm: int
+    rows: list[PreviewRow]
+
+
+class JobResultOut(BaseModel):
+    index: int
+    title: str
+    outcome: Literal["created", "replaced", "skipped", "invalid", "refused"]
+    prompt_id: str | None
+    reason: str | None
+
+
+class JobOut(BaseModel):
+    id: str
+    importer: str
+    status: Literal["pending", "running", "done", "failed"]
+    total: int
+    processed: int
+    created: int
+    replaced: int
+    skipped: int
+    invalid: int
+    refused: int
+    error: str | None
+    created_at: datetime
+    results: list[JobResultOut] | None = None

@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     auto_migrate: bool = True
     trash_retention_days: int = 30  # soft-deleted prompts older than this are purged at start
     cors_origins: list[str] = Field(default_factory=list)
+    import_max_rows: int = 2000  # rows per import request
+    import_max_payload_bytes: int = 5 * 1024 * 1024  # request body cap for import endpoints
 
     @field_validator("data_dir", mode="before")
     @classmethod

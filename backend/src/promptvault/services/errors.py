@@ -23,3 +23,8 @@ class ConflictError(DomainError):
 class ValidationFailed(DomainError):
     status_code = 422
     title = "Validation failed"
+
+
+class PayloadTooLarge(DomainError):
+    status_code = 413
+    title = "Payload too large"

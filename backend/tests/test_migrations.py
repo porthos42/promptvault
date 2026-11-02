@@ -127,3 +127,55 @@ def test_0003_adds_and_drops_seed_hash_keeping_fts(tmp_path: Path) -> None:
     with engine.connect() as c:
         n = c.execute(text("SELECT count(*) FROM prompt_fts WHERE prompt_fts MATCH 'beta'"))
         assert n.scalar() == 1
+
+
+def test_0004_adds_and_drops_import_jobs_keeping_fts(tmp_path: Path) -> None:
+    url = _url(tmp_path)
+    run_migrations(url)
+    engine = make_engine(url)
+    insp = inspect(engine)
+    assert "import_jobs" in insp.get_table_names()
+    cols = {c["name"] for c in insp.get_columns("import_jobs")}
+    assert cols >= {
+        "id",
+        "importer",
+        "status",
+        "total",
+        "processed",
+        "drafts",
+        "error",
+        "created_at",
+    }
+    # provenance columns exist (since 0001) and are nullable
+    prompt_cols = {c["name"]: c for c in insp.get_columns("prompt")}
+    assert prompt_cols["source_url"]["nullable"] and prompt_cols["license"]["nullable"]
+    with engine.begin() as c:
+        c.execute(
+            text(
+                "INSERT INTO import_jobs (id, importer, drafts, created_at) "
+                "VALUES ('j1', 'passthrough', '[]', '2026-01-01')"
+            )
+        )
+        row = c.execute(text("SELECT status, total, processed, error FROM import_jobs")).one()
+        assert tuple(row) == ("pending", 0, 0, None)
+    downgrade(url, "0003")
+    engine.dispose()
+    engine = make_engine(url)
+    assert "import_jobs" not in inspect(engine).get_table_names()
+    with engine.begin() as c:  # FTS triggers and prompt columns untouched
+        c.execute(
+            text(
+                "INSERT INTO prompt (id, title, body, description, variables, created_at, "
+                "updated_at) VALUES ('p1', 'Alpha', 'beta gamma', '', '[]', '2026-01-01', "
+                "'2026-01-01')"
+            )
+        )
+    with engine.connect() as c:
+        assert (
+            c.execute(
+                text("SELECT count(*) FROM prompt_fts WHERE prompt_fts MATCH 'beta'")
+            ).scalar()
+            == 1
+        )
+    run_migrations(url)  # and it upgrades again
+    assert "import_jobs" in inspect(make_engine(url)).get_table_names()

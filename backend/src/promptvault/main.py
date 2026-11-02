@@ -13,9 +13,10 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from promptvault import __version__
-from promptvault.api import categories, errors, health, prompts, tags
+from promptvault.api import categories, errors, health, imports, prompts, tags
 from promptvault.config import Settings, get_settings
 from promptvault.db import make_engine, make_session_factory, run_migrations
+from promptvault.importers.jobs import JobRunner, fail_interrupted
 from promptvault.services.prompts import purge_trash
 from promptvault.services.seed import sync_from_settings
 
@@ -43,13 +44,19 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 session.commit()
             if report:
                 log.info("Seed library: %s", report.summary())
+        with app.state.session_factory() as session:
+            if fail_interrupted(session):
+                log.warning("Marked interrupted import jobs as failed")
+            session.commit()
         yield
+        app.state.job_runner.shutdown()
         engine.dispose()
 
     app = FastAPI(title="Prompt Vault", version=__version__, lifespan=lifespan)
     app.state.settings = settings
     app.state.engine = engine
     app.state.session_factory = make_session_factory(engine)
+    app.state.job_runner = JobRunner(app.state.session_factory)
 
     if settings.cors_origins:
         app.add_middleware(
@@ -60,7 +67,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         )
 
     errors.install(app)
-    for r in (health.router, prompts.router, categories.router, tags.router):
+    for r in (health.router, prompts.router, categories.router, tags.router, imports.router):
         app.include_router(r, prefix="/api/v1")
 
     index = STATIC_DIR / "index.html"

@@ -98,6 +98,15 @@ Pipeline rules:
 - **Provenance:** source URL and license are stored per prompt. Imports from repos without a clear license are flagged for the user to confirm.
 - Imports run as background jobs with progress (SSE).
 
+**Implementation notes (M3a, deviations from the text above):**
+
+- **Fuzzy matching uses stdlib `difflib`, not MinHash or rapidfuzz** (no new dependency). It lives behind one function, `importers/dedupe.similarity(a, b)`, so rapidfuzz can replace it in that one file. Order: exact hash of the normalized body (the stored `body_hash`), then cheap prefilters (length ratio, token overlap, character multiset), then `SequenceMatcher`. Threshold `FUZZY_THRESHOLD = 0.92`, untuned. Only the first 8000 characters of a body are compared. Revisit rapidfuzz as an optional extra once real large imports exist and a benchmark shows difflib is too slow.
+- Duplicates are only ever matched against live prompts. A body that equals a trashed prompt is imported as a new prompt (with a warning); the trashed prompt is never restored or changed.
+- Commit actions per duplicate are `skip` (default), `replace` (the normal update path, so the old version stays as a revision) and `keep_both`. A duplicate of an earlier row in the same batch can only be skipped or kept.
+- Rows with a missing or unclear license (`needs_license_confirm`) are refused at commit unless the request sets `confirm_license` or lists the row in `confirmed_rows`; other rows still import.
+- Commits up to 25 rows run inside the request (200); larger ones return a pending job (202) with `GET /jobs/{id}` and `GET /jobs/{id}/events` (SSE: `progress`, then `done` or `failed`). A job is one transaction, so a failure leaves no partial import.
+- Request caps: `PV_IMPORT_MAX_ROWS` (2000) and `PV_IMPORT_MAX_PAYLOAD_BYTES` (5 MiB), answered with 413 problem+json.
+
 ## 3.6 Export
 
 JSON (lossless), CSV, XLSX, a Markdown folder or ZIP, and a single-prompt "share" snippet.

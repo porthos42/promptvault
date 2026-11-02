@@ -129,3 +129,23 @@ class PromptRevision(Base):
     created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=_now)
 
     prompt: Mapped[Prompt] = relationship(back_populates="revisions")
+
+
+class ImportJob(Base):
+    """A committed import: the rows to write plus progress counters (see importers/jobs.py)."""
+
+    __tablename__ = "import_jobs"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=_uuid)
+    importer: Mapped[str] = mapped_column(String(100))
+    status: Mapped[str] = mapped_column(String(20), default="pending", index=True)
+    total: Mapped[int] = mapped_column(Integer, default=0)
+    processed: Mapped[int] = mapped_column(Integer, default=0)
+    created: Mapped[int] = mapped_column(Integer, default=0)
+    replaced: Mapped[int] = mapped_column(Integer, default=0)
+    skipped: Mapped[int] = mapped_column(Integer, default=0)
+    invalid: Mapped[int] = mapped_column(Integer, default=0)
+    refused: Mapped[int] = mapped_column(Integer, default=0)
+    drafts: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=_now)
