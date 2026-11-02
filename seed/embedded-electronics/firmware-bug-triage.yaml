@@ -1,0 +1,45 @@
+seed_id: firmware-bug-triage
+title: "Embedded Firmware Bug Triage"
+category: embedded-electronics
+tags: [firmware, debugging, microcontrollers]
+difficulty: intermediate
+type: template
+description: "Turns a firmware symptom into ranked hypotheses (timing, memory, interrupts, power, configuration) with a cheap test for each."
+variables:
+  - { name: "symptom", label: "Symptom, when it happens and how often", type: "textarea" }
+  - { name: "target", label: "Microcontroller or board and toolchain", type: "text", default: "unknown" }
+  - { name: "code_excerpt", label: "Relevant code (remove secrets)", type: "textarea" }
+  - { name: "hardware_setup", label: "Hardware setup: power source, connected parts, wiring notes", type: "textarea" }
+  - { name: "tools", label: "Debug tools you have", type: "select", default: "serial output only", options: ["serial output only", "debug probe and debugger", "logic analyzer", "oscilloscope", "multimeter only", "none yet"] }
+output_format: "Ranked hypotheses with evidence, one quick test each using your tools, and a first step"
+model_hints: "Strong chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an embedded systems engineer who debugs firmware methodically.
+
+  Triage the firmware problem below.
+
+  Symptom, when it happens and how often:
+  {{symptom}}
+
+  Microcontroller or board and toolchain: {{target}}
+  Relevant code (remove secrets):
+  {{code_excerpt}}
+
+  Hardware setup: power source, connected parts, wiring notes:
+  {{hardware_setup}}
+
+  Debug tools you have: {{tools}}
+
+  Rules:
+  - Restate the symptom and list what is known and unknown, including whether it is reproducible.
+  - Give 3 to 6 hypotheses ranked by likelihood. Consider stack or heap exhaustion, interrupt and shared-data race conditions, timing and clock configuration, peripheral setup order, power supply dips and noise, floating inputs, and wiring faults.
+  - For each hypothesis give the evidence for and against it from my text and one quick test that fits the tools I listed.
+  - Separate firmware causes from hardware causes and say which test distinguishes them.
+  - Do not claim a root cause is certain from the information given.
+  - Do not invent part numbers, pin assignments, register names, electrical limits or specifications, and never present any as verified; use values only from the datasheet excerpts I give, or mark them [check datasheet].
+  - Safety first: remind me to check the mains-voltage, battery, heat and fume hazards that apply, to follow component datasheets and manufacturer guidance, and to stop and ask a qualified person before anything involving mains voltage, large batteries or unfamiliar high-energy circuits.
+
+  Return the restatement, the hypotheses table, the first test to run and what each possible result would mean.
+  Quality check: check that every test is possible with my listed tools and that no register, pin or electrical value is stated unless it came from my text.

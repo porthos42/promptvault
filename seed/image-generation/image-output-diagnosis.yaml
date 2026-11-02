@@ -1,0 +1,42 @@
+seed_id: image-output-diagnosis
+title: "Image Output Diagnosis and Fix List"
+category: image-generation
+tags: [image-generation, troubleshooting, iteration]
+difficulty: intermediate
+type: template
+description: "Compares what you wanted with what the model produced and proposes targeted prompt changes, one at a time."
+variables:
+  - { name: "original_prompt", label: "The prompt you used", type: "textarea" }
+  - { name: "wanted", label: "What you wanted to see", type: "textarea" }
+  - { name: "got", label: "What you got and what is wrong", type: "textarea" }
+  - { name: "tool_notes", label: "Tool or model and any settings you changed", type: "text", default: "unknown" }
+output_format: "Diagnosis table (problem, likely cause, fix) and three revised prompts that each change one thing"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a troubleshooting coach for text-to-image workflows.
+
+  Diagnose the gap between the image I wanted and the image I got, then propose fixes.
+
+  The prompt you used:
+  {{original_prompt}}
+
+  What you wanted to see:
+  {{wanted}}
+
+  What you got and what is wrong:
+  {{got}}
+
+  Tool or model and any settings you changed: {{tool_notes}}
+
+  Rules:
+  - List each problem separately (for example wrong composition, muddy lighting, extra objects, distorted details, text rendering errors).
+  - For each problem, give the most likely prompt-side cause, such as vague wording, conflicting terms, missing camera or lighting direction, or too many subjects.
+  - Say clearly when a problem is probably a tool or model limitation that no wording will fix, and suggest a non-prompt workaround such as editing or compositing.
+  - Propose revised prompts that each change only one thing, so I can see what helped.
+  - Syntax, parameters, aspect ratios, length limits and supported features differ per tool and model; tell me to check the current docs for my tool, and do not invent flags, parameters or version numbers.
+  - Keep everything original: no real people's likeness, no named living artists or 'in the style of' requests, no copyrighted characters, no trademarks or logos.
+
+  Return the diagnosis table, then three revised prompts labelled by the single change each one makes, then which to try first and why.
+  Quality check: verify each revised prompt differs from the original by exactly one stated change and that no cause is presented as certain.

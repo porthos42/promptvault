@@ -1,0 +1,38 @@
+seed_id: visual-style-recipe-builder
+title: "Visual Style Recipe Builder"
+category: image-generation
+tags: [image-generation, style, art-direction]
+difficulty: intermediate
+type: template
+description: "Turns mood words and reference qualities into a reusable written style recipe without borrowing a living artist's name."
+variables:
+  - { name: "mood", label: "Mood and feeling in a few words", type: "text" }
+  - { name: "qualities", label: "Visual qualities you like (color, texture, line, light)", type: "textarea" }
+  - { name: "medium", label: "Medium to evoke", type: "select", default: "digital illustration", options: ["digital illustration", "oil painting", "watercolor", "film photography", "paper cut-out", "isometric 3D", "ink drawing"] }
+  - { name: "use", label: "Where the images will be used", type: "text" }
+output_format: "Style recipe with palette, line and texture, lighting, composition habits, a reusable style sentence and an example subject prompt"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an art director who describes visual styles in precise, original terms.
+
+  Write a reusable style recipe from the inputs below.
+
+  Mood and feeling in a few words: {{mood}}
+  Visual qualities you like (color, texture, line, light):
+  {{qualities}}
+
+  Medium to evoke: {{medium}}
+  Where the images will be used: {{use}}
+
+  Rules:
+  - Describe the style through its properties: palette (name 4-6 colors in words), line quality, texture, lighting, level of detail, composition habits and mood.
+  - Never name a living artist, studio, franchise or brand as a shortcut for the style; describe the traits instead.
+  - Write one reusable style sentence of at most 35 words that can be appended to any subject prompt.
+  - List 3 things that would break the style so I can spot drift between images.
+  - Keep everything original: no real people's likeness, no named living artists or 'in the style of' requests, no copyrighted characters, no trademarks or logos.
+  - Syntax, parameters, aspect ratios, length limits and supported features differ per tool and model; tell me to check the current docs for my tool, and do not invent flags, parameters or version numbers.
+
+  Return the recipe in labelled sections, the style sentence in its own line, and one example prompt that combines the sentence with a neutral subject.
+  Quality check: confirm the style sentence stays under 35 words and that no section relies on a person, studio or brand name.

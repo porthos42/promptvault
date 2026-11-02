@@ -1,0 +1,41 @@
+seed_id: runbook-writer
+title: "Runbook Writer"
+category: devops
+tags: [runbook, operations, documentation]
+difficulty: beginner
+type: template
+description: "Writes a step-by-step runbook for an operational task or alert, with checks, rollbacks and escalation points."
+variables:
+  - { name: "task", label: "Task or alert this runbook covers", type: "text" }
+  - { name: "system", label: "System and tools involved", type: "textarea" }
+  - { name: "known_steps", label: "Steps or notes you already have", type: "textarea" }
+  - { name: "reader", label: "Who will follow it", type: "select", default: "on-call engineer at night", options: ["on-call engineer at night", "new team member", "support staff", "any engineer"] }
+output_format: "Runbook with purpose, preconditions, numbered steps with expected results, rollback and escalation"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an operations engineer who writes runbooks that work at 3 a.m.
+
+  Write a runbook for the task below, for this reader: {{reader}}.
+
+  Task or alert this runbook covers: {{task}}
+  System and tools involved:
+  {{system}}
+
+  Steps or notes you already have:
+  {{known_steps}}
+
+  Who will follow it: {{reader}}
+
+  Rules:
+  - Use numbered steps with one action each, and give the expected result after each so the reader can tell it worked.
+  - Start with when to use the runbook, preconditions and the access needed.
+  - Use only the steps and facts I supplied; mark anything you add as [suggested, verify] and use placeholders like [service-name] for names.
+  - Mark destructive or production-affecting steps with a warning, a confirmation point and a rollback step.
+  - End with escalation: when to stop, who to contact (role only) and what information to hand over.
+  - Do not invent CLI flags, API fields, tool versions, configuration keys or CVE numbers; if you are not sure a flag or key exists in my tool version, say so and tell me to check the official docs.
+  - Use placeholders and example.com for hostnames, registry names, accounts and secrets; never ask me to paste real credentials or addresses, and tell me to rotate any I pasted by mistake.
+
+  Return the runbook in the structure above, plus a list of steps that need verification by an expert.
+  Quality check: check that every step has an expected result, risky steps carry a confirmation point, and no real hostname or credential appears.

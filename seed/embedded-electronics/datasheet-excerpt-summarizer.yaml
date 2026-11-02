@@ -1,0 +1,39 @@
+seed_id: datasheet-excerpt-summarizer
+title: "Datasheet Excerpt Summarizer"
+category: embedded-electronics
+tags: [datasheet, components, reference]
+difficulty: beginner
+type: template
+description: "Summarizes datasheet excerpts you paste into the limits, pins and timing that matter for your use, without adding outside facts."
+variables:
+  - { name: "excerpt", label: "Datasheet excerpt (paste the relevant sections)", type: "textarea" }
+  - { name: "part_label", label: "Part name as printed (for reference only)", type: "text" }
+  - { name: "use_case", label: "How you plan to use the part", type: "text" }
+  - { name: "experience", label: "Your experience level", type: "select", default: "beginner", options: ["beginner", "intermediate", "experienced"] }
+output_format: "Summary of absolute limits, operating conditions, pins, timing and gotchas, with quotes and open questions"
+model_hints: "Any chat model; temperature 0.1"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an electronics engineer who explains datasheets clearly and accurately.
+
+  Summarize the excerpt below for my planned use.
+
+  Datasheet excerpt (paste the relevant sections):
+  {{excerpt}}
+
+  Part name as printed (for reference only): {{part_label}}
+  How you plan to use the part: {{use_case}}
+  Your experience level: {{experience}}
+
+  Rules:
+  - Use only the excerpt; if something I need is not in it, list it under 'Not in the excerpt' instead of filling it from memory.
+  - Separate absolute maximum ratings from recommended operating conditions and warn me never to design near the maximums.
+  - Quote the exact value and unit for each limit, and give the section or table name if it is in the text.
+  - Explain pins, interfaces and timing relevant to my use in plain words suited to my level.
+  - List gotchas that follow directly from the excerpt (for example voltage limits on inputs, startup requirements).
+  - Do not invent part numbers, pin assignments, register names, electrical limits or specifications, and never present any as verified; use values only from the datasheet excerpts I give, or mark them [check datasheet].
+  - Safety first: remind me to check the mains-voltage, battery, heat and fume hazards that apply, to follow component datasheets and manufacturer guidance, and to stop and ask a qualified person before anything involving mains voltage, large batteries or unfamiliar high-energy circuits.
+
+  Return a table of limits with quotes, a short list of pins and interfaces, gotchas, and a list of what is missing from the excerpt.
+  Quality check: check that every number in the summary appears in the excerpt with the same unit.

@@ -1,0 +1,43 @@
+seed_id: print-failure-diagnosis
+title: "3D Print Failure Diagnosis"
+category: 3d-printing
+tags: [3d-printing, troubleshooting, fdm]
+difficulty: intermediate
+type: template
+description: "Diagnoses a failed or poor 3D print from its symptoms and setup, with ranked causes and one change to test at a time."
+variables:
+  - { name: "symptoms", label: "What went wrong, where and when in the print", type: "textarea" }
+  - { name: "printer", label: "Printer type and any known modifications", type: "text", default: "unknown" }
+  - { name: "material", label: "Material and its manufacturer's printing guidance (paste what you have)", type: "text", default: "unknown" }
+  - { name: "settings", label: "Relevant slicer settings you used", type: "textarea" }
+  - { name: "environment", label: "Environment: room temperature, drafts, enclosure, filament storage", type: "text", default: "not noted" }
+output_format: "Ranked causes with evidence, one-change test plan and what to record after each test"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an experienced 3D printing technician who troubleshoots print failures.
+
+  Diagnose the print problem below.
+
+  What went wrong, where and when in the print:
+  {{symptoms}}
+
+  Printer type and any known modifications: {{printer}}
+  Material and its manufacturer's printing guidance (paste what you have): {{material}}
+  Relevant slicer settings you used:
+  {{settings}}
+
+  Environment: room temperature, drafts, enclosure, filament storage: {{environment}}
+
+  Rules:
+  - Describe the symptoms back to me in your own words and ask up to 3 questions if a photo-level detail is missing (for example layer where it failed, direction of the defect).
+  - Rank 3 to 5 likely causes drawing on bed adhesion and leveling, temperature, cooling, moisture, extrusion and flow, mechanical issues, speed and acceleration, and model design.
+  - For each cause give the evidence in my text and one change to test; change only one thing per test and say what to record.
+  - Never give exact temperatures or speeds as verified; tell me to use my filament maker's and printer maker's guidance, or to run a calibration print, and mark values [check manufacturer data].
+  - Treat repeated failures with heat, smoke, smells, loose wiring or damaged parts as a stop-and-inspect situation, and tell me to power off safely and follow the printer manufacturer's guidance.
+  - Do not invent print settings, temperatures, speeds, material properties or part numbers and present them as verified; use values from my printer, slicer or filament documentation, or give a method to find them and mark them [check manufacturer data].
+  - Safety first: remind me about hot surfaces, moving parts, fumes and ventilation for the material in use, and to follow the printer and filament manufacturer's guidance; never suggest bypassing thermal protection or other safety features.
+
+  Return the restated symptoms, a ranked cause table, a numbered one-change-at-a-time test plan and a note on when to stop and inspect hardware.
+  Quality check: check that each test changes exactly one variable and no numeric setting is presented as verified.

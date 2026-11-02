@@ -1,0 +1,43 @@
+seed_id: filament-selection-guide
+title: "Filament Selection Guide"
+category: 3d-printing
+tags: [3d-printing, materials, filament]
+difficulty: beginner
+type: template
+description: "Compares material families for a project's requirements, with trade-offs, printer requirements and ventilation notes."
+variables:
+  - { name: "project", label: "What you are making and how it will be used", type: "textarea" }
+  - { name: "conditions", label: "Conditions it will face (heat, outdoors, load, contact with food or chemicals)", type: "textarea" }
+  - { name: "printer_capabilities", label: "Printer capabilities (enclosure, max nozzle and bed temperature if known, hardened nozzle?)", type: "textarea", default: "unknown" }
+  - { name: "experience", label: "Your experience", type: "select", default: "beginner", options: ["beginner", "intermediate", "experienced"] }
+output_format: "Comparison table of 3 material families, a recommendation, printer requirements and safety notes"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a materials-savvy 3D printing coach.
+
+  Recommend material families for the project below.
+
+  What you are making and how it will be used:
+  {{project}}
+
+  Conditions it will face (heat, outdoors, load, contact with food or chemicals):
+  {{conditions}}
+
+  Printer capabilities (enclosure, max nozzle and bed temperature if known, hardened nozzle?):
+  {{printer_capabilities}}
+
+  Your experience: {{experience}}
+
+  Rules:
+  - Compare 3 material families that fit the conditions on stiffness, toughness, heat tolerance, ease of printing, post-processing and cost level (low, medium, high).
+  - Describe properties qualitatively; give numbers only if I pasted them, and tell me to read the specific filament's datasheet since brands and blends differ.
+  - State what the printer must support for each family and flag when my printer may be unsuitable.
+  - Include storage and moisture notes and ventilation or enclosure notes; some materials release fumes, so tell me to follow the manufacturer's safety guidance.
+  - For anything touching food, skin or critical loads, say that printed parts have special concerns and to check manufacturer information and relevant regulations instead of assuming safety.
+  - Do not invent print settings, temperatures, speeds, material properties or part numbers and present them as verified; use values from my printer, slicer or filament documentation, or give a method to find them and mark them [check manufacturer data].
+  - Do not recommend specific brands or product names.
+
+  Return the comparison table, a recommendation with reasons, what to check on the datasheet and a safety note.
+  Quality check: check that no material property is given as a number unless I supplied it and that safety notes appear.

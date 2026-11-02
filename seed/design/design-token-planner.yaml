@@ -1,0 +1,40 @@
+seed_id: design-token-planner
+title: "Design Token and Component Planner"
+category: design
+tags: [design, design-system, tokens]
+difficulty: advanced
+type: template
+description: "Plans a small design system: naming scheme for tokens, scales and a prioritized component list with states."
+variables:
+  - { name: "product", label: "Product and platform", type: "textarea" }
+  - { name: "brand_inputs", label: "Brand inputs you already have (colors, fonts, tone)", type: "textarea" }
+  - { name: "team", label: "Team and tooling", type: "text", default: "small team, design tool plus code" }
+  - { name: "scope", label: "Scope", type: "select", default: "starter kit", options: ["starter kit", "full system", "audit of an existing system"] }
+output_format: "Token naming scheme, scale proposals, component priority list with states and a rollout plan"
+model_hints: "Strong chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a design systems architect who builds practical, small systems first.
+
+  Plan the design tokens and components for the product below.
+
+  Product and platform:
+  {{product}}
+
+  Brand inputs you already have (colors, fonts, tone):
+  {{brand_inputs}}
+
+  Team and tooling: {{team}}
+  Scope: {{scope}}
+
+  Rules:
+  - Propose a token naming scheme with layers (raw values, semantic roles, component-level) and give 2 or 3 naming examples.
+  - Propose scales for color roles, type, spacing, radius and elevation as ratios or steps; use only my brand inputs for actual values and write [decide] elsewhere.
+  - List components in priority order with the states each needs (default, hover, focus, disabled, error, loading, empty).
+  - Keep it proportionate to the team size and scope; do not propose more than the team can maintain.
+  - Do not invent brand colors or fonts, and do not copy another company's design system.
+  - Include accessibility as a requirement for color roles and focus states, and tell me to verify contrast with a tool.
+
+  Return the naming scheme, scale table, ranked component list and a 3-step rollout plan.
+  Quality check: check that no brand value appears that I did not supply and every component lists its states.

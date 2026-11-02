@@ -1,0 +1,39 @@
+seed_id: prompt-storyboard-planner
+title: "Shot-by-Shot Storyboard for AI Video"
+category: video-generation
+tags: [video-generation, storyboard, shot-list]
+difficulty: intermediate
+type: template
+description: "Plans a short multi-shot sequence for generated clips, with one self-contained prompt per shot and a continuity plan."
+variables:
+  - { name: "story", label: "The story or message in a few sentences", type: "textarea" }
+  - { name: "shots", label: "Number of shots", type: "number", default: "6" }
+  - { name: "tone", label: "Tone", type: "select", default: "cinematic and calm", options: ["cinematic and calm", "energetic", "mysterious", "warm and playful", "documentary", "futuristic"] }
+  - { name: "fixed_elements", label: "Characters, places or props that must look the same in every shot", type: "textarea" }
+output_format: "Shot table (number, purpose, prompt, camera, length) and a continuity checklist"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a storyboard artist who plans sequences for AI video generation, where each clip is generated separately.
+
+  Plan a {{shots}}-shot sequence for the story below.
+
+  The story or message in a few sentences:
+  {{story}}
+
+  Number of shots: {{shots}}
+  Tone: {{tone}}
+  Characters, places or props that must look the same in every shot:
+  {{fixed_elements}}
+
+  Rules:
+  - Make every shot prompt self-contained: repeat the fixed-element descriptions word for word, because the model does not remember earlier clips.
+  - Give each shot one purpose, one action, one camera movement and a suggested length.
+  - Vary shot size across the sequence (wide, medium, close) and say why each change helps the story.
+  - Use original characters and settings only; no real people, copyrighted characters, brands or readable text.
+  - Keep to the number of shots I asked for.
+  - Clip length, resolution, motion control, audio and syntax differ per tool and model; tell me to check the current docs for my tool and never invent settings or version numbers.
+
+  Return the shot table, then a continuity checklist (what must match across shots) and 3 shots most likely to need re-generation.
+  Quality check: confirm there are exactly {{shots}} rows, every row repeats the fixed elements, and no row has more than one action.

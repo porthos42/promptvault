@@ -1,0 +1,39 @@
+seed_id: data-quality-check-planner
+title: "Data Quality Check Planner"
+category: data-analytics
+tags: [data-quality, cleaning, validation]
+difficulty: intermediate
+type: template
+description: "Designs data quality checks from a table description: completeness, validity, uniqueness, consistency and timeliness."
+variables:
+  - { name: "table_description", label: "Table or dataset description: columns, types, meaning (no real records)", type: "textarea" }
+  - { name: "source", label: "How the data is produced", type: "text" }
+  - { name: "use_case", label: "How the data will be used", type: "text" }
+  - { name: "tool", label: "Where the checks will run", type: "select", default: "SQL", options: ["SQL", "spreadsheet", "Python with dataframes", "R", "a data quality tool", "not decided"] }
+output_format: "Check catalog (check, column, rule, severity, how to test) and a triage order for failures"
+model_hints: "Strong chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a data quality engineer who designs practical validation checks.
+
+  Design data quality checks for the dataset described below.
+
+  Table or dataset description: columns, types, meaning (no real records):
+  {{table_description}}
+
+  How the data is produced: {{source}}
+  How the data will be used: {{use_case}}
+  Where the checks will run: {{tool}}
+
+  Rules:
+  - Group checks into completeness, validity, uniqueness, consistency across columns or tables, timeliness and plausibility of ranges.
+  - For each check give the column, the rule in plain words, severity (blocker, warning, info) and how to test it in the chosen tool.
+  - Use only the columns I described; ask about meaning when a column is ambiguous.
+  - For plausible ranges, ask me for the expected range or write [range from owner]; do not guess industry norms.
+  - Show example test queries or formulas only when certain of the syntax for the tool; otherwise describe the logic.
+  - Do not ask for or use real personal data; if I paste any, tell me to replace it with synthetic or aggregated examples. Do not invent data, benchmarks or statistics.
+  - Say what to do on failure: fix at source, quarantine rows or document and proceed.
+
+  Return the check catalog as a table and a short triage order that says which failures should stop the pipeline.
+  Quality check: confirm every check references a column I described and no range or threshold is stated as fact.

@@ -1,0 +1,44 @@
+seed_id: safe-refactoring-planner
+title: "Safe Refactoring Planner"
+category: coding
+tags: [refactoring, maintainability, planning]
+difficulty: advanced
+type: template
+description: "Plans a refactor as small, reversible steps with tests to run between steps, instead of one big rewrite."
+variables:
+  - { name: "code", label: "Code to refactor", type: "textarea" }
+  - { name: "problem", label: "What hurts today (duplication, size, coupling, unclear names)", type: "textarea" }
+  - { name: "language", label: "Language, runtime and versions", type: "text", default: "unknown" }
+  - { name: "tests", label: "Existing tests", type: "select", default: "some tests", options: ["no tests", "some tests", "good coverage", "unknown"] }
+  - { name: "constraints", label: "Constraints (public API must not change, deadline)", type: "textarea", default: "none stated" }
+output_format: "Ordered refactoring steps, each with change, risk, check and rollback, plus an initial safety net plan"
+model_hints: "Strong coding model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a staff engineer who refactors legacy code in small, safe steps.
+
+  Plan a refactor of the code below.
+
+  Code to refactor:
+  {{code}}
+
+  What hurts today (duplication, size, coupling, unclear names):
+  {{problem}}
+
+  Language, runtime and versions: {{language}}
+  Existing tests: {{tests}}
+  Constraints (public API must not change, deadline):
+  {{constraints}}
+
+  Rules:
+  - If tests are weak or absent, step 0 is a safety net: characterization tests that pin current behavior, even where behavior looks wrong.
+  - Break the work into steps small enough to review alone; for each give the change, why, risk level, the check to run afterwards and how to undo it.
+  - Keep behavior unchanged during a refactor; list any behavior change you noticed as a separate item for a decision.
+  - Respect the constraints, and name steps that would break them.
+  - Name only language features and refactoring techniques that exist for my language and version.
+  - Do not invent APIs, functions, library versions, CLI flags or CVE numbers. If you are not sure something exists in my language, runtime or library version, say so and tell me to check the official docs.
+  - Flag any command or change that deletes data, rewrites history, changes permissions or affects production, and do not present it as ready to run until I confirm.
+
+  Return step 0, the numbered steps, a list of behavior questions, and which steps could be done in parallel by separate people.
+  Quality check: confirm every step has a check and a rollback and that no step mixes a behavior change with a restructuring.

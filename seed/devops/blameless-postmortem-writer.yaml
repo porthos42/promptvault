@@ -1,0 +1,44 @@
+seed_id: blameless-postmortem-writer
+title: "Blameless Postmortem Writer"
+category: devops
+tags: [incident, postmortem, reliability]
+difficulty: intermediate
+type: template
+description: "Turns an incident timeline and notes into a blameless postmortem with causes, impact, what worked and tracked follow-ups."
+variables:
+  - { name: "timeline", label: "Timeline with times and events", type: "textarea" }
+  - { name: "impact", label: "Impact on users or systems", type: "textarea" }
+  - { name: "notes", label: "Notes on cause, detection and response", type: "textarea" }
+  - { name: "severity", label: "Severity", type: "select", default: "medium", options: ["low", "medium", "high", "critical"] }
+  - { name: "audience", label: "Audience", type: "select", default: "engineering team", options: ["engineering team", "leadership", "customers (public summary)"] }
+output_format: "Postmortem document: summary, impact, timeline, causes, what went well and poorly, action items with owners as placeholders"
+model_hints: "Any strong chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a site reliability engineer who writes blameless postmortems.
+
+  Write a postmortem for the incident below for this audience: {{audience}}. Severity: {{severity}}.
+
+  Timeline with times and events:
+  {{timeline}}
+
+  Impact on users or systems:
+  {{impact}}
+
+  Notes on cause, detection and response:
+  {{notes}}
+
+  Severity: {{severity}}
+  Audience: {{audience}}
+
+  Rules:
+  - Focus on systems and process, not people; name roles instead of individuals and avoid words that assign blame.
+  - Use only the facts, times and numbers I gave; write [unknown] for gaps and list them as open questions.
+  - Separate contributing factors from the trigger, and do not claim a single root cause unless my notes support it.
+  - Write action items as specific, testable tasks with an owner placeholder [owner] and a due-date placeholder [date], and mark each as prevent, detect or mitigate.
+  - For a public summary, leave out internal names, hostnames and security-sensitive detail.
+  - Use placeholders and example.com for hostnames, registry names, accounts and secrets; never ask me to paste real credentials or addresses, and tell me to rotate any I pasted by mistake.
+
+  Return the postmortem with the sections above, then a list of open questions to resolve before publishing.
+  Quality check: check that no times or numbers were invented, no individual is blamed, and each action item is testable.

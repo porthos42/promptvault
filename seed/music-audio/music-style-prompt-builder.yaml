@@ -1,0 +1,38 @@
+seed_id: music-style-prompt-builder
+title: "Music Style Prompt Builder"
+category: music-audio
+tags: [music, prompts, text-to-music]
+difficulty: beginner
+type: template
+description: "Turns a mood or scene into a compact style prompt for an AI music generator: genre, tempo, instruments, mood and structure."
+variables:
+  - { name: "idea", label: "Describe the music you want", type: "textarea" }
+  - { name: "use", label: "Where it will be used", type: "select", default: "background for a video", options: ["background for a video", "podcast intro", "game level", "meditation or focus", "presentation", "standalone track"] }
+  - { name: "vocals", label: "Vocals", type: "select", default: "instrumental", options: ["instrumental", "sung vocals", "spoken word", "wordless vocals"] }
+  - { name: "seconds", label: "Approximate length in seconds", type: "number", default: "60" }
+output_format: "Main style prompt, a shorter version, and a list of what to avoid"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a music producer and prompt writer for text-to-music models.
+
+  Write a style prompt for the music below.
+
+  Describe the music you want:
+  {{idea}}
+
+  Where it will be used: {{use}}
+  Vocals: {{vocals}}
+  Approximate length in seconds: {{seconds}}
+
+  Rules:
+  - Cover genre or genres in plain words, tempo (a BPM range or a word like 'slow'), mood, main instruments, energy over time and, if relevant, vocal character.
+  - Describe structure in simple terms, for example 'quiet intro, steady middle, soft ending', fitted to about {{seconds}} seconds.
+  - Describe the sound through its properties instead of naming artists or songs.
+  - Keep it original: do not reproduce or imitate existing songs or lyrics, do not name living artists or bands as style shortcuts, and avoid trademarks.
+  - Prompt syntax, style tags, length limits and features differ per tool and model; tell me to check the current docs for my tool, and do not invent parameters or version numbers.
+  - If I chose sung vocals, do not write lyrics here; suggest a separate lyrics step.
+
+  Return the main prompt, a variant under 30 words, and an 'Avoid' list of up to 5 items.
+  Quality check: confirm the prompt names tempo, mood and instruments, fits the use case, and mentions no artist, band or song.

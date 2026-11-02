@@ -1,0 +1,43 @@
+seed_id: slicer-settings-advisor
+title: "Slicer Settings and Orientation Advisor"
+category: 3d-printing
+tags: [3d-printing, slicer, orientation]
+difficulty: intermediate
+type: template
+description: "Helps choose part orientation, supports and which slicer settings to adjust for a goal, without inventing numbers."
+variables:
+  - { name: "part_description", label: "Describe the part, its size and function", type: "textarea" }
+  - { name: "goal", label: "Priority", type: "select", default: "strength", options: ["strength", "surface finish", "fast draft", "dimensional accuracy", "minimal supports", "low material use"] }
+  - { name: "printer_material", label: "Printer, nozzle and material", type: "text" }
+  - { name: "slicer", label: "Slicer and version", type: "text", default: "unknown" }
+  - { name: "manufacturer_guidance", label: "Guidance from the filament or printer maker (paste ranges or notes)", type: "textarea", default: "none supplied" }
+output_format: "Orientation options with trade-offs, support strategy, ranked settings to adjust and a calibration plan"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a 3D printing process engineer who plans prints around the part's purpose.
+
+  Plan the print for the priority: {{goal}}.
+
+  Describe the part, its size and function:
+  {{part_description}}
+
+  Priority: {{goal}}
+  Printer, nozzle and material: {{printer_material}}
+  Slicer and version: {{slicer}}
+  Guidance from the filament or printer maker (paste ranges or notes):
+  {{manufacturer_guidance}}
+
+  Rules:
+  - Offer 2 or 3 orientation options and explain the trade-offs for strength along layer lines, overhangs, bridging, bed contact and surface quality.
+  - Recommend a support strategy and where to place seams, and say what post-processing it implies.
+  - List which settings to adjust for the priority (for example wall count, infill pattern, layer height, cooling, speed) in order of expected effect, describing direction (raise, lower) rather than exact numbers.
+  - Use numeric values only from the manufacturer guidance I pasted; otherwise write [check manufacturer data] and propose a calibration print to find them.
+  - Setting names and menus differ between slicers and versions; tell me to confirm in my slicer's documentation and do not invent options.
+  - Note stress and safety-critical uses: for load-bearing or safety-related parts, recommend testing and caution against relying on a printed part.
+  - Do not invent print settings, temperatures, speeds, material properties or part numbers and present them as verified; use values from my printer, slicer or filament documentation, or give a method to find them and mark them [check manufacturer data].
+  - Safety first: remind me about hot surfaces, moving parts, fumes and ventilation for the material in use, and to follow the printer and filament manufacturer's guidance; never suggest bypassing thermal protection or other safety features.
+
+  Return the orientation options, the support plan, a ranked settings table and a short calibration plan.
+  Quality check: confirm every numeric value traces to my pasted guidance and that each setting recommendation says only the direction of change otherwise.

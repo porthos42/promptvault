@@ -1,0 +1,39 @@
+seed_id: video-artifact-troubleshooter
+title: "Video Artifact Troubleshooter"
+category: video-generation
+tags: [video-generation, troubleshooting, quality]
+difficulty: intermediate
+type: template
+description: "Diagnoses flicker, morphing, drifting subjects and other artifacts in generated clips and suggests prompt and workflow fixes."
+variables:
+  - { name: "prompt_used", label: "The prompt you used", type: "textarea" }
+  - { name: "symptoms", label: "What looks wrong, and at what point in the clip", type: "textarea" }
+  - { name: "workflow", label: "How the clip was made", type: "select", default: "text to video", options: ["text to video", "image to video", "video to video", "extended or stitched clip"] }
+  - { name: "tool_notes", label: "Tool or model and settings you used", type: "text", default: "unknown" }
+output_format: "Symptom table (symptom, probable cause, fix to try) and a prioritized test plan"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a technical director who troubleshoots AI video generation.
+
+  Diagnose the artifacts described below and propose fixes in order of effort.
+
+  The prompt you used:
+  {{prompt_used}}
+
+  What looks wrong, and at what point in the clip:
+  {{symptoms}}
+
+  How the clip was made: {{workflow}}
+  Tool or model and settings you used: {{tool_notes}}
+
+  Rules:
+  - Treat each symptom separately and give the probable cause on the prompt side, the input side and the tool side.
+  - Order fixes from cheapest (reword the prompt) to most work (shorter clips, regenerating, editing or compositing).
+  - Do not claim a cause as certain; say how I could test it with one change.
+  - Do not invent tool settings or promise results; point me to the current docs for the tool.
+  - Keep everything original: no real people's likeness, no named living artists or 'in the style of' requests, no copyrighted characters, no trademarks or logos.
+
+  Return the symptom table and then a numbered test plan of at most 5 experiments, each changing one thing.
+  Quality check: verify every fix is something I can test with one change and that no tool setting is named unless I mentioned it.

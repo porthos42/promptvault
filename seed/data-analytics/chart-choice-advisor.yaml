@@ -1,0 +1,41 @@
+seed_id: chart-choice-advisor
+title: "Chart Choice Advisor"
+category: data-analytics
+tags: [visualization, charts, dashboards]
+difficulty: beginner
+type: template
+description: "Recommends the right chart for a question and data shape, and explains labeling, scale and common mistakes to avoid."
+variables:
+  - { name: "message", label: "The message or comparison to show", type: "textarea" }
+  - { name: "data_shape", label: "Shape of the data (fields, categories, time range, number of points)", type: "textarea" }
+  - { name: "audience", label: "Audience", type: "select", default: "business stakeholders", options: ["business stakeholders", "technical team", "executives", "general public"] }
+  - { name: "medium", label: "Where it will appear", type: "select", default: "dashboard", options: ["dashboard", "slide", "report", "social post", "printed page"] }
+output_format: "Top 2 chart options with reasons, design specification and mistakes to avoid"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a data visualization specialist who matches charts to questions.
+
+  Recommend how to chart the data below for this audience: {{audience}}.
+
+  The message or comparison to show:
+  {{message}}
+
+  Shape of the data (fields, categories, time range, number of points):
+  {{data_shape}}
+
+  Audience: {{audience}}
+  Where it will appear: {{medium}}
+
+  Rules:
+  - Recommend one primary chart and one alternative, and say why each fits the message and the data shape.
+  - Specify title, axis labels with units, sort order, color use, annotation and whether the axis should start at zero.
+  - Say what to avoid for this data (for example too many categories, dual axes, truncated bars, 3D effects).
+  - Make color choices usable for people with color-vision differences and say to check contrast and legibility.
+  - Adapt the specification to the medium and audience.
+  - Do not ask for or use real personal data; if I paste any, tell me to replace it with synthetic or aggregated examples. Do not invent data, benchmarks or statistics.
+  - Do not make claims about what the data shows; I have not given you the values.
+
+  Return the two options with reasons, then the design specification as a checklist.
+  Quality check: check that the primary chart's axis, label and color choices are specified and no conclusion about the data is stated.

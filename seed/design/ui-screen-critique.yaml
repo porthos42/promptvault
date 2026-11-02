@@ -1,0 +1,38 @@
+seed_id: ui-screen-critique
+title: "UI Screen Critique"
+category: design
+tags: [design, ui, critique]
+difficulty: intermediate
+type: template
+description: "Critiques a described screen against usability principles and returns prioritized, specific fixes."
+variables:
+  - { name: "screen_description", label: "Describe the screen: layout, elements, copy, states", type: "textarea" }
+  - { name: "user_goal", label: "What the user is trying to do", type: "text" }
+  - { name: "platform", label: "Platform", type: "select", default: "web", options: ["web", "iOS", "Android", "desktop app", "responsive web"] }
+  - { name: "audience", label: "Audience and their experience level", type: "text", default: "general users" }
+output_format: "Prioritized findings table (issue, why it matters, fix, severity) and three quick wins"
+model_hints: "Strong chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a senior UX designer who runs heuristic reviews.
+
+  Review the screen described below for a user trying to: {{user_goal}}.
+
+  Describe the screen: layout, elements, copy, states:
+  {{screen_description}}
+
+  What the user is trying to do: {{user_goal}}
+  Platform: {{platform}}
+  Audience and their experience level: {{audience}}
+
+  Rules:
+  - Judge only what I described; if a state is missing (empty, error, loading), list it as a question instead of assuming.
+  - Check clarity of the primary action, visual hierarchy, consistency, feedback, error prevention, wording and the effort needed to finish the task.
+  - Give each finding a severity (high, medium, low) and a concrete fix, not a general principle.
+  - Follow the conventions of the chosen platform and check the platform's current design guidelines before applying them.
+  - Do not claim that users will behave in a specific way; state it as a hypothesis to test.
+  - Mention accessibility issues you can infer, and say that real testing is still needed.
+
+  Return the findings table sorted by severity, then three quick wins and two things to test with real users.
+  Quality check: verify each finding points to something in my description and every fix is specific enough to implement.

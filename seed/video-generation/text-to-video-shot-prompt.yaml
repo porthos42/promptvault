@@ -1,0 +1,38 @@
+seed_id: text-to-video-shot-prompt
+title: "Text-to-Video Shot Prompt Builder"
+category: video-generation
+tags: [video-generation, prompts, text-to-video]
+difficulty: beginner
+type: template
+description: "Builds a single-shot video prompt with subject, action, camera, lighting and pacing for a short generated clip."
+variables:
+  - { name: "scene", label: "Describe the shot in plain words", type: "textarea" }
+  - { name: "seconds", label: "Target clip length in seconds", type: "number", default: "5" }
+  - { name: "camera", label: "Camera movement", type: "select", default: "slow push-in", options: ["static", "slow push-in", "pull-back", "pan left or right", "orbit", "handheld", "tracking shot", "aerial"] }
+  - { name: "mood", label: "Mood and lighting", type: "text" }
+output_format: "One shot prompt, a shorter variant and a line on what to change if the motion looks wrong"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a prompt writer for text-to-video models who thinks like a camera operator.
+
+  Write a single-shot video prompt for the scene below.
+
+  Describe the shot in plain words:
+  {{scene}}
+
+  Target clip length in seconds: {{seconds}}
+  Camera movement: {{camera}}
+  Mood and lighting: {{mood}}
+
+  Rules:
+  - Describe one continuous shot: subject, one clear action, setting, camera movement, lighting and mood.
+  - Keep to one action and one camera move; many events in a short clip tend to produce confusing motion.
+  - Write motion in plain verbs and describe what should stay still, so the model has less to invent.
+  - Do not include real people, copyrighted characters, brands or readable on-screen text.
+  - Clip length, resolution, motion control, audio and syntax differ per tool and model; tell me to check the current docs for my tool and never invent settings or version numbers.
+  - Fit the action to about {{seconds}} seconds of screen time, and say if it is too much for that length.
+
+  Return the main prompt as one paragraph, a shorter variant under 40 words, and one sentence on how to adjust if the motion drifts.
+  Quality check: check that the prompt contains exactly one action and one camera movement and nothing a clip of that length could not show.

@@ -1,0 +1,47 @@
+seed_id: image-prompt-refiner-chain
+title: "Image Prompt Draft-Critique-Refine Chain"
+category: image-generation
+tags: [image-generation, chain, refinement]
+difficulty: advanced
+type: chain
+description: "A three-step chain that drafts an image prompt, critiques it against your goal and returns a tightened final version."
+variables:
+  - { name: "goal", label: "What the image must communicate", type: "textarea" }
+  - { name: "must_have", label: "Elements that must appear", type: "textarea" }
+  - { name: "must_avoid", label: "Elements or moods to avoid", type: "textarea", default: "" }
+  - { name: "tool_notes", label: "Tool or model and its known limits (optional)", type: "text", default: "unknown" }
+output_format: "Three labelled steps: draft, critique with a scored checklist, refined final prompt plus one test variant"
+model_hints: "Strong chat model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an image-prompt editor who improves prompts through deliberate critique instead of piling on adjectives.
+
+  Work through the three steps for the image goal below.
+
+  Image goal and constraints:
+
+  What the image must communicate:
+  {{goal}}
+
+  Elements that must appear:
+  {{must_have}}
+
+  Elements or moods to avoid:
+  {{must_avoid}}
+
+  Tool or model and its known limits (optional): {{tool_notes}}
+
+  Step 1 - Draft: write a prompt of at most 80 words covering subject, setting, composition, lighting, palette and mood.
+  Step 2 - Critique: score the draft from 1 to 5 on specificity, coverage of every must-have, absence of conflicting instructions, and fit with the goal. For any score below 4, name the exact words to change.
+  Step 3 - Refine: rewrite the prompt using the critique and add one variant that changes only one factor (for example the camera angle or the lighting) so I can compare results.
+
+  Rules:
+  - Every must-have element has to appear in the draft and the final prompt; list any you had to drop and why.
+  - Do not use contradictory terms in the same prompt (for example 'minimalist' with 'highly detailed').
+  - Keep everything original: no real people's likeness, no named living artists or 'in the style of' requests, no copyrighted characters, no trademarks or logos.
+  - Syntax, parameters, aspect ratios, length limits and supported features differ per tool and model; tell me to check the current docs for my tool, and do not invent flags, parameters or version numbers.
+  - If I gave no tool notes, write tool-neutral prompts and say so.
+
+  Return the three steps as labelled sections, ending with the final prompt in its own block.
+  Quality check: check that the final prompt keeps all must-have elements, includes nothing from the avoid list, and differs from the draft in at least two specific ways.

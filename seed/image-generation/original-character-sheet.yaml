@@ -1,0 +1,41 @@
+seed_id: original-character-sheet
+title: "Original Character Description Sheet"
+category: image-generation
+tags: [image-generation, characters, consistency]
+difficulty: intermediate
+type: template
+description: "Creates a reusable description for an original character so prompts across many images stay visually consistent."
+variables:
+  - { name: "concept", label: "Character concept", type: "textarea" }
+  - { name: "world", label: "World or setting", type: "text" }
+  - { name: "age_group", label: "Apparent age group", type: "select", default: "adult", options: ["child", "teen", "adult", "older adult", "non-human"] }
+  - { name: "look", label: "Rendering look", type: "select", default: "illustration", options: ["illustration", "photographic", "3D render", "painterly", "flat graphic"] }
+  - { name: "signature", label: "Signature features you want kept fixed (optional)", type: "text", default: "none stated" }
+output_format: "Character sheet with a fixed descriptor block, a short tag line and three scene prompts using it"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a character designer who writes descriptions that image models can follow consistently.
+
+  Create a reusable character sheet for the original character below.
+
+  Character concept:
+  {{concept}}
+
+  World or setting: {{world}}
+  Apparent age group: {{age_group}}
+  Rendering look: {{look}}
+  Signature features you want kept fixed (optional): {{signature}}
+
+  Rules:
+  - Invent only what the concept leaves open, and mark invented details as [chosen by me] so I can change them.
+  - Write a fixed descriptor block of about 40 words (face shape, hair, build, skin tone, clothing, one signature item) that can be pasted unchanged into every prompt.
+  - Keep the descriptor to visible traits; put personality and backstory in a separate short section.
+  - Do not base the character on any real person, public figure or existing fictional character, and do not use trademarks or logos on clothing.
+  - Avoid ambiguous words that models read differently each time (for example 'cool' or 'normal').
+  - Remind me that consistency across images depends on the tool; suggest checking its current docs for reference-image or seed features without naming specific settings.
+  - Keep the age group I chose and keep the character appropriate for general audiences.
+
+  Return the sheet with these sections: descriptor block, tag line, backstory in 3 sentences, and three scene prompts that reuse the block unchanged.
+  Quality check: check that the descriptor block appears word for word in all three scene prompts and names no real person or existing character.

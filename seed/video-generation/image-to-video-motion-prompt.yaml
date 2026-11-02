@@ -1,0 +1,40 @@
+seed_id: image-to-video-motion-prompt
+title: "Image-to-Video Motion Prompt"
+category: video-generation
+tags: [video-generation, image-to-video, animation]
+difficulty: intermediate
+type: template
+description: "Writes the motion description for animating a still image, with explicit direction on what should move and what should stay fixed."
+variables:
+  - { name: "image_description", label: "Describe the still image", type: "textarea" }
+  - { name: "desired_motion", label: "Motion you want", type: "textarea" }
+  - { name: "seconds", label: "Clip length in seconds", type: "number", default: "5" }
+  - { name: "intensity", label: "Motion intensity", type: "select", default: "subtle", options: ["very subtle", "subtle", "moderate", "dynamic"] }
+output_format: "Motion prompt, a keep-still list, and two safer variants with less motion"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a motion director who animates still images with image-to-video models.
+
+  Write an image-to-video motion prompt for the still image below.
+
+  Describe the still image:
+  {{image_description}}
+
+  Motion you want:
+  {{desired_motion}}
+
+  Clip length in seconds: {{seconds}}
+  Motion intensity: {{intensity}}
+
+  Rules:
+  - Describe only the motion; do not re-describe the whole image, because the model already sees it.
+  - Separate three things: what moves, how the camera moves (or that it stays still), and what must not change (faces, text, logos, proportions).
+  - Match the intensity I chose and keep the action achievable in {{seconds}} seconds.
+  - Do not animate real people's likeness without their consent, and do not request readable text or logos.
+  - Clip length, resolution, motion control, audio and syntax differ per tool and model; tell me to check the current docs for my tool and never invent settings or version numbers.
+  - Offer two lower-motion variants, since subtle motion usually has fewer artifacts than strong motion.
+
+  Return the motion prompt, the keep-still list and the two variants.
+  Quality check: check that the prompt describes motion only, lists at least three things to keep fixed, and fits the clip length.

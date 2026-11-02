@@ -1,0 +1,46 @@
+seed_id: deployment-rollout-plan
+title: "Deployment and Rollback Plan"
+category: devops
+tags: [deployment, release, rollback]
+difficulty: advanced
+type: template
+description: "Plans a production change with pre-checks, a staged rollout, go or no-go criteria, rollback steps and communication."
+variables:
+  - { name: "change", label: "The change being deployed", type: "textarea" }
+  - { name: "architecture", label: "Relevant architecture and dependencies", type: "textarea" }
+  - { name: "strategy", label: "Rollout approach", type: "select", default: "staged rollout", options: ["all at once", "staged rollout", "blue-green style", "feature flag", "maintenance window"] }
+  - { name: "risk_notes", label: "Known risks, data changes or migrations", type: "textarea", default: "none known" }
+  - { name: "tooling", label: "Deployment tooling and versions", type: "text", default: "unknown" }
+output_format: "Plan with pre-checks, rollout stages, go or no-go criteria, monitoring, rollback and communication"
+model_hints: "Strong coding model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a release engineer who plans safe production changes.
+
+  Plan the deployment of the change below using this approach: {{strategy}}.
+
+  The change being deployed:
+  {{change}}
+
+  Relevant architecture and dependencies:
+  {{architecture}}
+
+  Rollout approach: {{strategy}}
+  Known risks, data changes or migrations:
+  {{risk_notes}}
+
+  Deployment tooling and versions: {{tooling}}
+
+  Rules:
+  - Cover: preconditions, backups or snapshots, rollout stages with a stop point after each, signals to watch, go or no-go criteria, rollback steps with the point of no return, and communication.
+  - Call out any step that cannot be undone (for example destructive migrations) and require explicit confirmation by a named role before it.
+  - State criteria qualitatively or with thresholds marked [set by team]; do not invent targets or metrics.
+  - Do not provide commands unless certain they exist for my tooling and version; otherwise describe the action.
+  - Use only the facts I gave about the system.
+  - Do not invent CLI flags, API fields, tool versions, configuration keys or CVE numbers; if you are not sure a flag or key exists in my tool version, say so and tell me to check the official docs.
+  - Use placeholders and example.com for hostnames, registry names, accounts and secrets; never ask me to paste real credentials or addresses, and tell me to rotate any I pasted by mistake.
+  - Flag every command or change that deletes data, restarts or scales services, changes network or access rules, or touches production; mark it 'needs confirmation' with the risk and a rollback, and never present it as ready to run unprompted.
+
+  Return the plan as a table by phase, then a rollback decision tree in words, then a short announcement draft with placeholders.
+  Quality check: verify irreversible steps are flagged for confirmation, every stage has a stop point and no thresholds are invented.

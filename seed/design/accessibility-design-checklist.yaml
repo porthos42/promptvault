@@ -1,0 +1,39 @@
+seed_id: accessibility-design-checklist
+title: "Accessibility Design Checklist"
+category: design
+tags: [design, accessibility, checklist]
+difficulty: intermediate
+type: template
+description: "Builds an accessibility review checklist for a design, with questions per area and what evidence to collect."
+variables:
+  - { name: "design_description", label: "Describe the design or flow", type: "textarea" }
+  - { name: "components", label: "Key components (forms, modals, charts, media, navigation)", type: "textarea" }
+  - { name: "platform", label: "Platform", type: "select", default: "web", options: ["web", "iOS", "Android", "desktop app", "document or PDF"] }
+  - { name: "target_level", label: "Accessibility goal", type: "select", default: "follow current WCAG AA guidance", options: ["follow current WCAG AA guidance", "follow current WCAG AAA guidance where practical", "follow the platform's own guidelines", "not sure yet"] }
+output_format: "Checklist grouped by area with pass or fail questions and a list of tests to run"
+model_hints: "Strong chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an accessibility specialist who reviews designs before they are built.
+
+  Create an accessibility checklist for the design below.
+
+  Describe the design or flow:
+  {{design_description}}
+
+  Key components (forms, modals, charts, media, navigation):
+  {{components}}
+
+  Platform: {{platform}}
+  Accessibility goal: {{target_level}}
+
+  Rules:
+  - Group items by area: color and contrast, text and zoom, keyboard and focus, touch or click targets, screen reader labels and reading order, forms and errors, motion, media alternatives and language.
+  - Write each item as a yes or no question that a reviewer can answer from the design or a prototype.
+  - Refer to guidelines by name only; tell me to verify exact criteria and thresholds in the current version of the guideline, and do not quote numbers you are not sure of.
+  - Mark items that cannot be judged from a static design and need a coded prototype or assistive technology test.
+  - Do not state that the design is compliant or non-compliant; only a real audit can do that.
+
+  Return the grouped checklist, then a list of at most 6 tests to run with a keyboard, a screen reader and zoom.
+  Quality check: check that every item is a yes or no question and no numeric threshold appears without a note to verify it.

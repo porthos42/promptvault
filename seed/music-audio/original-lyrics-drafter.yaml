@@ -1,0 +1,40 @@
+seed_id: original-lyrics-drafter
+title: "Original Lyrics Drafter"
+category: music-audio
+tags: [music, lyrics, songwriting]
+difficulty: intermediate
+type: template
+description: "Drafts original song lyrics from a theme, with a chosen structure, rhyme approach and singable line lengths."
+variables:
+  - { name: "theme", label: "Theme or story of the song", type: "textarea" }
+  - { name: "genre", label: "Genre and mood", type: "text" }
+  - { name: "structure", label: "Song structure", type: "select", default: "verse-chorus-verse-chorus-bridge-chorus", options: ["verse-chorus-verse-chorus", "verse-chorus-verse-chorus-bridge-chorus", "verse-prechorus-chorus", "two verses and a refrain"] }
+  - { name: "perspective", label: "Point of view", type: "select", default: "first person", options: ["first person", "second person", "third person"] }
+  - { name: "key_images", label: "Words, images or phrases to include (optional)", type: "text", default: "none" }
+output_format: "Labelled lyrics by section with a one-line note on rhyme scheme and syllable counts"
+model_hints: "Any chat model; temperature 0.9"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a songwriter who writes singable, original lyrics.
+
+  Write lyrics for the song described below.
+
+  Theme or story of the song:
+  {{theme}}
+
+  Genre and mood: {{genre}}
+  Song structure: {{structure}}
+  Point of view: {{perspective}}
+  Words, images or phrases to include (optional): {{key_images}}
+
+  Rules:
+  - Write every line fresh; never reproduce or paraphrase lines from existing songs, and do not use a real artist's name or catchphrase.
+  - Keep line lengths consistent inside each section so the lines can be sung; note the approximate syllable count per line.
+  - Use concrete images over abstract statements and avoid cliches where you can.
+  - Make the chorus short and repeatable and let it carry the central idea.
+  - No hateful, violent or explicit content, and no real people or trademarks.
+  - Prompt syntax, style tags, length limits and features differ per tool and model; tell me to check the current docs for my tool, and do not invent parameters or version numbers.
+
+  Return the lyrics with section labels, then a short note on the rhyme scheme and two alternative lines for the chorus.
+  Quality check: check that sections match the chosen structure, the chorus repeats unchanged, and no line copies a known song.

@@ -1,0 +1,41 @@
+seed_id: analysis-plan-builder
+title: "Analysis Plan Builder"
+category: data-analytics
+tags: [analysis, planning, metrics]
+difficulty: beginner
+type: template
+description: "Turns a business question into an analysis plan: metrics, data needed, method, checks and what decision each result would change."
+variables:
+  - { name: "question", label: "The question to answer", type: "textarea" }
+  - { name: "decision", label: "The decision this analysis will inform", type: "text" }
+  - { name: "data_available", label: "Data you have (tables, fields, time range; no real records)", type: "textarea" }
+  - { name: "skill", label: "Your analysis skill level", type: "select", default: "beginner", options: ["beginner", "intermediate", "advanced"] }
+output_format: "Plan with clarified question, metrics, data needs, steps, checks, possible results and decisions"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a data analyst who plans analyses before touching any data.
+
+  Create an analysis plan for the question below.
+
+  The question to answer:
+  {{question}}
+
+  The decision this analysis will inform: {{decision}}
+  Data you have (tables, fields, time range; no real records):
+  {{data_available}}
+
+  Your analysis skill level: {{skill}}
+
+  Rules:
+  - Restate the question precisely, including the population, time window and comparison; ask up to 3 questions if it is ambiguous.
+  - Define each metric with a formula in words and its unit.
+  - List the data needed, what I already have, and gaps; do not assume fields I did not mention exist.
+  - Outline the steps in order, the checks for data quality and bias, and what result would lead to which decision.
+  - Do not ask for or use real personal data; if I paste any, tell me to replace it with synthetic or aggregated examples. Do not invent data, benchmarks or statistics.
+  - State your assumptions, show every calculation step by step with the numbers I supplied, and say when a conclusion needs more data.
+  - Match tools and methods to my skill level and name methods generally without promising they will work.
+
+  Return the plan in sections, then a table of possible outcomes and the decision each would support.
+  Quality check: check that every metric has a definition, every step names its input data, and no figures were invented.

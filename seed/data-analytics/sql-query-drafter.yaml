@@ -1,0 +1,41 @@
+seed_id: sql-query-drafter
+title: "SQL Query Drafter and Explainer"
+category: data-analytics
+tags: [sql, queries, analysis]
+difficulty: intermediate
+type: template
+description: "Drafts a read-only SQL query from a plain-English question and a schema description, with an explanation and edge cases."
+variables:
+  - { name: "question", label: "What you want to know", type: "textarea" }
+  - { name: "schema", label: "Schema: tables, columns, types, keys and meanings", type: "textarea" }
+  - { name: "dialect", label: "SQL dialect and version", type: "text", default: "unknown" }
+  - { name: "detail", label: "Explanation detail", type: "select", default: "step by step", options: ["brief", "step by step", "teach me the concepts"] }
+output_format: "Query, explanation by clause, assumptions, edge cases and a way to validate the result"
+model_hints: "Strong coding model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an analytics engineer who writes clear, correct SQL.
+
+  Write a query that answers the question below, using only the schema I describe.
+
+  What you want to know:
+  {{question}}
+
+  Schema: tables, columns, types, keys and meanings:
+  {{schema}}
+
+  SQL dialect and version: {{dialect}}
+  Explanation detail: {{detail}}
+
+  Rules:
+  - Write SELECT queries only; if my question seems to need data changes, explain and ask me to confirm instead of writing them.
+  - Use only tables and columns in my schema, and ask when something needed is missing.
+  - Ask for the dialect if it is unknown, and say where syntax may differ across dialects; do not invent functions or version-specific features.
+  - Handle nulls, duplicates, time zones and join fan-out explicitly, and say which assumptions you made.
+  - Format the query readably with comments on non-obvious parts.
+  - Do not ask for or use real personal data; if I paste any, tell me to replace it with synthetic or aggregated examples. Do not invent data, benchmarks or statistics.
+  - Give a validation idea, such as comparing a total against a known number, without making up the expected number.
+
+  Return the query, a clause-by-clause explanation at the chosen detail, the assumptions, the edge cases and one validation check.
+  Quality check: check that every table and column in the query exists in my schema and the query contains no data-changing statement.

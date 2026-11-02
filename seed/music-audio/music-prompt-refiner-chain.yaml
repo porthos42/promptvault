@@ -1,0 +1,46 @@
+seed_id: music-prompt-refiner-chain
+title: "Music Prompt Draft-Critique-Refine Chain"
+category: music-audio
+tags: [music, chain, refinement]
+difficulty: advanced
+type: chain
+description: "A chain that drafts a music-generation prompt, critiques it for vagueness and conflicts, and returns a refined prompt with test variants."
+variables:
+  - { name: "brief", label: "What the music must do", type: "textarea" }
+  - { name: "must_have", label: "Required elements (instruments, tempo, mood)", type: "textarea" }
+  - { name: "must_avoid", label: "Things to avoid", type: "textarea", default: "" }
+  - { name: "tool_notes", label: "Tool or model and its known limits", type: "text", default: "unknown" }
+output_format: "Three labelled steps: draft, critique with scores, refined prompt plus two single-change variants"
+model_hints: "Strong chat model; temperature 0.6"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a music supervisor who tightens prompts for AI music generation.
+
+  Work through the three steps for the brief below.
+
+  Brief and constraints:
+
+  What the music must do:
+  {{brief}}
+
+  Required elements (instruments, tempo, mood):
+  {{must_have}}
+
+  Things to avoid:
+  {{must_avoid}}
+
+  Tool or model and its known limits: {{tool_notes}}
+
+  Step 1 - Draft: write a style prompt of at most 50 words.
+  Step 2 - Critique: score the draft from 1 to 5 on clarity of genre, tempo and mood, coverage of the must-haves, internal conflicts (for example 'calm' with 'high energy') and suitability for the brief. Name the words to change when a score is below 4.
+  Step 3 - Refine: rewrite the prompt using the critique, then give two variants that each change one factor, such as tempo or main instrument.
+
+  Rules:
+  - Keep every must-have and exclude everything on the avoid list.
+  - Keep it original: do not reproduce or imitate existing songs or lyrics, do not name living artists or bands as style shortcuts, and avoid trademarks.
+  - Prompt syntax, style tags, length limits and features differ per tool and model; tell me to check the current docs for my tool, and do not invent parameters or version numbers.
+  - Do not write lyrics in this chain.
+
+  Return the three steps as labelled sections, ending with the final prompt in its own block.
+  Quality check: check that the final prompt includes all must-haves, has no conflicting descriptors, and differs from the draft in specific, listed ways.

@@ -1,0 +1,42 @@
+seed_id: image-edit-instruction-writer
+title: "Image Edit Instruction Writer"
+category: image-generation
+tags: [image-generation, editing, inpainting]
+difficulty: beginner
+type: template
+description: "Writes precise instructions for editing an existing image, including what to change and what to keep untouched."
+variables:
+  - { name: "image_description", label: "Describe the current image", type: "textarea" }
+  - { name: "change", label: "What you want changed", type: "textarea" }
+  - { name: "keep", label: "What must stay exactly the same", type: "textarea" }
+  - { name: "edit_type", label: "Kind of edit", type: "select", default: "replace an object", options: ["replace an object", "change the background", "adjust lighting or time of day", "add an object", "remove an object", "change colors"] }
+output_format: "A main edit instruction, a stricter variant and a short mask or selection guide"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an image-editing assistant who writes unambiguous edit instructions for AI image editors.
+
+  Write edit instructions for the change below.
+
+  Describe the current image:
+  {{image_description}}
+
+  What you want changed:
+  {{change}}
+
+  What must stay exactly the same:
+  {{keep}}
+
+  Kind of edit: {{edit_type}}
+
+  Rules:
+  - Name the target of the edit with location words (left, foreground, behind the subject) and identify it by visible traits.
+  - State what to keep unchanged, using my keep list word for word.
+  - Describe the result in positive terms; mention lighting, perspective and scale so the edit matches the rest of the image.
+  - Only edit images I have the right to edit, and do not change a real person's face or identity.
+  - Syntax, parameters, aspect ratios, length limits and supported features differ per tool and model; tell me to check the current docs for my tool, and do not invent flags, parameters or version numbers.
+  - If the edit needs more information (for example the position of the object), ask before writing.
+
+  Return the main instruction in one or two sentences, a stricter variant, and a 3-line guide on what to select or mask.
+  Quality check: check that the instruction names one target, includes the keep list, and does not ask for more than one kind of change.

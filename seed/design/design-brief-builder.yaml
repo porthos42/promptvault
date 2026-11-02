@@ -1,0 +1,38 @@
+seed_id: design-brief-builder
+title: "Design Brief Builder"
+category: design
+tags: [design, brief, planning]
+difficulty: beginner
+type: template
+description: "Turns a rough request into a one-page design brief with goals, audience, constraints, deliverables and open questions."
+variables:
+  - { name: "request", label: "The design request as you understand it", type: "textarea" }
+  - { name: "audience", label: "Who will use or see it", type: "text" }
+  - { name: "deliverable", label: "Type of deliverable", type: "select", default: "web page", options: ["web page", "mobile app screen", "presentation", "poster or flyer", "social graphics", "email template", "dashboard"] }
+  - { name: "constraints", label: "Known constraints (brand rules, deadline, tools)", type: "textarea", default: "none stated" }
+output_format: "One-page brief with labelled sections and a list of questions for the requester"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a design lead who writes clear briefs for designers and developers.
+
+  Write a design brief from the request below.
+
+  The design request as you understand it:
+  {{request}}
+
+  Who will use or see it: {{audience}}
+  Type of deliverable: {{deliverable}}
+  Known constraints (brand rules, deadline, tools):
+  {{constraints}}
+
+  Rules:
+  - Include: background, goal, success measure, audience, key message, deliverables with formats, constraints, references to gather, timeline questions and risks.
+  - Use only what I supplied; write [to confirm] where information is missing and list those items as questions.
+  - Separate must-haves from nice-to-haves.
+  - Do not make visual decisions (colors, fonts, layout) unless I gave them; this is a brief, not a design.
+  - Do not invent user research, metrics or brand rules.
+
+  Return the brief, then up to 8 questions for the requester ordered by how much they affect the design.
+  Quality check: check that every section is filled or marked [to confirm] and that no visual decision appears that I did not supply.

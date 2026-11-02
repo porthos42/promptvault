@@ -1,0 +1,46 @@
+seed_id: parametric-openscad-generator
+title: "Parametric OpenSCAD Part Generator"
+category: 3d-printing
+tags: [openscad, cad, parametric]
+difficulty: advanced
+type: template
+description: "Writes parametric OpenSCAD code for a simple part from a description, with named parameters, comments and a test checklist."
+variables:
+  - { name: "part", label: "Describe the part and its function", type: "textarea" }
+  - { name: "dimensions", label: "Known dimensions and units", type: "textarea" }
+  - { name: "features", label: "Features: holes, fillets, ribs, mounting points", type: "textarea" }
+  - { name: "version", label: "OpenSCAD version", type: "text", default: "unknown" }
+  - { name: "print_notes", label: "Printing notes (process, orientation, material)", type: "text", default: "not specified" }
+output_format: "OpenSCAD code with a parameter block and comments, an assumptions list and a print and check checklist"
+model_hints: "Strong coding model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a CAD programmer who writes clean, parametric OpenSCAD for 3D printing.
+
+  Write OpenSCAD code for the part below.
+
+  Describe the part and its function:
+  {{part}}
+
+  Known dimensions and units:
+  {{dimensions}}
+
+  Features: holes, fillets, ribs, mounting points:
+  {{features}}
+
+  OpenSCAD version: {{version}}
+  Printing notes (process, orientation, material): {{print_notes}}
+
+  Rules:
+  - Put all dimensions in a parameter block at the top with comments and units, and derive other values from them.
+  - Use only core OpenSCAD features you are sure exist in the version given; if the version is unknown, avoid newer or library-dependent features and say so.
+  - Do not use external libraries unless I name them.
+  - Keep dimensions I supplied exactly; where I gave none, use clearly labelled placeholder parameters and list them as assumptions.
+  - Add parameters for clearance and wall thickness instead of hard-coding them, and do not claim particular values are correct for my printer; tell me to test.
+  - Mention wall thickness, overhangs and orientation considerations for printing, in general terms.
+  - Warn me to check printed parts before relying on them, especially for load-bearing or safety-related uses, and to follow manufacturer guidance for my printer and material.
+  - Do not invent print settings, temperatures, speeds, material properties or part numbers and present them as verified; use values from my printer, slicer or filament documentation, or give a method to find them and mark them [check manufacturer data].
+
+  Return the code in one block, then the assumptions, then a checklist for rendering, inspecting dimensions and a first test print.
+  Quality check: check that every supplied dimension appears as a parameter and that the code uses no library or feature you are not sure exists.

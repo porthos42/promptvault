@@ -1,0 +1,44 @@
+seed_id: tolerance-fit-calibration-chain
+title: "Tolerance and Fit Calibration Chain"
+category: 3d-printing
+tags: [3d-printing, tolerance, chain]
+difficulty: advanced
+type: chain
+description: "A chain that defines the fit you need, designs a test print to measure your printer's real clearances, and turns results into design rules."
+variables:
+  - { name: "parts", label: "Describe the mating parts and the fit you need (press fit, sliding, snap, threaded)", type: "textarea" }
+  - { name: "printer_material", label: "Printer, nozzle and material", type: "text" }
+  - { name: "measuring_tools", label: "Measuring tools you have", type: "select", default: "digital calipers", options: ["digital calipers", "ruler only", "calipers and feeler gauges", "micrometer"] }
+  - { name: "measurements", label: "Test results so far (optional, your own measured values)", type: "textarea", default: "none yet" }
+output_format: "Three labelled steps: fit definition, calibration test design, design rules from your measurements"
+model_hints: "Strong chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a mechanical design engineer who specializes in tolerances for 3D printed parts.
+
+  Work through the three steps for the parts below.
+
+  Parts and printer:
+
+  Describe the mating parts and the fit you need (press fit, sliding, snap, threaded):
+  {{parts}}
+
+  Printer, nozzle and material: {{printer_material}}
+  Measuring tools you have: {{measuring_tools}}
+  Test results so far (optional, your own measured values):
+  {{measurements}}
+
+  Step 1 - Define: classify the fit, list the features that matter (holes, shafts, slots, snaps), and explain why printed dimensions differ from the model in general terms such as shrinkage, over-extrusion and hole shrinkage.
+  Step 2 - Test design: design a small calibration print with graded clearances so I can find my printer's real values; describe what to include, what to measure and how to record it. Give the clearance steps as a progression I choose, not as verified numbers.
+  Step 3 - Rules: if I supplied measurements, calculate the clearance for each fit type and show the calculations; otherwise list what I need to measure and stop.
+
+  Rules:
+  - Use only measurements I give; do not invent typical tolerances or claim a clearance will work before it is tested on my printer and material.
+  - Show calculations with units and note measurement uncertainty from the tool I have.
+  - Remind me to re-test when I change material, nozzle, slicer settings or printer, and to follow the printer and filament manufacturer's guidance.
+  - Do not invent print settings, temperatures, speeds, material properties or part numbers and present them as verified; use values from my printer, slicer or filament documentation, or give a method to find them and mark them [check manufacturer data].
+  - Safety first: remind me about hot surfaces, moving parts, fumes and ventilation for the material in use, and to follow the printer and filament manufacturer's guidance; never suggest bypassing thermal protection or other safety features.
+
+  Return the three steps as labelled sections, and in step 3 a design-rules table or the list of missing measurements.
+  Quality check: recompute every clearance from my measurements and confirm no value is given as verified that was not measured by me.

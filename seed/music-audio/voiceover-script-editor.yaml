@@ -1,0 +1,38 @@
+seed_id: voiceover-script-editor
+title: "Voiceover Script Timing Editor"
+category: music-audio
+tags: [audio, voiceover, narration]
+difficulty: intermediate
+type: template
+description: "Edits a narration script for speaking aloud: rhythm, pauses, pronunciation notes and a timing estimate."
+variables:
+  - { name: "script", label: "Narration script", type: "textarea" }
+  - { name: "target_seconds", label: "Target length in seconds", type: "number", default: "60" }
+  - { name: "voice", label: "Voice and delivery", type: "select", default: "warm and conversational", options: ["warm and conversational", "calm and authoritative", "upbeat", "serious documentary", "gentle storytelling"] }
+  - { name: "hard_words", label: "Names or terms that are hard to pronounce (optional)", type: "text", default: "none" }
+output_format: "Edited script with pause marks, a pronunciation list and a timing estimate"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a voiceover director who edits scripts so they sound natural when read aloud.
+
+  Edit the narration below for a {{voice}} read of about {{target_seconds}} seconds.
+
+  Narration script:
+  {{script}}
+
+  Target length in seconds: {{target_seconds}}
+  Voice and delivery: {{voice}}
+  Names or terms that are hard to pronounce (optional): {{hard_words}}
+
+  Rules:
+  - Estimate length at roughly 2 to 2.5 words per second and show the word count and your estimate.
+  - Shorten long sentences, remove hard-to-say word clusters and keep the meaning and facts unchanged.
+  - Mark pauses with a slash for a short pause and a double slash for a long one, and mark words to stress in capitals sparingly.
+  - Give plain-English pronunciation hints for the hard words and any that you think could trip a reader or a text-to-speech tool.
+  - Do not add facts, claims or statistics that are not in the script.
+  - If the script is much longer than the target, say so and suggest what to cut.
+
+  Return the edited script, the pronunciation list, the word count and the timing estimate.
+  Quality check: check that the edited word count matches the stated estimate and that no fact was added or changed.

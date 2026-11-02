@@ -1,0 +1,43 @@
+seed_id: metric-definition-spec
+title: "Metric Definition Spec"
+category: data-analytics
+tags: [metrics, kpi, definitions]
+difficulty: intermediate
+type: template
+description: "Writes a precise metric definition: formula, grain, filters, edge cases, owner placeholders and known pitfalls."
+variables:
+  - { name: "metric_name", label: "Metric name", type: "text" }
+  - { name: "business_meaning", label: "What it should tell the business", type: "textarea" }
+  - { name: "source_fields", label: "Source tables and fields available", type: "textarea" }
+  - { name: "time_grain", label: "Reporting time grain", type: "select", default: "weekly", options: ["daily", "weekly", "monthly", "quarterly"] }
+  - { name: "known_issues", label: "Known data quirks or disputes about the definition", type: "textarea", default: "none stated" }
+output_format: "Metric spec with definition, formula, grain, inclusions, exclusions, edge cases, pitfalls and validation"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an analytics lead who writes metric definitions that remove ambiguity.
+
+  Write a metric definition for {{metric_name}}.
+
+  Metric name: {{metric_name}}
+  What it should tell the business:
+  {{business_meaning}}
+
+  Source tables and fields available:
+  {{source_fields}}
+
+  Reporting time grain: {{time_grain}}
+  Known data quirks or disputes about the definition:
+  {{known_issues}}
+
+  Rules:
+  - Include: plain-language definition, formula with numerator and denominator, unit, grain, source fields, filters, inclusions and exclusions, handling of nulls and late data, and the owner as [owner].
+  - Give 3 worked examples using small made-up numbers labelled 'illustrative', and show each calculation.
+  - List ways the metric can be gamed or misread, and suggest one companion metric that guards against that.
+  - Use only fields I listed; write [field needed] where the definition requires something I did not list.
+  - Do not ask for or use real personal data; if I paste any, tell me to replace it with synthetic or aggregated examples. Do not invent data, benchmarks or statistics.
+  - State your assumptions, show every calculation step by step with the numbers I supplied, and say when a conclusion needs more data.
+
+  Return the spec in labelled sections and a list of open questions for the metric owner.
+  Quality check: check that each worked example's arithmetic is correct and every field used is in my list or marked [field needed].

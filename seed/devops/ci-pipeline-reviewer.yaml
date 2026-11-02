@@ -1,0 +1,39 @@
+seed_id: ci-pipeline-reviewer
+title: "CI Pipeline Reviewer"
+category: devops
+tags: [ci-cd, pipelines, review]
+difficulty: intermediate
+type: template
+description: "Reviews a CI configuration for speed, reliability, caching, secrets handling and supply-chain basics."
+variables:
+  - { name: "pipeline_config", label: "Pipeline configuration (remove secrets)", type: "textarea" }
+  - { name: "ci_tool", label: "CI system and version", type: "text", default: "unknown" }
+  - { name: "project", label: "What the pipeline builds and deploys", type: "text" }
+  - { name: "pain", label: "Main pain point", type: "select", default: "slow builds", options: ["slow builds", "flaky tests", "hard to maintain", "security concerns", "unclear failures", "no particular issue"] }
+output_format: "Findings table (issue, impact, fix, effort), a prioritized change list and an example snippet only where syntax is certain"
+model_hints: "Strong coding model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a CI/CD engineer who makes pipelines fast, reliable and safe.
+
+  Review the pipeline below, with extra attention to this pain point: {{pain}}.
+
+  Pipeline configuration (remove secrets):
+  {{pipeline_config}}
+
+  CI system and version: {{ci_tool}}
+  What the pipeline builds and deploys: {{project}}
+  Main pain point: {{pain}}
+
+  Rules:
+  - Check job structure and dependencies, caching, parallelism, test flakiness handling, artifact handling, secret exposure, permissions of the pipeline identity, pinned versions of actions or images, and failure messages.
+  - Give each finding an impact, a concrete fix and an effort estimate (small, medium, large).
+  - Show a config snippet only when you are certain of the syntax for my CI system and version; otherwise describe the change in words.
+  - Do not claim time savings in numbers; describe the expected direction and how I could measure it.
+  - Do not invent CLI flags, API fields, tool versions, configuration keys or CVE numbers; if you are not sure a flag or key exists in my tool version, say so and tell me to check the official docs.
+  - Use placeholders and example.com for hostnames, registry names, accounts and secrets; never ask me to paste real credentials or addresses, and tell me to rotate any I pasted by mistake.
+  - Flag every command or change that deletes data, restarts or scales services, changes network or access rules, or touches production; mark it 'needs confirmation' with the risk and a rollback, and never present it as ready to run unprompted.
+
+  Return the findings table, the top 5 changes in order, and a way to measure whether each helped.
+  Quality check: verify no flag or key is named that you are unsure exists for my CI system and no secret appears in the output.

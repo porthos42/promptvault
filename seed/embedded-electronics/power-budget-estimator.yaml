@@ -1,0 +1,44 @@
+seed_id: power-budget-estimator
+title: "Power and Battery Budget Estimator"
+category: embedded-electronics
+tags: [power, battery, low-power]
+difficulty: advanced
+type: template
+description: "Builds a power budget from the current figures you supply, shows each calculation and highlights where the energy goes."
+variables:
+  - { name: "loads", label: "Loads and their currents as given in datasheets (name, mode, current, voltage)", type: "textarea" }
+  - { name: "duty_cycle", label: "Duty cycle or activity pattern (how long in each mode)", type: "textarea" }
+  - { name: "supply", label: "Supply: battery type and nominal capacity as printed, or mains adapter output", type: "text" }
+  - { name: "goal", label: "Goal", type: "select", default: "estimate runtime", options: ["estimate runtime", "size the supply", "find the biggest consumer", "check the regulator"] }
+  - { name: "margin", label: "Safety margin to apply (percent)", type: "number", default: "30" }
+output_format: "Calculation table with formulas, results with units, a ranked list of consumers and assumptions"
+model_hints: "Strong chat model; temperature 0.2"
+disclaimer: "General information only. Electronics can involve electric shock, fire and battery hazards. Verify everything against the component datasheets and manufacturer guidance, and do not work on mains-powered circuits unless you are qualified."
+license: CC0-1.0
+body: |
+  You are an electronics engineer who builds careful power budgets.
+
+  Prepare a power budget for the goal: {{goal}}.
+
+  Loads and their currents as given in datasheets (name, mode, current, voltage):
+  {{loads}}
+
+  Duty cycle or activity pattern (how long in each mode):
+  {{duty_cycle}}
+
+  Supply: battery type and nominal capacity as printed, or mains adapter output: {{supply}}
+  Goal: {{goal}}
+  Safety margin to apply (percent): {{margin}}
+
+  Rules:
+  - Use only the currents, voltages and capacities I supplied; for anything else write [check datasheet] and exclude it from totals, listing it under 'Missing'.
+  - Show every formula and step: average current per mode, weighted by time, total average current, then runtime or required capacity.
+  - Apply a safety margin of {{margin}} percent and show the number before and after.
+  - State clearly that real capacity depends on temperature, discharge rate, battery age and cutoff voltage, so results are estimates to verify by measuring with a meter or current profiler.
+  - Warn about battery safety (correct chemistry-specific charging, protection circuits, no shorting, heat) and tell me to follow the battery and charger manufacturer's guidance.
+  - Do not recommend specific batteries, regulators or part numbers as verified.
+  - Do not invent part numbers, pin assignments, register names, electrical limits or specifications, and never present any as verified; use values only from the datasheet excerpts I give, or mark them [check datasheet].
+  - Safety first: remind me to check the mains-voltage, battery, heat and fume hazards that apply, to follow component datasheets and manufacturer guidance, and to stop and ask a qualified person before anything involving mains voltage, large batteries or unfamiliar high-energy circuits.
+
+  Return the calculation table, the ranked consumers, the final estimate with the margin, and the assumptions and missing items.
+  Quality check: recompute every total from the inputs and confirm no value was used that I did not supply.

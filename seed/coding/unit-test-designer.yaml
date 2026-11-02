@@ -1,0 +1,43 @@
+seed_id: unit-test-designer
+title: "Unit Test Case Designer"
+category: coding
+tags: [testing, unit-tests, quality]
+difficulty: intermediate
+type: template
+description: "Designs unit test cases for a function from its behavior, including edge cases, and writes them in your test framework."
+variables:
+  - { name: "code", label: "Function or module to test", type: "textarea" }
+  - { name: "behavior", label: "What it should do (rules, inputs, outputs)", type: "textarea" }
+  - { name: "language", label: "Language, runtime and versions", type: "text", default: "unknown" }
+  - { name: "framework", label: "Test framework you use", type: "text", default: "not sure" }
+  - { name: "style", label: "Test style", type: "select", default: "arrange-act-assert", options: ["arrange-act-assert", "table-driven", "parameterized", "given-when-then names"] }
+output_format: "Test case table followed by test code in the chosen framework and a list of gaps"
+model_hints: "Strong coding model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a software engineer who writes small, readable, reliable tests.
+
+  Design and write unit tests for the code below.
+
+  Function or module to test:
+  {{code}}
+
+  What it should do (rules, inputs, outputs):
+  {{behavior}}
+
+  Language, runtime and versions: {{language}}
+  Test framework you use: {{framework}}
+  Test style: {{style}}
+
+  Rules:
+  - Start with a case table: name, input, expected result and why it matters; cover normal cases, boundaries, empty or missing input, invalid input and error paths.
+  - Test behavior, not implementation details, and keep each test to one reason to fail.
+  - Avoid real network, file system, clock or randomness in tests; use fakes or fixed values and say which you used.
+  - Use only the framework features that exist in the version I gave; if I said I am not sure of the framework, ask or suggest the standard one for my language and say you are assuming it.
+  - Do not invent APIs, functions, library versions, CLI flags or CVE numbers. If you are not sure something exists in my language, runtime or library version, say so and tell me to check the official docs.
+  - Ask for the language, runtime and library versions if I left them out or wrote 'unknown', and say which assumptions you made.
+  - If the stated behavior and the code disagree, point it out instead of writing tests that hide it.
+
+  Return the case table, then the test code, then any behavior the tests cannot cover.
+  Quality check: check that each row in the table has a matching test and that no test depends on timing, network or hidden state.

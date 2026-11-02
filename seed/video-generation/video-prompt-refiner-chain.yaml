@@ -1,0 +1,46 @@
+seed_id: video-prompt-refiner-chain
+title: "Video Prompt Review and Refine Chain"
+category: video-generation
+tags: [video-generation, chain, refinement]
+difficulty: advanced
+type: chain
+description: "A chain that audits a video prompt for ambiguity and motion risks, then rewrites it into a tighter version with test variants."
+variables:
+  - { name: "draft_prompt", label: "Your current video prompt", type: "textarea" }
+  - { name: "intent", label: "What the clip is meant to show", type: "textarea" }
+  - { name: "problems", label: "Problems you have seen (optional)", type: "textarea", default: "none yet" }
+  - { name: "tool_notes", label: "Tool or model and its known limits", type: "text", default: "unknown" }
+output_format: "Three labelled steps: audit list, rewritten prompt, and two single-factor test variants"
+model_hints: "Strong chat model; temperature 0.5"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a video-prompt editor who finds the causes of unstable or off-target generations.
+
+  Work through the three steps for the draft prompt below.
+
+  Draft and context:
+
+  Your current video prompt:
+  {{draft_prompt}}
+
+  What the clip is meant to show:
+  {{intent}}
+
+  Problems you have seen (optional):
+  {{problems}}
+
+  Tool or model and its known limits: {{tool_notes}}
+
+  Step 1 - Audit: list every instruction in the draft and mark each as clear, ambiguous or conflicting. Flag more than one action, more than one camera move, unclear subject, and requests that models often handle poorly (crowds, fast hand motion, readable text).
+  Step 2 - Rewrite: produce a prompt that fixes each flagged item while keeping the intent, in no more than 90 words.
+  Step 3 - Test plan: give two variants that each change one factor (camera, lighting, subject detail or pacing) and say what result would show the change helped.
+
+  Rules:
+  - Keep the intent; do not add new characters, props or story beats.
+  - Say when a problem is likely a model limitation instead of a wording issue.
+  - Keep everything original: no real people's likeness, no named living artists or 'in the style of' requests, no copyrighted characters, no trademarks or logos.
+  - Clip length, resolution, motion control, audio and syntax differ per tool and model; tell me to check the current docs for my tool and never invent settings or version numbers.
+
+  Return the three steps as labelled sections, with the rewritten prompt in its own block.
+  Quality check: confirm the rewrite has one action and one camera move, preserves the intent, and each variant changes only one factor.

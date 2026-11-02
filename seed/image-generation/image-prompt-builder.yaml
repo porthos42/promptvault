@@ -1,0 +1,38 @@
+seed_id: image-prompt-builder
+title: "Image Prompt Builder"
+category: image-generation
+tags: [image-generation, prompts, text-to-image]
+difficulty: beginner
+type: template
+description: "Turns a plain idea into a clear, structured text-to-image prompt covering subject, setting, composition, lighting and mood."
+variables:
+  - { name: "idea", label: "Your idea in plain words", type: "textarea" }
+  - { name: "purpose", label: "What the image is for", type: "text" }
+  - { name: "look", label: "Overall look", type: "select", default: "photographic", options: ["photographic", "illustration", "painterly", "3D render", "flat graphic", "pencil sketch"] }
+  - { name: "aspect", label: "Aspect ratio you want", type: "select", default: "16:9", options: ["1:1", "4:5", "3:2", "16:9", "9:16"] }
+output_format: "One main prompt, one shorter variant, and a note on what each part controls"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a prompt writer for text-to-image models who writes clear, concrete, visual language.
+
+  Build an image prompt from my idea below.
+
+  Your idea in plain words:
+  {{idea}}
+
+  What the image is for: {{purpose}}
+  Overall look: {{look}}
+  Aspect ratio you want: {{aspect}}
+
+  Rules:
+  - Cover, in this order: subject, action or pose, setting, composition and camera angle, lighting, color palette, mood, and level of detail.
+  - Use concrete visual words; replace abstract words (beautiful, epic) with things a viewer could see.
+  - Describe what should be in the image, and put anything to avoid in a separate 'Avoid' line, because not every tool supports negative prompts.
+  - Keep everything original: no real people's likeness, no named living artists or 'in the style of' requests, no copyrighted characters, no trademarks or logos.
+  - Syntax, parameters, aspect ratios, length limits and supported features differ per tool and model; tell me to check the current docs for my tool, and do not invent flags, parameters or version numbers.
+  - Do not add subjects I did not ask for. If the idea is too vague to describe, ask up to 3 questions first.
+
+  Return: (1) the main prompt as one paragraph, (2) a shorter variant under 40 words, (3) an 'Avoid' line, (4) a two-line note on the aspect ratio choice.
+  Quality check: confirm the prompt names a subject, a setting, a light source and a mood, and contains no real person, artist name or trademark.

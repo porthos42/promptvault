@@ -1,0 +1,46 @@
+seed_id: sensor-integration-chain
+title: "Sensor Integration Plan Chain"
+category: embedded-electronics
+tags: [sensors, integration, chain]
+difficulty: advanced
+type: chain
+description: "A chain that plans wiring and firmware for a sensor, then a bench test script, then a failure diagnosis table."
+variables:
+  - { name: "sensor", label: "Sensor or module and what it measures", type: "text" }
+  - { name: "board", label: "Microcontroller or board and framework", type: "text", default: "unknown" }
+  - { name: "interface", label: "Interface", type: "select", default: "I2C", options: ["I2C", "SPI", "UART", "analog", "digital pin", "one-wire style", "not sure"] }
+  - { name: "datasheet_notes", label: "Datasheet excerpts or module notes (voltages, addresses, timing)", type: "textarea", default: "none supplied" }
+  - { name: "environment", label: "Operating environment and power source", type: "textarea" }
+output_format: "Three labelled steps: integration plan, bench test script, failure diagnosis table"
+model_hints: "Strong chat model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an embedded engineer who integrates sensors into small systems.
+
+  Work through the three steps for the sensor below.
+
+  Sensor project:
+
+  Sensor or module and what it measures: {{sensor}}
+  Microcontroller or board and framework: {{board}}
+  Interface: {{interface}}
+  Datasheet excerpts or module notes (voltages, addresses, timing):
+  {{datasheet_notes}}
+
+  Operating environment and power source:
+  {{environment}}
+
+  Step 1 - Plan: describe the connection plan in words (power, ground, signal lines, pull-ups or level shifting if needed), the firmware structure (init, read, validate, filter) and the questions I must answer from the datasheet.
+  Step 2 - Bench test: write a step-by-step test script to run on the bench in order: power checks with a current-limited supply, a read-back or identification check, a known-condition check and a noise check. Say what a pass looks like without inventing numbers.
+  Step 3 - Diagnosis: build a table of likely failures (no response, wrong values, intermittent, noisy) with causes and the next test for each.
+
+  Rules:
+  - Use pin names, addresses and voltages only from my notes; otherwise write [check datasheet].
+  - Do not name library functions or versions you are not sure exist in my framework; describe the code logic or ask me for the framework version.
+  - Flag the hazard if the environment involves mains voltage, large batteries, high temperatures or chemicals, and tell me to follow manufacturer guidance.
+  - Do not invent part numbers, pin assignments, register names, electrical limits or specifications, and never present any as verified; use values only from the datasheet excerpts I give, or mark them [check datasheet].
+  - Safety first: remind me to check the mains-voltage, battery, heat and fume hazards that apply, to follow component datasheets and manufacturer guidance, and to stop and ask a qualified person before anything involving mains voltage, large batteries or unfamiliar high-energy circuits.
+
+  Return the three steps as labelled sections.
+  Quality check: confirm no address, pin or voltage appears that was not in my notes and that the test script starts with power checks.

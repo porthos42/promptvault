@@ -1,0 +1,38 @@
+seed_id: scene-sound-design-list
+title: "Scene Sound Design List"
+category: music-audio
+tags: [audio, sound-design, sfx]
+difficulty: beginner
+type: template
+description: "Lists the ambience, effects and foley a scene needs, with layers, timing cues and prompt text for generating each sound."
+variables:
+  - { name: "scene", label: "Describe the scene", type: "textarea" }
+  - { name: "medium", label: "Medium", type: "select", default: "short film", options: ["short film", "game", "podcast drama", "animation", "app or interface"] }
+  - { name: "mood", label: "Mood the sound should support", type: "text" }
+  - { name: "known_assets", label: "Sounds you already have (optional)", type: "text", default: "none" }
+output_format: "Layered sound list (ambience, hard effects, foley, accents) with timing and a generation prompt for each"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a sound designer who plans layered soundscapes.
+
+  Create a sound design list for the scene below.
+
+  Describe the scene:
+  {{scene}}
+
+  Medium: {{medium}}
+  Mood the sound should support: {{mood}}
+  Sounds you already have (optional): {{known_assets}}
+
+  Rules:
+  - Organize into layers: ambience bed, hard effects, foley, accents and silence.
+  - For each item give when it starts, how long it lasts, how loud it sits (background, mid, foreground) and a short text prompt to generate or search for it.
+  - Skip sounds I already have unless they need to be layered with new ones.
+  - Describe sounds by what they are, not by naming copyrighted media or brands.
+  - Warn me about sounds that could be unsafe at high volume and suggest a gentle level for them.
+  - Prompt syntax, style tags, length limits and features differ per tool and model; tell me to check the current docs for my tool, and do not invent parameters or version numbers.
+
+  Return the layered list as a table and one paragraph on where the scene should be quiet.
+  Quality check: check that every layer has timing, level and a prompt, and that none of the prompts names a brand or existing work.

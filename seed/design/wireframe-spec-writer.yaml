@@ -1,0 +1,40 @@
+seed_id: wireframe-spec-writer
+title: "Text Wireframe Spec Writer"
+category: design
+tags: [design, wireframe, layout]
+difficulty: beginner
+type: template
+description: "Writes a text wireframe for a screen from a user flow: regions, components, content priority and states."
+variables:
+  - { name: "screen_name", label: "Screen name", type: "text" }
+  - { name: "user_flow", label: "The user flow this screen belongs to", type: "textarea" }
+  - { name: "content", label: "Content and actions that must appear", type: "textarea" }
+  - { name: "device", label: "Primary device", type: "select", default: "mobile", options: ["mobile", "tablet", "desktop"] }
+output_format: "Region-by-region text wireframe with content priority, actions and states"
+model_hints: "Any chat model; temperature 0.4"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are an interaction designer who describes wireframes in clear text for designers and developers.
+
+  Write a text wireframe for the {{screen_name}} screen on {{device}}.
+
+  Screen name: {{screen_name}}
+  The user flow this screen belongs to:
+  {{user_flow}}
+
+  Content and actions that must appear:
+  {{content}}
+
+  Primary device: {{device}}
+
+  Rules:
+  - Order regions top to bottom (and left to right where it matters) and give each a name, purpose and contents.
+  - Rank content by importance so the layout can adapt; mark the one primary action.
+  - List states: empty, loading, error and success, with the message intent for each.
+  - Include only content and actions from my list; put anything extra under 'Suggestions' separately.
+  - Do not specify colors, fonts or final copy, since this is a structure document.
+  - Note one point on how the layout should adapt on a different screen size.
+
+  Return the wireframe as an indented outline, followed by the states list and a short list of suggestions.
+  Quality check: check that every item in my content list appears exactly once and there is exactly one primary action.

@@ -1,0 +1,38 @@
+seed_id: dockerfile-review
+title: "Dockerfile Review and Hardening Notes"
+category: devops
+tags: [docker, containers, security]
+difficulty: intermediate
+type: template
+description: "Reviews a Dockerfile for image size, build cache use, reproducibility and basic hardening, with explanations for each change."
+variables:
+  - { name: "dockerfile", label: "Dockerfile content", type: "textarea" }
+  - { name: "app", label: "What the app is and how it runs", type: "text" }
+  - { name: "base_policy", label: "Base image policy", type: "select", default: "no policy yet", options: ["no policy yet", "slim official images only", "must pin by digest", "internal base image"] }
+  - { name: "goal", label: "Main goal", type: "select", default: "smaller and safer", options: ["smaller and safer", "faster builds", "reproducible builds", "easier debugging"] }
+output_format: "Findings list with reasons, a revised Dockerfile sketch and a verification checklist"
+model_hints: "Strong coding model; temperature 0.2"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a container engineer who reviews Dockerfiles for production readiness.
+
+  Review the Dockerfile below for this goal: {{goal}}.
+
+  Dockerfile content:
+  {{dockerfile}}
+
+  What the app is and how it runs: {{app}}
+  Base image policy: {{base_policy}}
+  Main goal: {{goal}}
+
+  Rules:
+  - Check layer order and cache use, multi-stage builds, base image choice and pinning, running as a non-root user, copied files and ignore rules, package manager cleanup, exposed ports, health checks and secrets in build arguments or layers.
+  - Explain each finding in one sentence and say what could go wrong if ignored.
+  - In the revised sketch change only what you justified, and label placeholders such as [base-image:tag] instead of inventing tags or digests.
+  - Do not state that an image is free of vulnerabilities; recommend scanning with a current scanner and reviewing the results.
+  - Do not invent CLI flags, API fields, tool versions, configuration keys or CVE numbers; if you are not sure a flag or key exists in my tool version, say so and tell me to check the official docs.
+  - Use placeholders and example.com for hostnames, registry names, accounts and secrets; never ask me to paste real credentials or addresses, and tell me to rotate any I pasted by mistake.
+
+  Return the findings, the revised Dockerfile sketch with comments, and a checklist to verify it (build, run, scan, size).
+  Quality check: check that every change in the sketch maps to a finding and that no tag, digest or version appears that I did not provide.

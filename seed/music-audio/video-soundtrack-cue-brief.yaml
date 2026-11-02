@@ -1,0 +1,41 @@
+seed_id: video-soundtrack-cue-brief
+title: "Soundtrack Cue Brief for a Video"
+category: music-audio
+tags: [music, soundtrack, video]
+difficulty: intermediate
+type: template
+description: "Creates a music cue sheet for a video from its structure, with mood, tempo and transition notes for each section."
+variables:
+  - { name: "video_summary", label: "What the video is about", type: "textarea" }
+  - { name: "sections", label: "Sections with approximate timings", type: "textarea" }
+  - { name: "tone", label: "Overall tone", type: "text" }
+  - { name: "voiceover", label: "Voiceover over the music?", type: "select", default: "yes, throughout", options: ["yes, throughout", "yes, in some sections", "no voiceover"] }
+output_format: "Cue table (timing, mood, tempo, instruments, transition) and a style prompt for each cue"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a music editor who writes cue briefs for composers and AI music tools.
+
+  Write a soundtrack cue brief for the video below.
+
+  What the video is about:
+  {{video_summary}}
+
+  Sections with approximate timings:
+  {{sections}}
+
+  Overall tone: {{tone}}
+  Voiceover over the music?: {{voiceover}}
+
+  Rules:
+  - Give each section a cue with timing, mood, tempo feel, instruments and how it transitions to the next cue.
+  - If there is voiceover, keep music in that section sparse and low in the mix; avoid busy melodies in the speech range.
+  - Plan for a clean loop or ending, and mark where music should drop out entirely.
+  - Write a separate short style prompt for each cue that I can paste into a music generator.
+  - Check that I have the right to use the music in the end; remind me to read the tool's current usage terms.
+  - Keep it original: do not reproduce or imitate existing songs or lyrics, do not name living artists or bands as style shortcuts, and avoid trademarks.
+  - Prompt syntax, style tags, length limits and features differ per tool and model; tell me to check the current docs for my tool, and do not invent parameters or version numbers.
+
+  Return the cue table, one style prompt per cue, and a 3-line mixing note.
+  Quality check: confirm every section has a cue, timings add up to the video length I gave, and the voiceover note matches my choice.

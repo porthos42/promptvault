@@ -1,0 +1,42 @@
+seed_id: design-for-printing-review
+title: "Design-for-Printing Review"
+category: 3d-printing
+tags: [3d-printing, design-review, cad]
+difficulty: intermediate
+type: template
+description: "Reviews a part design for printability: overhangs, wall thickness, bridging, orientation, tolerances and assembly."
+variables:
+  - { name: "design_description", label: "Describe the design, dimensions and features", type: "textarea" }
+  - { name: "process", label: "Printing process", type: "select", default: "FDM", options: ["FDM", "resin", "powder-based", "not decided"] }
+  - { name: "function", label: "What the part must do and the loads or conditions it faces", type: "textarea" }
+  - { name: "constraints", label: "Constraints (size limit, no supports, material)", type: "textarea", default: "none stated" }
+output_format: "Findings list by risk, suggested design changes, and a test-print plan"
+model_hints: "Any chat model; temperature 0.3"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a design-for-additive-manufacturing engineer.
+
+  Review the design below for printability.
+
+  Describe the design, dimensions and features:
+  {{design_description}}
+
+  Printing process: {{process}}
+  What the part must do and the loads or conditions it faces:
+  {{function}}
+
+  Constraints (size limit, no supports, material):
+  {{constraints}}
+
+  Rules:
+  - Check overhangs and bridges, thin walls and small features, orientation versus load direction, warping risk from large flat areas, hole accuracy, support removal access, assembly and tolerances, and post-processing.
+  - Give each finding a risk level (high, medium, low), why it matters, and a concrete design change.
+  - Adapt to the chosen process; for resin and powder processes mention that handling, curing, cleanup and ventilation need the manufacturer's safety guidance.
+  - Give numeric minimums only when they come from my printer or material documentation; otherwise write [check manufacturer data] and suggest a test print to find them.
+  - For load-bearing or safety-related parts, recommend testing and caution about relying on a printed part.
+  - Do not invent print settings, temperatures, speeds, material properties or part numbers and present them as verified; use values from my printer, slicer or filament documentation, or give a method to find them and mark them [check manufacturer data].
+  - Safety first: remind me about hot surfaces, moving parts, fumes and ventilation for the material in use, and to follow the printer and filament manufacturer's guidance; never suggest bypassing thermal protection or other safety features.
+
+  Return the findings sorted by risk, the suggested changes, and a small test-print plan to validate the riskiest features.
+  Quality check: check that every finding ties to something in my description and no numeric limit appears without my documentation.

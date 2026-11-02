@@ -1,0 +1,42 @@
+seed_id: scene-continuity-checklist
+title: "Scene Continuity Bible and Checklist"
+category: video-generation
+tags: [video-generation, continuity, consistency]
+difficulty: intermediate
+type: template
+description: "Creates a continuity bible and per-shot checklist so characters, props, wardrobe and lighting match across separately generated clips."
+variables:
+  - { name: "project", label: "Project summary", type: "textarea" }
+  - { name: "characters", label: "Original characters (name, key visible traits)", type: "textarea" }
+  - { name: "locations", label: "Locations", type: "textarea" }
+  - { name: "shot_list", label: "Shot list or scene outline", type: "textarea" }
+output_format: "Continuity bible (fixed descriptor blocks) and a per-shot checklist with risk notes"
+model_hints: "Any chat model; temperature 0.8"
+disclaimer: null
+license: CC0-1.0
+body: |
+  You are a script supervisor adapting continuity practice to AI-generated video.
+
+  Build a continuity bible and a per-shot checklist from the material below.
+
+  Project summary:
+  {{project}}
+
+  Original characters (name, key visible traits):
+  {{characters}}
+
+  Locations:
+  {{locations}}
+
+  Shot list or scene outline:
+  {{shot_list}}
+
+  Rules:
+  - Write a fixed descriptor block for every character and location, using only the traits I gave and marking additions as [suggested].
+  - For each shot list the elements that must match the bible (wardrobe, props, time of day, light direction, color palette).
+  - Flag shots where continuity is likely to break (for example a change of angle, a time jump or many characters) and suggest a safer way to stage them.
+  - Do not base characters on real people or existing characters, and avoid logos and readable text.
+  - Clip length, resolution, motion control, audio and syntax differ per tool and model; tell me to check the current docs for my tool and never invent settings or version numbers.
+
+  Return the bible, then a table with one row per shot: elements to match, risk level (low, medium, high) and a mitigation.
+  Quality check: check that every shot in my list has a row and that each descriptor block is reused unchanged.

@@ -1,0 +1,41 @@
+seed_id: schematic-review-checklist
+title: "Circuit Schematic Review Checklist"
+category: embedded-electronics
+tags: [schematic, hardware, design-review]
+difficulty: intermediate
+type: template
+description: "Reviews a described circuit or schematic against common pitfalls: power, decoupling, levels, reset, protection and testability."
+variables:
+  - { name: "circuit_description", label: "Describe the circuit: parts, connections, supply voltages", type: "textarea" }
+  - { name: "datasheet_notes", label: "Key datasheet limits for the main parts (paste excerpts)", type: "textarea", default: "none supplied" }
+  - { name: "application", label: "What it must do and where it will be used", type: "text" }
+  - { name: "stage", label: "Project stage", type: "select", default: "prototype on breadboard", options: ["idea", "prototype on breadboard", "first PCB", "preparing for production"] }
+output_format: "Findings table (area, concern, question to answer, severity) and a pre-power-up checklist"
+model_hints: "Strong chat model; temperature 0.2"
+disclaimer: "General information only. Electronics can involve electric shock, fire and battery hazards. Verify everything against the component datasheets and manufacturer guidance, and do not work on mains-powered circuits unless you are qualified."
+license: CC0-1.0
+body: |
+  You are a hardware engineer who reviews circuits before they are built or powered up.
+
+  Review the circuit described below.
+
+  Describe the circuit: parts, connections, supply voltages:
+  {{circuit_description}}
+
+  Key datasheet limits for the main parts (paste excerpts):
+  {{datasheet_notes}}
+
+  What it must do and where it will be used: {{application}}
+  Project stage: {{stage}}
+
+  Rules:
+  - Check, where relevant: supply rails and current capacity, decoupling and bulk capacitance, logic level compatibility, pull-up and pull-down resistors, reset and boot pins, unused pins, reverse polarity and overcurrent protection, ESD exposure, programming and test access.
+  - Compare against the datasheet limits I supplied; where I supplied none, turn the concern into a question and write [check datasheet] instead of stating a limit.
+  - Mark each finding with a severity (could damage parts, could misbehave, polish).
+  - Say plainly if the description is too thin to judge something.
+  - Do not give component values or part numbers as verified; propose a method to calculate or choose them.
+  - Do not invent part numbers, pin assignments, register names, electrical limits or specifications, and never present any as verified; use values only from the datasheet excerpts I give, or mark them [check datasheet].
+  - Safety first: remind me to check the mains-voltage, battery, heat and fume hazards that apply, to follow component datasheets and manufacturer guidance, and to stop and ask a qualified person before anything involving mains voltage, large batteries or unfamiliar high-energy circuits.
+
+  Return the findings table, then a pre-power-up checklist (visual inspection, continuity, supply checks with a current-limited source) and open questions.
+  Quality check: verify every limit cited came from my datasheet notes and any mains or battery hazard is flagged.
