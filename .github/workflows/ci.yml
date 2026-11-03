@@ -170,7 +170,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          wheel="$(ls "$PWD"/dist/*.whl)"
+          # native tools need C:/-style paths; git-bash's $PWD is /c/...
+          wheel="$(cygpath -m "$PWD")/$(ls dist/*.whl)"
           uv venv --python 3.12 "$RUNNER_TEMP/venv"
           uv pip install --python "$RUNNER_TEMP/venv/Scripts/python.exe" "$wheel[xlsx]"
           python tools/dist_smoke.py --bin "$RUNNER_TEMP/venv/Scripts/promptvault.exe" --expect-xlsx 1
