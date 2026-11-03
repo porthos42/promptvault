@@ -235,6 +235,11 @@ button.chip:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 
 .wizard-nav .primary { min-width: 10rem; }
 .wizard-nav .quiet { margin-right: auto; }
 .license-gate { border-left: 3px solid var(--notice); background: var(--surface); border-radius: var(--radius); padding: var(--s-2) var(--s-3); }
+.import .fetched { border: 1px solid var(--line); border-radius: var(--radius); padding: var(--s-2) var(--s-3); background: var(--surface); }
+.import .fetched button { min-height: var(--target); }
+.import .fetched ul { margin: var(--s-1) 0 0; padding-left: 1.25rem; }
+.import .fetched li { margin: var(--s-1) 0; }
+.import .net-options { display: grid; gap: var(--s-1); margin-top: var(--s-1); }
 .progress-track { height: 0.75rem; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); overflow: hidden; }
 .progress-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
 .counters { font-variant-numeric: tabular-nums; }

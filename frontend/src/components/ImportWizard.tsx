@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useBlocker, useSearchParams } from 'react-router'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import {
@@ -21,6 +21,20 @@ import {
   tooLarge,
   unconfirmedLicenseRows,
 } from '../lib/import'
+import {
+  IMPORTER_NOTES,
+  PRIVATE_HOST_HINT,
+  SSRF_SENTENCE,
+  URL_PLACEHOLDER,
+  buildNetworkSource,
+  detectImporter,
+  hasFetchedNotes,
+  isNetworkImporter,
+  networkErrorText,
+  parseFetchedNotes,
+  type NetworkImporter,
+  type UrlOptions,
+} from '../lib/urlsource'
 
 type Step = 'source' | 'mapping' | 'preview' | 'result'
 const STEP_IDS: Step[] = ['source', 'mapping', 'preview', 'result']
@@ -34,6 +48,9 @@ const POLL_MS = 500
 
 /** Importers whose files travel as base64 (bigger on the wire) instead of text. */
 const BINARY_IMPORTERS = new Set(['xlsx'])
+
+/** The importer name as a network importer, or null when it is a local one. */
+const netImporterOf = (name: string): NetworkImporter | null => (isNetworkImporter(name) ? (name as NetworkImporter) : null)
 const TEXT_ACCEPT: Record<string, string> = {
   json: '.json,application/json',
   csv: '.csv,.tsv,text/csv',
@@ -51,6 +68,8 @@ type SourceState = {
   license: string
   sourceUrl: string
   mapping: Record<string, string>
+  url: string
+  options: UrlOptions
 }
 
 const EMPTY_SOURCE: SourceState = {
@@ -63,10 +82,87 @@ const EMPTY_SOURCE: SourceState = {
   license: '',
   sourceUrl: '',
   mapping: {},
+  url: '',
+  options: { config: '', split: '', limit: '', mode: 'page' },
 }
 
-const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms))
 const errText = (e: unknown): string => (e instanceof ApiError ? e.message : e instanceof Error ? e.message : String(e))
+
+/**
+ * Watch a job: seed with one GET, then SSE with an automatic fallback to the
+ * 500 ms polling the wizard used before. `done`/`failed` end the watch; a
+ * stream error drops to polling; an unknown job id reports the miss once.
+ */
+function useJobWatcher(id: string | null, onJob: (j: ImportJob) => void, onMiss?: () => void): 'sse' | 'poll' {
+  const onJobRef = useRef(onJob)
+  const onMissRef = useRef(onMiss)
+  useEffect(() => {
+    onJobRef.current = onJob
+    onMissRef.current = onMiss
+  })
+  const [transport, setTransport] = useState<'sse' | 'poll'>(() => (typeof EventSource === 'undefined' ? 'poll' : 'sse'))
+  useEffect(() => {
+    if (!id) return
+    let dead = false
+    let timer: ReturnType<typeof setTimeout> | undefined
+    let es: EventSource | null = null
+    const finish = (j: ImportJob): boolean => {
+      onJobRef.current(j)
+      return j.status === 'done' || j.status === 'failed'
+    }
+    const poll = async () => {
+      try {
+        const j = await api.job(id)
+        if (dead || finish(j)) return
+      } catch {
+        /* a transient poll failure is retried on the next tick */
+      }
+      if (!dead) timer = setTimeout(() => void poll(), POLL_MS)
+    }
+    const startPolling = () => {
+      setTransport('poll')
+      void poll()
+    }
+    const startStream = () => {
+      if (typeof EventSource === 'undefined') {
+        startPolling()
+        return
+      }
+      es = new EventSource(`/api/v1/jobs/${id}/events`)
+      for (const name of ['progress', 'done', 'failed'] as const) {
+        es.addEventListener(name, (ev: MessageEvent<string>) => {
+          try {
+            onJobRef.current(JSON.parse(ev.data) as ImportJob)
+            if (name !== 'progress' && es) es.close()
+          } catch {
+            /* a malformed event keeps the stream alive */
+          }
+        })
+      }
+      es.onerror = () => {
+        es?.close()
+        es = null
+        if (!dead) startPolling()
+      }
+    }
+    void (async () => {
+      try {
+        const j = await api.job(id)
+        if (dead) return
+        onJobRef.current(j)
+        if (j.status === 'pending' || j.status === 'running') startStream()
+      } catch {
+        if (!dead && onMissRef.current) onMissRef.current()
+      }
+    })()
+    return () => {
+      dead = true
+      es?.close()
+      if (timer) clearTimeout(timer)
+    }
+  }, [id])
+  return transport
+}
 
 export default function ImportWizard({ bump }: { bump: () => void }) {
   const [sp, setSp] = useSearchParams()
@@ -105,7 +201,9 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
 
   const rawStep = sp.get('step')
   const step: Step =
-    preview !== null && rawStep !== 'source' && STEP_IDS.includes(rawStep as Step) ? (rawStep as Step) : 'source'
+    (preview !== null || job !== null) && rawStep !== 'source' && STEP_IDS.includes(rawStep as Step)
+      ? (rawStep as Step)
+      : 'source'
   const setStep = (next: Step) =>
     setSp(
       (prev) => {
@@ -128,12 +226,36 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
 
   const pickImporter = (name: string) => {
     if (name === source.importer) return
-    setSource({ ...EMPTY_SOURCE, importer: name, license: source.license, sourceUrl: source.sourceUrl })
+    // The URL and its options survive importer switches: auto-detection and the
+    // manual override both need them.
+    setSource({
+      ...EMPTY_SOURCE,
+      importer: name,
+      license: source.license,
+      sourceUrl: source.sourceUrl,
+      url: source.url,
+      options: source.options,
+    })
     setError(null)
   }
 
+  const netImporter = netImporterOf(source.importer)
+
+  // Typing in the URL field re-detects the importer; a click on another network
+  // card is the manual override.
+  const onUrlChange = (value: string) => {
+    const detected = detectImporter(value)
+    setSource((s) => ({ ...s, url: value, importer: isNetworkImporter(s.importer) && detected ? detected : s.importer }))
+  }
+
+  const setOptions = (patch: Partial<UrlOptions>) => setSource((s) => ({ ...s, options: { ...s.options, ...patch } }))
+
   const hasSource =
-    source.importer === 'clipboard' ? source.paste.trim().length > 0 : source.text !== null || source.base64 !== null
+    netImporter !== null
+      ? source.url.trim().length > 0
+      : source.importer === 'clipboard'
+        ? source.paste.trim().length > 0
+        : source.text !== null || source.base64 !== null
 
   const readFile = async (file: File | undefined) => {
     if (!file) return
@@ -156,6 +278,8 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
 
   /** The source object the request will carry; shape depends on the importer. */
   const buildSourceFrom = (src: SourceState): Record<string, unknown> => {
+    const net = netImporterOf(src.importer)
+    if (net) return buildNetworkSource(net, src.url, src.options)
     if (src.importer === 'clipboard') {
       const out: Record<string, unknown> = { content: src.paste }
       if (src.delimiter.trim()) out.delimiter = src.delimiter.trim()
@@ -193,7 +317,7 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
       const hasNotes = Object.keys(notes.mapped).length > 0 || notes.ignored.length > 0
       setStep(hasNotes ? landOn : 'preview')
     } catch (e) {
-      if (alive.current) setError(errText(e))
+      if (alive.current) setError(netImporterOf(src.importer) ? networkErrorText(e) : errText(e))
     } finally {
       if (alive.current) setBusy(false)
     }
@@ -217,28 +341,69 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
   })
 
   const previewNotes = preview && preview.rows.length ? parseMappingNotes(preview.rows[0].warnings) : null
+  const fetchedNotes = preview && preview.rows.length && netImporter ? parseFetchedNotes(preview.rows[0].warnings) : null
   const mappingApplies = previewNotes !== null && (Object.keys(previewNotes.mapped).length > 0 || previewNotes.ignored.length > 0)
   const summary = preview ? actionSummary(preview.rows, defaultAction, actions) : null
   const pendingLicense = preview ? unconfirmedLicenseRows(preview.rows, actions, defaultAction, confirmAll, confirmed) : []
   const actionable = summary ? summary.create + summary.replace + summary.keepBoth : 0
+
+  // Job watching: SSE with fallback to polling. The job id stays in the URL, so a
+  // reload resumes watching (the preview itself does not survive a reload).
+  const [watchId, setWatchId] = useState<string | null>(null)
+  const [fetchedOpen, setFetchedOpen] = useState(false)
+  const previewRef = useRef(preview)
+  const bumpRef = useRef(bump)
+  const stepRef = useRef(setStep)
+  useEffect(() => {
+    previewRef.current = preview
+    bumpRef.current = bump
+    stepRef.current = setStep
+  })
+  const onJobUpdate = useCallback((j: ImportJob) => {
+    if (!alive.current) return
+    setJob(j)
+    if (j.status === 'done') {
+      bumpRef.current()
+      stepRef.current('result')
+    } else if (j.status === 'failed') {
+      if (!previewRef.current) stepRef.current('result')
+      setError(j.error ?? 'The import job failed.')
+    }
+  }, [])
+  const resumeId = preview ? null : sp.get('job')
+  const transport = useJobWatcher(watchId ?? resumeId, onJobUpdate, () =>
+    setError('That import job is unknown. The server may have restarted since it was created.'),
+  )
+
+  /** One search-param update: the job id and (optionally) the step. Two replaces
+   *  in one tick do not chain in react-router, so this must be a single call. */
+  const setJobParam = (id: string, step: Step | null) =>
+    setSp(
+      (prev) => {
+        const url = new URLSearchParams(prev)
+        url.set('job', id)
+        if (step) url.set('step', step)
+        return url
+      },
+      { replace: true },
+    )
 
   const commit = async () => {
     if (!preview || busy || pendingLicense.length > 0 || actionable === 0) return
     setBusy(true)
     setError(null)
     try {
-      let j = await api.importCommit(commitBody())
-      while ((j.status === 'pending' || j.status === 'running') && alive.current) {
-        setJob(j)
-        await delay(POLL_MS)
-        j = await api.job(j.id)
-      }
+      const j = await api.importCommit(commitBody())
       if (!alive.current) return
       setJob(j)
-      if (j.status === 'done') {
+      if (j.status === 'pending' || j.status === 'running') {
+        setJobParam(j.id, null)
+        setWatchId(j.id)
+      } else if (j.status === 'done') {
         bump()
-        setStep('result')
+        setJobParam(j.id, 'result')
       } else {
+        setJobParam(j.id, null)
         setError(j.error ?? 'The import job failed.')
       }
     } catch (e) {
@@ -253,8 +418,17 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
     setSource(EMPTY_SOURCE)
     setPreview(null)
     setJob(null)
+    setWatchId(null)
     setError(null)
-    setStep('source')
+    setSp(
+      (prev) => {
+        const url = new URLSearchParams(prev)
+        url.delete('job')
+        url.set('step', 'source')
+        return url
+      },
+      { replace: true },
+    )
   }
 
   const shown = useMemo(() => {
@@ -282,6 +456,19 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
         <p role="alert" className="error">
           {error}
         </p>
+      )}
+
+      {!preview && resumeId && (
+        <section aria-label="Import job progress" className="step-progress">
+          {!job && <p className="dim">Loading job {resumeId}…</p>}
+          {job && (job.status === 'pending' || job.status === 'running') && (
+            <ProgressBlock
+              job={job}
+              transport={transport}
+              note="Reloading this page resumes watching — the loaded preview itself does not survive a reload."
+            />
+          )}
+        </section>
       )}
 
       {step === 'source' && (
@@ -314,7 +501,83 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
             <p className="dim">Loading importers…</p>
           )}
 
-          {source.importer !== 'clipboard' && source.importer !== '' && (
+          {netImporter && (
+            <fieldset className="opt net-source">
+              <legend>URL source</legend>
+              <label className="inline-field">
+                Address{' '}
+                <input
+                  type="url"
+                  value={source.url}
+                  onChange={(e) => onUrlChange(e.target.value)}
+                  placeholder={URL_PLACEHOLDER[netImporter]}
+                  aria-label="URL to import from"
+                />
+              </label>
+              <p className="small dim">
+                The importer is detected from the address (GitHub, Hugging Face, other pages); the cards above are the
+                override.
+              </p>
+              <p className="small dim">{IMPORTER_NOTES[netImporter].can}</p>
+              <p className="small dim">{IMPORTER_NOTES[netImporter].cannot}</p>
+              <p className="small dim">
+                {SSRF_SENTENCE} {PRIVATE_HOST_HINT}
+              </p>
+              {netImporter === 'huggingface' && (
+                <div className="net-options">
+                  <label className="inline-field">
+                    Config{' '}
+                    <input
+                      type="text"
+                      value={source.options.config}
+                      onChange={(e) => setOptions({ config: e.target.value })}
+                      placeholder="(auto)"
+                    />
+                  </label>
+                  <label className="inline-field">
+                    Split{' '}
+                    <input
+                      type="text"
+                      value={source.options.split}
+                      onChange={(e) => setOptions({ split: e.target.value })}
+                      placeholder="train"
+                    />
+                  </label>
+                  <label className="inline-field">
+                    Row limit{' '}
+                    <input
+                      type="number"
+                      min={1}
+                      value={source.options.limit}
+                      onChange={(e) => setOptions({ limit: e.target.value })}
+                      placeholder="(up to the server limit)"
+                    />
+                  </label>
+                </div>
+              )}
+              {netImporter === 'url' && (
+                <label className="inline-field">
+                  Mode{' '}
+                  <select
+                    aria-label="Page mode"
+                    value={source.options.mode}
+                    onChange={(e) => setOptions({ mode: e.target.value as 'page' | 'blocks' })}
+                  >
+                    <option value="page">One prompt per page (join the blocks)</option>
+                    <option value="blocks">One prompt per block</option>
+                  </select>
+                </label>
+              )}
+              {netImporter === 'github' && (
+                <p className="small dim">
+                  A folder or file is part of the URL (/tree/&lt;branch&gt;/&lt;path&gt;); skipped files and truncation
+                  are reported before the import.
+                </p>
+              )}
+            </fieldset>
+          )}
+
+          {!netImporter && source.importer !== 'clipboard' && source.importer !== '' && (
             <div
               className={`dropzone${dragOver ? ' over' : ''}`}
               onDragOver={(e) => {
@@ -413,6 +676,21 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
             {preview.duplicate === 1 ? '' : 's'}, {preview.invalid} invalid
             {preview.needs_license_confirm ? `, ${preview.needs_license_confirm} need a license confirmation` : ''}
           </p>
+          {fetchedNotes && hasFetchedNotes(fetchedNotes) && (
+            <div className="fetched">
+              <button aria-expanded={fetchedOpen} onClick={() => setFetchedOpen((o) => !o)}>
+                What was fetched (
+                {fetchedNotes.skipped.length + fetchedNotes.truncated.length + fetchedNotes.other.length} notes)
+              </button>
+              {fetchedOpen && (
+                <ul>
+                  {[...fetchedNotes.skipped, ...fetchedNotes.truncated, ...fetchedNotes.other].map((w) => (
+                    <li key={w}>{w}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
           <div role="group" aria-label="Filter rows by status" className="chips">
             {(
               [
@@ -463,6 +741,13 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
                 {preview.needs_license_confirm} row{preview.needs_license_confirm === 1 ? '' : 's'} have no clear license. Confirm
                 to import them; they are refused otherwise.
               </p>
+              {netImporter && (
+                <p className="small">
+                  Where a row's license comes from: a GitHub import labels rows with the repository license — a repo
+                  without a recognized license (or NOASSERTION) leaves rows unlabelled, so they trip this gate. Confirming
+                  imports the rows with the default license above; make sure the source's terms allow that.
+                </p>
+              )}
               <label className="check">
                 <input type="checkbox" checked={confirmAll} onChange={(e) => setConfirmAll(e.target.checked)} />
                 Confirm all (import them with the chosen license)
@@ -471,23 +756,7 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
           )}
 
           {job && (job.status === 'pending' || job.status === 'running') && (
-            <div role="status" aria-live="polite" className="job-progress">
-              <p>
-                Importing… processed {job.processed} of {job.total} row{job.total === 1 ? '' : 's'}
-              </p>
-              <div
-                className="progress-track"
-                role="progressbar"
-                aria-valuemin={0}
-                aria-valuemax={job.total}
-                aria-valuenow={job.processed}
-              >
-                <div
-                  className="progress-fill"
-                  style={{ width: `${job.total === 0 ? 0 : Math.round((job.processed / job.total) * 100)}%` }}
-                />
-              </div>
-            </div>
+            <ProgressBlock job={job} transport={transport} note={null} />
           )}
 
           <div className="wizard-nav">
@@ -496,7 +765,7 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
             </button>
             <button
               className="primary"
-              disabled={busy || actionable === 0 || pendingLicense.length > 0}
+              disabled={busy || actionable === 0 || pendingLicense.length > 0 || (job !== null && (job.status === 'pending' || job.status === 'running'))}
               onClick={() => void commit()}
             >
               {busy
@@ -523,6 +792,36 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
           Start over
         </button>
       </div>
+    </div>
+  )
+}
+
+/** Live progress for a running job: bar, counters, and what the API cannot do. */
+function ProgressBlock({ job, transport, note }: { job: ImportJob; transport: 'sse' | 'poll'; note: string | null }) {
+  return (
+    <div role="status" aria-live="polite" className="job-progress">
+      <p>
+        Importing… processed {job.processed} of {job.total} row{job.total === 1 ? '' : 's'}
+      </p>
+      <div
+        className="progress-track"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={job.total}
+        aria-valuenow={job.processed}
+      >
+        <div
+          className="progress-fill"
+          style={{ width: `${job.total === 0 ? 0 : Math.round((job.processed / job.total) * 100)}%` }}
+        />
+      </div>
+      <p className="counters dim small">
+        {job.created} created, {job.replaced} replaced, {job.skipped} skipped, {job.invalid} invalid, {job.refused} refused
+      </p>
+      {transport === 'poll' && <p className="small dim">Live updates dropped — checking every half second instead.</p>}
+      <p className="small dim">
+        The import has no cancel: the job runs to completion on the server.{note ? ` ${note}` : ''}
+      </p>
     </div>
   )
 }

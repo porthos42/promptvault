@@ -11,6 +11,9 @@ const importers: ImporterInfo[] = [
   { name: 'markdown', description: 'Markdown files or a ZIP', available: true, reason: null },
   { name: 'clipboard', description: 'Pasted text: one prompt, or several split by a --- / ### line (or your delimiter)', available: true, reason: null },
   { name: 'xlsx', description: 'Excel workbook', available: false, reason: 'xlsx: install the optional extra: uv pip install "prompt-vault[xlsx]"' },
+  { name: 'github', description: 'GitHub repository or gist', available: true, reason: null },
+  { name: 'huggingface', description: 'Hugging Face dataset rows', available: true, reason: null },
+  { name: 'url', description: 'One web page or file by URL', available: true, reason: null },
 ]
 
 function draft(index: number, license: string | null = null) {
@@ -75,8 +78,9 @@ let posts: { url: string; body: unknown }[] = []
 type CommitResp = { status?: number; body: Record<string, unknown> }
 let commitResponses: CommitResp[]
 let preview: ImportPreview
-let jobResponses: unknown[]
+let jobResponses: unknown[] = []
 let jobCalls: number
+let jobMiss: boolean
 
 beforeEach(() => {
   posts = []
@@ -84,6 +88,8 @@ beforeEach(() => {
   commitResponses = []
   jobResponses = []
   jobCalls = 0
+  jobMiss = false
+  FakeEventSource.instances = []
   vi.stubGlobal(
     'fetch',
     vi.fn(async (url: string | URL, init?: { method?: string; body?: string }) => {
@@ -100,6 +106,9 @@ beforeEach(() => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const maybeError = (preview as any).__status
         if (maybeError) return json({ detail: 'Request body exceeds 5242880 bytes' }, 413)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const injected = (preview as any).__err as { status: number; detail: string } | undefined
+        if (injected) return json({ detail: injected.detail }, injected.status)
         return json(preview)
       }
       if (u.endsWith('/import/commit')) {
@@ -108,6 +117,7 @@ beforeEach(() => {
       }
       if (u.includes('/jobs/')) {
         jobCalls++
+        if (jobMiss) return json({ detail: 'Not Found' }, 404)
         const next = jobResponses[Math.min(jobCalls - 1, jobResponses.length - 1)]
         return json(next)
       }
@@ -340,5 +350,208 @@ describe('ImportWizard clipboard source', () => {
     await waitFor(() => expect(posts.some((p) => p.url.endsWith('/import/preview'))).toBe(true))
     const posted = posts.find((p) => p.url.endsWith('/import/preview'))?.body as { source: Record<string, unknown> }
     expect(posted.source).toEqual({ content: '# Title\nBody', delimiter: '###' })
+  })
+})
+
+type Listener = (ev: { data: string }) => void
+
+/** Minimal EventSource double: named listeners, emit, error, close. */
+class FakeEventSource {
+  static instances: FakeEventSource[] = []
+  url: string
+  closed = false
+  onerror: (() => void) | null = null
+  private listeners = new Map<string, Listener[]>()
+  constructor(url: string) {
+    this.url = url
+    FakeEventSource.instances.push(this)
+  }
+  addEventListener(name: string, fn: Listener) {
+    const list = this.listeners.get(name) ?? []
+    list.push(fn)
+    this.listeners.set(name, list)
+  }
+  close() {
+    this.closed = true
+  }
+  emit(name: string, data: unknown) {
+    for (const fn of this.listeners.get(name) ?? []) fn({ data: JSON.stringify(data) })
+  }
+  fail() {
+    this.onerror?.()
+  }
+}
+
+describe('ImportWizard URL sources', () => {
+  async function chooseNetworkCard(
+    user: ReturnType<typeof userEvent.setup>,
+    card: 'github' | 'huggingface' | 'url',
+    url: string,
+  ) {
+    await user.click(await screen.findByRole('radio', { name: new RegExp(card, 'i') }))
+    await user.type(screen.getByLabelText('URL to import from'), url)
+  }
+
+  async function chooseNetworkSource(
+    user: ReturnType<typeof userEvent.setup>,
+    card: 'github' | 'huggingface' | 'url',
+    url: string,
+  ) {
+    await chooseNetworkCard(user, card, url)
+    await user.click(screen.getByRole('button', { name: /next: check the data/i }))
+  }
+
+  it('re-detects the importer while typing and shows the SSRF rule', async () => {
+    const user = userEvent.setup()
+    renderWizard()
+    await user.click(await screen.findByRole('radio', { name: /github/i }))
+    await user.type(screen.getByLabelText('URL to import from'), 'https://huggingface.co/datasets/o/n')
+    expect(screen.getByRole('radio', { name: /huggingface/i })).toBeChecked()
+    expect(screen.getByText(/public hosts on ports 80 and 443/)).toBeInTheDocument()
+    expect(screen.getByText(/PV_IMPORT_ALLOW_PRIVATE_HOSTS/)).toBeInTheDocument()
+  })
+
+  it('sends the github source and explains the license gate', async () => {
+    const user = userEvent.setup()
+    preview = {
+      ...previewFixture(),
+      importer: 'github',
+      rows: previewFixture().rows.map((r, i) => (i === 0 ? { ...r, warnings: ['skipped: README.md, LICENSE', 'repo license: MIT'] } : r)),
+    }
+    renderWizard()
+    await chooseNetworkSource(user, 'github', 'https://github.com/o/r')
+    await screen.findByRole('table', { name: /import preview/i })
+    const posted = posts.find((p) => p.url.endsWith('/import/preview'))?.body as {
+      importer: string
+      source: Record<string, unknown>
+    }
+    expect(posted.importer).toBe('github')
+    expect(posted.source).toEqual({ url: 'https://github.com/o/r' })
+    // The What-was-fetched block is built from the row-1 warnings.
+    await user.click(screen.getByRole('button', { name: /what was fetched/i }))
+    expect(screen.getByText('skipped: README.md, LICENSE')).toBeInTheDocument()
+    // The license gate explains where a GitHub license comes from.
+    await user.click(screen.getByRole('checkbox', { name: /confirm all/i }))
+    expect(screen.getByText(/repo without a recognized license/i)).toBeInTheDocument()
+  })
+
+  it('sends huggingface options: config, split and a numeric limit', async () => {
+    const user = userEvent.setup()
+    preview = { ...previewFixture(), importer: 'huggingface', rows: [{ ...previewFixture().rows[0], warnings: [] }, ...previewFixture().rows.slice(1)] }
+    renderWizard()
+    await chooseNetworkCard(user, 'huggingface', 'fka/prompts.chat')
+    await user.type(screen.getByLabelText(/^config$/i), 'train')
+    await user.type(screen.getByLabelText(/^split$/i), 'train')
+    await user.type(screen.getByLabelText(/^row limit$/i), '25')
+    await user.click(screen.getByRole('button', { name: /next: check the data/i }))
+    await screen.findByRole('table', { name: /import preview/i })
+    const posted = posts.find((p) => p.url.endsWith('/import/preview'))?.body as { source: Record<string, unknown> }
+    expect(posted.source).toEqual({ url: 'fka/prompts.chat', config: 'train', split: 'train', limit: 25 })
+  })
+
+  it('sends the page mode for the url importer', async () => {
+    const user = userEvent.setup()
+    preview = { ...previewFixture(), importer: 'url', rows: [{ ...previewFixture().rows[0], warnings: [] }, ...previewFixture().rows.slice(1)] }
+    renderWizard()
+    await chooseNetworkCard(user, 'url', 'https://example.com/page')
+    await user.selectOptions(screen.getByLabelText('Page mode'), 'blocks')
+    await user.click(screen.getByRole('button', { name: /next: check the data/i }))
+    await screen.findByRole('table', { name: /import preview/i })
+    const posted = posts.find((p) => p.url.endsWith('/import/preview'))?.body as { source: Record<string, unknown> }
+    expect(posted.source).toEqual({ url: 'https://example.com/page', mode: 'blocks' })
+  })
+
+  it('maps a private-host 422 to the server setting hint', async () => {
+    const user = userEvent.setup()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(preview as any).__err = { status: 422, detail: 'refused: address is not public' }
+    renderWizard()
+    await chooseNetworkSource(user, 'url', 'https://example.internal/page')
+    expect(await screen.findByRole('alert')).toHaveTextContent('PV_IMPORT_ALLOW_PRIVATE_HOSTS')
+  })
+
+  it('maps a rate-limited 502 to the GitHub hint and a 504 to a timeout message', async () => {
+    const user = userEvent.setup()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(preview as any).__err = { status: 502, detail: 'remote returned 403: API rate limit exceeded' }
+    renderWizard()
+    await chooseNetworkSource(user, 'github', 'https://github.com/o/r')
+    expect(await screen.findByRole('alert')).toHaveTextContent('60 anonymous requests per hour')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(preview as any).__err = { status: 504, detail: 'gateway timed out' }
+    await user.click(screen.getByRole('button', { name: /next: check the data/i }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('took too long')
+  })
+})
+
+describe('ImportWizard job watching', () => {
+  function stubEventSource() {
+    vi.stubGlobal('EventSource', FakeEventSource)
+  }
+
+  it('watches a 202 job over SSE: progress events, then done and a closed stream', async () => {
+    stubEventSource()
+    const user = userEvent.setup()
+    commitResponses.push({ status: 202, body: pendingJob(1) })
+    jobResponses.push(pendingJob(1))
+    renderWizard()
+    await chooseCsvAndPreview(user)
+    await user.click(screen.getByRole('button', { name: 'Skip' }))
+    await user.click(await screen.findByRole('button', { name: /^Import: 1 new, 0 replaced, 1 skipped/ }))
+    expect(await screen.findByRole('progressbar')).toBeInTheDocument()
+    const es = FakeEventSource.instances.at(-1)
+    expect(es?.url).toMatch(/\/api\/v1\/jobs\/job1\/events$/)
+    es?.emit('progress', pendingJob(2))
+    es?.emit('done', { ...inlineJob })
+    await screen.findByText('Import complete', {}, { timeout: 2000 })
+    expect(es?.closed).toBe(true)
+    expect(jobCalls).toBe(1) // the seed GET only: no polling happened
+  })
+
+  it('keeps the preview and shows the error on a failed SSE event', async () => {
+    stubEventSource()
+    const user = userEvent.setup()
+    commitResponses.push({ status: 202, body: pendingJob(0) })
+    jobResponses.push(pendingJob(0))
+    renderWizard()
+    await chooseCsvAndPreview(user)
+    await user.click(screen.getByRole('button', { name: 'Skip' }))
+    await user.click(await screen.findByRole('button', { name: /^Import: 1 new, 0 replaced, 1 skipped/ }))
+    await screen.findByRole('progressbar')
+    FakeEventSource.instances.at(-1)?.emit('failed', { ...inlineJob, status: 'failed', error: 'The database is locked', results: null })
+    expect(await screen.findByRole('alert', {}, { timeout: 2000 })).toHaveTextContent('The database is locked')
+    expect(screen.getByRole('table', { name: /import preview/i })).toBeInTheDocument()
+  })
+
+  it('falls back to polling when the stream errors', async () => {
+    stubEventSource()
+    const user = userEvent.setup()
+    commitResponses.push({ status: 202, body: pendingJob(0) })
+    jobResponses.push(pendingJob(1), { ...inlineJob, status: 'running', processed: 2 }, { ...inlineJob })
+    renderWizard()
+    await chooseCsvAndPreview(user)
+    await user.click(screen.getByRole('button', { name: 'Skip' }))
+    await user.click(await screen.findByRole('button', { name: /^Import: 1 new, 0 replaced, 1 skipped/ }))
+    await screen.findByRole('progressbar')
+    FakeEventSource.instances.at(-1)?.fail()
+    expect(await screen.findByText(/checking every half second/i, {}, { timeout: 3000 })).toBeInTheDocument()
+    await screen.findByText('Import complete', {}, { timeout: 4000 })
+    expect(jobCalls).toBeGreaterThanOrEqual(3)
+  })
+
+  it('resumes watching a running job from the job id in the URL', async () => {
+    stubEventSource()
+    jobResponses.push(pendingJob(1))
+    render(<RouterProvider router={makeMemoryRouter('/data?tab=import&job=job1')} />)
+    expect(await screen.findByRole('progressbar', {}, { timeout: 2000 })).toBeInTheDocument()
+    FakeEventSource.instances.at(-1)?.emit('done', { ...inlineJob })
+    await screen.findByText('Import complete', {}, { timeout: 2000 })
+    expect(screen.getByText(/1 created, 1 replaced, 1 skipped/)).toBeInTheDocument()
+  })
+
+  it('tells the user when a resumed job is unknown', async () => {
+    jobMiss = true
+    render(<RouterProvider router={makeMemoryRouter('/data?tab=import&job=missing')} />)
+    expect(await screen.findByRole('alert')).toHaveTextContent(/unknown/)
   })
 })
