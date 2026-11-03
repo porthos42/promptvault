@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+
 from fastapi import APIRouter, Request
 from sqlalchemy import text
 
@@ -18,4 +20,8 @@ def health(request: Request) -> dict[str, str]:
 
 @router.get("/version")
 def version() -> dict[str, str]:
-    return {"version": __version__}
+    out = {"version": __version__}
+    revision = os.environ.get("PV_REVISION")  # set by the Docker build (git commit)
+    if revision and revision != "unknown":
+        out["revision"] = revision
+    return out

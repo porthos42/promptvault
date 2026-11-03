@@ -107,8 +107,9 @@ def upgrade() -> None:
         _drop_fts()
     op.add_column("prompt", sa.Column("tags_text", sa.Text, nullable=False, server_default=""))
     op.add_column("prompt", sa.Column("last_used_at", sa.DateTime(timezone=True)))
+    concat = "group_concat(t.name, ' ')" if sqlite else "string_agg(t.name, ' ')"
     op.execute(
-        "UPDATE prompt SET tags_text = COALESCE((SELECT group_concat(t.name, ' ') "
+        f"UPDATE prompt SET tags_text = COALESCE((SELECT {concat} "
         "FROM prompt_tag pt JOIN tag t ON t.id = pt.tag_id WHERE pt.prompt_id = prompt.id), '')"
     )
     if sqlite:

@@ -4,9 +4,12 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_call:
 
 concurrency:
-  group: ci-${{ github.ref }}
+  # github.workflow is the caller's name when called from docker-publish.yml, so the two
+  # runs of CI for one push do not cancel each other
+  group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -61,14 +64,40 @@ jobs:
     needs: [backend, frontend]
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -f docker/Dockerfile -t promptvault:ci .
-      - name: Smoke test
+      - name: Build image
+        run: docker build -f docker/Dockerfile --build-arg PV_REVISION=${{ github.sha }} -t promptvault:ci .
+      - name: Smoke test (health, seed, non-root, restart persistence, export, size ceiling)
+        run: bash tools/docker_smoke.sh promptvault:ci
+      - name: Vulnerability scan (informational, does not fail the build)
         run: |
-          docker run -d --name pv -p 8080:8080 promptvault:ci
-          for i in $(seq 1 30); do
-            curl -fsS http://127.0.0.1:8080/api/v1/health && ok=1 && break
-            sleep 1
-          done
-          [ -n "$ok" ] || { docker logs pv; exit 1; }
-          # the seed library ships in the image and is loaded at start
-          docker exec pv promptvault list --limit 500 | grep -q "Resume Bullet Rewriter" || { docker logs pv; exit 1; }
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest \
+            image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 0 promptvault:ci | tee scan.txt
+          { echo '### Trivy (HIGH, CRITICAL, fixable)'; echo '```'; cat scan.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+  postgres:
+    name: PostgreSQL smoke test (experimental)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: pv
+          POSTGRES_PASSWORD: pvtest
+          POSTGRES_DB: pv
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U pv -d pv"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --extra postgres
+      - run: uv run python ../tools/pg_smoke.py
+        env:
+          PV_PG_URL: postgresql+psycopg://pv:pvtest@localhost:5432/pv

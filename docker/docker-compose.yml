@@ -1,15 +1,37 @@
-# Run from the repo root:  docker compose -f docker/docker-compose.yml up --build
+# Prompt Vault with SQLite (default). From the repo root:
+#   docker compose -f docker/docker-compose.yml up -d            # pulls the published image
+#   docker compose -f docker/docker-compose.yml up -d --build    # builds it from this checkout
+# From a downloaded copy of this file: docker compose up -d
+#
+# WARNING: Prompt Vault v1 has NO authentication. The port is published on the loopback
+# interface only. Do not change PV_BIND to all interfaces or forward the port to the internet
+# unless a reverse proxy with authentication sits in front of it.
+#
+# Settings (all optional, put them in a .env file next to this one or export them):
+#   PV_TAG        image tag: edge (latest main), a version like 1.0.0, or latest (default: edge,
+#                 until the first release is published)
+#   PV_BIND       host address to publish on (default: loopback)
+#   PV_HOST_PORT  host port (default 8080)
 services:
   promptvault:
+    image: ghcr.io/porthos42/promptvault:${PV_TAG:-edge}
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    image: promptvault:dev
     ports:
-      - "8080:8080"
+      - "${PV_BIND:-127.0.0.1}:${PV_HOST_PORT:-8080}:8080"
     volumes:
       - pv-data:/data
+    environment:
+      PV_LOG_LEVEL: ${PV_LOG_LEVEL:-info}
     restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
 
 volumes:
   pv-data:

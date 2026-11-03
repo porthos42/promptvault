@@ -5,7 +5,7 @@
 
 A self-hosted, searchable prompt engineering library. The goal is hundreds of ready-to-use prompts across careers, marketing, coding, STEM, 3D printing, image/video generation and more, with full create/edit/delete, search, filtering and import. Single-user and local-first. Free and open source.
 
-> **Status: early development (M3d done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importing works from the API and the CLI: JSON, CSV, XLSX (optional extra), Markdown (files, folders, ZIP) pasted text, GitHub repos/gists, web pages and Hugging Face datasets (all fetched through an SSRF-safe fetcher), with validation, exact and fuzzy dedupe, a dry-run preview, skip, replace or keep-both, a license gate and background jobs with SSE progress. Export works from the API and the CLI: JSON, CSV, XLSX (optional extra), a Markdown ZIP or folder, and a copy-paste share snippet for one prompt. The import and export UI is not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
+> **Status: early development (M4a done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importing works from the API and the CLI: JSON, CSV, XLSX (optional extra), Markdown (files, folders, ZIP) pasted text, GitHub repos/gists, web pages and Hugging Face datasets (all fetched through an SSRF-safe fetcher), with validation, exact and fuzzy dedupe, a dry-run preview, skip, replace or keep-both, a license gate and background jobs with SSE progress. Export works from the API and the CLI: JSON, CSV, XLSX (optional extra), a Markdown ZIP or folder, and a copy-paste share snippet for one prompt. A production Docker image (multi-arch, non-root, GHCR) and compose files ship in M4a. The import and export UI is not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
 
 **Stack:** Python 3.11+ (FastAPI, SQLAlchemy 2, Alembic, Typer), React 19 + TypeScript (Vite), SQLite with FTS5 by default.
 
@@ -23,7 +23,7 @@ Available now:
 - Index kept in sync by triggers; trashed prompts are excluded from search
 - Library UI: category sidebar, URL-persisted filter bar (search, category, tags, difficulty, sort, favorites), virtualized infinite list, prompt detail with variable form, live preview and one-click copy, CodeMirror editor, Trash view, Ctrl+K palette, `/` to focus search, light/dark theme
 - Seed library machinery: YAML prompt files, a CI linter, an idempotent loader that never overwrites your edits, and "Reset to original" per prompt or per category
-- Docker image, CI on Linux and Windows
+- Production Docker image on GHCR (linux/amd64 + arm64, non-root, XLSX included), compose files for SQLite and an experimental PostgreSQL variant, CI on Linux and Windows
 
 Planned: see [Roadmap](#roadmap).
 
@@ -54,13 +54,29 @@ cd frontend && npm run dev
 
 ### Docker
 
+The image is `ghcr.io/porthos42/promptvault` (linux/amd64 and linux/arm64). Tags: `edge` (latest commit on main) now; `X.Y.Z`, `X.Y` and `latest` once the first release is tagged.
+
 ```bash
-docker compose -f docker/docker-compose.yml up --build
-# or
-docker build -f docker/Dockerfile -t promptvault . && docker run -p 8080:8080 -v pv-data:/data promptvault
+docker run -d --name promptvault -p 127.0.0.1:8080:8080 -v pv-data:/data ghcr.io/porthos42/promptvault:edge
+# open http://localhost:8080
 ```
 
-Data lives in `/data` (a named volume). The CLI works inside the container: `docker exec -it <container> promptvault list`. Published images and PyPI packages arrive in M4.
+Or with Compose (SQLite, named volume `pv-data`, read-only root filesystem, no capabilities):
+
+```bash
+docker compose -f docker/docker-compose.yml up -d            # pulls the published image
+docker compose -f docker/docker-compose.yml up -d --build    # builds it from this checkout instead
+# from a downloaded copy of the file: docker compose up -d
+```
+
+`PV_TAG` (image tag, default `edge`), `PV_BIND` (host address, default loopback) and `PV_HOST_PORT` (default `8080`) can be set in a `.env` file next to the compose file or exported. **Prompt Vault v1 has no authentication, so the port is published on the loopback interface only.** Do not bind it to all interfaces or forward it to the internet without a reverse proxy that adds authentication and TLS.
+
+- Data lives in `/data` (database and nothing else). The container runs as uid 10001; a bind mount must be writable by that user (`chown 10001 <dir>`). Migrations and the seed library run at every start, so updating is `docker compose pull && docker compose up -d`; your data volume is upgraded in place (tested from the M1b and M2f databases).
+- The CLI works inside the container, e.g. a backup: `docker exec promptvault promptvault export json - > backup.json`, or `promptvault list`, `promptvault import ...`.
+- XLSX import and export work in the image (openpyxl is installed). The image is about 190 MB uncompressed (`docker image ls`; much less to download) and has a health check on `/api/v1/health`.
+- Build it yourself from the repo root: `docker build -f docker/Dockerfile -t promptvault .` (build args: `EXTRAS`, default `xlsx`; `PV_REVISION`, shown by `/api/v1/version`).
+- **PostgreSQL (experimental).** `docker/compose.postgres.yml` runs the app against postgres 16: set `POSTGRES_PASSWORD` in `.env` (see [.env.example](.env.example)), then `docker compose -f docker/compose.postgres.yml --env-file .env up -d --build`. It builds a local image variant with the PostgreSQL driver (the published image has none, to stay under the size budget). Tested: the migration chain, list, filters, create, update, revisions, trash, export in all four formats and imports including background jobs. Not available on PostgreSQL: full-text ranking and typo correction (search is an unranked substring match). Not tested: upgrading real data, backups, large libraries. SQLite stays the supported default.
+- The first publish to GHCR creates a private package; the owner sets its visibility to public once in the GitHub package settings.
 
 ## CLI
 
@@ -90,9 +106,9 @@ promptvault export <json|csv|xlsx|markdown> [PATH | -] [-c slug] [-t tag ...] [-
 promptvault share <id-or-prefix> [--format markdown|text|json] [--values name=value ...]
 ```
 
-**Import.** `--dry-run` previews and writes nothing; otherwise you see the preview and confirm (`--yes` skips the question; `-` reads stdin and needs `--yes` or `--dry-run`). Columns are matched to prompt fields by name (title/name, body/prompt/text, tags, category, license, source_url, ...); `-m body=Prompt` overrides. Rows with no clear license are refused unless you pass `--confirm-license` or a `--license` for the whole file. A Markdown folder or ZIP is one prompt per file with optional YAML front-matter. XLSX needs the optional extra: `pip install 'promptvault[xlsx]'` (not included in the Docker image yet). Exit code 1 means nothing was imported because of errors.
+**Import.** `--dry-run` previews and writes nothing; otherwise you see the preview and confirm (`--yes` skips the question; `-` reads stdin and needs `--yes` or `--dry-run`). Columns are matched to prompt fields by name (title/name, body/prompt/text, tags, category, license, source_url, ...); `-m body=Prompt` overrides. Rows with no clear license are refused unless you pass `--confirm-license` or a `--license` for the whole file. A Markdown folder or ZIP is one prompt per file with optional YAML front-matter. XLSX needs the optional extra: `pip install 'promptvault[xlsx]'` (already included in the Docker image). Exit code 1 means nothing was imported because of errors.
 
-**Export.** `promptvault export json backup.json` writes every live prompt (add `--include-trashed` for Trash); the same filters as `list` and `search` narrow it, `--id` picks single prompts. `csv` and `xlsx` open in Excel (CSV has a UTF-8 BOM; cells that start with `=`, `+`, `-` or `@` get a leading apostrophe so Excel cannot run them, `--raw` turns that off); `markdown` writes a folder, or one ZIP with `--zip`, of `<category>/<title>.md` files with YAML front-matter. `-` sends json or csv to stdout. Existing files and non-empty folders are only overwritten with `--force`; an empty selection exits 1. XLSX needs the optional extra (`pip install 'promptvault[xlsx]'`, not in the Docker image yet). Every format re-imports through the matching importer and restores content and provenance (title, body, description, category, tags, difficulty, type, model hints, output format, disclaimer, license, source URL). Ids, favorites, ratings, use counts, timestamps and variable labels/defaults are in the file but are not restored, and importers never create categories. Restoring into an empty install: use `--on-duplicate keep_both` if you have near-duplicate prompts and `--confirm-license` if some have no license. `promptvault share <id>` prints one prompt as a snippet to paste anywhere; `--values name=value` fills the variables.
+**Export.** `promptvault export json backup.json` writes every live prompt (add `--include-trashed` for Trash); the same filters as `list` and `search` narrow it, `--id` picks single prompts. `csv` and `xlsx` open in Excel (CSV has a UTF-8 BOM; cells that start with `=`, `+`, `-` or `@` get a leading apostrophe so Excel cannot run them, `--raw` turns that off); `markdown` writes a folder, or one ZIP with `--zip`, of `<category>/<title>.md` files with YAML front-matter. `-` sends json or csv to stdout. Existing files and non-empty folders are only overwritten with `--force`; an empty selection exits 1. XLSX needs the optional extra (`pip install 'promptvault[xlsx]'`, already in the Docker image). Every format re-imports through the matching importer and restores content and provenance (title, body, description, category, tags, difficulty, type, model hints, output format, disclaimer, license, source URL). Ids, favorites, ratings, use counts, timestamps and variable labels/defaults are in the file but are not restored, and importers never create categories. Restoring into an empty install: use `--on-duplicate keep_both` if you have near-duplicate prompts and `--confirm-license` if some have no license. `promptvault share <id>` prints one prompt as a snippet to paste anywhere; `--values name=value` fills the variables.
 
 **Import from a URL.** `github` takes a repo (`github.com/o/r`, `/tree/<branch>/<folder>`, `/blob/<branch>/<file>`) or a gist and reads `.md .json .yaml .yml .csv` files (README, LICENSE and similar are skipped); the repo license is applied to rows without their own, and a missing or `NOASSERTION` license trips the license gate. `huggingface` reads a public dataset through the datasets-server JSON API (`--config`, `--split`, `--limit`; use `-m title=act -m body=prompt` when the dataset has no title column; gated/private datasets and parquet-only access are not supported). `url` takes a Markdown/JSON/CSV/YAML file or an HTML page (best effort: text from `<pre>`, `<code>`, `<blockquote>`; `--mode blocks` makes one prompt per block; no JavaScript, no crawling) and flags pages for review. Fetching only allows http(s) on ports 80/443 to public addresses (private, loopback, link-local and metadata addresses are blocked, also after redirects); see `PV_IMPORT_ALLOW_PRIVATE_HOSTS` to open an intranet host.
 
@@ -128,7 +144,7 @@ Environment variables (prefix `PV_`) or a `.env` file. See [.env.example](.env.e
 | `PV_HOST` | loopback only | The Docker image sets all interfaces; there is no auth in v1, so do not expose it publicly |
 | `PV_PORT` | `8080` | |
 | `PV_DATA_DIR` | `~/.promptvault` | Holds the SQLite database |
-| `PV_DATABASE_URL` | SQLite in the data dir | Any SQLAlchemy URL (Postgres support is planned, not yet tested) |
+| `PV_DATABASE_URL` | SQLite in the data dir | Any SQLAlchemy URL. PostgreSQL is experimental (`postgresql+psycopg://...`, needs the `postgres` extra, see Docker above) |
 | `PV_TRASH_RETENTION_DAYS` | `30` | Trashed prompts older than this are purged at start |
 | `PV_SEED_ON_START` | `true` | Load/upgrade the seed library at start and on `promptvault init` (idempotent) |
 | `PV_SEED_DIR` | bundled `seed/` | Alternative seed folder |
@@ -171,7 +187,9 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 | M3b | Importers: JSON, CSV/XLSX, Markdown folder/ZIP, clipboard, plus the `promptvault import` CLI | Done |
 | M3c | Importers: GitHub repo/gist, web URL, Hugging Face datasets, with an SSRF guard | Done |
 | M3d | Export: JSON, CSV, XLSX, Markdown ZIP/folder, share snippet, `promptvault export` and `share` CLI | Done |
-| M4 | Published Docker image (GHCR), PyPI package, start scripts, release automation | Next |
+| M4a | Production Docker image, compose files (SQLite, experimental PostgreSQL), GHCR publish for `edge` and version tags | Done |
+| M4b | PyPI package, pipx/uvx, start scripts | Next |
+| M4c | Release automation, changelog, docs site | Planned |
 | M5 | Polish and v1.0: accessibility, performance, end-to-end tests | Planned |
 | v1.5 | Run panel (test prompts against an LLM), semantic search, executables | Backlog |
 
@@ -180,11 +198,11 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 ```
 backend/    FastAPI app, models, services, CLI, Alembic migrations, tests   (src/promptvault)
 frontend/   Vite + React + TypeScript UI
-docker/     Dockerfile and compose file
+docker/     Dockerfile and compose files (SQLite, PostgreSQL)
 docs/       Product and technical spec
 seed/       Seed prompts (YAML) and categories.yaml
-tools/      Build-time tooling (lint_seed.py)
-.github/    CI workflow, Dependabot, PR template
+tools/      Tooling: lint_seed.py, docker_smoke.sh (image smoke test), pg_smoke.py
+.github/    CI and Docker publish workflows, Dependabot, PR template
 ```
 
 The frontend builds into `backend/src/promptvault/static`, so a single process serves both the API and the UI.

@@ -37,6 +37,10 @@ Issues = "https://github.com/porthos42/promptvault/issues"
 xlsx = [
     "openpyxl>=3.1.5",
 ]
+# EXPERIMENTAL: PostgreSQL via PV_DATABASE_URL=postgresql+psycopg://... (see docs/SPEC.md section 6)
+postgres = [
+    "psycopg[binary]>=3.2",
+]
 
 [dependency-groups]
 dev = [

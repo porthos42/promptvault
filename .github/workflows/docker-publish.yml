@@ -1,0 +1,106 @@
+name: Docker publish
+
+# Builds the image for every PR (amd64 only, never pushed) and publishes to GHCR from main
+# (tag `edge`) and from version tags v* (tags X.Y.Z, X.Y and latest). Publishing only happens
+# after the whole CI workflow passed for the same commit.
+#
+# First publish: GitHub creates the package as private. Set its visibility to public once under
+# the repository's Packages settings; anonymous `docker pull` fails until then.
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: docker-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref_type != 'tag' }}
+
+env:
+  IMAGE: ghcr.io/porthos42/promptvault
+
+jobs:
+  ci:
+    name: CI gate
+    if: github.event_name != 'pull_request'
+    uses: ./.github/workflows/ci.yml
+
+  image:
+    name: Build and publish
+    needs: [ci]
+    # the gate is skipped for PRs (CI runs on its own there); never continue after a failed gate
+    if: ${{ !cancelled() && (github.event_name == 'pull_request' || needs.ci.result == 'success') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tag matches the package version
+        if: github.ref_type == 'tag'
+        run: |
+          ver=$(python3 -c "import tomllib; print(tomllib.load(open('backend/pyproject.toml','rb'))['project']['version'])")
+          if [ "v$ver" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match backend/pyproject.toml version $ver" >&2
+            exit 1
+          fi
+
+      - uses: docker/setup-qemu-action@v3
+        if: github.event_name != 'pull_request'
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        if: github.event_name != 'pull_request'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Image tags and labels
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=edge,branch=main
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+
+      - name: Build (and push, except for PRs)
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: ${{ github.event_name == 'pull_request' && 'linux/amd64' || 'linux/amd64,linux/arm64' }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            PV_REVISION=${{ github.sha }}
+            PV_VERSION=${{ steps.meta.outputs.version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: mode=max
+          sbom: true
+
+      - name: Published manifest
+        if: github.event_name != 'pull_request'
+        run: |
+          docker buildx imagetools inspect "$IMAGE@${{ steps.build.outputs.digest }}"
+          {
+            echo "### Published"
+            echo '```'
+            echo "$IMAGE@${{ steps.build.outputs.digest }}"
+            echo "${{ steps.meta.outputs.tags }}"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Smoke test the published image
+        if: github.event_name != 'pull_request'
+        run: |
+          docker pull "$IMAGE@${{ steps.build.outputs.digest }}"
+          bash tools/docker_smoke.sh "$IMAGE@${{ steps.build.outputs.digest }}"
