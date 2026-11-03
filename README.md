@@ -237,7 +237,7 @@ frontend/   Vite + React + TypeScript UI
 docker/     Dockerfile and compose files (SQLite, PostgreSQL)
 scripts/    start.sh and start.ps1 (run from a checkout)
 docs/       Product and technical spec, MkDocs Material docs site (published to GitHub Pages), service setup notes
-release-please-config.yml + .release-please-manifest.json   release-please (changelog, release PR, tag)
+release-please-config.json + .release-please-manifest.json   release-please (changelog, release PR, tag)
 seed/       Seed prompts (YAML) and categories.yaml
 tools/      Tooling: lint_seed.py, docker_smoke.sh (image smoke test), pg_smoke.py, check_dist.py and dist_smoke.py (package checks)
 .github/    CI and Docker publish workflows, Dependabot, PR template
