@@ -1,0 +1,44 @@
+name: Docs
+
+# Builds the MkDocs Material site (mkdocs.yml at the repo root) and publishes it to
+# GitHub Pages on every push to main. The Pages source must be set to "GitHub Actions"
+# (Settings > Pages); if the deploy job fails on permissions, that setting is the place
+# to look. Also runnable by hand (workflow_dispatch).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build the docs site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: mkdocs build (strict)
+        run: uv run --no-project --with mkdocs-material mkdocs build --strict --site-dir site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    name: Publish to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

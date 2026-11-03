@@ -1,0 +1,36 @@
+site_name: Prompt Vault
+site_description: >-
+  A self-hosted, searchable prompt engineering library. Single-user, local-first,
+  free and open source.
+site_url: https://porthos42.github.io/promptvault/
+repo_url: https://github.com/porthos42/promptvault
+repo_name: porthos42/promptvault
+copyright: MIT licensed
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.footer
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+nav:
+  - Home: index.md
+  - Install: install.md
+  - CLI: cli.md
+  - REST API: api.md
+  - Import & export: import-export.md
+  - Configuration: configuration.md
+  - Run as a service: serve.md
+  - Spec: SPEC.md

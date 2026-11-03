@@ -1,0 +1,19 @@
+# release-please manifest config (run by .github/workflows/release.yml).
+# The tag is v<version> with no component (single-package repo). Besides CHANGELOG.md
+# at the root, two version files are kept in sync with the release:
+#   backend/pyproject.toml            (toml update, $.project.version)
+#   backend/src/promptvault/__init__.py (generic matcher on __version__)
+# A CI test (backend/tests/test_packaging.py) fails if the two drift apart.
+release-type: simple
+include-component-in-tag: false
+packages:
+  ".":
+    extra-files:
+      - type: toml
+        path: backend/pyproject.toml
+        jsonpath: $.project.version
+      - type: generic
+        path: backend/src/promptvault/__init__.py
+        version:
+          start: '__version__ = "'
+          end: '"'

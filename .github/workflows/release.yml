@@ -1,0 +1,33 @@
+name: Release
+
+# release-please watches main and keeps one release PR open. When the owner merges it,
+# the bot updates CHANGELOG.md and the two version files and pushes the v* tag, which
+# triggers the Docker publish (image tags X.Y.Z, X.Y, latest). Nothing is uploaded to
+# PyPI: the `package` CI jobs build and verify the wheel and sdist, and the owner
+# uploads by hand (see docs/install.md and README "How releases happen").
+#
+# It runs only on pushes to main (Dependabot pushes land on branches, so the ref gate
+# already excludes them; the actor check is belt and braces).
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    name: Release PR / tag
+    if: github.ref == 'refs/heads/main' && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config.yml
+          manifest-file: .release-please-manifest.json

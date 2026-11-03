@@ -5,7 +5,7 @@
 
 A self-hosted, searchable prompt engineering library. The goal is hundreds of ready-to-use prompts across careers, marketing, coding, STEM, 3D printing, image/video generation and more, with full create/edit/delete, search, filtering and import. Single-user and local-first. Free and open source.
 
-> **Status: early development (M3g done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importing works from the API and the CLI: JSON, CSV, XLSX (optional extra), Markdown (files, folders, ZIP) pasted text, GitHub repos/gists, web pages and Hugging Face datasets (all fetched through an SSRF-safe fetcher), with validation, exact and fuzzy dedupe, a dry-run preview, skip, replace or keep-both, a license gate and background jobs with SSE progress. Export works from the API and the CLI: JSON, CSV, XLSX (optional extra), a Markdown ZIP or folder, and a copy-paste share snippet for one prompt. A production Docker image (multi-arch, non-root, GHCR) and compose files ship in M4a, and M4b adds the PyPI package `prompt-vault` (built and verified, not yet uploaded to PyPI), `pipx`/`uvx` support and start scripts. The export UI ships in M3e (a Data page with format cards, filters-scope downloads and a Share popover), M3f adds the import wizard in the same Data page (files or pasted text, mapping, preview with duplicates and a license gate, results), and M3g extends it with URL sources (GitHub, web pages, Hugging Face — one address field with auto-detection), a "What was fetched" block and live job progress over SSE with polling fallback. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
+> **Status: early development (M4c done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importing works from the API and the CLI: JSON, CSV, XLSX (optional extra), Markdown (files, folders, ZIP) pasted text, GitHub repos/gists, web pages and Hugging Face datasets (all fetched through an SSRF-safe fetcher), with validation, exact and fuzzy dedupe, a dry-run preview, skip, replace or keep-both, a license gate and background jobs with SSE progress. Export works from the API and the CLI: JSON, CSV, XLSX (optional extra), a Markdown ZIP or folder, and a copy-paste share snippet for one prompt. A production Docker image (multi-arch, non-root, GHCR) and compose files ship in M4a, and M4b adds the PyPI package `prompt-vault` (built and verified, not yet uploaded to PyPI), `pipx`/`uvx` support and start scripts, and M4c adds release automation (release-please keeps the changelog and versions in a release PR that the owner merges; the merge tags the release and triggers the versioned Docker images), a [documentation site](https://porthos42.github.io/promptvault/) and install/service docs. The export UI ships in M3e (a Data page with format cards, filters-scope downloads and a Share popover), M3f adds the import wizard in the same Data page (files or pasted text, mapping, preview with duplicates and a license gate, results), and M3g extends it with URL sources (GitHub, web pages, Hugging Face — one address field with auto-detection), a "What was fetched" block and live job progress over SSE with polling fallback. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
 
 **Stack:** Python 3.11+ (FastAPI, SQLAlchemy 2, Alembic, Typer), React 19 + TypeScript (Vite), SQLite with FTS5 by default.
 
@@ -44,6 +44,16 @@ Planned: see [Roadmap](#roadmap).
 The PyPI distribution is named **`prompt-vault`** because `promptvault` belongs to an unrelated project; the command and the Python package are still `promptvault`. The package has not been uploaded yet, so the pipx, uvx and pip rows start working with the first release (M4c); the wheel and sdist are built and tested in CI (`package` job) and the pipx, uvx and pip commands were verified against the locally built wheel.
 
 The wheel includes the web UI and the 213 seed prompts. XLSX import/export needs the `xlsx` extra (`prompt-vault[xlsx]`; the Docker image already has it); the other extras are `postgres` (experimental) and `all` (both). Open <http://localhost:8080> after `promptvault serve` (API docs at `/docs`); data lives in `~/.promptvault` (`PV_DATA_DIR`). Upgrade with `pipx upgrade prompt-vault` (migrations run at start).
+
+**Verify after any install:** `promptvault version` prints the version, and `curl http://localhost:8080/api/v1/health` answers once the server is up (the health URL is what the Docker health check uses). `promptvault doctor` checks the data directory. Per method:
+
+- **pipx** — `pipx install 'prompt-vault[xlsx]' && promptvault serve`, then open <http://localhost:8080>; upgrade with `pipx upgrade prompt-vault`.
+- **uvx** — `uvx --from 'prompt-vault[xlsx]' promptvault serve` (nothing installed; add `--refresh` to pick up a newer release).
+- **pip** — `pip install 'prompt-vault[xlsx]' && promptvault serve` in any Python 3.11+ environment.
+- **Docker/compose** — see below; the health check inside the container must reach `healthy` (`docker inspect --format '{{.State.Health.Status}}' promptvault`).
+- **From source via start scripts** — see below; the script prints the URL it serves on, and `curl http://localhost:8080/api/v1/health` confirms it.
+
+The pipx, uvx and pip commands start working with the first PyPI release; until then they were verified against the locally built wheel.
 
 ### Start scripts
 
@@ -185,6 +195,13 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 - **Per-category minimum**: `min_per_category` in `seed/categories.yaml` makes the linter fail when any category has fewer prompts than that. It is `5`, so CI fails if any category drops below five prompts. Override it for one run with `--min-per-category N`.
 - A seed prompt you permanently delete is recreated by the next load; move it to Trash instead.
 
+## How releases happen
+
+- **[release-please](https://github.com/googleapis/release-please) automates the changelog, the version bump and the tag — nothing else.** Conventional Commits on `main` (`feat:`, `fix:`, ...) make the bot open one *release PR* that updates `CHANGELOG.md`, `backend/pyproject.toml` and `backend/src/promptvault/__init__.py` (a CI test fails if the two version files drift apart). **When the owner merges that PR, the bot pushes the `vX.Y.Z` tag**; the automation never pushes a version tag directly.
+- The `v*` tag triggers the Docker publish workflow, which re-runs the whole CI workflow as a gate, checks that the tag equals the package version, builds a multi-arch image and pushes tags `X.Y.Z`, `X.Y` and `latest` to GHCR, then smoke-tests the pushed digest.
+- **The PyPI upload is manual, by design.** CI builds the wheel and sdist on every push and tag and verifies their contents and installability, but never uploads. The owner's steps: build the UI (`cd frontend && npm ci && npm run build`), `uv build` in `backend/`, `uv run --no-project --with twine twine check dist/*`, re-check that `prompt-vault` is still free on <https://pypi.org>, then `uv publish` (or `twine upload`) with the owner's token. TestPyPI first is optional.
+- Full install docs and service notes live in the [documentation site](https://porthos42.github.io/promptvault/) (built with MkDocs Material from `docs/` and published to GitHub Pages by CI on every push to `main`).
+
 ## Roadmap
 
 | Milestone | Scope | Status |
@@ -208,7 +225,7 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 | M3g | Import UI: URL sources (GitHub, web page, Hugging Face) and live SSE job progress | Done |
 | M4a | Production Docker image, compose files (SQLite, experimental PostgreSQL), GHCR publish for `edge` and version tags | Done |
 | M4b | PyPI package `prompt-vault` (wheel + sdist built and verified, not uploaded), pipx/uvx, start scripts, `package` CI job | Done |
-| M4c | Release automation, changelog, docs site (card t_ce5dd0c4) | Planned |
+| M4c | Release automation (release-please release PR → tag → versioned images), changelog, MkDocs Material docs site on GitHub Pages, install docs, systemd/Windows service notes | Done |
 | M5 | Polish and v1.0: accessibility, performance, end-to-end tests | Planned |
 | v1.5 | Run panel (test prompts against an LLM), semantic search, executables | Backlog |
 
@@ -219,7 +236,8 @@ backend/    FastAPI app, models, services, CLI, Alembic migrations, tests   (src
 frontend/   Vite + React + TypeScript UI
 docker/     Dockerfile and compose files (SQLite, PostgreSQL)
 scripts/    start.sh and start.ps1 (run from a checkout)
-docs/       Product and technical spec
+docs/       Product and technical spec, MkDocs Material docs site (published to GitHub Pages), service setup notes
+release-please-config.yml + .release-please-manifest.json   release-please (changelog, release PR, tag)
 seed/       Seed prompts (YAML) and categories.yaml
 tools/      Tooling: lint_seed.py, docker_smoke.sh (image smoke test), pg_smoke.py, check_dist.py and dist_smoke.py (package checks)
 .github/    CI and Docker publish workflows, Dependabot, PR template
@@ -235,6 +253,7 @@ cd backend && uv run pytest && uv run ruff check . && uv run ruff format --check
 make dist        # = uv build + tools/check_dist.py + twine check; artifacts in backend/dist (not committed)
 PV_PERF=1 uv run pytest tests/test_search_perf.py -s   # optional: search latency at 10k prompts
 cd frontend && npm test && npm run lint && npm run typecheck
+uv run --no-project --with mkdocs-material mkdocs build --strict   # docs site (repo root)
 ```
 
 ## Contributing

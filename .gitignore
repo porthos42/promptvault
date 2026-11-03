@@ -18,6 +18,7 @@ frontend/dist/
 
 # Built frontend (copied into the Python package at build time)
 backend/src/promptvault/static/
+site/
 
 # Local data / secrets
 .env

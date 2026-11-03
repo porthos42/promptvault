@@ -9,7 +9,8 @@
 #
 # Settings (all optional, put them in a .env file next to this one or export them):
 #   PV_TAG        image tag: edge (latest main), a version like 1.0.0, or latest (default: edge,
-#                 until the first release is published)
+#                 until the first release is published; the planned follow-up after the first
+#                 release-PR merge flips this default to latest)
 #   PV_BIND       host address to publish on (default: loopback)
 #   PV_HOST_PORT  host port (default 8080)
 services:
