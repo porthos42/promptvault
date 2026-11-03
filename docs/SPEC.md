@@ -105,6 +105,10 @@ Pipeline rules:
 - Commit actions per duplicate are `skip` (default), `replace` (the normal update path, so the old version stays as a revision) and `keep_both`. A duplicate of an earlier row in the same batch can only be skipped or kept.
 - Rows with a missing or unclear license (`needs_license_confirm`) are refused at commit unless the request sets `confirm_license` or lists the row in `confirmed_rows`; other rows still import.
 - Commits up to 25 rows run inside the request (200); larger ones return a pending job (202) with `GET /jobs/{id}` and `GET /jobs/{id}/events` (SSE: `progress`, then `done` or `failed`). A job is one transaction, so a failure leaves no partial import.
+- **M3b importers.** `json`, `csv`, `xlsx`, `markdown` and `clipboard` are registered importers; `GET /import/importers` lists them. Files travel inside the JSON request (`content` for text, `content_base64` for binary), not as multipart uploads, so no upload dependency is needed. XLSX needs the optional extra `promptvault[xlsx]` (openpyxl, read-only, cached values only: formulas are never evaluated) and reports itself as unavailable without it.
+- Column mapping is a backend feature in M3b: headers are matched by alias and an explicit `mapping` ({field: column}) overrides; the applied mapping and ignored columns appear as warnings on the first row of the preview. The mapping UI is a later card.
+- ZIP sources are checked (entry count, expanded size, member size, path traversal, symlinks) and never extracted to disk. Request-level `default_license` and `default_source_url` fill only rows that have none.
+- CLI: `promptvault import <importer> <file|folder|->` runs the same pipeline in-process (no job), with `--dry-run`, `--on-duplicate`, `--confirm-license` and a confirmation step.
 - Request caps: `PV_IMPORT_MAX_ROWS` (2000) and `PV_IMPORT_MAX_PAYLOAD_BYTES` (5 MiB), answered with 413 problem+json.
 
 ## 3.6 Export

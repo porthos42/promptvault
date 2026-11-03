@@ -191,7 +191,15 @@ DupAction = Literal["skip", "replace", "keep_both"]
 
 class ImportRequest(BaseModel):
     importer: str = Field(min_length=1, max_length=100, description="Registered importer name")
-    source: Any = Field(description="Importer-specific source (passthrough: a list of prompts)")
+    source: Any = Field(
+        description="Importer source: parsed JSON, text, or {content | content_base64, ...}"
+    )
+    default_license: str | None = Field(
+        default=None, max_length=100, description="License for rows that have none of their own"
+    )
+    default_source_url: str | None = Field(
+        default=None, max_length=1000, description="Source URL for rows that have none"
+    )
 
 
 class CommitRequest(ImportRequest):
@@ -273,3 +281,10 @@ class JobOut(BaseModel):
     error: str | None
     created_at: datetime
     results: list[JobResultOut] | None = None
+
+
+class ImporterOut(BaseModel):
+    name: str
+    description: str
+    available: bool
+    reason: str | None = Field(description="Why an importer is unavailable")

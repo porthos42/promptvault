@@ -17,6 +17,8 @@ from sqlalchemy.orm import Session
 from promptvault import __version__
 from promptvault.config import get_settings
 from promptvault.db import make_engine, make_session_factory, run_migrations
+from promptvault.importers import local as import_local
+from promptvault.importers import pipeline
 from promptvault.schemas import PromptCreate, PromptPatch
 from promptvault.services import categories as cat_svc
 from promptvault.services import prompts as svc
@@ -343,6 +345,147 @@ def tag_rm(name: str) -> None:
     with _db() as session:
         tag_svc.delete(session, name)
         typer.echo(f"Deleted tag {name}")
+
+
+@app.command("import")
+def import_(
+    importer: Annotated[str, typer.Argument(help="json, csv, xlsx, markdown, clipboard, ...")],
+    path: Annotated[str, typer.Argument(help="File, folder (markdown) or - for stdin.")],
+    mapping: Annotated[
+        list[str] | None,
+        typer.Option("--mapping", "-m", help="Map a field to a column: field=column (repeatable)."),
+    ] = None,
+    sheet: Annotated[str | None, typer.Option(help="XLSX sheet name or number.")] = None,
+    delimiter: Annotated[
+        str | None, typer.Option(help="CSV delimiter, or the separator line for clipboard text.")
+    ] = None,
+    dry_run: Annotated[
+        bool, typer.Option("--dry-run", help="Preview only; write nothing.")
+    ] = False,
+    on_duplicate: Annotated[
+        str, typer.Option("--on-duplicate", help="skip, replace or keep_both.")
+    ] = "skip",
+    confirm_license: Annotated[
+        bool, typer.Option("--confirm-license", help="Import rows with a missing/unclear license.")
+    ] = False,
+    license_: Annotated[
+        str | None, typer.Option("--license", help="License for rows that have none.")
+    ] = None,
+    source_url: Annotated[
+        str | None, typer.Option("--source-url", help="Source URL for rows that have none.")
+    ] = None,
+    yes: Annotated[bool, typer.Option("--yes", "-y", help="Do not ask for confirmation.")] = False,
+    as_json: AsJson = False,
+) -> None:
+    """Import prompts from a file, folder or stdin (preview first; --dry-run writes nothing)."""
+    if on_duplicate not in ("skip", "replace", "keep_both"):
+        raise typer.BadParameter("must be skip, replace or keep_both", param_hint="--on-duplicate")
+    columns: dict[str, str] = {}
+    for item in mapping or []:
+        field, sep, column = item.partition("=")
+        if not sep or not field.strip() or not column.strip():
+            raise typer.BadParameter(f"'{item}' is not field=column", param_hint="--mapping")
+        columns[field.strip()] = column.strip()
+    if path == "-" and not (yes or dry_run):
+        raise typer.BadParameter("stdin is used for the data, so add --yes or --dry-run")
+
+    exit_code = 0
+    with _db() as session:
+        source = import_local.build_source(
+            importer, path, mapping=columns or None, sheet=sheet, delimiter=delimiter
+        )
+        rows = pipeline.analyze(
+            session,
+            importer,
+            source,
+            get_settings().import_max_rows,
+            pipeline.Defaults(license=license_, source_url=source_url),
+        )
+        planned = pipeline.plan(
+            rows,
+            pipeline.CommitOptions(
+                default_action=on_duplicate,  # type: ignore[arg-type]
+                confirm_license=confirm_license,
+            ),
+        )
+        _print_import_preview(rows, planned, dry_run, as_json)
+        if dry_run:
+            return
+        todo = [r for r in planned if r["action"] in ("create", "replace")]
+        if todo and not yes:
+            typer.confirm(f"Import {len(todo)} prompt(s)?", abort=True)
+        pipeline.execute(session, importer, planned)  # also records skipped/refused outcomes
+        tally = {k: 0 for k in ("created", "replaced", "skipped", "invalid", "refused")}
+        for r in planned:
+            tally[r["outcome"] or "skipped"] += 1
+        if as_json:
+            typer.echo(json.dumps({"result": tally}))
+        else:
+            typer.echo("Imported: " + ", ".join(f"{n} {k}" for k, n in tally.items()))
+        if (
+            not tally["created"]
+            and not tally["replaced"]
+            and (tally["invalid"] or tally["refused"])
+        ):
+            exit_code = 1
+    if exit_code:
+        raise typer.Exit(exit_code)
+
+
+def _print_import_preview(
+    rows: list[pipeline.Row], planned: list[dict[str, Any]], dry_run: bool, as_json: bool
+) -> None:
+    counts = {s: sum(r.status == s for r in rows) for s in ("new", "duplicate", "invalid")}
+    unclear = sum(r.needs_license_confirm and r.status != "invalid" for r in rows)
+    if as_json:
+        typer.echo(
+            json.dumps(
+                {
+                    "dry_run": dry_run,
+                    "total": len(rows),
+                    **counts,
+                    "needs_license_confirm": unclear,
+                    "rows": [
+                        {
+                            "index": r.index,
+                            "status": r.status,
+                            "title": r.draft.title,
+                            "action": p["action"],
+                            "errors": r.draft.errors,
+                            "warnings": r.draft.warnings,
+                            "match": pipeline.match_dict(r.match),
+                        }
+                        for r, p in zip(rows, planned, strict=True)
+                    ],
+                }
+            )
+        )
+        return
+    typer.echo(
+        f"{len(rows)} row(s): {counts['new']} new, {counts['duplicate']} duplicate, "
+        f"{counts['invalid']} invalid, {unclear} with unclear license"
+    )
+    shown = 0
+    for r, p in zip(rows, planned, strict=True):
+        notes: list[str] = []
+        if r.status == "invalid":
+            notes.append("invalid: " + "; ".join(r.draft.errors))
+        elif r.match:
+            where = (
+                f"prompt {r.match.prompt_id}" if r.match.prompt_id else f"row {r.match.batch_index}"
+            )
+            notes.append(
+                f"duplicate ({r.match.kind} {r.match.score:.2f}) of {where}: {r.match.title}"
+            )
+        if p["action"] == "refuse":
+            notes.append("license unclear: refused (use --confirm-license)")
+        notes.extend(r.draft.warnings)
+        for note in notes:
+            if shown < 50:
+                typer.echo(f"  row {r.index + 1}: {note}")
+            shown += 1
+    if shown > 50:
+        typer.echo(f"  ... and {shown - 50} more note(s)")
 
 
 @app.command()

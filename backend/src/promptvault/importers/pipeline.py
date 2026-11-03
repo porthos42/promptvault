@@ -40,6 +40,20 @@ class Row:
     needs_license_confirm: bool = False
 
 
+@dataclass(frozen=True)
+class Defaults:
+    """Request-level provenance for rows that lack their own (a whole file's license, say)."""
+
+    license: str | None = None
+    source_url: str | None = None
+
+    def apply(self, draft: PromptDraft) -> None:
+        if self.license and not (draft.license or "").strip():
+            draft.license = self.license
+        if self.source_url and not (draft.source_url or "").strip():
+            draft.source_url = self.source_url
+
+
 @dataclass
 class CommitOptions:
     default_action: DupAction = "skip"
@@ -60,8 +74,16 @@ def match_dict(m: Match | None) -> dict[str, Any] | None:
     }
 
 
-def analyze(session: Session, importer_name: str, source: Any, max_rows: int) -> list[Row]:
-    """Parse, normalize, validate and dedupe. Reads the database, writes nothing."""
+def analyze(
+    session: Session,
+    importer_name: str,
+    source: Any,
+    max_rows: int,
+    defaults: Defaults | None = None,
+) -> list[Row]:
+    """Parse, normalize, validate and dedupe. Reads the database, writes nothing.
+
+    `defaults` (license, source_url) fill in only the rows that have none of their own."""
     importer = base.get(importer_name)
     try:
         drafts = importer.parse(source)
@@ -96,6 +118,8 @@ def analyze(session: Session, importer_name: str, source: Any, max_rows: int) ->
 
     rows: list[Row] = []
     for index, draft in enumerate(drafts):
+        if defaults is not None:
+            defaults.apply(draft)
         normalize.normalize(draft, categories)
         if not draft.errors:  # the importer already rejected this row
             normalize.validate(draft)
@@ -120,10 +144,16 @@ def analyze(session: Session, importer_name: str, source: Any, max_rows: int) ->
     return rows
 
 
-def preview(session: Session, importer_name: str, source: Any, max_rows: int) -> list[Row]:
+def preview(
+    session: Session,
+    importer_name: str,
+    source: Any,
+    max_rows: int,
+    defaults: Defaults | None = None,
+) -> list[Row]:
     """Dry run. Identical to analyze(); named for the API and guaranteed not to flush."""
     with session.no_autoflush:
-        return analyze(session, importer_name, source, max_rows)
+        return analyze(session, importer_name, source, max_rows, defaults)
 
 
 def plan(rows: list[Row], options: CommitOptions) -> list[dict[str, Any]]:

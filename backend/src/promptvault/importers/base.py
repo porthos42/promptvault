@@ -53,6 +53,7 @@ class Importer(Protocol):
 class ImporterRegistry:
     def __init__(self) -> None:
         self._items: dict[str, Importer] = {}
+        self._unavailable: dict[str, tuple[str, str]] = {}  # name -> (description, reason)
 
     def register(self, importer: Importer, *, replace: bool = False) -> None:
         if not importer.name or not importer.name.replace("-", "").replace("_", "").isalnum():
@@ -64,10 +65,35 @@ class ImporterRegistry:
     def unregister(self, name: str) -> None:
         self._items.pop(name, None)
 
+    def mark_unavailable(self, name: str, description: str, reason: str) -> None:
+        """An importer that exists but cannot run here (for example a missing optional extra)."""
+        self._unavailable[name] = (description, reason)
+
+    def describe(self) -> list[dict[str, Any]]:
+        out: list[dict[str, Any]] = [
+            {
+                "name": n,
+                "description": str(getattr(i, "description", "")),
+                "available": True,
+                "reason": None,
+            }
+            for n, i in self._items.items()
+        ]
+        out += [
+            {"name": n, "description": d, "available": False, "reason": r}
+            for n, (d, r) in self._unavailable.items()
+            if n not in self._items
+        ]
+        return sorted(out, key=lambda x: str(x["name"]))
+
     def get(self, name: str) -> Importer:
         try:
             return self._items[name]
         except KeyError:
+            if name in self._unavailable:
+                raise NotFoundError(
+                    f"Importer '{name}' is not available: {self._unavailable[name][1]}"
+                ) from None
             known = ", ".join(sorted(self._items)) or "none"
             raise NotFoundError(f"Unknown importer '{name}' (available: {known})") from None
 

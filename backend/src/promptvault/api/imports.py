@@ -13,11 +13,13 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, ValidationError
 
+from promptvault import importers
 from promptvault.api.deps import DB
 from promptvault.importers import jobs, pipeline
 from promptvault.schemas import (
     CommitRequest,
     DraftOut,
+    ImporterOut,
     ImportRequest,
     JobOut,
     MatchOut,
@@ -73,6 +75,10 @@ def _runner(request: Request) -> jobs.JobRunner:
     return runner
 
 
+def _defaults(req: ImportRequest) -> pipeline.Defaults:
+    return pipeline.Defaults(license=req.default_license, source_url=req.default_source_url)
+
+
 def _preview_row(r: pipeline.Row) -> PreviewRow:
     d = r.draft.to_dict()
     return PreviewRow(
@@ -94,11 +100,17 @@ def _preview_row(r: pipeline.Row) -> PreviewRow:
     )
 
 
+@router.get("/import/importers", response_model=list[ImporterOut])
+def list_importers() -> list[ImporterOut]:
+    """Registered importers, including ones that need an optional extra."""
+    return [ImporterOut(**i) for i in importers.registry.describe()]
+
+
 @router.post("/import/preview", response_model=PreviewOut)
 def preview(request: Request, db: DB, raw: Body) -> PreviewOut:
     """Dry run: parse, normalize, validate and dedupe. Writes nothing."""
     req = _parse(ImportRequest, raw)
-    rows = pipeline.preview(db, req.importer, req.source, _max_rows(request))
+    rows = pipeline.preview(db, req.importer, req.source, _max_rows(request), _defaults(req))
     return PreviewOut(
         importer=req.importer,
         total=len(rows),
@@ -115,7 +127,7 @@ def commit(request: Request, db: DB, raw: Body, response: Response) -> JobOut:
     """Import the rows. Small imports finish inside the request (200); larger ones return a
     pending job (202) to follow with GET /jobs/{id} or its SSE stream."""
     req = _parse(CommitRequest, raw)
-    rows = pipeline.analyze(db, req.importer, req.source, _max_rows(request))
+    rows = pipeline.analyze(db, req.importer, req.source, _max_rows(request), _defaults(req))
     options = pipeline.CommitOptions(
         default_action=req.default_action,
         actions=req.actions,

@@ -1,0 +1,3 @@
+title,body,description,category,tags,difficulty,license
+Standup Notes,"Turn these updates into a standup: {{updates}}",Daily standup,writing,"team, agile",beginner,CC0-1.0
+Risk Register,Draft a risk register for {{project}}.,,,risk,advanced,CC0-1.0

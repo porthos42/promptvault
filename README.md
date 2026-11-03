@@ -5,7 +5,7 @@
 
 A self-hosted, searchable prompt engineering library. The goal is hundreds of ready-to-use prompts across careers, marketing, coding, STEM, 3D printing, image/video generation and more, with full create/edit/delete, search, filtering and import. Single-user and local-first. Free and open source.
 
-> **Status: early development (M3a done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and the importer framework (plugin interface, validation, exact and fuzzy dedupe, dry-run preview, commit with skip, replace or keep-both, background jobs with SSE progress) is in place. Concrete importers, export and the import UI are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
+> **Status: early development (M3b done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importing works from the API and the CLI: JSON, CSV, XLSX (optional extra), Markdown (files, folders, ZIP) and pasted text, with validation, exact and fuzzy dedupe, a dry-run preview, skip, replace or keep-both, a license gate and background jobs with SSE progress. GitHub/URL/dataset importers, export and the import UI are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
 
 **Stack:** Python 3.11+ (FastAPI, SQLAlchemy 2, Alembic, Typer), React 19 + TypeScript (Vite), SQLite with FTS5 by default.
 
@@ -79,7 +79,13 @@ promptvault restore <id>
 promptvault trash list | purge [--older-than-days N]
 promptvault category list | add NAME [--parent slug] | rm SLUG
 promptvault tag list | rename OLD NEW | rm NAME
+
+promptvault import <json|csv|xlsx|markdown|clipboard> <file | folder | -> [--dry-run] [--yes]
+    [-m field=column ...] [--sheet N] [--delimiter X] [--on-duplicate skip|replace|keep_both]
+    [--license L] [--source-url U] [--confirm-license] [--json]
 ```
+
+**Import.** `--dry-run` previews and writes nothing; otherwise you see the preview and confirm (`--yes` skips the question; `-` reads stdin and needs `--yes` or `--dry-run`). Columns are matched to prompt fields by name (title/name, body/prompt/text, tags, category, license, source_url, ...); `-m body=Prompt` overrides. Rows with no clear license are refused unless you pass `--confirm-license` or a `--license` for the whole file. A Markdown folder or ZIP is one prompt per file with optional YAML front-matter. XLSX needs the optional extra: `pip install 'promptvault[xlsx]'` (not included in the Docker image yet). Exit code 1 means nothing was imported because of errors.
 
 ## API
 
@@ -96,6 +102,9 @@ Interactive docs at `/docs` (OpenAPI). Errors are RFC 7807 `application/problem+
 | `GET/POST/PATCH/DELETE /api/v1/categories[/{slug}]` | hierarchical categories |
 | `POST /api/v1/categories/{slug}/reset-seed` | reset every seeded prompt in a category (also restores trashed or deleted ones) |
 | `GET /api/v1/tags`, `PUT/DELETE /api/v1/tags/{name}` | list, rename (merges), delete |
+| `GET /api/v1/import/importers` | registered importers and whether they can run (XLSX needs the extra) |
+| `POST /api/v1/import/preview`, `/import/commit` | dry run / import. Body: `{importer, source, default_license?, default_source_url?}` (commit also `default_action`, `actions`, `confirm_license`, `confirmed_rows`). File content goes in `source` as `content` (text) or `content_base64`; tabular sources take `mapping`, `sheet`, `delimiter`. Up to 25 rows run inline (200), more as a job (202) |
+| `GET /api/v1/jobs/{id}`, `/jobs/{id}/events` | import job status; server-sent events (`progress`, then `done` or `failed`) |
 | `DELETE /api/v1/trash` | purge Trash (`?older_than_days=N`); items older than `PV_TRASH_RETENTION_DAYS` (30) are purged at start |
 
 ## Configuration
@@ -111,6 +120,8 @@ Environment variables (prefix `PV_`) or a `.env` file. See [.env.example](.env.e
 | `PV_TRASH_RETENTION_DAYS` | `30` | Trashed prompts older than this are purged at start |
 | `PV_SEED_ON_START` | `true` | Load/upgrade the seed library at start and on `promptvault init` (idempotent) |
 | `PV_SEED_DIR` | bundled `seed/` | Alternative seed folder |
+| `PV_IMPORT_MAX_ROWS` | `2000` | Rows per import request |
+| `PV_IMPORT_MAX_PAYLOAD_BYTES` | `5242880` | Import request body cap (base64 adds a third) |
 | `PV_LOG_LEVEL` | `info` | |
 | `PV_CORS_ORIGINS` | none | JSON list, for a separately hosted UI |
 
@@ -139,8 +150,8 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 | M2e | Seed prompts: Education and Prompt Engineering (7 categories, 213 prompts in total), per-category minimum of 5 enforced | Done |
 | M2f | UI declutter: design tokens, grouped sidebar, Filters control and chips, calmer rows and detail pane, responsive layout (frontend only) | Done |
 | M3a | Importer framework: plugin interface, validation, dedupe (exact + difflib fuzzy), preview, commit, jobs + SSE, provenance and license gate (backend only) | Done |
-| M3b | Importers: JSON, CSV/XLSX, Markdown folder/ZIP, clipboard, plus the `promptvault import` CLI | Next |
-| M3c | Importers: GitHub repo/gist, web URL, Hugging Face datasets, with an SSRF guard | Planned |
+| M3b | Importers: JSON, CSV/XLSX, Markdown folder/ZIP, clipboard, plus the `promptvault import` CLI | Done |
+| M3c | Importers: GitHub repo/gist, web URL, Hugging Face datasets, with an SSRF guard | Next |
 | M3d | Export: JSON, CSV, XLSX, Markdown ZIP | Planned |
 | M4 | Published Docker image (GHCR), PyPI package, start scripts, release automation | Planned |
 | M5 | Polish and v1.0: accessibility, performance, end-to-end tests | Planned |

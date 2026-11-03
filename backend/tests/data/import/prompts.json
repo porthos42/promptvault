@@ -1,0 +1,10 @@
+{
+  "prompts": [
+    {"Name": "Meeting Summarizer", "Prompt": "Summarize the meeting notes below into decisions and owners.\n\n{{notes}}",
+     "Tags": ["Meetings", "summary"], "Category": {"slug": "writing", "name": "Writing"}, "License": "MIT",
+     "Source URL": "https://example.com/p/1", "extra": "ignored"},
+    {"Name": "Email Tone Check", "Prompt": "Rate the tone of this email from 1 to 5 and explain.", "Level": "Intermediate"},
+    "this row is not an object",
+    {"Name": "Bad Tags", "Prompt": "Body text here.", "Tags": {"a": 1}}
+  ]
+}

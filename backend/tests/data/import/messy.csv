@@ -1,0 +1,6 @@
+﻿Title;Prompt;Tags;License;Notes
+Code Reviewer;"Review this diff.
+List bugs first, then style nits.";code, review;MIT;internal
+;;;;
+Haiku Writer;Write a haiku about {{topic}}.;poetry|fun;;7
+No Body;;x;MIT;

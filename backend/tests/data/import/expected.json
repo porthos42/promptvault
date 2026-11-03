@@ -1,0 +1,124 @@
+{
+  "json": [
+    {
+      "title": "Meeting Summarizer",
+      "body": "Summarize the meeting notes below into decisions and owners.\n\n{{notes}}",
+      "category": "writing",
+      "tags": [
+        "Meetings",
+        "summary"
+      ],
+      "source_url": "https://example.com/p/1",
+      "license": "MIT",
+      "warnings": [
+        "columns mapped: title<-Name, body<-Prompt, category<-Category, tags<-Tags, difficulty<-Level, source_url<-Source URL, license<-License",
+        "columns ignored: extra"
+      ]
+    },
+    {
+      "title": "Email Tone Check",
+      "body": "Rate the tone of this email from 1 to 5 and explain.",
+      "difficulty": "Intermediate"
+    },
+    {
+      "title": "",
+      "body": "",
+      "errors": [
+        "row is not an object"
+      ]
+    },
+    {
+      "title": "Bad Tags",
+      "body": "Body text here.",
+      "errors": [
+        "tags: must be a list or comma separated text"
+      ]
+    }
+  ],
+  "messy_csv": [
+    {
+      "title": "Code Reviewer",
+      "body": "Review this diff.\nList bugs first, then style nits.",
+      "tags": [
+        "code",
+        "review"
+      ],
+      "license": "MIT",
+      "warnings": [
+        "columns mapped: title<-Title, body<-Prompt, tags<-Tags, license<-License",
+        "columns ignored: Notes"
+      ]
+    },
+    {
+      "title": "Haiku Writer",
+      "body": "Write a haiku about {{topic}}.",
+      "tags": [
+        "poetry",
+        "fun"
+      ]
+    },
+    {
+      "title": "No Body",
+      "body": "",
+      "tags": [
+        "x"
+      ],
+      "license": "MIT"
+    }
+  ],
+  "clean_csv": [
+    {
+      "title": "Standup Notes",
+      "body": "Turn these updates into a standup: {{updates}}",
+      "description": "Daily standup",
+      "category": "writing",
+      "tags": [
+        "team",
+        "agile"
+      ],
+      "difficulty": "beginner",
+      "license": "CC0-1.0",
+      "warnings": [
+        "columns mapped: title<-title, body<-body, description<-description, category<-category, tags<-tags, difficulty<-difficulty, license<-license"
+      ]
+    },
+    {
+      "title": "Risk Register",
+      "body": "Draft a risk register for {{project}}.",
+      "tags": [
+        "risk"
+      ],
+      "difficulty": "advanced",
+      "license": "CC0-1.0"
+    }
+  ],
+  "markdown_folder": [
+    {
+      "title": "bad yaml",
+      "body": "Body that should be kept.",
+      "errors": [
+        "front-matter: invalid YAML (expected ',' or ']', but got '<stream end>')"
+      ]
+    },
+    {
+      "title": "plain file name",
+      "body": "Explain {{topic}} like I am five."
+    },
+    {
+      "title": "Proofreader",
+      "body": "Fix spelling and grammar in the text below. Keep my voice."
+    },
+    {
+      "title": "Cold Email Opener",
+      "body": "# Not the title\nWrite a cold email opener for {{prospect}}.",
+      "category": "writing",
+      "tags": [
+        "sales",
+        "outreach"
+      ],
+      "difficulty": "advanced",
+      "source_url": "https://example.com/cold",
+      "license": "CC-BY-4.0"
+    }
+  ]
+}
