@@ -5,7 +5,7 @@
 
 A self-hosted, searchable prompt engineering library. The goal is hundreds of ready-to-use prompts across careers, marketing, coding, STEM, 3D printing, image/video generation and more, with full create/edit/delete, search, filtering and import. Single-user and local-first. Free and open source.
 
-> **Status: early development (M3b done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importing works from the API and the CLI: JSON, CSV, XLSX (optional extra), Markdown (files, folders, ZIP) and pasted text, with validation, exact and fuzzy dedupe, a dry-run preview, skip, replace or keep-both, a license gate and background jobs with SSE progress. GitHub/URL/dataset importers, export and the import UI are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
+> **Status: early development (M3c done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importing works from the API and the CLI: JSON, CSV, XLSX (optional extra), Markdown (files, folders, ZIP) pasted text, GitHub repos/gists, web pages and Hugging Face datasets (all fetched through an SSRF-safe fetcher), with validation, exact and fuzzy dedupe, a dry-run preview, skip, replace or keep-both, a license gate and background jobs with SSE progress. Export and the import UI are not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
 
 **Stack:** Python 3.11+ (FastAPI, SQLAlchemy 2, Alembic, Typer), React 19 + TypeScript (Vite), SQLite with FTS5 by default.
 
@@ -81,11 +81,14 @@ promptvault category list | add NAME [--parent slug] | rm SLUG
 promptvault tag list | rename OLD NEW | rm NAME
 
 promptvault import <json|csv|xlsx|markdown|clipboard> <file | folder | -> [--dry-run] [--yes]
+promptvault import <github|url|huggingface> <https://...> [--config C] [--split S] [--limit N] [--mode page|blocks]
     [-m field=column ...] [--sheet N] [--delimiter X] [--on-duplicate skip|replace|keep_both]
     [--license L] [--source-url U] [--confirm-license] [--json]
 ```
 
 **Import.** `--dry-run` previews and writes nothing; otherwise you see the preview and confirm (`--yes` skips the question; `-` reads stdin and needs `--yes` or `--dry-run`). Columns are matched to prompt fields by name (title/name, body/prompt/text, tags, category, license, source_url, ...); `-m body=Prompt` overrides. Rows with no clear license are refused unless you pass `--confirm-license` or a `--license` for the whole file. A Markdown folder or ZIP is one prompt per file with optional YAML front-matter. XLSX needs the optional extra: `pip install 'promptvault[xlsx]'` (not included in the Docker image yet). Exit code 1 means nothing was imported because of errors.
+
+**Import from a URL.** `github` takes a repo (`github.com/o/r`, `/tree/<branch>/<folder>`, `/blob/<branch>/<file>`) or a gist and reads `.md .json .yaml .yml .csv` files (README, LICENSE and similar are skipped); the repo license is applied to rows without their own, and a missing or `NOASSERTION` license trips the license gate. `huggingface` reads a public dataset through the datasets-server JSON API (`--config`, `--split`, `--limit`; use `-m title=act -m body=prompt` when the dataset has no title column; gated/private datasets and parquet-only access are not supported). `url` takes a Markdown/JSON/CSV/YAML file or an HTML page (best effort: text from `<pre>`, `<code>`, `<blockquote>`; `--mode blocks` makes one prompt per block; no JavaScript, no crawling) and flags pages for review. Fetching only allows http(s) on ports 80/443 to public addresses (private, loopback, link-local and metadata addresses are blocked, also after redirects); see `PV_IMPORT_ALLOW_PRIVATE_HOSTS` to open an intranet host.
 
 ## API
 
@@ -103,7 +106,7 @@ Interactive docs at `/docs` (OpenAPI). Errors are RFC 7807 `application/problem+
 | `POST /api/v1/categories/{slug}/reset-seed` | reset every seeded prompt in a category (also restores trashed or deleted ones) |
 | `GET /api/v1/tags`, `PUT/DELETE /api/v1/tags/{name}` | list, rename (merges), delete |
 | `GET /api/v1/import/importers` | registered importers and whether they can run (XLSX needs the extra) |
-| `POST /api/v1/import/preview`, `/import/commit` | dry run / import. Body: `{importer, source, default_license?, default_source_url?}` (commit also `default_action`, `actions`, `confirm_license`, `confirmed_rows`). File content goes in `source` as `content` (text) or `content_base64`; tabular sources take `mapping`, `sheet`, `delimiter`. Up to 25 rows run inline (200), more as a job (202) |
+| `POST /api/v1/import/preview`, `/import/commit` | dry run / import. Body: `{importer, source, default_license?, default_source_url?}` (commit also `default_action`, `actions`, `confirm_license`, `confirmed_rows`). File content goes in `source` as `content` (text) or `content_base64`; tabular sources take `mapping`, `sheet`, `delimiter`; the `github`, `url` and `huggingface` importers take `{url, ...options}` (`config`, `split`, `limit`, `mode`, `mapping`) and fetch it server-side. Blocked URLs answer 422, remote failures 502. Up to 25 rows run inline (200), more as a job (202) |
 | `GET /api/v1/jobs/{id}`, `/jobs/{id}/events` | import job status; server-sent events (`progress`, then `done` or `failed`) |
 | `DELETE /api/v1/trash` | purge Trash (`?older_than_days=N`); items older than `PV_TRASH_RETENTION_DAYS` (30) are purged at start |
 
@@ -122,6 +125,11 @@ Environment variables (prefix `PV_`) or a `.env` file. See [.env.example](.env.e
 | `PV_SEED_DIR` | bundled `seed/` | Alternative seed folder |
 | `PV_IMPORT_MAX_ROWS` | `2000` | Rows per import request |
 | `PV_IMPORT_MAX_PAYLOAD_BYTES` | `5242880` | Import request body cap (base64 adds a third) |
+| `PV_GITHUB_TOKEN` | none | Optional GitHub token (env only, never accepted in a request); sent only to api.github.com and raw.githubusercontent.com to raise the rate limit |
+| `PV_IMPORT_ALLOW_PRIVATE_HOSTS` | empty | Comma separated host names, IPs or CIDRs that URL importers may reach even if private (exact match, any port) |
+| `PV_IMPORT_FETCH_TIMEOUT` | `30` | Seconds per fetched URL |
+| `PV_IMPORT_FETCH_MAX_BYTES` | `5242880` | Max bytes per fetched response (after decompression) |
+| `PV_IMPORT_GITHUB_MAX_FILES` | `200` | Files fetched per GitHub repo or gist import |
 | `PV_LOG_LEVEL` | `info` | |
 | `PV_CORS_ORIGINS` | none | JSON list, for a separately hosted UI |
 
@@ -151,8 +159,8 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 | M2f | UI declutter: design tokens, grouped sidebar, Filters control and chips, calmer rows and detail pane, responsive layout (frontend only) | Done |
 | M3a | Importer framework: plugin interface, validation, dedupe (exact + difflib fuzzy), preview, commit, jobs + SSE, provenance and license gate (backend only) | Done |
 | M3b | Importers: JSON, CSV/XLSX, Markdown folder/ZIP, clipboard, plus the `promptvault import` CLI | Done |
-| M3c | Importers: GitHub repo/gist, web URL, Hugging Face datasets, with an SSRF guard | Next |
-| M3d | Export: JSON, CSV, XLSX, Markdown ZIP | Planned |
+| M3c | Importers: GitHub repo/gist, web URL, Hugging Face datasets, with an SSRF guard | Done |
+| M3d | Export: JSON, CSV, XLSX, Markdown ZIP | Next |
 | M4 | Published Docker image (GHCR), PyPI package, start scripts, release automation | Planned |
 | M5 | Polish and v1.0: accessibility, performance, end-to-end tests | Planned |
 | v1.5 | Run panel (test prompts against an LLM), semantic search, executables | Backlog |

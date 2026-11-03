@@ -11,6 +11,12 @@ from promptvault.importers import sources
 from promptvault.services.errors import ValidationFailed
 
 BINARY_IMPORTERS = frozenset({"xlsx"})
+# importers that read a URL, and the extra source options each one accepts
+URL_OPTIONS: dict[str, frozenset[str]] = {
+    "github": frozenset(),
+    "url": frozenset({"mode"}),
+    "huggingface": frozenset({"config", "split", "limit"}),
+}
 MAX_FILE_BYTES = 50 * 1024 * 1024
 
 
@@ -27,9 +33,11 @@ def build_source(
     mapping: dict[str, str] | None = None,
     sheet: str | None = None,
     delimiter: str | None = None,
+    url_options: dict[str, Any] | None = None,
 ) -> Any:
-    """`-` reads stdin; a directory (markdown importer) becomes a list of files; any other
-    file is sent as text, or as base64 for binary formats and ZIP archives."""
+    """URL importers (github, url, huggingface) take an http(s) URL and the options in
+    `URL_OPTIONS`. Otherwise `-` reads stdin; a directory (markdown importer) becomes a list
+    of files; any other file is sent as text, or as base64 for binary formats and ZIP archives."""
     options: dict[str, Any] = {}
     if mapping:
         options["mapping"] = mapping
@@ -38,6 +46,18 @@ def build_source(
     if delimiter:
         options["delimiter"] = delimiter
 
+    extra = {k: v for k, v in (url_options or {}).items() if v is not None}
+    if importer in URL_OPTIONS:
+        if not path.lower().startswith(("http://", "https://")):
+            raise ValidationFailed(f"The {importer} importer needs an http(s) URL, not '{path}'")
+        unknown = sorted(set(extra) - URL_OPTIONS[importer])
+        if unknown:
+            raise ValidationFailed(
+                f"The {importer} importer has no option(s): {', '.join(unknown)}"
+            )
+        return {"url": path, **extra, **options}
+    if extra:
+        raise ValidationFailed(f"Option(s) {', '.join(sorted(extra))} only apply to URL importers")
     if path == "-":
         return {"content": sources.decode_text(sys.stdin.buffer.read()), **options}
     target = Path(path)

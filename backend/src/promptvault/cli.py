@@ -349,8 +349,16 @@ def tag_rm(name: str) -> None:
 
 @app.command("import")
 def import_(
-    importer: Annotated[str, typer.Argument(help="json, csv, xlsx, markdown, clipboard, ...")],
-    path: Annotated[str, typer.Argument(help="File, folder (markdown) or - for stdin.")],
+    importer: Annotated[
+        str,
+        typer.Argument(help="json, csv, xlsx, markdown, clipboard, github, url, huggingface, ..."),
+    ],
+    path: Annotated[
+        str,
+        typer.Argument(
+            help="File, folder (markdown), - for stdin, or an http(s) URL (github, url, ...)."
+        ),
+    ],
     mapping: Annotated[
         list[str] | None,
         typer.Option("--mapping", "-m", help="Map a field to a column: field=column (repeatable)."),
@@ -358,6 +366,17 @@ def import_(
     sheet: Annotated[str | None, typer.Option(help="XLSX sheet name or number.")] = None,
     delimiter: Annotated[
         str | None, typer.Option(help="CSV delimiter, or the separator line for clipboard text.")
+    ] = None,
+    config: Annotated[
+        str | None, typer.Option(help="Hugging Face dataset config (default: the first).")
+    ] = None,
+    split: Annotated[str | None, typer.Option(help="Hugging Face split (default: train).")] = None,
+    limit: Annotated[
+        int | None,
+        typer.Option(help="Hugging Face: most rows to fetch (at most PV_IMPORT_MAX_ROWS)."),
+    ] = None,
+    mode: Annotated[
+        str | None, typer.Option(help="Web page importer: page (one prompt) or blocks.")
     ] = None,
     dry_run: Annotated[
         bool, typer.Option("--dry-run", help="Preview only; write nothing.")
@@ -377,7 +396,7 @@ def import_(
     yes: Annotated[bool, typer.Option("--yes", "-y", help="Do not ask for confirmation.")] = False,
     as_json: AsJson = False,
 ) -> None:
-    """Import prompts from a file, folder or stdin (preview first; --dry-run writes nothing)."""
+    """Import prompts from a file, folder, stdin or URL (--dry-run previews, writes nothing)."""
     if on_duplicate not in ("skip", "replace", "keep_both"):
         raise typer.BadParameter("must be skip, replace or keep_both", param_hint="--on-duplicate")
     columns: dict[str, str] = {}
@@ -392,7 +411,12 @@ def import_(
     exit_code = 0
     with _db() as session:
         source = import_local.build_source(
-            importer, path, mapping=columns or None, sheet=sheet, delimiter=delimiter
+            importer,
+            path,
+            mapping=columns or None,
+            sheet=sheet,
+            delimiter=delimiter,
+            url_options={"config": config, "split": split, "limit": limit, "mode": mode},
         )
         rows = pipeline.analyze(
             session,

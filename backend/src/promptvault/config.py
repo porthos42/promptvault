@@ -5,7 +5,7 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import Field, field_validator
+from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -24,6 +24,12 @@ class Settings(BaseSettings):
     cors_origins: list[str] = Field(default_factory=list)
     import_max_rows: int = 2000  # rows per import request
     import_max_payload_bytes: int = 5 * 1024 * 1024  # request body cap for import endpoints
+    # URL importers (GitHub, web page, Hugging Face); see importers/net.py
+    github_token: SecretStr | None = None  # sent only to api.github.com / raw.githubusercontent.com
+    import_allow_private_hosts: str = ""  # comma separated host names / IPs / CIDRs; empty = none
+    import_fetch_timeout: float = 30.0  # total seconds per fetched URL
+    import_fetch_max_bytes: int = 5 * 1024 * 1024  # per fetched response, after decompression
+    import_github_max_files: int = 200  # files fetched per GitHub repo or gist import
 
     @field_validator("data_dir", mode="before")
     @classmethod

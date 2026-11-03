@@ -111,6 +111,15 @@ Pipeline rules:
 - CLI: `promptvault import <importer> <file|folder|->` runs the same pipeline in-process (no job), with `--dry-run`, `--on-duplicate`, `--confirm-license` and a confirmation step.
 - Request caps: `PV_IMPORT_MAX_ROWS` (2000) and `PV_IMPORT_MAX_PAYLOAD_BYTES` (5 MiB), answered with 413 problem+json.
 
+**Implementation notes (M3c, deviations):**
+
+- **Fetcher (`importers/net.py`, the only network code).** Stdlib `http.client`, no new dependency. http(s) only, ports 80/443, no userinfo; the host is resolved and refused if ANY address is not globally routable (odd IPv4 literals are parsed in code; IPv4-mapped, compatible, 6to4 and NAT64 forms are unwrapped). The connection is pinned to the validated address (Host header and SNI keep the name), redirects are followed by hand (max 3, each hop re-validated, no https to http), bodies are streamed under a byte cap that also bounds decompressed size (gzip bombs), with connect/total timeouts, a content-type allowlist, no cookies and a fixed User-Agent. Small 5-minute cache so preview then commit fetch once. Policy refusals are 422, remote failures 502.
+- **Escape hatch:** `PV_IMPORT_ALLOW_PRIVATE_HOSTS` (host names, IPs, CIDRs; empty by default). Entries match exactly (no subdomain wildcard); an allowed host may use any port. Cloud-metadata addresses stay blocked unless listed explicitly.
+- **GitHub:** the repo response's `license.spdx_id` is used instead of a separate `/license` call (saves one of 60 unauthenticated requests per hour); `NOASSERTION`/none leaves rows unlabelled so the license gate asks. README, LICENSE and similar files, dot-folders and a few config files are skipped; non-prompt JSON/YAML/CSV files are skipped with a warning. Raw files are fetched by 4 worker threads. `PV_GITHUB_TOKEN` is read from the environment only and sent only to api.github.com and raw.githubusercontent.com. Branch names with slashes are resolved by trying each split of the URL path, shortest ref first.
+- **Web page:** `mode: page` (default) joins the blocks of a page into one prompt; `mode: blocks` gives one prompt per block, titled by the closest heading. Files are delegated to the format importers by extension, then by content type. The license is set only from a rel=license link, a license meta tag or a visible SPDX id.
+- **Hugging Face:** datasets-server JSON API only (rows in pages of 100, `limit` capped by `PV_IMPORT_MAX_ROWS`); parquet is deferred. License from the dataset card; renamed datasets follow the card's `id`; gated/private datasets are refused (no HF token). Auto-matched `type`/`level` columns whose values are not valid prompt types or difficulties are dropped with a warning (unless mapped explicitly), because datasets often use those names for something else.
+- The fetcher is process-wide (built from settings at app start; tests install a fake with `net.set_fetcher`). A repository import is not bounded by one overall deadline, only per request.
+
 ## 3.6 Export
 
 JSON (lossless), CSV, XLSX, a Markdown folder or ZIP, and a single-prompt "share" snippet.

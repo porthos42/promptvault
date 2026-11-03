@@ -16,6 +16,7 @@ from promptvault import __version__
 from promptvault.api import categories, errors, health, imports, prompts, tags
 from promptvault.config import Settings, get_settings
 from promptvault.db import make_engine, make_session_factory, run_migrations
+from promptvault.importers import net as import_net
 from promptvault.importers.jobs import JobRunner, fail_interrupted
 from promptvault.services.prompts import purge_trash
 from promptvault.services.seed import sync_from_settings
@@ -54,6 +55,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     app = FastAPI(title="Prompt Vault", version=__version__, lifespan=lifespan)
     app.state.settings = settings
+    import_net.configure(settings)  # SSRF-safe fetcher for the URL importers
     app.state.engine = engine
     app.state.session_factory = make_session_factory(engine)
     app.state.job_runner = JobRunner(app.state.session_factory)

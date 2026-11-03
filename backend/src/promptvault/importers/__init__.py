@@ -14,9 +14,12 @@ from promptvault.importers.base import (
 )
 from promptvault.importers.clipboard import ClipboardImporter
 from promptvault.importers.csv_import import CsvImporter
+from promptvault.importers.github import GithubImporter
+from promptvault.importers.huggingface import HuggingFaceImporter
 from promptvault.importers.json_import import JsonImporter
 from promptvault.importers.markdown_import import MarkdownImporter
 from promptvault.importers.passthrough import PassthroughImporter
+from promptvault.importers.url import UrlImporter
 from promptvault.importers.xlsx_import import XlsxImporter
 
 for _importer in (
@@ -25,6 +28,9 @@ for _importer in (
     CsvImporter(),
     MarkdownImporter(),
     ClipboardImporter(),
+    GithubImporter(),
+    UrlImporter(),
+    HuggingFaceImporter(),
 ):
     registry.register(_importer)
 
@@ -40,12 +46,15 @@ else:
 __all__ = [
     "ClipboardImporter",
     "CsvImporter",
+    "GithubImporter",
+    "HuggingFaceImporter",
     "Importer",
     "ImporterRegistry",
     "JsonImporter",
     "MarkdownImporter",
     "PassthroughImporter",
     "PromptDraft",
+    "UrlImporter",
     "XlsxImporter",
     "base",
     "get",
