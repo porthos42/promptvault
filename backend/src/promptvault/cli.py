@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
+import sys
 from collections.abc import Iterator
 from contextlib import contextmanager
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated, Any
 
@@ -21,6 +24,7 @@ from promptvault.importers import local as import_local
 from promptvault.importers import pipeline
 from promptvault.schemas import PromptCreate, PromptPatch
 from promptvault.services import categories as cat_svc
+from promptvault.services import export as export_svc
 from promptvault.services import prompts as svc
 from promptvault.services import seed as seed_svc
 from promptvault.services import tags as tag_svc
@@ -510,6 +514,169 @@ def _print_import_preview(
             shown += 1
     if shown > 50:
         typer.echo(f"  ... and {shown - 50} more note(s)")
+
+
+def _write_file(target: Path, chunks: Iterator[bytes]) -> int:
+    """Write through a `.part` file so a failed export never leaves a half-written target."""
+    target.parent.mkdir(parents=True, exist_ok=True)
+    part = target.with_name(target.name + ".part")
+    size = 0
+    try:
+        with part.open("wb") as fh:
+            for chunk in chunks:
+                fh.write(chunk)
+                size += len(chunk)
+        os.replace(part, target)
+    except BaseException:
+        part.unlink(missing_ok=True)
+        raise
+    return size
+
+
+def _fail(message: str, code: int = 1) -> typer.Exit:
+    typer.secho(f"Error: {message}", fg=typer.colors.RED, err=True)
+    return typer.Exit(code)
+
+
+@app.command("export")
+def export_(
+    fmt: Annotated[str, typer.Argument(metavar="FORMAT", help="json, csv, xlsx or markdown.")],
+    path: Annotated[
+        str | None,
+        typer.Argument(
+            help="Output file, or a folder for markdown (a ZIP with --zip); - writes json or csv "
+            "to stdout. Default: ./promptvault-export-YYYYMMDD.<ext>."
+        ),
+    ] = None,
+    category: CategoryOpt = None,
+    tag: TagsOpt = None,
+    favorite: Annotated[bool, typer.Option("--favorite", help="Only favorites.")] = False,
+    query: Annotated[str | None, typer.Option("--query", "-q", help="Full-text search.")] = None,
+    ids: Annotated[
+        list[str] | None, typer.Option("--id", help="Export only this prompt (id or prefix).")
+    ] = None,
+    include_trashed: Annotated[
+        bool, typer.Option("--include-trashed", help="Also export prompts in Trash.")
+    ] = False,
+    zip_: Annotated[
+        bool, typer.Option("--zip", help="markdown: write one ZIP file instead of a folder.")
+    ] = False,
+    force: Annotated[
+        bool, typer.Option("--force", help="Overwrite an existing file or non-empty folder.")
+    ] = False,
+    no_bom: Annotated[
+        bool, typer.Option("--no-bom", help="csv: no UTF-8 byte order mark.")
+    ] = False,
+    raw: Annotated[
+        bool, typer.Option("--raw", help="csv/xlsx: do not guard cells that start with = + - @.")
+    ] = False,
+    pretty: Annotated[bool, typer.Option("--pretty", help="json: indented.")] = False,
+    as_json: AsJson = False,
+) -> None:
+    """Export prompts (live ones unless --include-trashed). Exits 1 when nothing matches."""
+    to_stdout = path == "-"
+    if as_json and to_stdout:
+        raise typer.BadParameter("--json cannot be combined with output to stdout")
+    with _db() as session:
+        info = export_svc.get_format(fmt)
+        if to_stdout and info.binary:
+            raise typer.BadParameter(
+                f"{info.name} is binary: give a file path (or folder) instead of -"
+            )
+        if zip_ and info.name != "markdown":
+            raise typer.BadParameter("--zip only applies to markdown", param_hint="--zip")
+        as_folder = info.name == "markdown" and not zip_
+        default = f"promptvault-export-{datetime.now(UTC):%Y%m%d}" + (
+            "" if as_folder else f".{info.extension}"
+        )
+        target = Path(default if path is None else path)
+        if not to_stdout and target.exists() and not force:
+            if as_folder and target.is_dir() and not any(target.iterdir()):
+                pass  # an empty folder is fine
+            else:
+                raise _fail(f"{target} already exists (use --force to overwrite)")
+        resolved = [svc.resolve_prompt(session, i).id for i in ids or []]
+        selection = export_svc.Selection(
+            svc.ListFilters(
+                q=query, category=category, tags=tag or [], favorite=True if favorite else None
+            ),
+            resolved or None,
+            include_trashed,
+        )
+        plan = export_svc.prepare(session, selection)
+        if plan.missing:
+            typer.secho(
+                f"Skipped {len(plan.missing)} prompt(s) in Trash (add --include-trashed).",
+                err=True,
+            )
+        if not plan.ids:
+            raise _fail("nothing to export: no prompt matches")
+
+        def opener() -> Session:
+            return Session(session.get_bind())
+
+        options = export_svc.Options(pretty=pretty, bom=not no_bom and not to_stdout, raw=raw)
+        warnings: list[str] = []
+        size = 0
+        if as_folder:
+            if target.is_file():
+                raise _fail(f"{target} is a file, not a folder")
+            target.mkdir(parents=True, exist_ok=True)
+            for name, data in export_svc.markdown_files(opener, plan):
+                out = target / name
+                out.parent.mkdir(parents=True, exist_ok=True)
+                out.write_bytes(data)
+                size += len(data)
+        else:
+            result = export_svc.run(opener, fmt, plan, options)
+            warnings = result.warnings
+            if to_stdout:
+                stream = sys.stdout.buffer
+                for chunk in result.chunks:
+                    stream.write(chunk)
+                    size += len(chunk)
+                stream.flush()
+            else:
+                size = _write_file(target, result.chunks)
+        for w in warnings[:10]:
+            typer.secho(f"warning: {w}", err=True)
+        where = "stdout" if to_stdout else str(target)
+        count = len(plan.ids)
+        if as_json:
+            typer.echo(
+                json.dumps(
+                    {
+                        "format": info.name,
+                        "count": count,
+                        "path": where,
+                        "bytes": size,
+                        "warnings": warnings,
+                    }
+                )
+            )
+        else:
+            typer.echo(f"Exported {count} prompt(s) to {where}", err=to_stdout)
+
+
+@app.command()
+def share(
+    ident: str,
+    fmt: Annotated[
+        str, typer.Option("--format", "-f", help="markdown, text or json.")
+    ] = "markdown",
+    values: Annotated[
+        list[str] | None,
+        typer.Option("--values", "-v", help="Fill a variable: name=value (repeatable)."),
+    ] = None,
+) -> None:
+    """Print one prompt as a copy-paste snippet."""
+    with _db() as session:
+        p = svc.resolve_prompt(session, ident)
+        if p.deleted_at is not None:
+            raise _fail(f"{p.id} is in Trash")
+        rec = export_svc.to_record(p, svc.current_version(session, p.id))
+        text, _missing = export_svc.share_snippet(rec, fmt, export_svc.parse_values(values))
+        typer.echo(text, nl=False)
 
 
 @app.command()

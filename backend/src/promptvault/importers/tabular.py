@@ -137,6 +137,17 @@ def mapping_notes(columns: dict[str, int], ignored: list[str], headers: list[str
     return notes
 
 
+GUARDED = ("=", "+", "-", "@", "\t", "\r")
+
+
+def unguard(value: Any) -> Any:
+    """Undo the formula guard that the CSV/XLSX export adds (a leading apostrophe before a
+    cell that starts with = + - @ tab or CR), so an exported file reads back unchanged."""
+    if isinstance(value, str) and len(value) > 1 and value[0] == "'" and value[1] in GUARDED:
+        return value[1:]
+    return value
+
+
 def rows_to_drafts(
     headers: list[str], rows: Iterable[list[Any]], mapping: dict[str, str] | None = None
 ) -> list[PromptDraft]:
@@ -147,7 +158,7 @@ def rows_to_drafts(
     for row in rows:
         if not any(str(c).strip() for c in row if c is not None):
             continue
-        values = {f: (row[i] if i < len(row) else None) for f, i in columns.items()}
+        values = {f: unguard(row[i]) if i < len(row) else None for f, i in columns.items()}
         drafts.append(draft_from_values(values))
     if drafts:
         drafts[0].warnings.extend(mapping_notes(columns, ignored, headers))

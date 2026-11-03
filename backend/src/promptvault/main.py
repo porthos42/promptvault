@@ -13,7 +13,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from promptvault import __version__
-from promptvault.api import categories, errors, health, imports, prompts, tags
+from promptvault.api import categories, errors, exports, health, imports, prompts, tags
 from promptvault.config import Settings, get_settings
 from promptvault.db import make_engine, make_session_factory, run_migrations
 from promptvault.importers import net as import_net
@@ -66,10 +66,18 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             allow_origins=settings.cors_origins,
             allow_methods=["*"],
             allow_headers=["*"],
+            expose_headers=exports.EXPOSED_HEADERS,
         )
 
     errors.install(app)
-    for r in (health.router, prompts.router, categories.router, tags.router, imports.router):
+    for r in (
+        health.router,
+        prompts.router,
+        categories.router,
+        tags.router,
+        imports.router,
+        exports.router,
+    ):
         app.include_router(r, prefix="/api/v1")
 
     index = STATIC_DIR / "index.html"

@@ -288,3 +288,46 @@ class ImporterOut(BaseModel):
     description: str
     available: bool
     reason: str | None = Field(description="Why an importer is unavailable")
+
+
+# ---- export (docs/SPEC.md 3.6) ---------------------------------------------------------------
+
+
+class ExportFilters(BaseModel):
+    """The same filters as GET /prompts (no paging or sort: exports are ordered by title)."""
+
+    q: str | None = Field(default=None, max_length=300, description="Full-text search")
+    category: str | None = None
+    tags: list[str] = Field(default_factory=list)
+    tags_mode: Literal["all", "any"] = "all"
+    difficulty: Difficulty | None = None
+    prompt_type: PromptType | None = None
+    favorite: bool | None = None
+    source: str | None = None
+    model: str | None = Field(default=None, description="Substring of model_hints")
+    has_variables: bool | None = None
+
+
+class ExportRequest(BaseModel):
+    format: str = Field(description="json, csv, xlsx or markdown")
+    ids: list[str] | None = Field(default=None, min_length=1, max_length=500)
+    filters: ExportFilters = Field(default_factory=ExportFilters)
+    include_trashed: bool = False
+    pretty: bool = Field(default=False, description="JSON: indented")
+    bom: bool = Field(default=True, description="CSV: UTF-8 byte order mark")
+    raw: bool = Field(default=False, description="CSV/XLSX: no formula guard")
+
+
+class ExportFormatOut(BaseModel):
+    name: str
+    extension: str
+    media_type: str
+    description: str
+    available: bool
+    reason: str | None = Field(description="Why a format is unavailable")
+
+
+class ShareOut(BaseModel):
+    format: Literal["markdown", "text", "json"]
+    text: str
+    missing: list[str] = Field(description="Variables still without a value")

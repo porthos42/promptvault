@@ -124,6 +124,20 @@ Pipeline rules:
 
 JSON (lossless), CSV, XLSX, a Markdown folder or ZIP, and a single-prompt "share" snippet.
 
+**Implementation notes (M3d, deviations):**
+
+- **Scope.** A full export is the live prompts, ordered by title then id; Trash is included only with `include_trashed` / `--include-trashed`. The selection reuses the list filters (`q`, `category` with children, `tags`, `favorite`, `difficulty`, `prompt_type`, `source`, `model`, `has_variables`) or an explicit id list (up to 500). Revision history is not exported (deferred).
+- **What is in a file.** JSON carries every field the API shows, including personal state (`is_favorite`, `rating`, `use_count`, `last_used_at`), timestamps, `version`, `source` and `deleted_at`, in an envelope `{format: "promptvault-export", version: 1, exported_at, app_version, count, filters, categories, prompts}`. `categories` lists every category, parents first, because importers never create categories: restoring into an empty install means creating those first (the seed library does it at start). CSV and XLSX carry the same columns (header names are importer aliases); a Markdown file carries the content fields as YAML front-matter.
+- **Round trip is lossless for content and provenance only (decision 3).** The importers are unchanged apart from undoing the formula guard (below). Re-importing restores `title, body, description, category, tags, difficulty, prompt_type, model_hints, output_format, disclaimer, license, source_url`; ids, personal state, timestamps and versions stay export-only and `source` becomes `import:<format>`. Also not restored: variable label, type, default and options (the pipeline rebuilds variables from the body), and text is normalized like any import (LF line endings, trailing spaces, three or more newlines, outer whitespace). CSV and XLSX split a tag that contains `,` `;` or `|` on re-import. A restore needs `--on-duplicate keep_both` when a library holds near-duplicate bodies and `--confirm-license` when prompts have no license; the 213 seed prompts re-import with the defaults. `tests/test_export_roundtrip.py` checks all four formats and asserts these losses explicitly.
+- **Spreadsheet formula guard.** CSV and XLSX cells that start with `=`, `+`, `-`, `@`, tab or CR get a leading apostrophe (CLI/API `raw` turns it off). The csv and xlsx importers strip that apostrophe again (`tabular.unguard`), so a guarded file reads back unchanged; JSON and Markdown are untouched. XLSX text is always written as a typed string, never as a formula, even with `raw`.
+- **CSV:** UTF-8 with BOM (`bom=false` / `--no-bom`; the CLI writes no BOM to stdout), CRLF line endings, RFC 4180 quoting, `tags` joined with `, `, `variables` as a JSON string, booleans as `true`/`false`.
+- **XLSX** (optional extra, not added to the Docker image, decision 4; the format reports itself unavailable with the install hint, 404 on use): write-only openpyxl, sheet `Prompts` with bold frozen header, column widths and wrapped body/description. Cells over 32767 characters are cut with a visible marker, control characters that XLSX forbids are removed and line endings are written as LF; each case is listed on a `Notes` sheet and counted in the `X-Export-Warnings` header.
+- **Markdown:** a ZIP (or, in the CLI, a folder) with `<category-slug>/<title-slug>.md`, `uncategorised/` for prompts without a category. Names are ASCII slugs capped at 60 characters; Windows reserved names (`con`, `nul`, `com1` ...) get `-prompt`, names that slug to nothing become `prompt-<id8>`, clashes (compared case-insensitively) get `-2`, `-3`. ZIP entries have a fixed timestamp and attributes, so equal data gives equal bytes. One prompt via `GET /prompts/{id}/export?format=markdown` is a plain `.md` file.
+- **Streaming and limits.** Records are read in batches of 500, each in its own short database session. JSON and CSV stream; XLSX and ZIP are built in a spooled temporary file (memory up to 8 MiB, then disk) and streamed afterwards. `PV_EXPORT_MAX_ROWS` (50000) caps an API export (413, checked before the first byte); the CLI has no cap. JSON `count` is the planned count. A large export is bounded by the import limits when it comes back: `PV_IMPORT_MAX_ROWS` (2000), the 5 MiB API payload cap, and for ZIP 5000 entries and 20 MiB expanded.
+- **API:** `GET /export?format=json|csv|xlsx|markdown` (`md` is accepted) with the filters above, `POST /export` with `{format, ids?, filters?, include_trashed, pretty, bom, raw}`, `GET /export/formats`, `GET /prompts/{id}/export`, `GET /prompts/{id}/share?format=markdown|text|json&values=name=value`. Downloads carry `Content-Disposition` (`promptvault-export-YYYYMMDD.<ext>`), `X-Export-Count` and, when relevant, `X-Export-Missing` and `X-Export-Warnings`. An empty selection is an empty export (200, count 0). Share returns `{format, text, missing}`; with `values` the variables are filled in and only the unfilled ones are listed; an unknown variable name is a 422. Single-prompt export and share answer 404 for unknown or trashed ids.
+- **CLI:** `promptvault export <json|csv|xlsx|markdown> [PATH|-]` with `--category`, `--tag`, `--favorite`, `-q`, `--id`, `--include-trashed`, `--zip`, `--force`, `--no-bom`, `--raw`, `--pretty`, `--json`; `-` (stdout) is json or csv only; an existing file or non-empty folder needs `--force`; files are written through a `.part` file; an empty selection exits 1. `promptvault share <id> [--format] [--values k=v ...]`.
+- **Measured** (real server, Windows, localhost; docs only, not in CI): the 213 seed prompts export in 0.19 s (JSON, 582 KB), 0.08 s (CSV, 505 KB), 0.72 s (XLSX, 173 KB) and 0.36 s (ZIP, 220 KB); every format re-imports into an empty install with an identical content hash. 5000 generated prompts: JSON 3.3 s (16.8 MB), CSV 1.7 s (15.0 MB), XLSX 5.4 s (7.7 MB), ZIP 5.1 s (8.7 MB); server memory grew by about 10 to 30 MB during an export.
+
 ## 3.7 Obsidian (out of scope for the app)
 
 Obsidian is used only to store **project documents** (this spec, plans, notes) while building PromptVault. The app has **no Obsidian integration**: no vault sync, no plugin, no vault path setting. Prompts and code are never stored in the vault; prompts live in the app database and in the GitHub repo (`seed/`).
@@ -227,10 +241,10 @@ Layering: `routers → services → repositories → models`. Importers are pure
 | GET / PUT / PATCH / DELETE | `/prompts/{id}` | read / replace / partial update / soft delete |
 | GET | `/prompts/{id}/revisions` | history; `POST .../restore/{rev}` |
 | POST | `/prompts/{id}/render` | render with variable values |
-| POST | `/prompts/bulk` | bulk tag/move/delete/export |
+| POST | `/prompts/bulk` | bulk tag/move/delete (export of a selection: `POST /export`) |
 | GET / POST / PUT / DELETE | `/categories`, `/tags`, `/collections` | taxonomy |
 | POST | `/import/preview`, `/import/commit` | import pipeline; `GET /jobs/{id}` (+ SSE stream) |
-| GET | `/export?format=json|csv|xlsx|md` | export |
+| GET / POST | `/export?format=json|csv|xlsx|markdown` | export (download); `GET /export/formats`, `/prompts/{id}/export`, `/prompts/{id}/share` |
 | GET | `/health`, `/version` | ops |
 
 Auto-generated docs at `/docs`. Errors follow RFC 7807 problem+json. Cursor pagination.
@@ -244,7 +258,8 @@ promptvault seed --reset-category "SEO"
 promptvault add / edit / rm / show <id>
 promptvault search "cold email" --category sales --tag b2b
 promptvault import <path|url> --type markdown|json|csv|github
-promptvault export --format md --out ./out
+promptvault export markdown ./out        # json|csv|xlsx|markdown, PATH or - for stdout
+promptvault share <id> --format text --values name=Ada
 promptvault doctor                    # diagnose paths and DB
 ```
 

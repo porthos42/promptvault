@@ -30,6 +30,7 @@ class Settings(BaseSettings):
     import_fetch_timeout: float = 30.0  # total seconds per fetched URL
     import_fetch_max_bytes: int = 5 * 1024 * 1024  # per fetched response, after decompression
     import_github_max_files: int = 200  # files fetched per GitHub repo or gist import
+    export_max_rows: int = 50_000  # prompts per API export; larger selections get a 413
 
     @field_validator("data_dir", mode="before")
     @classmethod
