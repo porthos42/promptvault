@@ -43,7 +43,7 @@ dev = [
     "pytest>=8",
     "httpx>=0.27",
     "ruff>=0.6",
-    "mypy>=1.11",
+    "mypy>=2.4.1",
     "types-pyyaml",
     "openpyxl>=3.1.5",
     "types-openpyxl>=3.1.5.20261017",
