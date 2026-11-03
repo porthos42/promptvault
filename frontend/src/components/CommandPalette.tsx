@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { api, type Prompt } from '../api'
 import { useDebounced } from '../lib/hooks'
 
 export default function CommandPalette({ onClose }: { onClose: () => void }) {
   const navigate = useNavigate()
+  const location = useLocation()
+  const onPrompt = /^\/p\/[^/]+$/.test(location.pathname)
   const [q, setQ] = useState('')
   const [items, setItems] = useState<Prompt[]>([])
   const [active, setActive] = useState(0)
@@ -33,6 +35,34 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
     onClose()
   }
 
+  const commands = (
+    <div className="cmd-list">
+      <button
+        className="cmd"
+        onClick={() => {
+          navigate('/data?tab=export')
+          onClose()
+        }}
+      >
+        Export library
+        <span className="dim small">Data · Export</span>
+      </button>
+      <button
+        className="cmd"
+        disabled={!onPrompt}
+        title={onPrompt ? undefined : 'Open a prompt first'}
+        onClick={() => {
+          if (!onPrompt) return
+          window.dispatchEvent(new Event('pv:share'))
+          onClose()
+        }}
+      >
+        Share prompt
+        <span className="dim small">{onPrompt ? 'the open prompt' : 'no prompt open'}</span>
+      </button>
+    </div>
+  )
+
   return (
     <div className="overlay" onMouseDown={onClose}>
       <div
@@ -59,6 +89,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
+        {commands}
         <ul role="listbox">
           {items.map((p, i) => (
             <li

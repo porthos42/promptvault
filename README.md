@@ -5,7 +5,7 @@
 
 A self-hosted, searchable prompt engineering library. The goal is hundreds of ready-to-use prompts across careers, marketing, coding, STEM, 3D printing, image/video generation and more, with full create/edit/delete, search, filtering and import. Single-user and local-first. Free and open source.
 
-> **Status: early development (M4b done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importing works from the API and the CLI: JSON, CSV, XLSX (optional extra), Markdown (files, folders, ZIP) pasted text, GitHub repos/gists, web pages and Hugging Face datasets (all fetched through an SSRF-safe fetcher), with validation, exact and fuzzy dedupe, a dry-run preview, skip, replace or keep-both, a license gate and background jobs with SSE progress. Export works from the API and the CLI: JSON, CSV, XLSX (optional extra), a Markdown ZIP or folder, and a copy-paste share snippet for one prompt. A production Docker image (multi-arch, non-root, GHCR) and compose files ship in M4a, and M4b adds the PyPI package `prompt-vault` (built and verified, not yet uploaded to PyPI), `pipx`/`uvx` support and start scripts. The import and export UI is not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
+> **Status: early development (M3e done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importing works from the API and the CLI: JSON, CSV, XLSX (optional extra), Markdown (files, folders, ZIP) pasted text, GitHub repos/gists, web pages and Hugging Face datasets (all fetched through an SSRF-safe fetcher), with validation, exact and fuzzy dedupe, a dry-run preview, skip, replace or keep-both, a license gate and background jobs with SSE progress. Export works from the API and the CLI: JSON, CSV, XLSX (optional extra), a Markdown ZIP or folder, and a copy-paste share snippet for one prompt. A production Docker image (multi-arch, non-root, GHCR) and compose files ship in M4a, and M4b adds the PyPI package `prompt-vault` (built and verified, not yet uploaded to PyPI), `pipx`/`uvx` support and start scripts. The export UI ships in M3e (a Data page with format cards, filters-scope downloads and a Share popover); the import UI is not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
 
 **Stack:** Python 3.11+ (FastAPI, SQLAlchemy 2, Alembic, Typer), React 19 + TypeScript (Vite), SQLite with FTS5 by default.
 
@@ -22,6 +22,7 @@ Available now:
 - Full-text search (SQLite FTS5): BM25 ranking with title/tag boosts, prefix and stemmed matching, "exact phrases", automatic typo correction, combinable with every filter, seven sort orders
 - Index kept in sync by triggers; trashed prompts are excluded from search
 - Library UI: category sidebar, URL-persisted filter bar (search, category, tags, difficulty, sort, favorites), virtualized infinite list, prompt detail with variable form, live preview and one-click copy, CodeMirror editor, Trash view, Ctrl+K palette, `/` to focus search, light/dark theme
+- Export UI (M3e): a Data page with an Export tab — format cards (unavailable formats disabled with the server's reason), a live scope count from the active URL filters, include-trash, advanced options, fetch + Blob downloads with the server's file name, count and warnings — plus per-prompt export (Markdown/JSON) and a Share popover in the detail pane, and "Export library" / "Share prompt" palette commands
 - Seed library machinery: YAML prompt files, a CI linter, an idempotent loader that never overwrites your edits, and "Reset to original" per prompt or per category
 - Production Docker image on GHCR (linux/amd64 + arm64, non-root, XLSX included), compose files for SQLite and an experimental PostgreSQL variant, CI on Linux and Windows
 
@@ -201,9 +202,11 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 | M3b | Importers: JSON, CSV/XLSX, Markdown folder/ZIP, clipboard, plus the `promptvault import` CLI | Done |
 | M3c | Importers: GitHub repo/gist, web URL, Hugging Face datasets, with an SSRF guard | Done |
 | M3d | Export: JSON, CSV, XLSX, Markdown ZIP/folder, share snippet, `promptvault export` and `share` CLI | Done |
+| M3e | Export UI: Data page with Export tab, format cards, filters-scope downloads, per-prompt export, Share popover (frontend only) | Done |
+| M3f | Import UI: Data page Import tab with mapping wizard | Next |
 | M4a | Production Docker image, compose files (SQLite, experimental PostgreSQL), GHCR publish for `edge` and version tags | Done |
 | M4b | PyPI package `prompt-vault` (wheel + sdist built and verified, not uploaded), pipx/uvx, start scripts, `package` CI job | Done |
-| M4c | Release automation, changelog, docs site (card t_ce5dd0c4) | Next |
+| M4c | Release automation, changelog, docs site (card t_ce5dd0c4) | Planned |
 | M5 | Polish and v1.0: accessibility, performance, end-to-end tests | Planned |
 | v1.5 | Run panel (test prompts against an LLM), semantic search, executables | Backlog |
 

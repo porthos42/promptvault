@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { api, type Prompt } from '../api'
 import { renderTemplate } from '../lib/template'
+import SharePopover from './SharePopover'
+import { saveBlob } from '../lib/download'
 
 type Props = {
   prompt: Prompt
@@ -18,7 +20,11 @@ export default function PromptDetail({ prompt, onChanged, onTag, onEdit, onDupli
   const [error, setError] = useState<string | null>(null)
   const [menu, setMenu] = useState(false)
   const [details, setDetails] = useState(false)
+  const [share, setShare] = useState(false)
+  const [exportMenu, setExportMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const shareRef = useRef<HTMLDivElement>(null)
+  const exportRef = useRef<HTMLDivElement>(null)
 
   const { text, missing } = renderTemplate(prompt.body, prompt.variables, values)
 
@@ -31,6 +37,31 @@ export default function PromptDetail({ prompt, onChanged, onTag, onEdit, onDupli
     document.addEventListener('mousedown', onDown)
     return () => document.removeEventListener('mousedown', onDown)
   }, [menu])
+
+  // Ctrl+K palette "Share prompt": open the share popover for this prompt.
+  useEffect(() => {
+    const onShare = () => setShare(true)
+    window.addEventListener('pv:share', onShare)
+    return () => window.removeEventListener('pv:share', onShare)
+  }, [])
+
+  useEffect(() => {
+    if (!share) return
+    const onDown = (e: MouseEvent) => {
+      if (!shareRef.current?.contains(e.target as Node)) setShare(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [share])
+
+  useEffect(() => {
+    if (!exportMenu) return
+    const onDown = (e: MouseEvent) => {
+      if (!exportRef.current?.contains(e.target as Node)) setExportMenu(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [exportMenu])
 
   const run = async (fn: () => Promise<unknown>) => {
     setError(null)
@@ -74,6 +105,69 @@ export default function PromptDetail({ prompt, onChanged, onTag, onEdit, onDupli
         <div className="title-row">
           <h2>{prompt.title}</h2>
           <div className="toolbar">
+            <div ref={exportRef} style={{ display: 'contents' }}>
+              <button
+                className="icon quiet"
+                aria-label="Export this prompt"
+                aria-haspopup="menu"
+                aria-expanded={exportMenu}
+                title="Export this prompt"
+                onClick={() => setExportMenu((o) => !o)}
+              >
+                ⤓
+              </button>
+              {exportMenu && (
+                <div
+                  className="menu"
+                  role="menu"
+                  aria-label="Export this prompt"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') {
+                      setExportMenu(false)
+                      exportRef.current?.querySelector<HTMLElement>('[aria-haspopup]')?.focus()
+                    }
+                  }}
+                >
+                  {['markdown', 'json'].map((fmt) => (
+                    <button
+                      key={fmt}
+                      role="menuitem"
+                      className="quiet"
+                      onClick={async () => {
+                        setExportMenu(false)
+                        try {
+                          const { blob, headers } = await api.exportPrompt(prompt.id, fmt, {
+                            pretty: false,
+                            bom: true,
+                            raw: false,
+                          })
+                          const cd = headers.get('Content-Disposition')
+                          const m = cd?.match(/filename="?([^";]+)"?/)
+                          saveBlob(blob, m ? m[1] : `${prompt.title}.${fmt === 'markdown' ? 'md' : 'json'}`)
+                        } catch (err) {
+                          setError(err instanceof Error ? err.message : String(err))
+                        }
+                      }}
+                    >
+                      Export as {fmt === 'markdown' ? 'Markdown (.md)' : 'JSON'}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div ref={shareRef} style={{ display: 'contents' }}>
+              <button
+                className="icon quiet"
+                aria-label="Share"
+                aria-haspopup="dialog"
+                aria-expanded={share}
+                title="Share snippet"
+                onClick={() => setShare((o) => !o)}
+              >
+                ⤴
+              </button>
+              {share && <SharePopover prompt={prompt} values={values} onClose={() => setShare(false)} />}
+            </div>
             <button
               className="icon quiet"
               aria-label="Favorite"

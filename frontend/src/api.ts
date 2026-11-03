@@ -55,6 +55,18 @@ export type PromptInput = Partial<
 
 export type ListQuery = Record<string, string | string[] | undefined>
 
+export type ExportFormat = {
+  name: string
+  extension: string
+  media_type: string
+  description: string
+  available: boolean
+  reason: string | null
+}
+export type ShareOut = { format: 'markdown' | 'text' | 'json'; text: string; missing: string[] }
+export type ExportOptions = { pretty: boolean; bom: boolean; raw: boolean }
+export type Download = { blob: Blob; headers: Headers }
+
 export class ApiError extends Error {
   status: number
   constructor(status: number, message: string) {
@@ -110,4 +122,50 @@ export const api = {
   emptyTrash: () => request<{ purged: number }>('DELETE', '/trash'),
   categories: () => request<Category[]>('GET', '/categories'),
   tags: () => request<Tag[]>('GET', '/tags'),
+  exportFormats: () => request<ExportFormat[]>('GET', '/export/formats'),
+  /** Download an export as a Blob, with the X-Export-* headers the server reports. */
+  exportDownload: async (body: {
+    format: string
+    ids?: string[]
+    filters: Record<string, unknown>
+    include_trashed: boolean
+    pretty?: boolean
+    bom?: boolean
+    raw?: boolean
+  }): Promise<Download> => {
+    const res = await fetch('/api/v1/export', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+    return finishDownload(res)
+  },
+  exportPrompt: async (id: string, format: string, options: ExportOptions): Promise<Download> => {
+    const qs = toQueryString({
+      format,
+      pretty: options.pretty ? 'true' : undefined,
+      bom: options.bom ? undefined : 'false',
+      raw: options.raw ? 'true' : undefined,
+    })
+    const res = await fetch(`/api/v1/prompts/${id}/export${qs}`)
+    return finishDownload(res)
+  },
+  sharePrompt: (id: string, format: string, values: string[]) =>
+    request<ShareOut>('GET', `/prompts/${id}/share${toQueryString({ format, values })}`),
+}
+
+/** Turn a fetch Response into a Blob download, reading the error body on failure. */
+async function finishDownload(res: Response): Promise<Download> {
+  if (!res.ok) {
+    let detail = `${res.status} ${res.statusText}`
+    try {
+      const p = (await res.json()) as { detail?: unknown; title?: string }
+      if (typeof p.detail === 'string') detail = p.detail
+      else if (p.title) detail = p.title
+    } catch {
+      /* non-JSON error body */
+    }
+    throw new ApiError(res.status, detail)
+  }
+  return { blob: await res.blob(), headers: res.headers }
 }

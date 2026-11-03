@@ -14,7 +14,10 @@ export default function Shell() {
   const categories = useCategories(version)
   const location = useLocation()
   const active = new URLSearchParams(location.search).get('category')
-  const onLibrary = !location.pathname.startsWith('/trash') && !/^\/(new|p\/[^/]+\/edit)$/.test(location.pathname)
+  const onLibrary =
+    !location.pathname.startsWith('/trash') &&
+    !location.pathname.startsWith('/data') &&
+    !/^\/(new|p\/[^/]+\/edit)$/.test(location.pathname)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -128,6 +131,9 @@ export default function Shell() {
             )
           })}
           <div className="nav-foot">
+            <NavLink to="/data" className={() => (location.pathname.startsWith('/data') ? 'navlink active' : 'navlink')}>
+              Data
+            </NavLink>
             <NavLink to="/trash" className={() => (location.pathname.startsWith('/trash') ? 'navlink active' : 'navlink')}>
               Trash
             </NavLink>

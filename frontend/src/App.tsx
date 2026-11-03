@@ -5,10 +5,16 @@ import Library from './pages/Library'
 import Trash from './pages/Trash'
 
 const Editor = lazy(() => import('./pages/Editor'))
+const Data = lazy(() => import('./pages/Data'))
 
 const editor = (
   <Suspense fallback={<p className="empty">Loading editor...</p>}>
     <Editor />
+  </Suspense>
+)
+const data = (
+  <Suspense fallback={<p className="empty">Loading data...</p>}>
+    <Data />
   </Suspense>
 )
 
@@ -21,6 +27,7 @@ export const routes: RouteObject[] = [
       { path: '/p/:id/edit', element: editor },
       { path: '/new', element: editor },
       { path: '/trash', element: <Trash /> },
+      { path: '/data', element: data },
       { path: '*', element: <p className="empty">Not found.</p> },
     ],
   },

@@ -138,6 +138,13 @@ JSON (lossless), CSV, XLSX, a Markdown folder or ZIP, and a single-prompt "share
 - **CLI:** `promptvault export <json|csv|xlsx|markdown> [PATH|-]` with `--category`, `--tag`, `--favorite`, `-q`, `--id`, `--include-trashed`, `--zip`, `--force`, `--no-bom`, `--raw`, `--pretty`, `--json`; `-` (stdout) is json or csv only; an existing file or non-empty folder needs `--force`; files are written through a `.part` file; an empty selection exits 1. `promptvault share <id> [--format] [--values k=v ...]`.
 - **Measured** (real server, Windows, localhost; docs only, not in CI): the 213 seed prompts export in 0.19 s (JSON, 582 KB), 0.08 s (CSV, 505 KB), 0.72 s (XLSX, 173 KB) and 0.36 s (ZIP, 220 KB); every format re-imports into an empty install with an identical content hash. 5000 generated prompts: JSON 3.3 s (16.8 MB), CSV 1.7 s (15.0 MB), XLSX 5.4 s (7.7 MB), ZIP 5.1 s (8.7 MB); server memory grew by about 10 to 30 MB during an export.
 
+**Implementation notes (M3e, frontend deviations from the original choices):**
+
+- **Entry point.** A `Data` link in the sidebar footer opens the lazy route `/data` with Export and Import tabs (`?tab=`, default export); the Import tab is a placeholder for M3f. Filters from the library URL carry over (`/data?tab=export&q=...`), so "Export" launched with active filters starts from the current filters scope; a radio switches to the whole library. The scope count is the list endpoint's `total` (one cheap call with `limit=1`, no rows loaded).
+- **Download.** `POST /export` with fetch + Blob + object URL (the server's `Content-Disposition` name, `X-Export-Count` / `X-Export-Missing` / `X-Export-Warnings` in the result line). Empty-string filter values are dropped before sending — the backend's literal fields (`difficulty` etc.) reject `''` with 422. Errors (413 too many rows, 404, 422) show the problem+json `detail` verbatim in a `role=alert` region.
+- **Per prompt.** The detail toolbar has an Export menu (Markdown `.md` or JSON, using `GET /prompts/{id}/export`) and a Share popover next to Copy: markdown/text/json switch, a call to `/share?values=name=value` with the current variable values (unset variables are omitted; baked-in defaults are not sent), the `missing` list as a hint, and clipboard copy with a "Copied ✓" toast. The Ctrl+K palette gained "Export library" (navigates to `/data?tab=export`) and "Share prompt" (opens the share popover of the open prompt via a window event; disabled with a hint when no prompt is open).
+- **Deviations.** No bulk selection exists in the list, so there is no "Export selected" trigger; the id-based export stays API/CLI only. `sort` is not sent (exports are ordered by title server-side). The share popover is not an item in the kebab menu (decision d chose the visible button). Bundle: the Data page lazy-loads at ~2 KB gzip; the main chunk grew from 116.2 to 117.6 KB gzip (the api client, toolbar actions and palette commands), the library view itself unchanged.
+
 ## 3.7 Obsidian (out of scope for the app)
 
 Obsidian is used only to store **project documents** (this spec, plans, notes) while building PromptVault. The app has **no Obsidian integration**: no vault sync, no plugin, no vault path setting. Prompts and code are never stored in the vault; prompts live in the app database and in the GitHub repo (`seed/`).
@@ -231,6 +238,8 @@ Layering: `routers → services → repositories → models`. Importers are pure
 **Performance targets:** initial JS ≤ 200 KB gzip (route-level code splitting), search results render < 100 ms after response, search API p95 < 50 ms at 10k prompts, debounced input (150 ms), optimistic updates on edit/favorite.
 
 **Main screens:** Library (sidebar categories, filter bar, result list/grid) · Prompt detail (variable form, preview, copy) · Editor · Import wizard · Trash · Settings.
+
+**Implementation note (M3e):** the frontend uses React 19 + React Router + plain CSS tokens (not Tailwind/Radix as in the table above; deviated since M1c). M3e adds the Data page (`/data`, lazy route, ~2 KB gzip) with Export/Import tabs, format cards, filters-scope export downloads and a Share popover in the prompt detail; the main chunk is 117.6 KB gzip against the 200 KB target.
 
 ## 4.3 REST API (v1, `/api/v1`)
 
