@@ -167,7 +167,7 @@ def test_unavailable_xlsx_names_the_extra(
     monkeypatch.setattr(
         "importlib.util.find_spec", lambda n, *a: None if n == "openpyxl" else real(n, *a)
     )
-    assert "promptvault[xlsx]" in invoke("export", "xlsx", "x.xlsx", code=1).output
+    assert "prompt-vault[xlsx]" in invoke("export", "xlsx", "x.xlsx", code=1).output
 
 
 def test_failed_write_leaves_no_partial_file(

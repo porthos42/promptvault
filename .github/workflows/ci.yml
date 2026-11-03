@@ -74,6 +74,130 @@ jobs:
             image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 0 promptvault:ci | tee scan.txt
           { echo '### Trivy (HIGH, CRITICAL, fixable)'; echo '```'; cat scan.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
 
+  package:
+    name: Package (build, inspect, install smoke)
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: astral-sh/setup-uv@v5
+      - name: Build the UI (it ships inside the wheel)
+        run: npm ci && npm run build
+        working-directory: frontend
+      - name: Build sdist and wheel
+        run: uv build
+        working-directory: backend
+      - name: Inspect the artifacts (UI, seed library, migrations, license; no tests)
+        run: python3 tools/check_dist.py backend/dist
+      - name: twine check
+        run: uv run --no-project --with twine twine check backend/dist/*
+      - name: The sdist builds a complete wheel without Node and without the repository
+        run: |
+          set -euo pipefail
+          work="$RUNNER_TEMP/sdist-check"
+          mkdir -p "$work/unpacked"
+          tar -xzf backend/dist/*.tar.gz -C "$work/unpacked" --strip-components=1
+          (cd "$work/unpacked" && uv build --wheel --out-dir "$work/out")
+          cp backend/dist/*.tar.gz "$work/out/"
+          python3 tools/check_dist.py "$work/out"
+      - name: Building without the UI must fail (guard against an API-only wheel)
+        run: |
+          set -euo pipefail
+          work="$RUNNER_TEMP/noui"
+          mkdir -p "$work"
+          cp -r backend "$work/backend"
+          cp -r seed "$work/seed"
+          rm -rf "$work/backend/src/promptvault/static" "$work/backend/dist"
+          if (cd "$work/backend" && uv build --wheel --out-dir "$work/out") >"$work/log" 2>&1; then
+            echo "build without the UI unexpectedly succeeded"; exit 1
+          fi
+          grep -q "built UI is missing" "$work/log"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: backend/dist/*
+          retention-days: 7
+      - name: Install the wheel in fresh venvs and smoke test (py3.11 and 3.13, with and without xlsx)
+        run: |
+          set -euo pipefail
+          wheel="$(ls "$PWD"/backend/dist/*.whl)"
+          for py in 3.11 3.13; do
+            for extra in "" "[xlsx]"; do
+              venv="$RUNNER_TEMP/venv-$py${extra:+-xlsx}"
+              uv venv --python "$py" "$venv"
+              uv pip install --python "$venv/bin/python" "$wheel$extra"
+              want_xlsx=0
+              if [ -n "$extra" ]; then want_xlsx=1; fi
+              echo "=== python $py extra '${extra}'"
+              python3 tools/dist_smoke.py --bin "$venv/bin/promptvault" --expect-xlsx "$want_xlsx"
+            done
+          done
+      - name: Start script (from source, no UI build) answers on a spare port
+        run: |
+          set -euo pipefail
+          bash -n scripts/start.sh
+          export PV_DATA_DIR="$RUNNER_TEMP/start-sh-data"
+          bash scripts/start.sh --no-ui-build --port 18091 > "$RUNNER_TEMP/start.log" 2>&1 &
+          pid=$!
+          ok=0
+          for _ in $(seq 1 120); do
+            if curl -fsS http://localhost:18091/api/v1/health >/dev/null 2>&1; then ok=1; break; fi
+            sleep 1
+          done
+          [ "$ok" = "1" ] || { cat "$RUNNER_TEMP/start.log"; kill "$pid" 2>/dev/null || true; exit 1; }
+          curl -fsS http://localhost:18091/ | grep -q '<div id="root">'
+          kill "$pid"
+          wait "$pid" 2>/dev/null || true
+          ! curl -fsS http://localhost:18091/api/v1/health >/dev/null 2>&1
+
+  package-windows:
+    name: Package (Windows install smoke, start.ps1)
+    runs-on: windows-latest
+    needs: [package]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - name: Install the wheel in a fresh venv and smoke test (py3.12, with xlsx)
+        shell: bash
+        run: |
+          set -euo pipefail
+          wheel="$(ls "$PWD"/dist/*.whl)"
+          uv venv --python 3.12 "$RUNNER_TEMP/venv"
+          uv pip install --python "$RUNNER_TEMP/venv/Scripts/python.exe" "$wheel[xlsx]"
+          python tools/dist_smoke.py --bin "$RUNNER_TEMP/venv/Scripts/promptvault.exe" --expect-xlsx 1
+      - name: start.ps1 parses under Windows PowerShell 5.1 and PowerShell 7
+        run: |
+          $cmd = @'
+          $e = $null; $t = $null
+          [void][System.Management.Automation.Language.Parser]::ParseFile('scripts/start.ps1', [ref]$t, [ref]$e)
+          if ($e.Count) { $e | Out-String | Write-Host; exit 1 }
+          Write-Host 'parsed OK'
+          '@
+          foreach ($shell in 'powershell', 'pwsh') {
+            & $shell -NoProfile -Command $cmd
+            if ($LASTEXITCODE -ne 0) { throw "$shell could not parse start.ps1" }
+          }
+      - name: start.ps1 (from source, no UI build) answers on a spare port
+        run: |
+          $env:PV_DATA_DIR = Join-Path $env:RUNNER_TEMP 'start-ps1-data'
+          $p = Start-Process -FilePath powershell -ArgumentList '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/start.ps1', '-NoUiBuild', '-Port', '18092' -PassThru -WindowStyle Hidden
+          $ok = $false
+          for ($i = 0; $i -lt 180 -and -not $ok; $i++) {
+            Start-Sleep -Seconds 1
+            try { $ok = (Invoke-WebRequest -UseBasicParsing -Uri 'http://localhost:18092/api/v1/health' -TimeoutSec 3).StatusCode -eq 200 } catch { }
+          }
+          taskkill /F /T /PID $p.Id | Out-Null
+          if (-not $ok) { throw 'start.ps1 never became healthy' }
+
   postgres:
     name: PostgreSQL smoke test (experimental)
     runs-on: ubuntu-latest

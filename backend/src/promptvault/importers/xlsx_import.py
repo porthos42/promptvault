@@ -1,4 +1,4 @@
-"""XLSX importer (optional: needs `pip install promptvault[xlsx]`).
+"""XLSX importer (optional: needs `pip install prompt-vault[xlsx]`).
 
 Source: {content_base64, sheet?, mapping?}. Reads one worksheet (name, or 1-based number; the
 first by default) read-only with cached values: formulas are never evaluated, macros ignored.

@@ -74,7 +74,7 @@ FORMATS: dict[str, FormatInfo] = {
             "xlsx",
             "xlsx",
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            "Excel workbook (optional extra: promptvault[xlsx])",
+            "Excel workbook (optional extra: prompt-vault[xlsx])",
             True,
             requires="openpyxl",
         ),
@@ -88,7 +88,7 @@ FORMATS: dict[str, FormatInfo] = {
     )
 }
 FORMAT_ALIASES = {"md": "markdown"}
-XLSX_HINT = "install the optional extra: pip install 'promptvault[xlsx]'"
+XLSX_HINT = "install the optional extra: pip install 'prompt-vault[xlsx]'"
 
 
 def unavailable_reason(info: FormatInfo) -> str | None:

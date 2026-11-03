@@ -123,7 +123,7 @@ def test_unknown_format_422_and_unavailable_xlsx_404(
         "importlib.util.find_spec", lambda n, *a: None if n == "openpyxl" else real(n, *a)
     )
     r = get(small, "xlsx")
-    assert r.status_code == 404 and "promptvault[xlsx]" in r.json()["detail"]
+    assert r.status_code == 404 and "prompt-vault[xlsx]" in r.json()["detail"]
     listed = {f["name"]: f for f in small.get("/api/v1/export/formats").json()}
     assert listed["xlsx"]["available"] is False and "xlsx" in listed["xlsx"]["reason"]
     assert get(small, "json").status_code == 200

@@ -720,7 +720,7 @@ wheels = [
 ]
 
 [[package]]
-name = "promptvault"
+name = "prompt-vault"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
@@ -735,6 +735,10 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+all = [
+    { name = "openpyxl" },
+    { name = "psycopg", extra = ["binary"] },
+]
 postgres = [
     { name = "psycopg", extra = ["binary"] },
 ]
@@ -757,7 +761,9 @@ dev = [
 requires-dist = [
     { name = "alembic", specifier = ">=1.13" },
     { name = "fastapi", specifier = ">=0.115" },
+    { name = "openpyxl", marker = "extra == 'all'", specifier = ">=3.1.5" },
     { name = "openpyxl", marker = "extra == 'xlsx'", specifier = ">=3.1.5" },
+    { name = "psycopg", extras = ["binary"], marker = "extra == 'all'", specifier = ">=3.2" },
     { name = "psycopg", extras = ["binary"], marker = "extra == 'postgres'", specifier = ">=3.2" },
     { name = "pydantic", specifier = ">=2.7" },
     { name = "pydantic-settings", specifier = ">=2.3" },
@@ -766,7 +772,7 @@ requires-dist = [
     { name = "typer", specifier = ">=0.12" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.30" },
 ]
-provides-extras = ["xlsx", "postgres"]
+provides-extras = ["xlsx", "postgres", "all"]
 
 [package.metadata.requires-dev]
 dev = [

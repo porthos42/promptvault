@@ -25,9 +25,10 @@ FROM python:${PYTHON_VERSION}-slim AS wheels
 ARG EXTRAS="xlsx"
 ENV PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 WORKDIR /build
-COPY backend/pyproject.toml ./pyproject.toml
+# backend/hatch_build.py bundles the seed library from the sibling folder /seed (../seed)
+COPY backend/pyproject.toml backend/README.md backend/LICENSE backend/hatch_build.py ./
 COPY backend/src ./src
-COPY seed ./src/promptvault/seed
+COPY seed /seed
 COPY --from=web /app/backend/src/promptvault/static ./src/promptvault/static
 RUN pip wheel --wheel-dir /wheels ".${EXTRAS:+[$EXTRAS]}"
 
@@ -50,7 +51,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PV_DATA_DIR=/data \
     PV_REVISION=${PV_REVISION}
 RUN --mount=type=bind,from=wheels,source=/wheels,target=/wheels \
-    pip install --no-cache-dir --no-index --find-links=/wheels "promptvault${EXTRAS:+[$EXTRAS]}" \
+    pip install --no-cache-dir --no-index --find-links=/wheels "prompt-vault${EXTRAS:+[$EXTRAS]}" \
     # uvicorn[standard] pulls uvloop, watchfiles and websockets (~19 MB): the server runs fine on
     # asyncio, nothing here uses websockets, and --reload is a development feature
     && python -m pip uninstall -y uvloop watchfiles websockets \

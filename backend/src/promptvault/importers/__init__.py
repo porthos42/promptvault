@@ -40,7 +40,7 @@ else:
     registry.mark_unavailable(
         XlsxImporter.name,
         XlsxImporter.description,
-        "install the optional extra: pip install 'promptvault[xlsx]'",
+        "install the optional extra: pip install 'prompt-vault[xlsx]'",
     )
 
 __all__ = [

@@ -5,7 +5,7 @@
 
 A self-hosted, searchable prompt engineering library. The goal is hundreds of ready-to-use prompts across careers, marketing, coding, STEM, 3D printing, image/video generation and more, with full create/edit/delete, search, filtering and import. Single-user and local-first. Free and open source.
 
-> **Status: early development (M4a done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importing works from the API and the CLI: JSON, CSV, XLSX (optional extra), Markdown (files, folders, ZIP) pasted text, GitHub repos/gists, web pages and Hugging Face datasets (all fetched through an SSRF-safe fetcher), with validation, exact and fuzzy dedupe, a dry-run preview, skip, replace or keep-both, a license gate and background jobs with SSE progress. Export works from the API and the CLI: JSON, CSV, XLSX (optional extra), a Markdown ZIP or folder, and a copy-paste share snippet for one prompt. A production Docker image (multi-arch, non-root, GHCR) and compose files ship in M4a. The import and export UI is not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
+> **Status: early development (M4b done).** The backend API, CLI, full-text search, the library UI (decluttered in M2f: grouped collapsible sidebar, one Filters control with removable chips, calmer list rows, tidier detail pane, mobile drawer) and the seed-library machinery (schema, linter, loader, reset) work. The seed library is complete for v1 (213 prompts across all 35 categories, 6-7 each), and importing works from the API and the CLI: JSON, CSV, XLSX (optional extra), Markdown (files, folders, ZIP) pasted text, GitHub repos/gists, web pages and Hugging Face datasets (all fetched through an SSRF-safe fetcher), with validation, exact and fuzzy dedupe, a dry-run preview, skip, replace or keep-both, a license gate and background jobs with SSE progress. Export works from the API and the CLI: JSON, CSV, XLSX (optional extra), a Markdown ZIP or folder, and a copy-paste share snippet for one prompt. A production Docker image (multi-arch, non-root, GHCR) and compose files ship in M4a, and M4b adds the PyPI package `prompt-vault` (built and verified, not yet uploaded to PyPI), `pipx`/`uvx` support and start scripts. The import and export UI is not built yet. See [Roadmap](#roadmap) and the [full spec](docs/SPEC.md).
 
 **Stack:** Python 3.11+ (FastAPI, SQLAlchemy 2, Alembic, Typer), React 19 + TypeScript (Vite), SQLite with FTS5 by default.
 
@@ -27,19 +27,34 @@ Available now:
 
 Planned: see [Roadmap](#roadmap).
 
-## Quick start
+## Install
 
-Requires [uv](https://docs.astral.sh/uv/) and Node 20+ (Node is only needed to build the UI).
+| Method | Command | Needs | Status |
+|---|---|---|---|
+| **Docker** | `docker run -d --name promptvault -p 127.0.0.1:8080:8080 -v pv-data:/data ghcr.io/porthos42/promptvault:edge` | Docker | Available ([details](#docker)) |
+| **Start script** (from a checkout) | `./scripts/start.sh` (Linux, macOS, Git Bash) or `.\scripts\start.ps1` (Windows PowerShell) | uv or Python 3.11+; Node 20+ to build the UI | Available ([details](#start-scripts)) |
+| **From source** | `cd frontend && npm ci && npm run build`, then `cd backend && uv sync && uv run promptvault serve` | uv, Node 20+ | Available |
+| **pipx** | `pipx install 'prompt-vault[xlsx]'` then `promptvault serve` | pipx, Python 3.11+ | After the first PyPI release |
+| **uvx** (no install) | `uvx --from 'prompt-vault[xlsx]' promptvault serve` | uv | After the first PyPI release |
+| **pip** | `pip install 'prompt-vault[xlsx]'` then `promptvault serve` | Python 3.11+ | After the first PyPI release |
+| **Local wheel** | `make dist` (or `cd frontend && npm ci && npm run build && cd ../backend && uv build`), then `pipx install 'backend/dist/prompt_vault-0.1.0-py3-none-any.whl[xlsx]'` | uv, Node 20+ | Available |
+
+The PyPI distribution is named **`prompt-vault`** because `promptvault` belongs to an unrelated project; the command and the Python package are still `promptvault`. The package has not been uploaded yet, so the pipx, uvx and pip rows start working with the first release (M4c); the wheel and sdist are built and tested in CI (`package` job) and the pipx, uvx and pip commands were verified against the locally built wheel.
+
+The wheel includes the web UI and the 213 seed prompts. XLSX import/export needs the `xlsx` extra (`prompt-vault[xlsx]`; the Docker image already has it); the other extras are `postgres` (experimental) and `all` (both). Open <http://localhost:8080> after `promptvault serve` (API docs at `/docs`); data lives in `~/.promptvault` (`PV_DATA_DIR`). Upgrade with `pipx upgrade prompt-vault` (migrations run at start).
+
+### Start scripts
 
 ```bash
-git clone https://github.com/porthos42/promptvault.git
-cd promptvault
-cd frontend && npm install && npm run build && cd ..   # builds the UI into the Python package
-cd backend && uv sync
-uv run promptvault serve                                # http://localhost:8080  (API docs at /docs)
+./scripts/start.sh [--port N] [--host H] [--no-ui-build] [--rebuild-ui]
 ```
 
-Open the UI at the same address. The CLI and `/docs` remain available for scripting.
+```powershell
+.\scripts\start.ps1 [-Port N] [-BindHost H] [-NoUiBuild] [-RebuildUi]
+# if the execution policy blocks it: powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\start.ps1
+```
+
+They run from a checkout: use `uv` when present (otherwise Python 3.11+ with `venv` and `pip`), install the app editable into `backend/.venv` with the `xlsx` extra, build the UI with Node and npm when `static/` is missing or older than `frontend/src` (skip with `--no-ui-build`; without Node the API runs on its own and the script says so), and run `promptvault serve`. `--port` beats `PV_PORT`, `--host` beats `PV_HOST`; a non-loopback host prints a warning because v1 has no authentication. They write only inside the repository and the data directory and never use `sudo`. `make start` runs the shell script.
 
 ### Development (hot reload)
 
@@ -76,7 +91,6 @@ docker compose -f docker/docker-compose.yml up -d --build    # builds it from th
 - XLSX import and export work in the image (openpyxl is installed). The image is about 190 MB uncompressed (`docker image ls`; much less to download) and has a health check on `/api/v1/health`.
 - Build it yourself from the repo root: `docker build -f docker/Dockerfile -t promptvault .` (build args: `EXTRAS`, default `xlsx`; `PV_REVISION`, shown by `/api/v1/version`).
 - **PostgreSQL (experimental).** `docker/compose.postgres.yml` runs the app against postgres 16: set `POSTGRES_PASSWORD` in `.env` (see [.env.example](.env.example)), then `docker compose -f docker/compose.postgres.yml --env-file .env up -d --build`. It builds a local image variant with the PostgreSQL driver (the published image has none, to stay under the size budget). Tested: the migration chain, list, filters, create, update, revisions, trash, export in all four formats and imports including background jobs. Not available on PostgreSQL: full-text ranking and typo correction (search is an unranked substring match). Not tested: upgrading real data, backups, large libraries. SQLite stays the supported default.
-- The first publish to GHCR creates a private package; the owner sets its visibility to public once in the GitHub package settings.
 
 ## CLI
 
@@ -106,9 +120,9 @@ promptvault export <json|csv|xlsx|markdown> [PATH | -] [-c slug] [-t tag ...] [-
 promptvault share <id-or-prefix> [--format markdown|text|json] [--values name=value ...]
 ```
 
-**Import.** `--dry-run` previews and writes nothing; otherwise you see the preview and confirm (`--yes` skips the question; `-` reads stdin and needs `--yes` or `--dry-run`). Columns are matched to prompt fields by name (title/name, body/prompt/text, tags, category, license, source_url, ...); `-m body=Prompt` overrides. Rows with no clear license are refused unless you pass `--confirm-license` or a `--license` for the whole file. A Markdown folder or ZIP is one prompt per file with optional YAML front-matter. XLSX needs the optional extra: `pip install 'promptvault[xlsx]'` (already included in the Docker image). Exit code 1 means nothing was imported because of errors.
+**Import.** `--dry-run` previews and writes nothing; otherwise you see the preview and confirm (`--yes` skips the question; `-` reads stdin and needs `--yes` or `--dry-run`). Columns are matched to prompt fields by name (title/name, body/prompt/text, tags, category, license, source_url, ...); `-m body=Prompt` overrides. Rows with no clear license are refused unless you pass `--confirm-license` or a `--license` for the whole file. A Markdown folder or ZIP is one prompt per file with optional YAML front-matter. XLSX needs the optional extra: `pip install 'prompt-vault[xlsx]'` (already included in the Docker image). Exit code 1 means nothing was imported because of errors.
 
-**Export.** `promptvault export json backup.json` writes every live prompt (add `--include-trashed` for Trash); the same filters as `list` and `search` narrow it, `--id` picks single prompts. `csv` and `xlsx` open in Excel (CSV has a UTF-8 BOM; cells that start with `=`, `+`, `-` or `@` get a leading apostrophe so Excel cannot run them, `--raw` turns that off); `markdown` writes a folder, or one ZIP with `--zip`, of `<category>/<title>.md` files with YAML front-matter. `-` sends json or csv to stdout. Existing files and non-empty folders are only overwritten with `--force`; an empty selection exits 1. XLSX needs the optional extra (`pip install 'promptvault[xlsx]'`, already in the Docker image). Every format re-imports through the matching importer and restores content and provenance (title, body, description, category, tags, difficulty, type, model hints, output format, disclaimer, license, source URL). Ids, favorites, ratings, use counts, timestamps and variable labels/defaults are in the file but are not restored, and importers never create categories. Restoring into an empty install: use `--on-duplicate keep_both` if you have near-duplicate prompts and `--confirm-license` if some have no license. `promptvault share <id>` prints one prompt as a snippet to paste anywhere; `--values name=value` fills the variables.
+**Export.** `promptvault export json backup.json` writes every live prompt (add `--include-trashed` for Trash); the same filters as `list` and `search` narrow it, `--id` picks single prompts. `csv` and `xlsx` open in Excel (CSV has a UTF-8 BOM; cells that start with `=`, `+`, `-` or `@` get a leading apostrophe so Excel cannot run them, `--raw` turns that off); `markdown` writes a folder, or one ZIP with `--zip`, of `<category>/<title>.md` files with YAML front-matter. `-` sends json or csv to stdout. Existing files and non-empty folders are only overwritten with `--force`; an empty selection exits 1. XLSX needs the optional extra (`pip install 'prompt-vault[xlsx]'`, already in the Docker image). Every format re-imports through the matching importer and restores content and provenance (title, body, description, category, tags, difficulty, type, model hints, output format, disclaimer, license, source URL). Ids, favorites, ratings, use counts, timestamps and variable labels/defaults are in the file but are not restored, and importers never create categories. Restoring into an empty install: use `--on-duplicate keep_both` if you have near-duplicate prompts and `--confirm-license` if some have no license. `promptvault share <id>` prints one prompt as a snippet to paste anywhere; `--values name=value` fills the variables.
 
 **Import from a URL.** `github` takes a repo (`github.com/o/r`, `/tree/<branch>/<folder>`, `/blob/<branch>/<file>`) or a gist and reads `.md .json .yaml .yml .csv` files (README, LICENSE and similar are skipped); the repo license is applied to rows without their own, and a missing or `NOASSERTION` license trips the license gate. `huggingface` reads a public dataset through the datasets-server JSON API (`--config`, `--split`, `--limit`; use `-m title=act -m body=prompt` when the dataset has no title column; gated/private datasets and parquet-only access are not supported). `url` takes a Markdown/JSON/CSV/YAML file or an HTML page (best effort: text from `<pre>`, `<code>`, `<blockquote>`; `--mode blocks` makes one prompt per block; no JavaScript, no crawling) and flags pages for review. Fetching only allows http(s) on ports 80/443 to public addresses (private, loopback, link-local and metadata addresses are blocked, also after redirects); see `PV_IMPORT_ALLOW_PRIVATE_HOSTS` to open an intranet host.
 
@@ -188,8 +202,8 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 | M3c | Importers: GitHub repo/gist, web URL, Hugging Face datasets, with an SSRF guard | Done |
 | M3d | Export: JSON, CSV, XLSX, Markdown ZIP/folder, share snippet, `promptvault export` and `share` CLI | Done |
 | M4a | Production Docker image, compose files (SQLite, experimental PostgreSQL), GHCR publish for `edge` and version tags | Done |
-| M4b | PyPI package, pipx/uvx, start scripts | Next |
-| M4c | Release automation, changelog, docs site | Planned |
+| M4b | PyPI package `prompt-vault` (wheel + sdist built and verified, not uploaded), pipx/uvx, start scripts, `package` CI job | Done |
+| M4c | Release automation, changelog, docs site (card t_ce5dd0c4) | Next |
 | M5 | Polish and v1.0: accessibility, performance, end-to-end tests | Planned |
 | v1.5 | Run panel (test prompts against an LLM), semantic search, executables | Backlog |
 
@@ -199,9 +213,10 @@ Seed prompts are YAML files at `seed/<category>/<seed_id>.yaml` in the format of
 backend/    FastAPI app, models, services, CLI, Alembic migrations, tests   (src/promptvault)
 frontend/   Vite + React + TypeScript UI
 docker/     Dockerfile and compose files (SQLite, PostgreSQL)
+scripts/    start.sh and start.ps1 (run from a checkout)
 docs/       Product and technical spec
 seed/       Seed prompts (YAML) and categories.yaml
-tools/      Tooling: lint_seed.py, docker_smoke.sh (image smoke test), pg_smoke.py
+tools/      Tooling: lint_seed.py, docker_smoke.sh (image smoke test), pg_smoke.py, check_dist.py and dist_smoke.py (package checks)
 .github/    CI and Docker publish workflows, Dependabot, PR template
 ```
 
@@ -211,6 +226,8 @@ The frontend builds into `backend/src/promptvault/static`, so a single process s
 
 ```bash
 cd backend && uv run pytest && uv run ruff check . && uv run ruff format --check . && uv run mypy
+# package: build the UI first, then
+make dist        # = uv build + tools/check_dist.py + twine check; artifacts in backend/dist (not committed)
 PV_PERF=1 uv run pytest tests/test_search_perf.py -s   # optional: search latency at 10k prompts
 cd frontend && npm test && npm run lint && npm run typecheck
 ```

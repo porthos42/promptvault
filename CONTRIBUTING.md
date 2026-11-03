@@ -4,7 +4,8 @@
 2. Use [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:` ...).
 3. Backend: `cd backend && uv sync && uv run pytest && uv run ruff check . && uv run mypy`.
 4. Frontend: `cd frontend && npm ci && npm test && npm run lint && npm run typecheck`.
-5. Seed prompts: see below.
+5. Package (optional): build the UI, then `make dist` (or `cd backend && uv build` and `python tools/check_dist.py backend/dist`) builds the wheel and sdist into `backend/dist` (never committed, never uploaded from here). `tools/dist_smoke.py --bin <installed promptvault>` smoke tests an install. From-source start scripts: `scripts/start.sh` and `scripts/start.ps1`.
+6. Seed prompts: see below.
 
 ## Adding a seed prompt
 

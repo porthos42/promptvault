@@ -283,7 +283,7 @@ def test_clipboard_custom_delimiter_single_and_empty() -> None:
 
 # ---- XLSX --------------------------------------------------------------------------------
 
-needs_xlsx = pytest.mark.skipif(not HAS_OPENPYXL, reason="optional extra: promptvault[xlsx]")
+needs_xlsx = pytest.mark.skipif(not HAS_OPENPYXL, reason="optional extra: prompt-vault[xlsx]")
 
 
 def xlsx_bytes(sheets: dict[str, list[list[Any]]]) -> bytes:

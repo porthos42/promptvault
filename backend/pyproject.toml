@@ -1,19 +1,33 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
-name = "promptvault"
+# The PyPI name "promptvault" belongs to an unrelated project, so the distribution is
+# "prompt-vault". The import package and the CLI command stay "promptvault".
+name = "prompt-vault"
 version = "0.1.0"
-description = "Prompt Vault: a self-hosted, searchable prompt engineering library."
-license = { text = "MIT" }
+description = "Prompt Vault: a self-hosted, searchable prompt engineering library with 200+ ready-to-use prompts."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
 authors = [{ name = "Phillip Sutton" }]
-keywords = ["prompts", "prompt-engineering", "llm", "fastapi", "react"]
+keywords = ["prompts", "prompt-engineering", "llm", "self-hosted", "fastapi", "react", "sqlite"]
 classifiers = [
-  "License :: OSI Approved :: MIT License",
-  "Programming Language :: Python :: 3",
+  "Development Status :: 3 - Alpha",
+  "Environment :: Web Environment",
   "Framework :: FastAPI",
+  "Intended Audience :: Developers",
+  "Intended Audience :: End Users/Desktop",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+  "Topic :: Text Processing",
 ]
 dependencies = [
   "fastapi>=0.115",
@@ -31,14 +45,22 @@ promptvault = "promptvault.cli:app"
 
 [project.urls]
 Homepage = "https://github.com/porthos42/promptvault"
+Source = "https://github.com/porthos42/promptvault"
 Issues = "https://github.com/porthos42/promptvault/issues"
+Documentation = "https://github.com/porthos42/promptvault#readme"
+# Changelog = added with the release automation (M4c)
 
 [project.optional-dependencies]
+# Excel (.xlsx) import and export
 xlsx = [
     "openpyxl>=3.1.5",
 ]
 # EXPERIMENTAL: PostgreSQL via PV_DATABASE_URL=postgresql+psycopg://... (see docs/SPEC.md section 6)
 postgres = [
+    "psycopg[binary]>=3.2",
+]
+all = [
+    "openpyxl>=3.1.5",
     "psycopg[binary]>=3.2",
 ]
 
@@ -53,9 +75,18 @@ dev = [
     "types-openpyxl>=3.1.5.20261017",
 ]
 
+[tool.hatch.build.hooks.custom]
+# hatch_build.py bundles ../seed into the package and refuses to build without the UI
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/promptvault"]
 # the built React app is gitignored but must ship in the wheel
+artifacts = ["src/promptvault/static"]
+
+[tool.hatch.build.targets.sdist]
+# no tests, no node_modules; the built UI and the seed library are included so the sdist
+# builds a complete wheel without Node and without the rest of the repository
+include = ["src/promptvault", "hatch_build.py", "README.md", "LICENSE", "pyproject.toml"]
 artifacts = ["src/promptvault/static"]
 
 [tool.pytest.ini_options]

@@ -100,7 +100,7 @@ def test_unknown_and_unavailable_formats(monkeypatch: pytest.MonkeyPatch) -> Non
         export.get_format("pdf")
     assert export.get_format("MD").name == "markdown"
     monkeypatch.setattr("importlib.util.find_spec", lambda name: None)
-    with pytest.raises(NotFoundError, match="promptvault\\[xlsx\\]"):
+    with pytest.raises(NotFoundError, match="prompt-vault\\[xlsx\\]"):
         export.get_format("xlsx")
     listed = {f["name"]: f for f in export.describe_formats()}
     assert listed["xlsx"]["available"] is False and "xlsx" in listed["xlsx"]["reason"]

@@ -209,7 +209,7 @@ In production, FastAPI serves the built React assets as static files, so there i
 | DB | SQLite (WAL mode, FTS5) default; Postgres (experimental, section 6) through `DATABASE_URL` |
 | Background jobs | In-process `asyncio` task queue with a jobs table (no Redis needed) |
 | CLI | Typer (`promptvault ...`) |
-| Packaging | `pyproject.toml`, managed with `uv`; published to PyPI |
+| Packaging | `pyproject.toml`, managed with `uv`; distribution `prompt-vault` for PyPI (built and verified in M4b, uploaded by the owner) |
 | Quality | ruff, mypy, pytest, pytest-asyncio, httpx test client |
 
 Layering: `routers → services → repositories → models`. Importers are pure services, testable without HTTP.
@@ -269,13 +269,13 @@ promptvault doctor                    # diagnose paths and DB
 promptvault/
 ├─ backend/
 │  ├─ src/promptvault/{api,services,repos,models,importers,cli}/
-│  ├─ alembic/  tests/  pyproject.toml
+│  ├─ tests/  pyproject.toml  hatch_build.py  README.md  LICENSE   (PyPI metadata, seed bundling; migrations live in src/promptvault/migrations)
 ├─ frontend/
 │  ├─ src/  public/  package.json  vite.config.ts
 ├─ seed/<category>/<slug>.yaml
-├─ tools/{seedgen,lint_seed.py}
+├─ tools/{seedgen,lint_seed.py,check_dist.py,dist_smoke.py,docker_smoke.sh,pg_smoke.py}
 ├─ docker/{Dockerfile,docker-compose.yml,compose.postgres.yml}
-├─ scripts/{start.sh,start.ps1,install.sh,install.ps1}
+├─ scripts/{start.sh,start.ps1}          (network installers install.sh/install.ps1 were dropped in M4b, see section 6)
 ├─ docs/  (architecture, import formats, seed guide, API)
 ├─ .github/{workflows,ISSUE_TEMPLATE,PULL_REQUEST_TEMPLATE.md}
 ├─ Makefile  README.md  LICENSE  CONTRIBUTING.md  CODE_OF_CONDUCT.md  SECURITY.md
@@ -292,7 +292,8 @@ promptvault/
 |---|---|---|
 | `ci.yml` | PR / push | ruff, mypy, pytest (SQLite + Postgres matrix); eslint, tsc, vitest; seed lint; Playwright smoke |
 | `docker-publish.yml` | push to main, tag `v*`, PR (build only), manual | Runs `ci.yml` as a gate, then a multi-arch (amd64/arm64) build and push to **GHCR** (`edge`; `X.Y.Z`, `X.Y`, `latest` on a tag), SBOM + provenance, smoke test of the pushed digest (M4a) |
-| `release.yml` | tag `v*` | Build wheel/sdist → PyPI (trusted publishing); attach artifacts; GitHub Release notes |
+| `package` and `package-windows` jobs in `ci.yml` | PR / push | Build UI + wheel + sdist, inspect contents, `twine check`, rebuild the wheel from the sdist, install into fresh venvs (py3.11 and 3.13 on Linux, 3.12 on Windows) and run `tools/dist_smoke.py`, run `start.sh` and `start.ps1` (M4b). Never uploads |
+| `release.yml` | tag `v*` | Build wheel/sdist → PyPI (trusted publishing); attach artifacts; GitHub Release notes (M4c, only with the owner's go-ahead) |
 | `bundle.yml` | tag `v*` | PyInstaller single-file executables for Windows/macOS/Linux attached to the release |
 | `codeql.yml` + Dependabot | scheduled | Security scanning, dependency updates |
 
@@ -302,10 +303,10 @@ promptvault/
 |---|---|---|
 | **Docker (single container)** | `docker run -p 127.0.0.1:8080:8080 -v pv-data:/data ghcr.io/porthos42/promptvault:edge` | Most users |
 | **Docker Compose** | `docker compose up -d` (SQLite) or `-f compose.postgres.yml` | Homelab / teams |
-| **pipx / pip** | `pipx install promptvault && promptvault serve` | Python users |
-| **uvx (zero install)** | `uvx promptvault serve` | Quick try |
+| **pipx / pip** | `pipx install 'prompt-vault[xlsx]' && promptvault serve` (the PyPI name `promptvault` belongs to another project) | Python users |
+| **uvx (zero install)** | `uvx --from 'prompt-vault[xlsx]' promptvault serve` | Quick try |
 | **From source (terminal)** | `git clone … && make dev` (installs, runs backend + Vite with hot reload) | Contributors |
-| **Start scripts** | `./scripts/start.sh` or `.\scripts\start.ps1` (creates venv, installs, builds, serves) | Non-Docker users |
+| **Start scripts** | `./scripts/start.sh` or `.\scripts\start.ps1` (from a checkout: creates `backend/.venv`, installs editable, builds the UI if Node is present, serves) | Non-Docker users |
 | **Standalone executable** | Download from GitHub Releases (PyInstaller) | Non-technical users |
 | **systemd / Windows service** | Sample unit file and NSSM instructions in docs | Always-on server |
 | **Cloud one-click** | Fly.io, Railway, Render config files (`fly.toml`, `railway.json`, `render.yaml`) | Remote access |
@@ -328,8 +329,24 @@ promptvault/
 - **PostgreSQL check (experimental, exercised).** Migrations against postgres 16: the chain failed at 0002 on `group_concat` (SQLite only). Fixed with `string_agg` for non-SQLite (the SQLite statement is unchanged). The FTS5 virtual tables and triggers were already SQLite-only. After that: migrations OK, and a smoke run (`tools/pg_smoke.py`, 36 checks, also a CI job) passed: seed library loaded, list, filters (`has_variables` uses `json_array_length`, which PostgreSQL provides for JSON), all sorts, create, update, revisions, use, render, trash/restore, export (json, csv, markdown, xlsx), import preview/commit, and a 60-row import running as a background job. **Gaps:** search is the LIKE fallback (substring, unranked, no typo correction, no FTS), not tsvector; the `relevance` sort has nothing to rank by; behaviour of real data upgrades, concurrency under load, backups and large libraries is untested; the shipped CI check is a smoke test, not the SQLite + Postgres matrix of section 8. `tsvector` + GIN search stays future work.
 - **Compose** (`docker/docker-compose.yml`, `docker/compose.postgres.yml`): the host side of the port mapping defaults to the loopback address through `${PV_BIND}`; deviation from the card: Compose needs an IP there, not a host name. `PV_HOST_PORT` sets the host port (not `PV_PORT`, which is the app setting). The default tag is `edge` until the first release exists (`latest` does not exist before that); change the default in M4c. Named volumes `pv-data` and `pg-data`. The PostgreSQL file refuses to start without `POSTGRES_PASSWORD`, waits for the database health check, and needs a URL-safe password.
 - **Publish workflow** (`docker-publish.yml`): `ci.yml` is also a reusable workflow (`workflow_call`) and runs as the gate before every push to GHCR, so CI runs twice for a push to main (once per workflow; their concurrency groups include the workflow name so they do not cancel each other). Permissions are `contents: read` and `packages: write` on the image job only. Build cache is GitHub Actions cache; provenance (`mode=max`) and SBOM attestations are on. After pushing, the job inspects the manifest and runs `tools/docker_smoke.sh` against the pushed digest. The CI docker job builds amd64 only and also runs that script (health, seed library, non-root, create + restart persistence, `export json -`, `export xlsx`, graceful stop, size ceiling) plus an informational Trivy scan (HIGH/CRITICAL with a fix, never fails the build).
-- **First publish.** GitHub creates the GHCR package as private; the owner sets it to public once in the package settings. A `v*` tag is only pushed with the owner's go-ahead.
+- **First publish.** A first push to GHCR can create the package as private; here it was public after the first publish (verified anonymously), so no settings change was needed. A `v*` tag is only pushed with the owner's go-ahead.
 - **Not checked locally.** Running the arm64 image natively (the arm64 build runs only in CI under QEMU, and the published digest is smoke-tested on amd64 only); `docker scout` needs a Docker login and trivy is not installed here, so the image scan only runs in CI.
+
+**Implementation notes (M4b, deviations):**
+
+- **Decisions (confirmed with the owner, all proposed defaults).** Distribution name `prompt-vault`; Python `>=3.11`; seed library bundled from `../seed`; sdist includes the built UI; start scripts `start.sh` + `start.ps1` only; version kept in `pyproject.toml` and `promptvault/__init__.py` with a test that they match; `xlsx` stays an extra and `all` is added.
+- **Name.** `promptvault` on PyPI (and TestPyPI) belongs to an unrelated project (0.0.4 by another author), so nothing is published under it. `prompt-vault` and `prompt_vault` returned 404 (free) when checked on 2026-11-02 and again before the build; re-check right before the first upload, because names can be taken at any time. The import package (`promptvault`), the CLI command (`promptvault`), the Docker image name and the repository keep their names, so `pipx install prompt-vault` gives the `promptvault` command. User-facing install hints say `prompt-vault[xlsx]`.
+- **Nothing is uploaded.** No upload step, token, trusted-publisher setup or release workflow exists in the repository, and no `v*` tag was pushed. Uploading is a manual step of the owner (README and the card result describe it); automating it is an M4c question.
+- **Metadata** (`backend/pyproject.toml`): SPDX `license = "MIT"` with `license-files` (needs hatchling 1.27 or newer, pinned in `build-system`), readme `backend/README.md` (a short PyPI page; `../README.md` would break the Docker build, which runs from `backend/`), classifiers (3.11 to 3.13, FastAPI, Alpha), project URLs, extras `xlsx`, `postgres` (experimental) and `all`. `backend/LICENSE` is a copy of the root license, kept equal by a test.
+- **Seed library and UI inside the artifacts.** The seed folder is outside `backend/`, and the UI is gitignored, so a naive build would silently ship an empty library and no UI. `backend/hatch_build.py` (a hatch build hook) adds `../seed` as `promptvault/seed` (wheel) or `src/promptvault/seed` (sdist), does nothing when the package folder already holds a copy, fails when the library is missing, and fails when `static/index.html` is missing (editable installs and `PV_ALLOW_NO_UI=1` are exempt). A hook was used instead of a static `force-include` because `uv build` builds the wheel from the sdist, where `../seed` does not exist. The Dockerfile now copies `README.md`, `LICENSE` and `hatch_build.py` next to `pyproject.toml` and the seed to `/seed` (the sibling folder the hook reads), instead of copying it into `src/`.
+- **sdist policy.** The sdist contains `src/promptvault` (with the built UI and the seed library), `hatch_build.py`, `README.md`, `LICENSE` and `pyproject.toml`, and no tests, so it builds a complete wheel without Node and without the rest of the repository (CI rebuilds a wheel from the unpacked sdist and inspects it). Because the UI is a build product, the sdist is only as current as the UI built before `uv build`; the guard above refuses to build without it.
+- **Sizes (measured):** wheel 704 KiB, sdist 543 KiB. A clean venv holds only the declared dependencies (no pytest, ruff or mypy); `uvicorn[standard]` still brings `uvloop` (on Linux and macOS), `watchfiles` and `websockets`, unlike the Docker image, which removes them for its size budget.
+- **Checks** (`tools/check_dist.py`, `make check-dist`, CI): wheel and sdist contain `static/index.html` and assets, 213 seed prompts plus `categories.yaml`, the migrations, the license, the console script and the expected metadata, and no tests, `.pyc`, `.db` or `node_modules`. `tools/dist_smoke.py` runs against an installed package: `promptvault version`, serve on a spare port, health, `/` and an SPA route serve the UI, the library has 213 prompts, create and list, `export json`, XLSX unavailable (and naming the extra) or working, then it stops the server and confirms the port is closed.
+- **Start scripts.** `scripts/start.sh` (bash, `set -euo pipefail`, bash 3.2 safe) and `scripts/start.ps1` (Windows PowerShell 5.1 and PowerShell 7, ASCII, CRLF) run from a checkout. They use uv when present (`uv sync --extra xlsx`, then `uv run --no-sync promptvault serve`), otherwise Python 3.11+ with `venv` and `pip install -e backend[xlsx]`. The UI is built (`npm ci` when `node_modules` is missing, then `npm run build`) when Node and npm exist and `static/index.html` is missing or older than `frontend/src` (`--rebuild-ui` forces it, `--no-ui-build` skips it); without Node the API starts alone and the script says so. `--port` and `--host` override `PV_PORT` and `PV_HOST`, a non-loopback host prints a no-authentication warning, a bad port is exit code 2, a failing step exit code 1. Nothing is written outside the repository and the data directory, and nothing uses `sudo`. The PowerShell flags are `-Port`, `-BindHost` (`$Host` is a reserved name), `-NoUiBuild`, `-RebuildUi`; a blocked execution policy needs `powershell -ExecutionPolicy Bypass -File`. The network installers `install.sh` and `install.ps1` from the original tree were dropped.
+- **Makefile:** `make dist` (UI build, `uv build`, `check-dist`), `make check-dist` (inspection + `twine check`), `make start`; `make dev` is unchanged.
+- **CI:** the `package` job (Linux) builds, inspects, runs `twine check`, rebuilds a wheel from the sdist, proves that a build without the UI fails, installs the wheel into fresh venvs (3.11 and 3.13, with and without `xlsx`) and runs the smoke, and runs `start.sh`. `package-windows` installs the wheel on Windows (3.12), parses `start.ps1` with Windows PowerShell 5.1 and PowerShell 7 and runs it. The `docker` job is unchanged apart from the Dockerfile edit above.
+- **Checked locally (Windows 11).** Wheel and sdist built from a clean copy of the working tree (identical file list to the in-place build); `twine check` passed; install and smoke with `uv pip` on Python 3.11, 3.12 and 3.13, each with and without `xlsx`; plain `venv` + `pip` (Python 3.14, which CI does not cover); `uv tool install` (used instead of pipx, which is not installed on this machine); `uvx --from <wheel>` with and without the extra; a data directory created by M4a code (the same migration chain, so the upgrade is a no-op) opened by the new wheel; `start.ps1` with uv (it built the UI by itself) and without uv on PATH (venv + pip), `start.sh` through Git Bash.
+- **Not checked.** `pipx` itself; macOS and native Linux (covered only by CI); any real browser against the installed package (the smoke fetches `/` and checks the HTML); PowerShell 7 running `start.ps1` end to end (only parsed); `start.sh` on bash 3.2 (written to be compatible); building on Python 3.14 in CI; installing from a real PyPI index (nothing is uploaded). The Docker image still builds from the same sources, which CI proves.
 
 **Config precedence:** CLI flags > env vars > `config.toml` in the data dir > defaults.
 

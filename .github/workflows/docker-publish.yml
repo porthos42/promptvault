@@ -4,8 +4,9 @@ name: Docker publish
 # (tag `edge`) and from version tags v* (tags X.Y.Z, X.Y and latest). Publishing only happens
 # after the whole CI workflow passed for the same commit.
 #
-# First publish: GitHub creates the package as private. Set its visibility to public once under
-# the repository's Packages settings; anonymous `docker pull` fails until then.
+# First publish: a new GHCR package may start out private; the one for this repository was
+# public after its first publish. If an anonymous `docker pull` ever fails, check the package's
+# visibility under the repository's Packages settings.
 
 on:
   push:
