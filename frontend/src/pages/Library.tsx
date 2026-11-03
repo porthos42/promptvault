@@ -15,6 +15,7 @@ export function readFilters(sp: URLSearchParams): Filters {
     difficulty: sp.get('difficulty') ?? '',
     sort: sp.get('sort') ?? '',
     favorite: sp.get('favorite') === 'true',
+    source: sp.get('source') ?? '',
   }
 }
 
@@ -26,6 +27,7 @@ export function writeFilters(f: Filters): URLSearchParams {
   if (f.difficulty) sp.set('difficulty', f.difficulty)
   if (f.sort) sp.set('sort', f.sort)
   if (f.favorite) sp.set('favorite', 'true')
+  if (f.source) sp.set('source', f.source)
   return sp
 }
 
@@ -44,6 +46,7 @@ export default function Library() {
     difficulty: filters.difficulty,
     sort: filters.sort,
     favorite: filters.favorite ? 'true' : undefined,
+    source: filters.source || undefined,
   })
 
   const [selected, setSelected] = useState<Prompt | null>(null)

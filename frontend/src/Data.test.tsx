@@ -70,7 +70,7 @@ describe('Data page', () => {
 
     await user.click(screen.getByRole('tab', { name: 'Import' }))
     expect(screen.getByRole('tab', { name: 'Import' })).toHaveAttribute('aria-selected', 'true')
-    expect(screen.getByText(/Import lands with the next release/)).toBeInTheDocument()
+    expect(await screen.findByText('1. Source')).toBeInTheDocument()
   })
 
   it('carries library filters from the URL into the export scope count', async () => {

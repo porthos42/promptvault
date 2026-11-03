@@ -67,6 +67,75 @@ export type ShareOut = { format: 'markdown' | 'text' | 'json'; text: string; mis
 export type ExportOptions = { pretty: boolean; bom: boolean; raw: boolean }
 export type Download = { blob: Blob; headers: Headers }
 
+// ---- import (docs/SPEC.md 3.5) --------------------------------------------------------------
+
+export type ImporterInfo = { name: string; description: string; available: boolean; reason: string | null }
+export type ImportDraft = {
+  title: string
+  body: string
+  description: string
+  category: string | null
+  tags: string[]
+  difficulty: string | null
+  prompt_type: string | null
+  model_hints: string | null
+  output_format: string | null
+  disclaimer: string | null
+  source_url: string | null
+  license: string | null
+  variables: string[]
+}
+export type ImportMatch = {
+  kind: 'exact' | 'fuzzy'
+  score: number
+  title: string
+  prompt_id: string | null
+  batch_index: number | null
+}
+export type PreviewRow = {
+  index: number
+  status: 'new' | 'duplicate' | 'invalid'
+  errors: string[]
+  warnings: string[]
+  needs_license_confirm: boolean
+  draft: ImportDraft
+  match: ImportMatch | null
+}
+export type ImportPreview = {
+  importer: string
+  total: number
+  new: number
+  duplicate: number
+  invalid: number
+  needs_license_confirm: number
+  rows: PreviewRow[]
+}
+export type DupAction = 'skip' | 'replace' | 'keep_both'
+export type PreviewRequest = { importer: string; source: unknown; default_license?: string; default_source_url?: string }
+export type CommitRequest = PreviewRequest & {
+  default_action: DupAction
+  actions: Record<string, DupAction>
+  confirm_license: boolean
+  confirmed_rows: number[]
+}
+export type ImportOutcome = 'created' | 'replaced' | 'skipped' | 'invalid' | 'refused'
+export type JobResult = { index: number; title: string; outcome: ImportOutcome; prompt_id: string | null; reason: string | null }
+export type ImportJob = {
+  id: string
+  importer: string
+  status: 'pending' | 'running' | 'done' | 'failed'
+  total: number
+  processed: number
+  created: number
+  replaced: number
+  skipped: number
+  invalid: number
+  refused: number
+  error: string | null
+  created_at: string
+  results: JobResult[] | null
+}
+
 export class ApiError extends Error {
   status: number
   constructor(status: number, message: string) {
@@ -152,6 +221,10 @@ export const api = {
   },
   sharePrompt: (id: string, format: string, values: string[]) =>
     request<ShareOut>('GET', `/prompts/${id}/share${toQueryString({ format, values })}`),
+  importers: () => request<ImporterInfo[]>('GET', '/import/importers'),
+  importPreview: (b: PreviewRequest) => request<ImportPreview>('POST', '/import/preview', b),
+  importCommit: (b: CommitRequest) => request<ImportJob>('POST', '/import/commit', b),
+  job: (id: string) => request<ImportJob>('GET', `/jobs/${id}`),
 }
 
 /** Turn a fetch Response into a Blob download, reading the error body on failure. */

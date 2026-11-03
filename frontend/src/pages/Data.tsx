@@ -1,12 +1,15 @@
-import { useSearchParams } from 'react-router'
+import { useOutletContext, useSearchParams } from 'react-router'
 import ExportPanel from '../components/ExportPanel'
+import ImportWizard from '../components/ImportWizard'
 import type { ListQuery } from '../api'
 import { readFilters } from './Library'
+import type { ShellContext } from '../Shell'
 
 /** The /data page: Export and Import tabs. The filters come from the URL, so
  *  "Export" launched from the library carries the active filters along. */
 export default function Data() {
   const [sp, setSp] = useSearchParams()
+  const { bump } = useOutletContext<ShellContext>()
   const tab = sp.get('tab') === 'import' ? 'import' : 'export'
   const f = readFilters(sp)
   const filters: ListQuery = {
@@ -16,11 +19,13 @@ export default function Data() {
     difficulty: f.difficulty,
     favorite: f.favorite ? 'true' : undefined,
   }
-  const setTab = (t: 'export' | 'import') => setSp((prev) => {
-    const next = new URLSearchParams(prev)
-    next.set('tab', t)
-    return next
-  })
+  const setTab = (t: 'export' | 'import') =>
+    setSp((prev) => {
+      const next = new URLSearchParams(prev)
+      next.set('tab', t)
+      if (t === 'export') next.delete('step')
+      return next
+    })
 
   return (
     <div className="data page">
@@ -42,7 +47,7 @@ export default function Data() {
         </section>
       ) : (
         <section id="panel-import" role="tabpanel" aria-labelledby="tab-import" className="panel">
-          <p className="empty">Import lands with the next release (files, pastes and repositories).</p>
+          <ImportWizard bump={bump} />
         </section>
       )}
     </div>

@@ -9,6 +9,7 @@ export type Filters = {
   difficulty: string
   sort: string
   favorite: boolean
+  source: string
 }
 
 type Props = {

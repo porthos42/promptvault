@@ -201,6 +201,44 @@ button.chip:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 
 .export .primary { align-self: flex-start; min-width: 10rem; }
 .export button.details-toggle { align-self: flex-start; display: inline-flex; gap: var(--s-2); align-items: center; }
 
+/* Import wizard */
+.import { display: flex; flex-direction: column; gap: var(--s-4); }
+.stepper { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s-3); margin: 0; padding: 0; color: var(--dim); font-size: var(--fs-sm); }
+.stepper li { padding: var(--s-1) var(--s-3); border-radius: 999px; border: 1px solid var(--line); }
+.stepper li.current { background: var(--accent-soft); color: var(--accent); font-weight: 600; border-color: var(--accent); }
+.import .dropzone { border: 2px dashed var(--line); border-radius: var(--radius); padding: var(--s-4); background: var(--surface); }
+.import .dropzone.over { border-color: var(--accent); background: var(--accent-soft); }
+.file-label, .paste-label { display: flex; flex-direction: column; gap: var(--s-2); font-weight: 600; font-size: var(--fs-sm); cursor: pointer; }
+.file-label input { background: none; border-style: dashed; }
+.inline-field { display: flex; align-items: center; gap: var(--s-2); min-height: var(--target); flex-wrap: wrap; }
+.inline-field input, .inline-field select { flex: 1; min-width: 12rem; }
+.import .chips { flex-wrap: wrap; }
+.import .chips button { min-height: 1.9rem; padding: 0 var(--s-3); border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); }
+.import .chips button[aria-pressed='true'] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); font-weight: 600; }
+.badge-new, .badge-created { background: color-mix(in srgb, var(--accent) 18%, transparent); color: var(--accent); }
+.badge-duplicate, .badge-replaced { background: color-mix(in srgb, var(--notice) 18%, transparent); color: var(--fg); }
+.badge-invalid { background: color-mix(in srgb, var(--danger) 18%, transparent); color: var(--danger); }
+.badge-license, .badge-refused { background: var(--surface); color: var(--dim); border: 1px solid var(--line); }
+.badge-skipped, .badge-keep_both { background: var(--surface); color: var(--dim); border: 1px solid var(--line); }
+.preview-scroll { max-height: 26rem; overflow-y: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+.preview-table, .map-table, .result-table { border-collapse: collapse; width: 100%; font-size: var(--fs-sm); }
+.preview-table th, .preview-table td, .map-table th, .map-table td, .result-table th, .result-table td { border-bottom: 1px solid var(--line); padding: var(--s-2) var(--s-3); text-align: left; vertical-align: top; }
+.preview-table thead th, .map-table thead th, .result-table thead th { position: sticky; top: 0; background: var(--surface); z-index: 1; }
+.preview-table tbody tr:hover { background: var(--hover); }
+.detail-row td { background: var(--surface); }
+.detail-row dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--s-1) var(--s-4); margin: 0; }
+.detail-row dt { color: var(--dim); font-weight: 600; }
+.detail-row dd { margin: 0; min-width: 0; }
+.detail-row dd ul { margin: 0; padding-left: 1.2rem; }
+.draft-body { max-height: 10rem; overflow-y: auto; white-space: pre-wrap; word-break: break-word; font-family: var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: var(--s-2); margin: 0; }
+.wizard-nav { display: flex; gap: var(--s-3); justify-content: flex-end; align-items: center; }
+.wizard-nav .primary { min-width: 10rem; }
+.wizard-nav .quiet { margin-right: auto; }
+.license-gate { border-left: 3px solid var(--notice); background: var(--surface); border-radius: var(--radius); padding: var(--s-2) var(--s-3); }
+.progress-track { height: 0.75rem; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+.counters { font-variant-numeric: tabular-nums; }
+
 /* Palette commands and share popover */
 .cmd-list { display: flex; flex-direction: column; padding: var(--s-2) var(--s-1) 0; border-bottom: 1px solid var(--line); }
 .cmd { background: none; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); }
