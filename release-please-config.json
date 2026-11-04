@@ -12,11 +12,7 @@
         },
         {
           "type": "generic",
-          "path": "backend/src/promptvault/__init__.py",
-          "version": {
-            "start": "__version__ = \"",
-            "end": "\""
-          }
+          "path": "backend/src/promptvault/__init__.py"
         }
       ]
     }
