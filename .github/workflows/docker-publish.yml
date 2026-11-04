@@ -38,7 +38,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Tag matches the package version
         if: github.ref_type == 'tag'
