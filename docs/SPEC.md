@@ -318,7 +318,7 @@ promptvault/
 
 | Workflow | Trigger | Does |
 |---|---|---|
-| `ci.yml` | PR / push | ruff, mypy, pytest (SQLite + Postgres matrix); eslint, tsc, vitest; seed lint; Playwright smoke |
+| `ci.yml` | PR / push | ruff, mypy, pytest (SQLite + Postgres matrix); eslint, tsc, vitest, bundle budget; seed lint; Playwright e2e (ubuntu, chromium, against the built UI served by the real backend) |
 | `docker-publish.yml` | push to main, tag `v*`, PR (build only), manual | Runs `ci.yml` as a gate, then a multi-arch (amd64/arm64) build and push to **GHCR** (`edge`; `X.Y.Z`, `X.Y`, `latest` on a tag), SBOM + provenance, smoke test of the pushed digest (M4a) |
 | `package` and `package-windows` jobs in `ci.yml` | PR / push | Build UI + wheel + sdist, inspect contents, `twine check`, rebuild the wheel from the sdist, install into fresh venvs (py3.11 and 3.13 on Linux, 3.12 on Windows) and run `tools/dist_smoke.py`, run `start.sh` and `start.ps1` (M4b). Never uploads |
 | `release.yml` | push to `main` | release-please: keeps a release PR open that bumps `CHANGELOG.md`, `backend/pyproject.toml` and `promptvault/__init__.py`; **merging the PR pushes the `v*` tag**. Never uploads to PyPI and never pushes a tag itself (M4c) |
@@ -377,6 +377,15 @@ promptvault/
 - **Checked locally (Windows 11).** Wheel and sdist built from a clean copy of the working tree (identical file list to the in-place build); `twine check` passed; install and smoke with `uv pip` on Python 3.11, 3.12 and 3.13, each with and without `xlsx`; plain `venv` + `pip` (Python 3.14, which CI does not cover); `uv tool install` (used instead of pipx, which is not installed on this machine); `uvx --from <wheel>` with and without the extra; a data directory created by M4a code (the same migration chain, so the upgrade is a no-op) opened by the new wheel; `start.ps1` with uv (it built the UI by itself) and without uv on PATH (venv + pip), `start.sh` through Git Bash.
 - **Not checked.** `pipx` itself; macOS and native Linux (covered only by CI); any real browser against the installed package (the smoke fetches `/` and checks the HTML); PowerShell 7 running `start.ps1` end to end (only parsed); `start.sh` on bash 3.2 (written to be compatible); building on Python 3.14 in CI; installing from a real PyPI index (nothing is uploaded). The Docker image still builds from the same sources, which CI proves.
 
+**Implementation notes (M5, deviations):**
+
+- **Decisions (confirmed with the owner, all proposed defaults).** Playwright via `@playwright/test` devDependency, Chromium only in CI against the built UI served by the real backend, network-free local fixtures; backup is a timestamped SQLite `VACUUM INTO` copy into `PV_BACKUP_DIR` (default `<data>/backups`), keep last 7, daily snapshot as documented cron/Task Scheduler scheduling (not an in-app thread); CI-enforced bundle budget of 200 KB gzip with search/filter benchmarks recorded not gated; axe-core in the Playwright pass plus manual keyboard/screen-reader spot checks.
+- **Backup** (`promptvault backup [--dir D] [--keep N]`): a timestamped `promptvault-backup-YYYYMMDD-HHMMSS.db` snapshot written with `VACUUM INTO` (a live, compacted copy; the source session's transaction stays read-only) into `PV_BACKUP_DIR`, pruned to the last `PV_BACKUP_KEEP` (default 7) by name+mtime. Non-SQLite binds are refused. Restore: stop the server, swap the file, migrations run forward on start (see docs/serve.md). Env additions: `PV_BACKUP_DIR`, `PV_BACKUP_KEEP`, `PV_IMPORT_JOB_RETENTION_DAYS` (import-job pruning at server start, default 30 days).
+- **Accessibility.** axe-core sweeps (`e2e/a11y.spec.ts`) of library list, detail pane, editor, Trash, Data page (export + import wizard) and the Ctrl+K palette, light and dark, asserted in Playwright. Two findings fixed (palette list name, wizard fetch-notes list name). Keyboard-first navigation, dialog/drawer focus management, aria-live import progress. Deviation: no automated screen-reader suite — manual spot checks only (WCAG 2.1 AA asserted by axe, not by a screen reader).
+- **Performance.** CI enforces the main JS bundle ≤ 200 KB gzip (`npm run budget`, 114 KB today); search and search+filter are benchmarked by `tools/bench_search.py` (10k prompts: p95 6.7–31.4 ms against the 50 ms budget) and cold start by `tools/cold_start_check.py` (1.9 s against the 3 s budget) — recorded, not gated (deviation from any CI-gating reading of section 7).
+- **E2E.** 8 Playwright tests (create→search→fill→copy, real-CSV import through the wizard, export download verified by content, trash/restore round trip, URL-state persistence, axe sweeps) in an ubuntu-only CI job against the built UI served by the real backend. Deviation: section 8's SQLite+Postgres test matrix stays backend-only; the e2e job runs SQLite.
+- **Gap sweep:** import-job pruning done; match highlighting, keyset pagination, ranked trash search and the 85/70 coverage gates all deferred to v1.5 with one-line reasons in the vault log's limitations list.
+
 **Implementation notes (M4c, deviations):**
 
 - **Decisions (confirmed with the owner, all proposed defaults).** release-please bootstrapped at the current version; release PRs are the owner's to review and merge (the merge creates the `v*` tag — no automation pushes a tag); the PyPI upload stays manual forever; an MkDocs Material docs site published to GitHub Pages by CI on main; service setup as docs only (no packaged unit files).
@@ -407,7 +416,7 @@ promptvault/
 - **Integration:** API against SQLite and Postgres.
 - **E2E:** Playwright covering create → search → fill variables → copy → export.
 - **Seed CI:** the linter plus a check that each category has ≥ 5 prompts.
-- **Coverage gate:** 85% backend, 70% frontend.
+- **Coverage gate:** 85% backend, 70% frontend. (Deviation, M5 sweep: not enforced in CI yet — real coverage was measured as a baseline; the gate is deferred to v1.5 with a reason in the vault log.)
 
 # 9. Milestones
 
