@@ -1,0 +1,3 @@
+title,body,description
+Wizard title one,Wizard body one {{who}},Imported by the e2e suite
+Wizard title two,Wizard body two,Imported by the e2e suite

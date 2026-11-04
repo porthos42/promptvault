@@ -683,7 +683,8 @@ export default function ImportWizard({ bump }: { bump: () => void }) {
                 {fetchedNotes.skipped.length + fetchedNotes.truncated.length + fetchedNotes.other.length} notes)
               </button>
               {fetchedOpen && (
-                <ul>
+                // axe flags a bare list inside a labelled group; name it explicitly.
+                <ul aria-label="Fetch notes">
                   {[...fetchedNotes.skipped, ...fetchedNotes.truncated, ...fetchedNotes.other].map((w) => (
                     <li key={w}>{w}</li>
                   ))}

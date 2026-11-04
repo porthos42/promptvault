@@ -90,7 +90,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
           onChange={(e) => setQ(e.target.value)}
         />
         {commands}
-        <ul role="listbox">
+        <ul role="listbox" aria-label="Quick jump results">
           {items.map((p, i) => (
             <li
               key={p.id}
