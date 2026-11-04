@@ -6,6 +6,7 @@ One process serves both the REST API and a React web UI. Data lives in a SQLite 
 
 | Start here | |
 |---|---|
+| [User guide](user-guide.md) | screenshots + worked examples |
 | [Install](install.md) | pipx, uvx, pip, Docker/compose, start scripts |
 | [CLI](cli.md) | `promptvault serve`, CRUD, import, export |
 | [REST API](api.md) | `/api/v1` endpoints, search and filters |

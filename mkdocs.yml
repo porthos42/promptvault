@@ -27,6 +27,7 @@ theme:
 
 nav:
   - Home: index.md
+  - User guide: user-guide.md
   - Install: install.md
   - CLI: cli.md
   - REST API: api.md
