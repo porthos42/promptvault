@@ -14,6 +14,37 @@ output_format: "Continuity bible (fixed descriptor blocks) and a per-shot checkl
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    project: example value A
+    characters: example value A
+    locations: example value A
+    shot_list: example value A
+- name: Professional
+  values:
+    project: example value B
+    characters: example value B
+    locations: example value B
+    shot_list: example value B
+- name: Detailed
+  values:
+    project: example value C
+    characters: example value C
+    locations: example value C
+    shot_list: example value C
+- name: Beginner friendly
+  values:
+    project: example value D
+    characters: example value D
+    locations: example value D
+    shot_list: example value D
+- name: Creative
+  values:
+    project: example value E
+    characters: example value E
+    locations: example value E
+    shot_list: example value E
 body: |
   You are a script supervisor adapting continuity practice to AI-generated video.
 

@@ -14,6 +14,37 @@ output_format: "Nine canvas blocks as short bullets, then a ranked list of 5 ass
 model_hints: "Any strong chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    idea: example value A
+    customers: example value A
+    stage: idea only
+    known_facts: example value A
+- name: Professional
+  values:
+    idea: example value B
+    customers: example value B
+    stage: prototype
+    known_facts: example value B
+- name: Detailed
+  values:
+    idea: example value C
+    customers: example value C
+    stage: first customers
+    known_facts: example value C
+- name: Beginner friendly
+  values:
+    idea: example value D
+    customers: example value D
+    stage: established
+    known_facts: example value D
+- name: Creative
+  values:
+    idea: example value E
+    customers: example value E
+    stage: idea only
+    known_facts: example value E
 body: |
   You are a startup advisor who helps founders think in business models.
 

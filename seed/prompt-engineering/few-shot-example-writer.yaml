@@ -15,6 +15,42 @@ output_format: "Numbered examples in the final prompt layout, a coverage note an
 model_hints: "Strong model; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    task: example value A
+    format: markdown
+    seed_examples: example value A
+    count: '3'
+    inputs: example value A
+- name: Professional
+  values:
+    task: example value B
+    format: plain text
+    seed_examples: example value B
+    count: '5'
+    inputs: example value B
+- name: Detailed
+  values:
+    task: example value C
+    format: bullet list
+    seed_examples: example value C
+    count: '7'
+    inputs: example value C
+- name: Beginner friendly
+  values:
+    task: example value D
+    format: table
+    seed_examples: example value D
+    count: '10'
+    inputs: example value D
+- name: Creative
+  values:
+    task: example value E
+    format: JSON
+    seed_examples: example value E
+    count: '2'
+    inputs: example value E
 body: |
   You are a prompt engineer who writes few-shot examples that teach a pattern without causing copying.
 

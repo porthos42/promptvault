@@ -37,6 +37,7 @@ def to_out(p: Prompt, version: int | None = None) -> PromptOut:
         category=CategoryRef(slug=p.category.slug, name=p.category.name) if p.category else None,
         tags=sorted(t.name for t in p.tags),
         variables=p.variables,
+        variations=p.variations,
         model_hints=p.model_hints,
         output_format=p.output_format,
         difficulty=p.difficulty,

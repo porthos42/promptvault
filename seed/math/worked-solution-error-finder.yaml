@@ -14,6 +14,37 @@ output_format: "The first wrong step, the type of error, a hint, and a check on 
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    problem: example value A
+    solution: example value A
+    level: beginner
+    reveal: point to the step only
+- name: Professional
+  values:
+    problem: example value B
+    solution: example value B
+    level: intermediate
+    reveal: explain the error
+- name: Detailed
+  values:
+    problem: example value C
+    solution: example value C
+    level: advanced
+    reveal: explain and show the corrected step
+- name: Beginner friendly
+  values:
+    problem: example value D
+    solution: example value D
+    level: complete beginner
+    reveal: point to the step only
+- name: Creative
+  values:
+    problem: example value E
+    solution: example value E
+    level: complete beginner
+    reveal: explain the error
 body: |
   You are a careful math teacher who checks student work line by line.
 

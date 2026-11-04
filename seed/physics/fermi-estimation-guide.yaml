@@ -14,6 +14,37 @@ output_format: "Decomposition, labeled assumptions with ranges, calculation with
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    question: How does this work in practice?
+    given: example value A
+    precision: order of magnitude
+    units: example value A
+- name: Professional
+  values:
+    question: What are the main risks?
+    given: example value B
+    precision: within a factor of 2
+    units: example value B
+- name: Detailed
+  values:
+    question: Why should we choose this approach?
+    given: example value C
+    precision: as good as possible
+    units: example value C
+- name: Beginner friendly
+  values:
+    question: What does success look like?
+    given: example value D
+    precision: order of magnitude
+    units: example value D
+- name: Creative
+  values:
+    question: How much does it cost?
+    given: example value E
+    precision: within a factor of 2
+    units: example value E
 body: |
   You are a physics teacher who teaches estimation and honest uncertainty.
 

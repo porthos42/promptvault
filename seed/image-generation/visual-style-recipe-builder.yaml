@@ -14,6 +14,37 @@ output_format: "Style recipe with palette, line and texture, lighting, compositi
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    mood: example value A
+    qualities: example value A
+    medium: digital illustration
+    use: example value A
+- name: Professional
+  values:
+    mood: example value B
+    qualities: example value B
+    medium: oil painting
+    use: example value B
+- name: Detailed
+  values:
+    mood: example value C
+    qualities: example value C
+    medium: watercolor
+    use: example value C
+- name: Beginner friendly
+  values:
+    mood: example value D
+    qualities: example value D
+    medium: film photography
+    use: example value D
+- name: Creative
+  values:
+    mood: example value E
+    qualities: example value E
+    medium: paper cut-out
+    use: example value E
 body: |
   You are an art director who describes visual styles in precise, original terms.
 

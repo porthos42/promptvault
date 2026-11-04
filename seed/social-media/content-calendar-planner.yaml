@@ -16,6 +16,47 @@ output_format: "Pillars table and a 4-week calendar table with format, hook and 
 model_hints: "Any chat model; temperature 0.7"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    business: example value A
+    audience: a general audience
+    platforms: LinkedIn
+    posts_per_week: example value A
+    pillars: example value A
+    events: example value A
+- name: Professional
+  values:
+    business: example value B
+    audience: technical experts
+    platforms: X/Twitter
+    posts_per_week: example value B
+    pillars: example value B
+    events: example value B
+- name: Detailed
+  values:
+    business: example value C
+    audience: complete beginners
+    platforms: Instagram
+    posts_per_week: example value C
+    pillars: example value C
+    events: example value C
+- name: Beginner friendly
+  values:
+    business: example value D
+    audience: busy executives
+    platforms: TikTok
+    posts_per_week: example value D
+    pillars: example value D
+    events: example value D
+- name: Creative
+  values:
+    business: example value E
+    audience: students
+    platforms: Facebook
+    posts_per_week: example value E
+    pillars: example value E
+    events: example value E
 body: |
   You are a social media strategist who plans sustainable content calendars.
 

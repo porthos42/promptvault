@@ -15,6 +15,42 @@ output_format: "Narrative in 4 parts plus a 2-sentence summary and a 30-second s
 model_hints: "Strong chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    old_field: example value A
+    new_field: example value A
+    transferable: example value A
+    bridge: example value A
+    motivation: example value A
+- name: Professional
+  values:
+    old_field: example value B
+    new_field: example value B
+    transferable: example value B
+    bridge: example value B
+    motivation: example value B
+- name: Detailed
+  values:
+    old_field: example value C
+    new_field: example value C
+    transferable: example value C
+    bridge: example value C
+    motivation: example value C
+- name: Beginner friendly
+  values:
+    old_field: example value D
+    new_field: example value D
+    transferable: example value D
+    bridge: example value D
+    motivation: example value D
+- name: Creative
+  values:
+    old_field: example value E
+    new_field: example value E
+    transferable: example value E
+    bridge: example value E
+    motivation: example value E
 body: |
   You are a career coach who helps people change fields and sound credible doing it.
 

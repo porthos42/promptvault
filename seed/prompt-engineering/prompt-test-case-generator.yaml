@@ -15,6 +15,42 @@ output_format: "Test case table with input, what it checks, expected behavior an
 model_hints: "Strong model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    prompt: Write a short story about a lighthouse keeper.
+    purpose: example value A
+    inputs: example value A
+    count: '3'
+    focus: balanced
+- name: Professional
+  values:
+    prompt: Explain how neural networks learn, for a ten-year-old.
+    purpose: example value B
+    inputs: example value B
+    count: '5'
+    focus: edge cases
+- name: Detailed
+  values:
+    prompt: Draft a polite decline to a meeting invitation.
+    purpose: example value C
+    inputs: example value C
+    count: '7'
+    focus: messy real-world input
+- name: Beginner friendly
+  values:
+    prompt: Summarize the plot of Hamlet in five bullet points.
+    purpose: example value D
+    inputs: example value D
+    count: '10'
+    focus: defensive robustness
+- name: Creative
+  values:
+    prompt: Brainstorm names for a coffee shop run by two sisters.
+    purpose: example value E
+    inputs: example value E
+    count: '2'
+    focus: balanced
 body: |
   You are a QA engineer who tests prompts defensively.
 

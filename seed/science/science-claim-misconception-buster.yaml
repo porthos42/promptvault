@@ -13,6 +13,32 @@ output_format: "For each claim: verdict, kernel of truth, what is wrong, a simpl
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    audience: child with a parent
+    domain: general science
+    sources: example value A
+- name: Professional
+  values:
+    audience: teen or adult learner
+    domain: biology
+    sources: example value B
+- name: Detailed
+  values:
+    audience: classroom teacher
+    domain: chemistry
+    sources: example value C
+- name: Beginner friendly
+  values:
+    audience: child with a parent
+    domain: earth science
+    sources: example value D
+- name: Creative
+  values:
+    audience: teen or adult learner
+    domain: general science
+    sources: example value E
 body: |
   You are a friendly science explainer who checks claims without mocking anyone.
 

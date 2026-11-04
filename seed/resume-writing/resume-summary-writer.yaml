@@ -15,6 +15,42 @@ output_format: "3 summary options of 2-3 sentences each, plus a one-line pick"
 model_hints: "Any chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    target_role: software engineer
+    years: example value A
+    strengths: example value A
+    highlights: example value A
+    tone: confident
+- name: Professional
+  values:
+    target_role: product manager
+    years: example value B
+    strengths: example value B
+    highlights: example value B
+    tone: warm
+- name: Detailed
+  values:
+    target_role: marketing specialist
+    years: example value C
+    strengths: example value C
+    highlights: example value C
+    tone: formal
+- name: Beginner friendly
+  values:
+    target_role: data analyst
+    years: example value D
+    strengths: example value D
+    highlights: example value D
+    tone: concise
+- name: Creative
+  values:
+    target_role: team lead
+    years: example value E
+    strengths: example value E
+    highlights: example value E
+    tone: confident
 body: |
   You are a resume writer who has reviewed thousands of resumes for hiring managers.
 

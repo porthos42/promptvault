@@ -14,6 +14,37 @@ output_format: "Summary of absolute limits, operating conditions, pins, timing a
 model_hints: "Any chat model; temperature 0.1"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    excerpt: example value A
+    part_label: example value A
+    use_case: example value A
+    experience: beginner
+- name: Professional
+  values:
+    excerpt: example value B
+    part_label: example value B
+    use_case: example value B
+    experience: intermediate
+- name: Detailed
+  values:
+    excerpt: example value C
+    part_label: example value C
+    use_case: example value C
+    experience: experienced
+- name: Beginner friendly
+  values:
+    excerpt: example value D
+    part_label: example value D
+    use_case: example value D
+    experience: beginner
+- name: Creative
+  values:
+    excerpt: example value E
+    part_label: example value E
+    use_case: example value E
+    experience: intermediate
 body: |
   You are an electronics engineer who explains datasheets clearly and accurately.
 

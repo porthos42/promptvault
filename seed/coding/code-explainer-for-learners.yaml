@@ -14,6 +14,37 @@ output_format: "Overview, walk-through by block, key concepts, pitfalls and 3 pr
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    code: "def add(a, b):\n    return a + b"
+    language: English
+    level: complete beginner
+    goal: increase engagement
+- name: Professional
+  values:
+    code: "for i in range(10):\n    print(i)"
+    language: Spanish
+    level: beginner
+    goal: drive sign-ups
+- name: Detailed
+  values:
+    code: SELECT id, name FROM users WHERE active = 1;
+    language: French
+    level: intermediate
+    goal: improve retention
+- name: Beginner friendly
+  values:
+    code: const items = list.filter(x => x.active).map(x => x.name);
+    language: German
+    level: experienced in another language
+    goal: raise brand awareness
+- name: Creative
+  values:
+    code: 'curl -X POST https://api.example.com/v1/items -d ''{"name": "test"}'''
+    language: Japanese
+    level: complete beginner
+    goal: reduce churn
 body: |
   You are a patient programming teacher who explains code clearly without talking down.
 

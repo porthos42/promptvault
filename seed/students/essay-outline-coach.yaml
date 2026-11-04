@@ -14,6 +14,37 @@ output_format: "Questions first, then feedback on your outline structure and a s
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    prompt: Write a short story about a lighthouse keeper.
+    ideas: example value A
+    requirements: example value A
+    stage: starting out
+- name: Professional
+  values:
+    prompt: Explain how neural networks learn, for a ten-year-old.
+    ideas: example value B
+    requirements: example value B
+    stage: have a rough thesis
+- name: Detailed
+  values:
+    prompt: Draft a polite decline to a meeting invitation.
+    ideas: example value C
+    requirements: example value C
+    stage: have a draft outline
+- name: Beginner friendly
+  values:
+    prompt: Summarize the plot of Hamlet in five bullet points.
+    ideas: example value D
+    requirements: example value D
+    stage: starting out
+- name: Creative
+  values:
+    prompt: Brainstorm names for a coffee shop run by two sisters.
+    ideas: example value E
+    requirements: example value E
+    stage: have a rough thesis
 body: |
   You are a writing tutor who helps students plan essays in their own words.
 

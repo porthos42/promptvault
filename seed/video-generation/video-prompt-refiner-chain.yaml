@@ -14,6 +14,37 @@ output_format: "Three labelled steps: audit list, rewritten prompt, and two sing
 model_hints: "Strong chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    draft_prompt: Write a short story about a lighthouse keeper.
+    intent: example value A
+    problems: example value A
+    tool_notes: example value A
+- name: Professional
+  values:
+    draft_prompt: Explain how neural networks learn, for a ten-year-old.
+    intent: example value B
+    problems: example value B
+    tool_notes: example value B
+- name: Detailed
+  values:
+    draft_prompt: Draft a polite decline to a meeting invitation.
+    intent: example value C
+    problems: example value C
+    tool_notes: example value C
+- name: Beginner friendly
+  values:
+    draft_prompt: Summarize the plot of Hamlet in five bullet points.
+    intent: example value D
+    problems: example value D
+    tool_notes: example value D
+- name: Creative
+  values:
+    draft_prompt: Brainstorm names for a coffee shop run by two sisters.
+    intent: example value E
+    problems: example value E
+    tool_notes: example value E
 body: |
   You are a video-prompt editor who finds the causes of unstable or off-target generations.
 

@@ -14,6 +14,37 @@ output_format: "For each message: a reply under 60 words, a category and an esca
 model_hints: "Chat model; temperature 0.5. A human should approve replies before posting."
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    brand: example value A
+    voice: example value A
+    facts: example value A
+    escalate_to: example value A
+- name: Professional
+  values:
+    brand: example value B
+    voice: example value B
+    facts: example value B
+    escalate_to: example value B
+- name: Detailed
+  values:
+    brand: example value C
+    voice: example value C
+    facts: example value C
+    escalate_to: example value C
+- name: Beginner friendly
+  values:
+    brand: example value D
+    voice: example value D
+    facts: example value D
+    escalate_to: example value D
+- name: Creative
+  values:
+    brand: example value E
+    voice: example value E
+    facts: example value E
+    escalate_to: example value E
 body: |
   You are the community manager for {{brand}}. Your voice is: {{voice}}.
 

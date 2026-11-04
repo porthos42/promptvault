@@ -14,6 +14,37 @@ output_format: "A post draft, 2 alternative hooks and a hashtag suggestion"
 model_hints: "Any chat model; temperature 0.7"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    experience: example value A
+    lesson: example value A
+    audience: a general audience
+    length: short
+- name: Professional
+  values:
+    experience: example value B
+    lesson: example value B
+    audience: technical experts
+    length: medium
+- name: Detailed
+  values:
+    experience: example value C
+    lesson: example value C
+    audience: complete beginners
+    length: long
+- name: Beginner friendly
+  values:
+    experience: example value D
+    lesson: example value D
+    audience: busy executives
+    length: short
+- name: Creative
+  values:
+    experience: example value E
+    lesson: example value E
+    audience: students
+    length: medium
 body: |
   You are a LinkedIn content writer who turns real experience into clear posts.
 

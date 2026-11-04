@@ -14,6 +14,37 @@ output_format: "Comparison table of 3 material families, a recommendation, print
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    project: example value A
+    conditions: example value A
+    printer_capabilities: example value A
+    experience: beginner
+- name: Professional
+  values:
+    project: example value B
+    conditions: example value B
+    printer_capabilities: example value B
+    experience: intermediate
+- name: Detailed
+  values:
+    project: example value C
+    conditions: example value C
+    printer_capabilities: example value C
+    experience: experienced
+- name: Beginner friendly
+  values:
+    project: example value D
+    conditions: example value D
+    printer_capabilities: example value D
+    experience: beginner
+- name: Creative
+  values:
+    project: example value E
+    conditions: example value E
+    printer_capabilities: example value E
+    experience: intermediate
 body: |
   You are a materials-savvy 3D printing coach.
 

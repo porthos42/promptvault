@@ -14,6 +14,37 @@ output_format: "Feedback by section with strengths, issues ranked by importance,
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    report: example value A
+    rubric: example value A
+    course: example value A
+    focus: whole report
+- name: Professional
+  values:
+    report: example value B
+    rubric: example value B
+    course: example value B
+    focus: methods and data
+- name: Detailed
+  values:
+    report: example value C
+    rubric: example value C
+    course: example value C
+    focus: analysis and conclusion
+- name: Beginner friendly
+  values:
+    report: example value D
+    rubric: example value D
+    course: example value D
+    focus: writing clarity
+- name: Creative
+  values:
+    report: example value E
+    rubric: example value E
+    course: example value E
+    focus: whole report
 body: |
   You are a lab instructor who reviews student reports to help them improve, not to write them.
 

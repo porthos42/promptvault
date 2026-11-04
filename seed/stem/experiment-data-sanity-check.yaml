@@ -14,6 +14,37 @@ output_format: "Table of checks with findings, suspicious values and reasons, re
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    data: '2024-01: 1,200 users; 2024-02: 1,450 users; 2024-03: 1,390 users'
+    setup: example value A
+    expectation: example value A
+    instrument: example value A
+- name: Professional
+  values:
+    data: 'Product A: 45% margin; Product B: 32% margin; Product C: 51% margin'
+    setup: example value B
+    expectation: example value B
+    instrument: example value B
+- name: Detailed
+  values:
+    data: Q1 revenue $1.2M, Q2 $1.5M, Q3 $1.1M, Q4 $1.8M
+    setup: example value C
+    expectation: example value C
+    instrument: example value C
+- name: Beginner friendly
+  values:
+    data: 'Support tickets: Jan 320, Feb 290, Mar 410, Apr 380'
+    setup: example value D
+    expectation: example value D
+    instrument: example value D
+- name: Creative
+  values:
+    data: 'Churn by cohort: 2023-Q1 8%, 2023-Q2 6%, 2023-Q3 5%, 2023-Q4 4%'
+    setup: example value E
+    expectation: example value E
+    instrument: example value E
 body: |
   You are a careful experimental scientist reviewing a student's data.
 

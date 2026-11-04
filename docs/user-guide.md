@@ -20,6 +20,19 @@ Open a prompt from the list. The detail pane shows the description, tags, any di
 
 ![The detail pane with the Topic variable filled in](images/detail-filled.png)
 
+### Variations
+
+Above the variable form is a **Variation** dropdown. Each prompt carries named
+variations — ready-made combinations of variable values. Picking one prefills every
+field at once, so a prompt that would take a minute to fill takes one click.
+
+Seeded prompts ship with five variations: **Quick start**, **Professional**,
+**Detailed**, **Beginner friendly** and **Creative**. You can add your own: fill the
+fields the way you like, type a name into the box next to the dropdown and press
+**Save current as**. Your variations are saved with the prompt (and exported/imported
+with it); the **Delete variation** button removes the loaded one. New prompts start
+with an empty list until you save the first.
+
 - **Copy** copies the rendered prompt to the clipboard.
 - The **Export** menu in the toolbar downloads this one prompt as Markdown or JSON.
 - **Share** (next to Copy) copies a filled-in snippet — Markdown, plain text or JSON.
@@ -31,6 +44,16 @@ Press <kbd>Ctrl</kbd>+<kbd>K</kbd> (or <kbd>Cmd</kbd>+<kbd>K</kbd>) anywhere to 
 ![The Ctrl+K command palette](images/palette.png)
 
 ## 2. Create your own prompt
+
+### Managing categories
+
+The **Data** page has a **Categories** tab where you add, rename, re-parent and delete
+categories. Deleting a category keeps its prompts (they become uncategorised) and turns
+its subcategories into top-level categories. The seeded category tree (43 categories in
+8 groups) is loaded on first start; anything you change here is yours and survives
+upgrades.
+
+### Creating a prompt
 
 Click **+ New prompt**. The editor has the fields that matter and nothing else:
 

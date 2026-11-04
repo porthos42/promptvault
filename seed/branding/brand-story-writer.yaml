@@ -16,6 +16,47 @@ output_format: "Brand story at the chosen length plus a 1-sentence version"
 model_hints: "Any chat model; temperature 0.7"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    brand: example value A
+    origin: example value A
+    problem: example value A
+    approach: example value A
+    values: example value A
+    length: about 100 words
+- name: Professional
+  values:
+    brand: example value B
+    origin: example value B
+    problem: example value B
+    approach: example value B
+    values: example value B
+    length: about 250 words
+- name: Detailed
+  values:
+    brand: example value C
+    origin: example value C
+    problem: example value C
+    approach: example value C
+    values: example value C
+    length: about 500 words
+- name: Beginner friendly
+  values:
+    brand: example value D
+    origin: example value D
+    problem: example value D
+    approach: example value D
+    values: example value D
+    length: about 100 words
+- name: Creative
+  values:
+    brand: example value E
+    origin: example value E
+    problem: example value E
+    approach: example value E
+    values: example value E
+    length: about 250 words
 body: |
   You are a brand storyteller who writes About pages that sound human.
 

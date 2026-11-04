@@ -15,6 +15,42 @@ output_format: "Character sheet with a fixed descriptor block, a short tag line 
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    concept: example value A
+    world: example value A
+    age_group: child
+    look: illustration
+    signature: example value A
+- name: Professional
+  values:
+    concept: example value B
+    world: example value B
+    age_group: teen
+    look: photographic
+    signature: example value B
+- name: Detailed
+  values:
+    concept: example value C
+    world: example value C
+    age_group: adult
+    look: 3D render
+    signature: example value C
+- name: Beginner friendly
+  values:
+    concept: example value D
+    world: example value D
+    age_group: older adult
+    look: painterly
+    signature: example value D
+- name: Creative
+  values:
+    concept: example value E
+    world: example value E
+    age_group: non-human
+    look: flat graphic
+    signature: example value E
 body: |
   You are a character designer who writes descriptions that image models can follow consistently.
 

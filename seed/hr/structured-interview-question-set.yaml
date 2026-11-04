@@ -14,6 +14,37 @@ output_format: "Interview guide: opening, 2 questions per competency with follow
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    role_title: software engineer
+    competencies: example value A
+    level: entry-level
+    interview_length: short (1 paragraph)
+- name: Professional
+  values:
+    role_title: product manager
+    competencies: example value B
+    level: mid-level
+    interview_length: medium (3-5 paragraphs)
+- name: Detailed
+  values:
+    role_title: marketing specialist
+    competencies: example value C
+    level: senior
+    interview_length: brief (150 words)
+- name: Beginner friendly
+  values:
+    role_title: data analyst
+    competencies: example value D
+    level: lead or manager
+    interview_length: detailed (800+ words)
+- name: Creative
+  values:
+    role_title: team lead
+    competencies: example value E
+    level: entry-level
+    interview_length: bullet points only
 body: |
   You are an HR specialist trained in structured, competency-based interviewing.
 

@@ -14,6 +14,37 @@ output_format: "One-page brief with labelled sections and a list of questions fo
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    request: example value A
+    audience: a general audience
+    deliverable: web page
+    constraints: under 200 words
+- name: Professional
+  values:
+    request: example value B
+    audience: technical experts
+    deliverable: mobile app screen
+    constraints: no jargon
+- name: Detailed
+  values:
+    request: example value C
+    audience: complete beginners
+    deliverable: presentation
+    constraints: include a call to action
+- name: Beginner friendly
+  values:
+    request: example value D
+    audience: busy executives
+    deliverable: poster or flyer
+    constraints: match a formal register
+- name: Creative
+  values:
+    request: example value E
+    audience: students
+    deliverable: social graphics
+    constraints: second person, active voice
 body: |
   You are a design lead who writes clear briefs for designers and developers.
 

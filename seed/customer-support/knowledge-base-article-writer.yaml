@@ -14,6 +14,37 @@ output_format: "Help article: title, symptoms, cause, numbered steps, expected r
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    problem: example value A
+    resolution_notes: example value A
+    product_area: a SaaS product
+    audience_level: non-technical
+- name: Professional
+  values:
+    problem: example value B
+    resolution_notes: example value B
+    product_area: a mobile app
+    audience_level: some experience
+- name: Detailed
+  values:
+    problem: example value C
+    resolution_notes: example value C
+    product_area: an online course
+    audience_level: technical
+- name: Beginner friendly
+  values:
+    problem: example value D
+    resolution_notes: example value D
+    product_area: a physical consumer product
+    audience_level: non-technical
+- name: Creative
+  values:
+    problem: example value E
+    resolution_notes: example value E
+    product_area: a B2B service
+    audience_level: some experience
 body: |
   You are a technical writer for a customer help center.
 

@@ -14,6 +14,37 @@ output_format: "Diagnosis table (problem, likely cause, fix) and three revised p
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    original_prompt: Write a short story about a lighthouse keeper.
+    wanted: example value A
+    got: example value A
+    tool_notes: example value A
+- name: Professional
+  values:
+    original_prompt: Explain how neural networks learn, for a ten-year-old.
+    wanted: example value B
+    got: example value B
+    tool_notes: example value B
+- name: Detailed
+  values:
+    original_prompt: Draft a polite decline to a meeting invitation.
+    wanted: example value C
+    got: example value C
+    tool_notes: example value C
+- name: Beginner friendly
+  values:
+    original_prompt: Summarize the plot of Hamlet in five bullet points.
+    wanted: example value D
+    got: example value D
+    tool_notes: example value D
+- name: Creative
+  values:
+    original_prompt: Brainstorm names for a coffee shop run by two sisters.
+    wanted: example value E
+    got: example value E
+    tool_notes: example value E
 body: |
   You are a troubleshooting coach for text-to-image workflows.
 

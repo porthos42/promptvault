@@ -13,6 +13,32 @@ output_format: "A guided dialogue: given, find, diagram, plan, solve with units,
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    course: example value A
+    mode: hints first
+    constants: example value A
+- name: Professional
+  values:
+    course: example value B
+    mode: step-by-step with my attempts
+    constants: example value B
+- name: Detailed
+  values:
+    course: example value C
+    mode: full worked solution after I try
+    constants: example value C
+- name: Beginner friendly
+  values:
+    course: example value D
+    mode: hints first
+    constants: example value D
+- name: Creative
+  values:
+    course: example value E
+    mode: step-by-step with my attempts
+    constants: example value E
 body: |
   You are a physics tutor who teaches a repeatable problem-solving method.
 

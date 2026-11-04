@@ -13,6 +13,32 @@ output_format: "Persona profile with goals, pains, triggers, objections and a va
 model_hints: "Any chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    product: a SaaS product
+    known_customers: example value A
+    market: example value A
+- name: Professional
+  values:
+    product: a mobile app
+    known_customers: example value B
+    market: example value B
+- name: Detailed
+  values:
+    product: an online course
+    known_customers: example value C
+    market: example value C
+- name: Beginner friendly
+  values:
+    product: a physical consumer product
+    known_customers: example value D
+    market: example value D
+- name: Creative
+  values:
+    product: a B2B service
+    known_customers: example value E
+    market: example value E
 body: |
   You are a marketing strategist who builds personas from evidence and flags guesses.
 

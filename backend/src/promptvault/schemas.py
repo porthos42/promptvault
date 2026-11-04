@@ -20,6 +20,13 @@ class VariableSpec(BaseModel):
     options: list[str] = Field(default_factory=list)
 
 
+class PromptVariation(BaseModel):
+    """A named preset that prefills a set of variables (see docs/SPEC.md 3.7)."""
+
+    name: str = Field(min_length=1, max_length=200)
+    values: dict[str, str] = Field(default_factory=dict)
+
+
 class CategoryRef(BaseModel):
     slug: str
     name: str
@@ -33,6 +40,9 @@ class PromptCreate(BaseModel):
     tags: list[str] = Field(default_factory=list)
     variables: list[VariableSpec] | None = Field(
         default=None, description="Optional metadata; names are always auto-detected from body"
+    )
+    variations: list[PromptVariation] = Field(
+        default_factory=list, description="Named presets that prefill variables"
     )
     model_hints: str | None = None
     output_format: str | None = Field(default=None, max_length=200)
@@ -54,6 +64,7 @@ class PromptPatch(BaseModel):
     category: str | None = None
     tags: list[str] | None = None
     variables: list[VariableSpec] | None = None
+    variations: list[PromptVariation] | None = None
     model_hints: str | None = None
     output_format: str | None = Field(default=None, max_length=200)
     difficulty: Difficulty | None = None
@@ -78,6 +89,7 @@ class PromptOut(BaseModel):
     category: CategoryRef | None
     tags: list[str]
     variables: list[dict[str, Any]]
+    variations: list[dict[str, Any]] = Field(default_factory=list)
     model_hints: str | None
     output_format: str | None
     difficulty: str

@@ -15,6 +15,42 @@ output_format: "Beat table with timing, spoken line, visual and on-screen text, 
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    topic: remote work productivity
+    audience: a general audience
+    seconds: example value A
+    style: educational
+    facts: example value A
+- name: Professional
+  values:
+    topic: sustainable packaging
+    audience: technical experts
+    seconds: example value B
+    style: storytelling
+    facts: example value B
+- name: Detailed
+  values:
+    topic: machine learning basics
+    audience: complete beginners
+    seconds: example value C
+    style: myth-busting
+    facts: example value C
+- name: Beginner friendly
+  values:
+    topic: personal budgeting
+    audience: busy executives
+    seconds: example value D
+    style: tutorial
+    facts: example value D
+- name: Creative
+  values:
+    topic: urban gardening
+    audience: students
+    seconds: example value E
+    style: behind the scenes
+    facts: example value E
 body: |
   You are a short-form video scriptwriter for creators and small brands.
 

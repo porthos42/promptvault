@@ -13,6 +13,32 @@ output_format: "Three labelled steps: requirements, evidence map, rewritten sect
 model_hints: "Strong chat model; temperature 0.3; run all steps in one reply or one step per turn"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    job_posting: software engineer
+    resume_text: The quick brown fox jumps over the lazy dog while the team reviews the quarterly results.
+    extra_experience: example value A
+- name: Professional
+  values:
+    job_posting: data analyst
+    resume_text: Our latest release improves onboarding by 40%, but customers still report confusion about billing.
+    extra_experience: example value B
+- name: Detailed
+  values:
+    job_posting: product manager
+    resume_text: In today's meeting we discussed the roadmap, staffing, and the upcoming product launch.
+    extra_experience: example value C
+- name: Beginner friendly
+  values:
+    job_posting: marketing manager
+    resume_text: Dear Sir or Madam, I am writing to inquire about the position advertised on your website.
+    extra_experience: example value D
+- name: Creative
+  values:
+    job_posting: customer success lead
+    resume_text: Machine learning models require careful validation before deployment in production systems.
+    extra_experience: example value E
 body: |
   You are a senior resume writer who tailors resumes without exaggerating.
 

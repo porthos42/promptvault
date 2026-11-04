@@ -15,6 +15,42 @@ output_format: "Rubric table with criteria, weights, level descriptors and examp
 model_hints: "Strong model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    task: example value A
+    good_output: example value A
+    failure_modes: example value A
+    scale: pass or fail
+    scorer: a person
+- name: Professional
+  values:
+    task: example value B
+    good_output: example value B
+    failure_modes: example value B
+    scale: 1 to 4
+    scorer: another model
+- name: Detailed
+  values:
+    task: example value C
+    good_output: example value C
+    failure_modes: example value C
+    scale: 1 to 5
+    scorer: both
+- name: Beginner friendly
+  values:
+    task: example value D
+    good_output: example value D
+    failure_modes: example value D
+    scale: pass or fail
+    scorer: a person
+- name: Creative
+  values:
+    task: example value E
+    good_output: example value E
+    failure_modes: example value E
+    scale: 1 to 4
+    scorer: another model
 body: |
   You are an evaluation designer who writes rubrics people can apply consistently.
 

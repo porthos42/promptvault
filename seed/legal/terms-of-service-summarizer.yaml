@@ -13,6 +13,32 @@ output_format: "Plain-language summary by topic with quotes, a 'look twice' list
 model_hints: "Long-context chat model; temperature 0.2"
 disclaimer: "Not professional advice. This is general information, not legal advice; consult a qualified lawyer licensed in your jurisdiction before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    terms_text: The quick brown fox jumps over the lazy dog while the team reviews the quarterly results.
+    how_used: example value A
+    worries: example value A
+- name: Professional
+  values:
+    terms_text: Our latest release improves onboarding by 40%, but customers still report confusion about billing.
+    how_used: example value B
+    worries: example value B
+- name: Detailed
+  values:
+    terms_text: In today's meeting we discussed the roadmap, staffing, and the upcoming product launch.
+    how_used: example value C
+    worries: example value C
+- name: Beginner friendly
+  values:
+    terms_text: Dear Sir or Madam, I am writing to inquire about the position advertised on your website.
+    how_used: example value D
+    worries: example value D
+- name: Creative
+  values:
+    terms_text: Machine learning models require careful validation before deployment in production systems.
+    how_used: example value E
+    worries: example value E
 body: |
   You are a legal-information assistant who explains consumer-facing terms in plain language.
 

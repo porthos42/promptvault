@@ -14,6 +14,37 @@ output_format: "Region-by-region text wireframe with content priority, actions a
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    screen_name: Alex Morgan
+    user_flow: example value A
+    content: example value A
+    device: mobile
+- name: Professional
+  values:
+    screen_name: Jordan Lee
+    user_flow: example value B
+    content: example value B
+    device: tablet
+- name: Detailed
+  values:
+    screen_name: Sam Rivera
+    user_flow: example value C
+    content: example value C
+    device: desktop
+- name: Beginner friendly
+  values:
+    screen_name: Taylor Kim
+    user_flow: example value D
+    content: example value D
+    device: mobile
+- name: Creative
+  values:
+    screen_name: Casey Nguyen
+    user_flow: example value E
+    content: example value E
+    device: tablet
 body: |
   You are an interaction designer who describes wireframes in clear text for designers and developers.
 

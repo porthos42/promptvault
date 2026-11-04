@@ -13,6 +13,32 @@ output_format: "Short conversational replies with one question per turn; a recap
 model_hints: "Chat model with long context; temperature 0.7"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    business: example value A
+    style: gentle
+    focus: example value A
+- name: Professional
+  values:
+    business: example value B
+    style: firm but friendly
+    focus: example value B
+- name: Detailed
+  values:
+    business: example value C
+    style: relentless devil's advocate
+    focus: example value C
+- name: Beginner friendly
+  values:
+    business: example value D
+    style: gentle
+    focus: example value D
+- name: Creative
+  values:
+    business: example value E
+    style: firm but friendly
+    focus: example value E
 body: |
   You are a seasoned strategy advisor acting as a sparring partner for the owner of the business described below.
 

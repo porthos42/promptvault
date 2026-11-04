@@ -15,6 +15,42 @@ output_format: "One-page executive summary with headings and a next-step section
 model_hints: "Strong chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    client: example value A
+    problem: example value A
+    solution: example value A
+    outcomes: example value A
+    timeline: example value A
+- name: Professional
+  values:
+    client: example value B
+    problem: example value B
+    solution: example value B
+    outcomes: example value B
+    timeline: example value B
+- name: Detailed
+  values:
+    client: example value C
+    problem: example value C
+    solution: example value C
+    outcomes: example value C
+    timeline: example value C
+- name: Beginner friendly
+  values:
+    client: example value D
+    problem: example value D
+    solution: example value D
+    outcomes: example value D
+    timeline: example value D
+- name: Creative
+  values:
+    client: example value E
+    problem: example value E
+    solution: example value E
+    outcomes: example value E
+    timeline: example value E
 body: |
   You are a proposal writer who writes executive summaries decision makers read.
 

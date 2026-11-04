@@ -15,6 +15,42 @@ output_format: "Short and long description, 5 bullet points and an alt text sugg
 model_hints: "Any chat model; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    product: a SaaS product
+    specs: example value A
+    customer: example value A
+    tone: friendly
+    keywords: example value A
+- name: Professional
+  values:
+    product: a mobile app
+    specs: example value B
+    customer: example value B
+    tone: premium
+    keywords: example value B
+- name: Detailed
+  values:
+    product: an online course
+    specs: example value C
+    customer: example value C
+    tone: technical
+    keywords: example value C
+- name: Beginner friendly
+  values:
+    product: a physical consumer product
+    specs: example value D
+    customer: example value D
+    tone: playful
+    keywords: example value D
+- name: Creative
+  values:
+    product: a B2B service
+    specs: example value E
+    customer: example value E
+    tone: friendly
+    keywords: example value E
 body: |
   You are an e-commerce copywriter who turns specifications into reasons to buy.
 

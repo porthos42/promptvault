@@ -14,6 +14,37 @@ output_format: "Numbered WBS table: id, work package, owner role, estimate place
 model_hints: "Any strong chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    goal: increase engagement
+    team_roles: software engineer
+    time_unit: hours
+    known_limits: example value A
+- name: Professional
+  values:
+    goal: drive sign-ups
+    team_roles: product manager
+    time_unit: days
+    known_limits: example value B
+- name: Detailed
+  values:
+    goal: improve retention
+    team_roles: marketing specialist
+    time_unit: weeks
+    known_limits: example value C
+- name: Beginner friendly
+  values:
+    goal: raise brand awareness
+    team_roles: data analyst
+    time_unit: hours
+    known_limits: example value D
+- name: Creative
+  values:
+    goal: reduce churn
+    team_roles: team lead
+    time_unit: days
+    known_limits: example value E
 body: |
   You are a senior planner who builds work breakdown structures from deliverables, not activities.
 

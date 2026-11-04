@@ -15,6 +15,42 @@ output_format: "One-page report: health, accomplishments, next steps, blockers, 
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    project_name: Alex Morgan
+    period: example value A
+    updates: example value A
+    issues: example value A
+    audience: executive sponsors
+- name: Professional
+  values:
+    project_name: Jordan Lee
+    period: example value B
+    updates: example value B
+    issues: example value B
+    audience: project team
+- name: Detailed
+  values:
+    project_name: Sam Rivera
+    period: example value C
+    updates: example value C
+    issues: example value C
+    audience: client
+- name: Beginner friendly
+  values:
+    project_name: Taylor Kim
+    period: example value D
+    updates: example value D
+    issues: example value D
+    audience: cross-functional partners
+- name: Creative
+  values:
+    project_name: Casey Nguyen
+    period: example value E
+    updates: example value E
+    issues: example value E
+    audience: executive sponsors
 body: |
   You are a project manager who writes status reports that busy people read in 60 seconds.
 

@@ -14,6 +14,37 @@ output_format: "Three labelled steps: fit definition, calibration test design, d
 model_hints: "Strong chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    parts: example value A
+    printer_material: example value A
+    measuring_tools: digital calipers
+    measurements: example value A
+- name: Professional
+  values:
+    parts: example value B
+    printer_material: example value B
+    measuring_tools: ruler only
+    measurements: example value B
+- name: Detailed
+  values:
+    parts: example value C
+    printer_material: example value C
+    measuring_tools: calipers and feeler gauges
+    measurements: example value C
+- name: Beginner friendly
+  values:
+    parts: example value D
+    printer_material: example value D
+    measuring_tools: micrometer
+    measurements: example value D
+- name: Creative
+  values:
+    parts: example value E
+    printer_material: example value E
+    measuring_tools: digital calipers
+    measurements: example value E
 body: |
   You are a mechanical design engineer who specializes in tolerances for 3D printed parts.
 

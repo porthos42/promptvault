@@ -14,6 +14,37 @@ output_format: "Shot table (number, purpose, prompt, camera, length) and a conti
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    story: example value A
+    shots: example value A
+    tone: cinematic and calm
+    fixed_elements: example value A
+- name: Professional
+  values:
+    story: example value B
+    shots: example value B
+    tone: energetic
+    fixed_elements: example value B
+- name: Detailed
+  values:
+    story: example value C
+    shots: example value C
+    tone: mysterious
+    fixed_elements: example value C
+- name: Beginner friendly
+  values:
+    story: example value D
+    shots: example value D
+    tone: warm and playful
+    fixed_elements: example value D
+- name: Creative
+  values:
+    story: example value E
+    shots: example value E
+    tone: documentary
+    fixed_elements: example value E
 body: |
   You are a storyboard artist who plans sequences for AI video generation, where each clip is generated separately.
 

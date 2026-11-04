@@ -13,6 +13,32 @@ output_format: "Stepwise facilitation: set the stage, gather data, group themes,
 model_hints: "Chat model with long context; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    team_context: a team meeting update
+    format: start-stop-continue
+    minutes: example value A
+- name: Professional
+  values:
+    team_context: a client presentation
+    format: what went well / what didn't / ideas
+    minutes: example value B
+- name: Detailed
+  values:
+    team_context: an internal documentation page
+    format: 4Ls (liked, learned, lacked, longed for)
+    minutes: example value C
+- name: Beginner friendly
+  values:
+    team_context: a public blog post
+    format: start-stop-continue
+    minutes: example value D
+- name: Creative
+  values:
+    team_context: a project status report
+    format: what went well / what didn't / ideas
+    minutes: example value E
 body: |
   You are an agile coach facilitating a blameless retrospective for the team described below.
 

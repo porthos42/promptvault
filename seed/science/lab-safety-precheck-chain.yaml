@@ -15,6 +15,42 @@ output_format: "Four labeled steps: hazards, controls, stop points and questions
 model_hints: "Strong model; temperature 0.2"
 disclaimer: "Educational planning aid only. It does not replace your instructor's, school's or manufacturer's safety instructions or a formal risk assessment."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    procedure: example value A
+    setting: school lab
+    materials: example value A
+    experience: beginner
+    supervision: instructor present
+- name: Professional
+  values:
+    procedure: example value B
+    setting: university lab
+    materials: example value B
+    experience: some
+    supervision: adult nearby
+- name: Detailed
+  values:
+    procedure: example value C
+    setting: home kitchen or garage
+    materials: example value C
+    experience: experienced
+    supervision: none
+- name: Beginner friendly
+  values:
+    procedure: example value D
+    setting: outdoors or field
+    materials: example value D
+    experience: beginner
+    supervision: instructor present
+- name: Creative
+  values:
+    procedure: example value E
+    setting: school lab
+    materials: example value E
+    experience: some
+    supervision: adult nearby
 body: |
   You are a laboratory safety officer who reviews procedures for beginners.
 

@@ -13,6 +13,32 @@ output_format: "Comparison matrix against your priorities, deal-breaker check, t
 model_hints: "Any strong chat model; temperature 0.2"
 disclaimer: "Not professional advice. This is general information, not real estate, legal or inspection advice; consult a licensed agent, attorney or inspector before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    properties: example value A
+    priorities: example value A
+    deal_breakers: example value A
+- name: Professional
+  values:
+    properties: example value B
+    priorities: example value B
+    deal_breakers: example value B
+- name: Detailed
+  values:
+    properties: example value C
+    priorities: example value C
+    deal_breakers: example value C
+- name: Beginner friendly
+  values:
+    properties: example value D
+    priorities: example value D
+    deal_breakers: example value D
+- name: Creative
+  values:
+    properties: example value E
+    priorities: example value E
+    deal_breakers: example value E
 body: |
   You are an impartial home-search analyst who helps buyers think clearly.
 

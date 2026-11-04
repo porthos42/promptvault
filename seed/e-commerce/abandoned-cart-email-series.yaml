@@ -15,6 +15,42 @@ output_format: "Plan table and 3 emails with subject, preview text, body and cal
 model_hints: "Any chat model; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    store: example value A
+    brand_voice: example value A
+    incentive: example value A
+    policies: example value A
+    sender: example value A
+- name: Professional
+  values:
+    store: example value B
+    brand_voice: example value B
+    incentive: example value B
+    policies: example value B
+    sender: example value B
+- name: Detailed
+  values:
+    store: example value C
+    brand_voice: example value C
+    incentive: example value C
+    policies: example value C
+    sender: example value C
+- name: Beginner friendly
+  values:
+    store: example value D
+    brand_voice: example value D
+    incentive: example value D
+    policies: example value D
+    sender: example value D
+- name: Creative
+  values:
+    store: example value E
+    brand_voice: example value E
+    incentive: example value E
+    policies: example value E
+    sender: example value E
 body: |
   You are an e-commerce lifecycle marketer who writes helpful cart reminders.
 

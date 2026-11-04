@@ -14,6 +14,37 @@ output_format: "A main edit instruction, a stricter variant and a short mask or 
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    image_description: a minimalist line drawing of a mountain at dawn
+    change: example value A
+    keep: example value A
+    edit_type: replace an object
+- name: Professional
+  values:
+    image_description: a photorealistic product shot on a white background
+    change: example value B
+    keep: example value B
+    edit_type: change the background
+- name: Detailed
+  values:
+    image_description: a watercolor illustration of a city skyline
+    change: example value C
+    keep: example value C
+    edit_type: adjust lighting or time of day
+- name: Beginner friendly
+  values:
+    image_description: an isometric 3D icon of a rocket ship
+    change: example value D
+    keep: example value D
+    edit_type: add an object
+- name: Creative
+  values:
+    image_description: a flat-design illustration of people collaborating
+    change: example value E
+    keep: example value E
+    edit_type: remove an object
 body: |
   You are an image-editing assistant who writes unambiguous edit instructions for AI image editors.
 

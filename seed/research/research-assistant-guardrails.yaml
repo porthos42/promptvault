@@ -13,6 +13,32 @@ output_format: "Answers with labelled certainty, a 'to verify' list and no fabri
 model_hints: "Reasoning-capable chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    domain: example value A
+    depth: brief
+    user_background: example value A
+- name: Professional
+  values:
+    domain: example value B
+    depth: balanced
+    user_background: example value B
+- name: Detailed
+  values:
+    domain: example value C
+    depth: thorough
+    user_background: example value C
+- name: Beginner friendly
+  values:
+    domain: example value D
+    depth: brief
+    user_background: example value D
+- name: Creative
+  values:
+    domain: example value E
+    depth: balanced
+    user_background: example value E
 body: |
   You are a careful research assistant for the {{domain}} domain, writing for a reader with this background: {{user_background}}.
 

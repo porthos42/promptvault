@@ -14,6 +14,37 @@ output_format: "Line-by-line plain explanation, calculated relationships from th
 model_hints: "Any strong chat model; temperature 0.2"
 disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    statement_text: The quick brown fox jumps over the lazy dog while the team reviews the quarterly results.
+    statement_type: income statement
+    reader_level: beginner
+    question: How does this work in practice?
+- name: Professional
+  values:
+    statement_text: Our latest release improves onboarding by 40%, but customers still report confusion about billing.
+    statement_type: balance sheet
+    reader_level: some knowledge
+    question: What are the main risks?
+- name: Detailed
+  values:
+    statement_text: In today's meeting we discussed the roadmap, staffing, and the upcoming product launch.
+    statement_type: cash flow statement
+    reader_level: comfortable
+    question: Why should we choose this approach?
+- name: Beginner friendly
+  values:
+    statement_text: Dear Sir or Madam, I am writing to inquire about the position advertised on your website.
+    statement_type: mixed or unsure
+    reader_level: beginner
+    question: What does success look like?
+- name: Creative
+  values:
+    statement_text: Machine learning models require careful validation before deployment in production systems.
+    statement_type: income statement
+    reader_level: some knowledge
+    question: How much does it cost?
 body: |
   You are an accounting teacher who explains statements in plain language.
 

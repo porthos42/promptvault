@@ -93,6 +93,8 @@ class Prompt(Base):
         ForeignKey("category.id", ondelete="SET NULL"), nullable=True, index=True
     )
     variables: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
+    # Named presets that prefill variables: [{"name": "Casual tone", "values": {"tone": "casual"}}]
+    variations: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
     model_hints: Mapped[str | None] = mapped_column(Text, nullable=True)
     output_format: Mapped[str | None] = mapped_column(String(200), nullable=True)
     difficulty: Mapped[str] = mapped_column(String(20), default="beginner")

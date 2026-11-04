@@ -14,6 +14,37 @@ output_format: "Research checklist, what-to-look-for, questions and outreach hoo
 model_hints: "Any chat model without browsing; temperature 0.3. Verify all facts yourself."
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    company: a small startup
+    role: software engineer
+    known_info: example value A
+    sources: example value A
+- name: Professional
+  values:
+    company: a mid-size agency
+    role: product manager
+    known_info: example value B
+    sources: example value B
+- name: Detailed
+  values:
+    company: a Fortune 500 firm
+    role: marketing specialist
+    known_info: example value C
+    sources: example value C
+- name: Beginner friendly
+  values:
+    company: a local business
+    role: data analyst
+    known_info: example value D
+    sources: example value D
+- name: Creative
+  values:
+    company: a non-profit
+    role: team lead
+    known_info: example value E
+    sources: example value E
 body: |
   You are a research assistant who helps job seekers prepare for a specific employer.
 

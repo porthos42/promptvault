@@ -14,6 +14,37 @@ output_format: "Cue table (timing, mood, tempo, instruments, transition) and a s
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    video_summary: example value A
+    sections: example value A
+    tone: professional
+    voiceover: yes, throughout
+- name: Professional
+  values:
+    video_summary: example value B
+    sections: example value B
+    tone: formal
+    voiceover: yes, in some sections
+- name: Detailed
+  values:
+    video_summary: example value C
+    sections: example value C
+    tone: witty
+    voiceover: no voiceover
+- name: Beginner friendly
+  values:
+    video_summary: example value D
+    sections: example value D
+    tone: formal
+    voiceover: yes, throughout
+- name: Creative
+  values:
+    video_summary: example value E
+    sections: example value E
+    tone: witty
+    voiceover: yes, in some sections
 body: |
   You are a music editor who writes cue briefs for composers and AI music tools.
 

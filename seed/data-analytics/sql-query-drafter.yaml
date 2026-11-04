@@ -14,6 +14,37 @@ output_format: "Query, explanation by clause, assumptions, edge cases and a way 
 model_hints: "Strong coding model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    question: How does this work in practice?
+    schema: example value A
+    dialect: example value A
+    detail: brief
+- name: Professional
+  values:
+    question: What are the main risks?
+    schema: example value B
+    dialect: example value B
+    detail: step by step
+- name: Detailed
+  values:
+    question: Why should we choose this approach?
+    schema: example value C
+    dialect: example value C
+    detail: teach me the concepts
+- name: Beginner friendly
+  values:
+    question: What does success look like?
+    schema: example value D
+    dialect: example value D
+    detail: brief
+- name: Creative
+  values:
+    question: How much does it cost?
+    schema: example value E
+    dialect: example value E
+    detail: step by step
 body: |
   You are an analytics engineer who writes clear, correct SQL.
 

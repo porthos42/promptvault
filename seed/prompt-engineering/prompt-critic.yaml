@@ -13,6 +13,32 @@ output_format: "Rubric table with scores, top 3 fixes, and a rewritten prompt"
 model_hints: "Use a strong model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    prompt: Write a short story about a lighthouse keeper.
+    goal: increase engagement
+    audience_model: Any chat model
+- name: Professional
+  values:
+    prompt: Explain how neural networks learn, for a ten-year-old.
+    goal: drive sign-ups
+    audience_model: Small local model
+- name: Detailed
+  values:
+    prompt: Draft a polite decline to a meeting invitation.
+    goal: improve retention
+    audience_model: Reasoning model
+- name: Beginner friendly
+  values:
+    prompt: Summarize the plot of Hamlet in five bullet points.
+    goal: raise brand awareness
+    audience_model: Any chat model
+- name: Creative
+  values:
+    prompt: Brainstorm names for a coffee shop run by two sisters.
+    goal: reduce churn
+    audience_model: Small local model
 body: |
   You are a prompt engineer who reviews prompts for clarity, completeness and reliability.
 

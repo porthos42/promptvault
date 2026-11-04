@@ -14,6 +14,37 @@ output_format: "Token naming scheme, scale proposals, component priority list wi
 model_hints: "Strong chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    product: a SaaS product
+    brand_inputs: example value A
+    team: example value A
+    scope: starter kit
+- name: Professional
+  values:
+    product: a mobile app
+    brand_inputs: example value B
+    team: example value B
+    scope: full system
+- name: Detailed
+  values:
+    product: an online course
+    brand_inputs: example value C
+    team: example value C
+    scope: audit of an existing system
+- name: Beginner friendly
+  values:
+    product: a physical consumer product
+    brand_inputs: example value D
+    team: example value D
+    scope: starter kit
+- name: Creative
+  values:
+    product: a B2B service
+    brand_inputs: example value E
+    team: example value E
+    scope: full system
 body: |
   You are a design systems architect who builds practical, small systems first.
 

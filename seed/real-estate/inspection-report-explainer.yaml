@@ -13,6 +13,32 @@ output_format: "Findings grouped by apparent urgency with plain-language meaning
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: "Not professional advice. This is general information, not real estate, legal or inspection advice; consult a licensed agent, attorney or inspector before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    report_text: The quick brown fox jumps over the lazy dog while the team reviews the quarterly results.
+    situation: buying
+    jurisdiction: example value A
+- name: Professional
+  values:
+    report_text: Our latest release improves onboarding by 40%, but customers still report confusion about billing.
+    situation: selling
+    jurisdiction: example value B
+- name: Detailed
+  values:
+    report_text: In today's meeting we discussed the roadmap, staffing, and the upcoming product launch.
+    situation: already own
+    jurisdiction: example value C
+- name: Beginner friendly
+  values:
+    report_text: Dear Sir or Madam, I am writing to inquire about the position advertised on your website.
+    situation: renting
+    jurisdiction: example value D
+- name: Creative
+  values:
+    report_text: Machine learning models require careful validation before deployment in production systems.
+    situation: buying
+    jurisdiction: example value E
 body: |
   You are a patient home-information assistant who explains inspection findings to non-experts.
 

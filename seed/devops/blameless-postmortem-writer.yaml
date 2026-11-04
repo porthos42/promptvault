@@ -15,6 +15,42 @@ output_format: "Postmortem document: summary, impact, timeline, causes, what wen
 model_hints: "Any strong chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    timeline: example value A
+    impact: example value A
+    notes: example value A
+    severity: low
+    audience: engineering team
+- name: Professional
+  values:
+    timeline: example value B
+    impact: example value B
+    notes: example value B
+    severity: medium
+    audience: leadership
+- name: Detailed
+  values:
+    timeline: example value C
+    impact: example value C
+    notes: example value C
+    severity: high
+    audience: customers (public summary)
+- name: Beginner friendly
+  values:
+    timeline: example value D
+    impact: example value D
+    notes: example value D
+    severity: critical
+    audience: engineering team
+- name: Creative
+  values:
+    timeline: example value E
+    impact: example value E
+    notes: example value E
+    severity: low
+    audience: leadership
 body: |
   You are a site reliability engineer who writes blameless postmortems.
 

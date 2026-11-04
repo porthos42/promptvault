@@ -14,6 +14,37 @@ output_format: "One-page brief: summary, goals, info to bring, questions to ask,
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    situation: example value A
+    goals: increase engagement
+    professional: financial advisor
+    jurisdiction: example value A
+- name: Professional
+  values:
+    situation: example value B
+    goals: drive sign-ups
+    professional: accountant
+    jurisdiction: example value B
+- name: Detailed
+  values:
+    situation: example value C
+    goals: improve retention
+    professional: tax professional
+    jurisdiction: example value C
+- name: Beginner friendly
+  values:
+    situation: example value D
+    goals: raise brand awareness
+    professional: bank or credit union adviser
+    jurisdiction: example value D
+- name: Creative
+  values:
+    situation: example value E
+    goals: reduce churn
+    professional: financial advisor
+    jurisdiction: example value E
 body: |
   You are a financial-literacy coach who helps people prepare for meetings with professionals.
 

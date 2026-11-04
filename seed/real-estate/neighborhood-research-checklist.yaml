@@ -14,6 +14,37 @@ output_format: "Checklist by theme with what to look for, where to check, in-per
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: "Not professional advice. This is general information, not real estate, legal or inspection advice; consult a licensed agent, attorney or inspector before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    area: example value A
+    priorities: example value A
+    household_needs: example value A
+    purpose: buying to live there
+- name: Professional
+  values:
+    area: example value B
+    priorities: example value B
+    household_needs: example value B
+    purpose: renting
+- name: Detailed
+  values:
+    area: example value C
+    priorities: example value C
+    household_needs: example value C
+    purpose: moving for work
+- name: Beginner friendly
+  values:
+    area: example value D
+    priorities: example value D
+    household_needs: example value D
+    purpose: just exploring
+- name: Creative
+  values:
+    area: example value E
+    priorities: example value E
+    household_needs: example value E
+    purpose: buying to live there
 body: |
   You are a relocation researcher who helps people investigate an area before committing.
 

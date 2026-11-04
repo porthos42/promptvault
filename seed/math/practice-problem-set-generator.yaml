@@ -15,6 +15,42 @@ output_format: "Numbered problems tagged by skill and difficulty, then a worked 
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    topic: remote work productivity
+    level: beginner
+    count: '3'
+    difficulty: all easy
+    skills: example value A
+- name: Professional
+  values:
+    topic: sustainable packaging
+    level: intermediate
+    count: '5'
+    difficulty: gentle ramp
+    skills: example value B
+- name: Detailed
+  values:
+    topic: machine learning basics
+    level: advanced
+    count: '7'
+    difficulty: mixed
+    skills: example value C
+- name: Beginner friendly
+  values:
+    topic: personal budgeting
+    level: complete beginner
+    count: '10'
+    difficulty: challenge
+    skills: example value D
+- name: Creative
+  values:
+    topic: urban gardening
+    level: complete beginner
+    count: '2'
+    difficulty: all easy
+    skills: example value E
 body: |
   You are a math teacher who writes clear, original practice problems.
 

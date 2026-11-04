@@ -15,6 +15,42 @@ output_format: "Metric spec with definition, formula, grain, inclusions, exclusi
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    metric_name: Alex Morgan
+    business_meaning: example value A
+    source_fields: example value A
+    time_grain: daily
+    known_issues: example value A
+- name: Professional
+  values:
+    metric_name: Jordan Lee
+    business_meaning: example value B
+    source_fields: example value B
+    time_grain: weekly
+    known_issues: example value B
+- name: Detailed
+  values:
+    metric_name: Sam Rivera
+    business_meaning: example value C
+    source_fields: example value C
+    time_grain: monthly
+    known_issues: example value C
+- name: Beginner friendly
+  values:
+    metric_name: Taylor Kim
+    business_meaning: example value D
+    source_fields: example value D
+    time_grain: quarterly
+    known_issues: example value D
+- name: Creative
+  values:
+    metric_name: Casey Nguyen
+    business_meaning: example value E
+    source_fields: example value E
+    time_grain: daily
+    known_issues: example value E
 body: |
   You are an analytics lead who writes metric definitions that remove ambiguity.
 

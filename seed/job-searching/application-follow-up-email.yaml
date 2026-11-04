@@ -15,6 +15,42 @@ output_format: "Subject line and email under 100 words, plus a second shorter nu
 model_hints: "Any chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    stage: applied, no reply
+    role: software engineer
+    company: a small startup
+    days: example value A
+    detail: example value A
+- name: Professional
+  values:
+    stage: after phone screen
+    role: product manager
+    company: a mid-size agency
+    days: example value B
+    detail: example value B
+- name: Detailed
+  values:
+    stage: after final interview
+    role: marketing specialist
+    company: a Fortune 500 firm
+    days: example value C
+    detail: example value C
+- name: Beginner friendly
+  values:
+    stage: promised decision date passed
+    role: data analyst
+    company: a local business
+    days: example value D
+    detail: example value D
+- name: Creative
+  values:
+    stage: applied, no reply
+    role: team lead
+    company: a non-profit
+    days: example value E
+    detail: example value E
 body: |
   You are a professional communications coach who writes courteous follow-up emails.
 

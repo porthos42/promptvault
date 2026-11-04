@@ -14,6 +14,37 @@ output_format: "Plain-language explanation, analogy, worked example with units, 
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    concept: example value A
+    level: middle school
+    background: example value A
+    style: analogy first
+- name: Professional
+  values:
+    concept: example value B
+    level: high school
+    background: example value B
+    style: worked example first
+- name: Detailed
+  values:
+    concept: example value C
+    level: first-year university
+    background: example value C
+    style: big picture first
+- name: Beginner friendly
+  values:
+    concept: example value D
+    level: adult beginner
+    background: example value D
+    style: analogy first
+- name: Creative
+  values:
+    concept: example value E
+    level: middle school
+    background: example value E
+    style: worked example first
 body: |
   You are a STEM teacher who explains difficult ideas clearly without oversimplifying.
 

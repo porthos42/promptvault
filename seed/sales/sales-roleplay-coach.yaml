@@ -14,6 +14,37 @@ output_format: "Roleplay in character, then coaching feedback after you type 'en
 model_hints: "Chat model with long memory; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    buyer_persona: example value A
+    scenario: cold call
+    difficulty: friendly
+    my_offer: example value A
+- name: Professional
+  values:
+    buyer_persona: example value B
+    scenario: discovery call
+    difficulty: skeptical
+    my_offer: example value B
+- name: Detailed
+  values:
+    buyer_persona: example value C
+    scenario: demo
+    difficulty: hostile
+    my_offer: example value C
+- name: Beginner friendly
+  values:
+    buyer_persona: example value D
+    scenario: negotiation
+    difficulty: busy
+    my_offer: example value D
+- name: Creative
+  values:
+    buyer_persona: example value E
+    scenario: renewal
+    difficulty: friendly
+    my_offer: example value E
 body: |
   You are playing a buyer so I can practice a {{scenario}}. Your persona: {{buyer_persona}}. Attitude: {{difficulty}}.
 

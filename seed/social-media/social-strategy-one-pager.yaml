@@ -15,6 +15,42 @@ output_format: "One-page strategy with platform priorities, content mix, weekly 
 model_hints: "Strong chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    business: example value A
+    goal: awareness
+    audience: a general audience
+    capacity: example value A
+    current: example value A
+- name: Professional
+  values:
+    business: example value B
+    goal: leads
+    audience: technical experts
+    capacity: example value B
+    current: example value B
+- name: Detailed
+  values:
+    business: example value C
+    goal: sales
+    audience: complete beginners
+    capacity: example value C
+    current: example value C
+- name: Beginner friendly
+  values:
+    business: example value D
+    goal: community
+    audience: busy executives
+    capacity: example value D
+    current: example value D
+- name: Creative
+  values:
+    business: example value E
+    goal: hiring
+    audience: students
+    capacity: example value E
+    current: example value E
 body: |
   You are a social media strategist who designs plans small teams can sustain.
 

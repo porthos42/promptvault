@@ -14,6 +14,37 @@ output_format: "A spoken script of 150-200 words, a shorter 30-second version an
 model_hints: "Any chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    role: software engineer
+    current: example value A
+    past: example value A
+    goal: increase engagement
+- name: Professional
+  values:
+    role: product manager
+    current: example value B
+    past: example value B
+    goal: drive sign-ups
+- name: Detailed
+  values:
+    role: marketing specialist
+    current: example value C
+    past: example value C
+    goal: improve retention
+- name: Beginner friendly
+  values:
+    role: data analyst
+    current: example value D
+    past: example value D
+    goal: raise brand awareness
+- name: Creative
+  values:
+    role: team lead
+    current: example value E
+    past: example value E
+    goal: reduce churn
 body: |
   You are an interview coach. Write my answer to "Tell me about yourself" for a {{role}} interview.
 

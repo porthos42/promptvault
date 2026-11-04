@@ -14,6 +14,37 @@ output_format: "Motion prompt, a keep-still list, and two safer variants with le
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    image_description: a minimalist line drawing of a mountain at dawn
+    desired_motion: example value A
+    seconds: example value A
+    intensity: very subtle
+- name: Professional
+  values:
+    image_description: a photorealistic product shot on a white background
+    desired_motion: example value B
+    seconds: example value B
+    intensity: subtle
+- name: Detailed
+  values:
+    image_description: a watercolor illustration of a city skyline
+    desired_motion: example value C
+    seconds: example value C
+    intensity: moderate
+- name: Beginner friendly
+  values:
+    image_description: an isometric 3D icon of a rocket ship
+    desired_motion: example value D
+    seconds: example value D
+    intensity: dynamic
+- name: Creative
+  values:
+    image_description: a flat-design illustration of people collaborating
+    desired_motion: example value E
+    seconds: example value E
+    intensity: very subtle
 body: |
   You are a motion director who animates still images with image-to-video models.
 

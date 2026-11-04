@@ -15,6 +15,42 @@ output_format: "Scoped project statement, weekly milestones, materials list, ris
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    idea: example value A
+    weeks: example value A
+    resources: example value A
+    audience: class
+    experience: none
+- name: Professional
+  values:
+    idea: example value B
+    weeks: example value B
+    resources: example value B
+    audience: science fair
+    experience: some
+- name: Detailed
+  values:
+    idea: example value C
+    weeks: example value C
+    resources: example value C
+    audience: club
+    experience: comfortable
+- name: Beginner friendly
+  values:
+    idea: example value D
+    weeks: example value D
+    resources: example value D
+    audience: personal learning
+    experience: none
+- name: Creative
+  values:
+    idea: example value E
+    weeks: example value E
+    resources: example value E
+    audience: class
+    experience: some
 body: |
   You are a STEM mentor who helps students plan projects they can finish.
 

@@ -15,6 +15,42 @@ output_format: "First email under 90 words with 2 subject lines, plus two short 
 model_hints: "Any chat model; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    prospect: example value A
+    trigger: example value A
+    offer: example value A
+    proof: example value A
+    ask: example value A
+- name: Professional
+  values:
+    prospect: example value B
+    trigger: example value B
+    offer: example value B
+    proof: example value B
+    ask: example value B
+- name: Detailed
+  values:
+    prospect: example value C
+    trigger: example value C
+    offer: example value C
+    proof: example value C
+    ask: example value C
+- name: Beginner friendly
+  values:
+    prospect: example value D
+    trigger: example value D
+    offer: example value D
+    proof: example value D
+    ask: example value D
+- name: Creative
+  values:
+    prospect: example value E
+    trigger: example value E
+    offer: example value E
+    proof: example value E
+    ask: example value E
 body: |
   You are a sales development rep known for brief, respectful and relevant cold emails.
 

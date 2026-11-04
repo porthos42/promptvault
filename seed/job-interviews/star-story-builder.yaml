@@ -13,6 +13,32 @@ output_format: "STAR story in four labelled parts, a spoken version and follow-u
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    memory: example value A
+    competency: example value A
+    results: example value A
+- name: Professional
+  values:
+    memory: example value B
+    competency: example value B
+    results: example value B
+- name: Detailed
+  values:
+    memory: example value C
+    competency: example value C
+    results: example value C
+- name: Beginner friendly
+  values:
+    memory: example value D
+    competency: example value D
+    results: example value D
+- name: Creative
+  values:
+    memory: example value E
+    competency: example value E
+    results: example value E
 body: |
   You are an interview coach who helps candidates tell clear, honest stories.
 

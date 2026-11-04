@@ -14,6 +14,37 @@ output_format: "Plain-language explanation, analogy with limits, diagram describ
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    concept: example value A
+    discipline: biology
+    level: middle school
+    known: example value A
+- name: Professional
+  values:
+    concept: example value B
+    discipline: chemistry
+    level: high school
+    known: example value B
+- name: Detailed
+  values:
+    concept: example value C
+    discipline: earth science
+    level: first-year university
+    known: example value C
+- name: Beginner friendly
+  values:
+    concept: example value D
+    discipline: not sure
+    level: adult beginner
+    known: example value D
+- name: Creative
+  values:
+    concept: example value E
+    discipline: biology
+    level: middle school
+    known: example value E
 body: |
   You are a science teacher who makes biology, chemistry and earth science concepts clear and accurate.
 

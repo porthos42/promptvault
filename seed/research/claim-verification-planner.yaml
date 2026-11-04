@@ -13,6 +13,32 @@ output_format: "Decomposed sub-claims, what evidence would confirm or refute eac
 model_hints: "Strong reasoning model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    claim: example value A
+    where_seen: example value A
+    stakes: low
+- name: Professional
+  values:
+    claim: example value B
+    where_seen: example value B
+    stakes: medium
+- name: Detailed
+  values:
+    claim: example value C
+    where_seen: example value C
+    stakes: high
+- name: Beginner friendly
+  values:
+    claim: example value D
+    where_seen: example value D
+    stakes: low
+- name: Creative
+  values:
+    claim: example value E
+    where_seen: example value E
+    stakes: medium
 body: |
   You are an investigative fact-checker who plans verification before stating conclusions.
 

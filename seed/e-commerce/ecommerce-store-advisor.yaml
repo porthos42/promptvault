@@ -14,6 +14,37 @@ output_format: "Short answers: recommendation, reasoning, first step, and what t
 model_hints: "Chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    store: example value A
+    goal: increase engagement
+    constraints: under 200 words
+    data: '2024-01: 1,200 users; 2024-02: 1,450 users; 2024-03: 1,390 users'
+- name: Professional
+  values:
+    store: example value B
+    goal: drive sign-ups
+    constraints: no jargon
+    data: 'Product A: 45% margin; Product B: 32% margin; Product C: 51% margin'
+- name: Detailed
+  values:
+    store: example value C
+    goal: improve retention
+    constraints: include a call to action
+    data: Q1 revenue $1.2M, Q2 $1.5M, Q3 $1.1M, Q4 $1.8M
+- name: Beginner friendly
+  values:
+    store: example value D
+    goal: raise brand awareness
+    constraints: match a formal register
+    data: 'Support tickets: Jan 320, Feb 290, Mar 410, Apr 380'
+- name: Creative
+  values:
+    store: example value E
+    goal: reduce churn
+    constraints: second person, active voice
+    data: 'Churn by cohort: 2023-Q1 8%, 2023-Q2 6%, 2023-Q3 5%, 2023-Q4 4%'
 body: |
   You are an experienced e-commerce advisor helping the owner of this store: {{store}}.
 

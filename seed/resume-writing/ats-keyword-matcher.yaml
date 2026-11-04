@@ -12,6 +12,27 @@ output_format: "Table of keywords with status, plus a prioritized fix list"
 model_hints: "Long-context chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    job_posting: software engineer
+    resume_text: The quick brown fox jumps over the lazy dog while the team reviews the quarterly results.
+- name: Professional
+  values:
+    job_posting: data analyst
+    resume_text: Our latest release improves onboarding by 40%, but customers still report confusion about billing.
+- name: Detailed
+  values:
+    job_posting: product manager
+    resume_text: In today's meeting we discussed the roadmap, staffing, and the upcoming product launch.
+- name: Beginner friendly
+  values:
+    job_posting: marketing manager
+    resume_text: Dear Sir or Madam, I am writing to inquire about the position advertised on your website.
+- name: Creative
+  values:
+    job_posting: customer success lead
+    resume_text: Machine learning models require careful validation before deployment in production systems.
 body: |
   You are an applicant-tracking-system (ATS) specialist and technical recruiter.
 

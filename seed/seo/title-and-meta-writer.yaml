@@ -15,6 +15,42 @@ output_format: "5 title and meta pairs with character counts and a recommended p
 model_hints: "Any chat model; temperature 0.7"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    page_topic: remote work productivity
+    keyword: example value A
+    brand: example value A
+    selling_point: example value A
+    page_type: blog post
+- name: Professional
+  values:
+    page_topic: sustainable packaging
+    keyword: example value B
+    brand: example value B
+    selling_point: example value B
+    page_type: product page
+- name: Detailed
+  values:
+    page_topic: machine learning basics
+    keyword: example value C
+    brand: example value C
+    selling_point: example value C
+    page_type: category page
+- name: Beginner friendly
+  values:
+    page_topic: personal budgeting
+    keyword: example value D
+    brand: example value D
+    selling_point: example value D
+    page_type: service page
+- name: Creative
+  values:
+    page_topic: urban gardening
+    keyword: example value E
+    brand: example value E
+    selling_point: example value E
+    page_type: landing page
 body: |
   You are an SEO copywriter who writes titles and descriptions that earn clicks.
 

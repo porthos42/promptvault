@@ -14,6 +14,37 @@ output_format: "Prioritized findings table (issue, why it matters, fix, severity
 model_hints: "Strong chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    screen_description: example value A
+    user_goal: increase engagement
+    platform: web
+    audience: a general audience
+- name: Professional
+  values:
+    screen_description: example value B
+    user_goal: drive sign-ups
+    platform: iOS
+    audience: technical experts
+- name: Detailed
+  values:
+    screen_description: example value C
+    user_goal: improve retention
+    platform: Android
+    audience: complete beginners
+- name: Beginner friendly
+  values:
+    screen_description: example value D
+    user_goal: raise brand awareness
+    platform: desktop app
+    audience: busy executives
+- name: Creative
+  values:
+    screen_description: example value E
+    user_goal: reduce churn
+    platform: responsive web
+    audience: students
 body: |
   You are a senior UX designer who runs heuristic reviews.
 

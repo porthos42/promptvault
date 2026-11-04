@@ -14,6 +14,37 @@ output_format: "FAQ text plus a valid JSON-LD FAQPage block in a code fence"
 model_hints: "Any chat model; temperature 0.3. Validate the markup with a schema testing tool."
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    topic: remote work productivity
+    source_facts: example value A
+    questions: How does this work in practice?
+    page_url: https://example.com/blog/post-title
+- name: Professional
+  values:
+    topic: sustainable packaging
+    source_facts: example value B
+    questions: What are the main risks?
+    page_url: https://example.com/products/item
+- name: Detailed
+  values:
+    topic: machine learning basics
+    source_facts: example value C
+    questions: Why should we choose this approach?
+    page_url: https://example.com/about
+- name: Beginner friendly
+  values:
+    topic: personal budgeting
+    source_facts: example value D
+    questions: What does success look like?
+    page_url: https://example.com/docs/getting-started
+- name: Creative
+  values:
+    topic: urban gardening
+    source_facts: example value E
+    questions: How much does it cost?
+    page_url: https://example.com/pricing
 body: |
   You are an SEO specialist who writes FAQ content and structured data.
 

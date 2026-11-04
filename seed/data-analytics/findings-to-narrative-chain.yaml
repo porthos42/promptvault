@@ -14,6 +14,37 @@ output_format: "Three labelled steps: number check with calculations, insights w
 model_hints: "Strong chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    question: How does this work in practice?
+    results: example value A
+    audience: leadership
+    decision: example value A
+- name: Professional
+  values:
+    question: What are the main risks?
+    results: example value B
+    audience: product team
+    decision: example value B
+- name: Detailed
+  values:
+    question: Why should we choose this approach?
+    results: example value C
+    audience: technical peers
+    decision: example value C
+- name: Beginner friendly
+  values:
+    question: What does success look like?
+    results: example value D
+    audience: customers or clients
+    decision: example value D
+- name: Creative
+  values:
+    question: How much does it cost?
+    results: example value E
+    audience: leadership
+    decision: example value E
 body: |
   You are a senior analyst who turns results into honest decision narratives.
 

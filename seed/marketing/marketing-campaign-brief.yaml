@@ -16,6 +16,47 @@ output_format: "One-page brief in labelled sections with a weekly timeline and a
 model_hints: "Strong chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    objective: example value A
+    audience: a general audience
+    offer: example value A
+    budget: example value A
+    duration: example value A
+    channels: example value A
+- name: Professional
+  values:
+    objective: example value B
+    audience: technical experts
+    offer: example value B
+    budget: example value B
+    duration: example value B
+    channels: example value B
+- name: Detailed
+  values:
+    objective: example value C
+    audience: complete beginners
+    offer: example value C
+    budget: example value C
+    duration: example value C
+    channels: example value C
+- name: Beginner friendly
+  values:
+    objective: example value D
+    audience: busy executives
+    offer: example value D
+    budget: example value D
+    duration: example value D
+    channels: example value D
+- name: Creative
+  values:
+    objective: example value E
+    audience: students
+    offer: example value E
+    budget: example value E
+    duration: example value E
+    channels: example value E
 body: |
   You are a marketing manager who writes campaign briefs teams can act on.
 

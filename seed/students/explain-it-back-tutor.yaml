@@ -14,6 +14,37 @@ output_format: "A short dialogue: you explain, the tutor probes gaps, then summa
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    subject: remote work productivity
+    topic: remote work productivity
+    tone: encouraging
+    materials: example value A
+- name: Professional
+  values:
+    subject: sustainable packaging
+    topic: sustainable packaging
+    tone: neutral
+    materials: example value B
+- name: Detailed
+  values:
+    subject: machine learning basics
+    topic: machine learning basics
+    tone: challenging
+    materials: example value C
+- name: Beginner friendly
+  values:
+    subject: personal budgeting
+    topic: personal budgeting
+    tone: encouraging
+    materials: example value D
+- name: Creative
+  values:
+    subject: urban gardening
+    topic: urban gardening
+    tone: neutral
+    materials: example value E
 body: |
   You are a patient tutor using the explain-it-back method.
 

@@ -4,14 +4,14 @@ Interactive docs are served at `/docs` (OpenAPI / Swagger UI) by any running ser
 
 | | |
 |---|---|
-| `GET/POST /api/v1/prompts` | list + search / create. Search: `q` (words, prefixes, `"phrases"`; typos are corrected and reported in `corrected_query`). Sort: `sort=relevance\|newest\|updated\|recent\|popular\|rating\|title`. Filters (combinable): `category`, `tags`, `tags_mode`, `difficulty`, `prompt_type`, `favorite`, `source`, `model`, `has_variables`, `created_after/before`, `updated_after`, `trash`. Cursor pagination |
-| `GET/PUT/PATCH/DELETE /api/v1/prompts/{id}` | read / replace / partial update / move to Trash (`?permanent=true` for trashed) |
+| `GET/POST /api/v1/prompts` | list + search / create. Search: `q` (words, prefixes, `"phrases"`; typos are corrected and reported in `corrected_query`). Sort: `sort=relevance\|newest\|updated\|recent\|popular\|rating\|title`. Filters (combinable): `category`, `tags`, `tags_mode`, `difficulty`, `prompt_type`, `favorite`, `source`, `model`, `has_variables`, `created_after/before`, `updated_after`, `trash`. Cursor pagination. Prompt bodies accept a `variations` field: `[{name, values: {variable: value}}]` — named presets that prefill variables in the UI |
+| `GET/PUT/PATCH/DELETE /api/v1/prompts/{id}` | read / replace / partial update / move to Trash (`?permanent=true` for trashed). `variations` (the named presets) round-trip on every write |
+| `GET/POST/PATCH/DELETE /api/v1/categories[/{slug}]` | hierarchical categories. `POST` creates (`name`, optional `slug`, `parent`, `icon`, `sort_order`), `PATCH` renames / re-parents, `DELETE` removes one (prompts and subcategories are kept; they become uncategorised / top-level). See also the **Categories** tab on the Data page in the UI |
 | `POST /api/v1/prompts/{id}/restore`, `/duplicate`, `/render`, `/use` | restore from Trash, copy, fill variables, record a use (drives `popular` / `recent` sorts) |
 | `GET /api/v1/prompts/{id}/revisions`, `POST .../revisions/{n}/restore` | history |
 | `POST /api/v1/prompts/bulk` | add/remove tags, set category, favorite, delete, restore |
 | `POST /api/v1/prompts/{id}/reset` | restore a seeded prompt to the shipped content (new revision). `seed_modified` on a prompt tells the UI when to offer it |
-| `GET/POST/PATCH/DELETE /api/v1/categories[/{slug}]` | hierarchical categories |
-| `POST /api/v1/categories/{slug}/reset-seed` | reset every seeded prompt in a category (also restores trashed or deleted ones) |
+| `POST /api/v1/categories/{slug}/reset-seed` | reset every seeded prompt in a category
 | `GET /api/v1/tags`, `PUT/DELETE /api/v1/tags/{name}` | list, rename (merges), delete |
 | `GET /api/v1/import/importers` | registered importers and whether they can run (XLSX needs the extra) |
 | `POST /api/v1/import/preview`, `/import/commit` | dry run / import. Body: `{importer, source, default_license?, default_source_url?}` (commit also `default_action`, `actions`, `confirm_license`, `confirmed_rows`). File content goes in `source` as `content` (text) or `content_base64`; tabular sources take `mapping`, `sheet`, `delimiter`; the `github`, `url` and `huggingface` importers take `{url, ...options}` and fetch it server-side. Blocked URLs answer 422, remote failures 502. Up to 25 rows run inline (200), more as a job (202) |

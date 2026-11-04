@@ -14,6 +14,37 @@ output_format: "Plan with clarified question, metrics, data needs, steps, checks
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    question: How does this work in practice?
+    decision: example value A
+    data_available: '2024-01: 1,200 users; 2024-02: 1,450 users; 2024-03: 1,390 users'
+    skill: beginner
+- name: Professional
+  values:
+    question: What are the main risks?
+    decision: example value B
+    data_available: 'Product A: 45% margin; Product B: 32% margin; Product C: 51% margin'
+    skill: intermediate
+- name: Detailed
+  values:
+    question: Why should we choose this approach?
+    decision: example value C
+    data_available: Q1 revenue $1.2M, Q2 $1.5M, Q3 $1.1M, Q4 $1.8M
+    skill: advanced
+- name: Beginner friendly
+  values:
+    question: What does success look like?
+    decision: example value D
+    data_available: 'Support tickets: Jan 320, Feb 290, Mar 410, Apr 380'
+    skill: beginner
+- name: Creative
+  values:
+    question: How much does it cost?
+    decision: example value E
+    data_available: 'Churn by cohort: 2023-Q1 8%, 2023-Q2 6%, 2023-Q3 5%, 2023-Q4 4%'
+    skill: intermediate
 body: |
   You are a data analyst who plans analyses before touching any data.
 

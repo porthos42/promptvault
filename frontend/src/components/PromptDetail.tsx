@@ -16,6 +16,8 @@ type Props = {
 
 export default function PromptDetail({ prompt, onChanged, onTag, onEdit, onDuplicated, onDeleted, onBack }: Props) {
   const [values, setValues] = useState<Record<string, string>>({})
+  const [varName, setVarName] = useState('') // name for "save current values as variation"
+  const [selectedVar, setSelectedVar] = useState('') // currently loaded variation name
   const [copied, setCopied] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [menu, setMenu] = useState(false)
@@ -244,7 +246,80 @@ export default function PromptDetail({ prompt, onChanged, onTag, onEdit, onDupli
 
       {prompt.variables.length > 0 && (
         <form className="varform" onSubmit={(e) => e.preventDefault()} aria-label="Variables">
-          <h3>Variables</h3>
+          <div className="section-head">
+            <h3>Variables</h3>
+          </div>
+          {(prompt.variations ?? []).length > 0 && (
+            <div className="field variation-load">
+              <label htmlFor="variation-load">Variation</label>
+              <select
+                id="variation-load"
+                defaultValue=""
+                onChange={(e) => {
+                  setSelectedVar(e.target.value)
+                  const v = (prompt.variations ?? []).find((x) => x.name === e.target.value)
+                  if (v) setValues({ ...v.values })
+                }}
+              >
+                <option value="">Choose a variation to prefill...</option>
+                {(prompt.variations ?? []).map((v) => (
+                  <option key={v.name} value={v.name}>
+                    {v.name}
+                  </option>
+                ))}
+              </select>
+              {selectedVar && (prompt.variations ?? []).some((x) => x.name === selectedVar) && (
+                <button
+                  type="button"
+                  className="quiet danger"
+                  title={`Delete variation "${selectedVar}"`}
+                  onClick={async () => {
+                    const updated = await api.patchPrompt(prompt.id, {
+                      variations: (prompt.variations ?? []).filter((x) => x.name !== selectedVar),
+                    })
+                    onChanged(updated)
+                    setSelectedVar('')
+                  }}
+                >
+                  Delete variation
+                </button>
+              )}
+            </div>
+          )}
+          <div className="field variation-save">
+            <button
+              type="button"
+              className="quiet"
+              title="Save the current variable values as a variation"
+              onClick={async () => {
+                const name = varName.trim()
+                if (!name) return
+                const cleaned = Object.fromEntries(
+                  Object.entries(values).filter(([, v]) => v.trim() !== ''),
+                )
+                const rest = (prompt.variations ?? []).filter((x) => x.name !== name)
+                const updated = await api.patchPrompt(prompt.id, {
+                  variations: [...rest, { name, values: cleaned }],
+                })
+                onChanged(updated)
+                setSelectedVar(name)
+                setVarName('')
+              }}
+            >
+              Save current as
+            </button>
+            <input
+              id="variation-name"
+              placeholder="Variation name"
+              value={varName}
+              onChange={(e) => setVarName(e.target.value)}
+              style={{ width: '12rem' }}
+            />
+            <p className="dim" style={{ width: '100%', fontSize: '0.85rem' }}>
+              Fill the fields, type a name, then save it as a variation. Selecting a saved
+              variation prefills the fields with its values.
+            </p>
+          </div>
           {prompt.variables.map((v) => {
             const id = `var-${v.name}`
             const common = {

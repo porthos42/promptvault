@@ -10,6 +10,7 @@ export type Variable = {
   default: string
   options: string[]
 }
+export type Variation = { name: string; values: Record<string, string> }
 export type Prompt = {
   id: string
   seed_id: string | null
@@ -20,6 +21,7 @@ export type Prompt = {
   category: { slug: string; name: string } | null
   tags: string[]
   variables: Variable[]
+  variations: Variation[]
   model_hints: string | null
   output_format: string | null
   difficulty: Difficulty
@@ -45,11 +47,27 @@ export type Category = {
   icon: string | null
   prompt_count: number
 }
+export type CategoryInput = {
+  name: string
+  slug?: string
+  parent?: string | null
+  icon?: string | null
+  sort_order?: number
+}
+export type CategoryPatch = Partial<CategoryInput>
 export type Tag = { name: string; prompt_count: number }
 export type PromptInput = Partial<
   Pick<
     Prompt,
-    'title' | 'body' | 'description' | 'tags' | 'difficulty' | 'model_hints' | 'output_format' | 'disclaimer'
+    | 'title'
+    | 'body'
+    | 'description'
+    | 'tags'
+    | 'difficulty'
+    | 'model_hints'
+    | 'output_format'
+    | 'disclaimer'
+    | 'variations'
   >
 > & { category?: string | null; is_favorite?: boolean }
 
@@ -190,6 +208,9 @@ export const api = {
   markUsed: (id: string) => request<Prompt>('POST', `/prompts/${id}/use`),
   emptyTrash: () => request<{ purged: number }>('DELETE', '/trash'),
   categories: () => request<Category[]>('GET', '/categories'),
+  createCategory: (b: CategoryInput) => request<Category>('POST', '/categories', b),
+  patchCategory: (slug: string, b: CategoryPatch) => request<Category>('PATCH', `/categories/${slug}`, b),
+  deleteCategory: (slug: string) => request<void>('DELETE', `/categories/${slug}`),
   tags: () => request<Tag[]>('GET', '/tags'),
   exportFormats: () => request<ExportFormat[]>('GET', '/export/formats'),
   /** Download an export as a Blob, with the X-Export-* headers the server reports. */

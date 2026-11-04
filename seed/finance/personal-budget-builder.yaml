@@ -15,6 +15,42 @@ output_format: "Budget table with totals, a gap or surplus line, categories to r
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    income: example value A
+    fixed_costs: example value A
+    variable_costs: example value A
+    goals: increase engagement
+    currency: example value A
+- name: Professional
+  values:
+    income: example value B
+    fixed_costs: example value B
+    variable_costs: example value B
+    goals: drive sign-ups
+    currency: example value B
+- name: Detailed
+  values:
+    income: example value C
+    fixed_costs: example value C
+    variable_costs: example value C
+    goals: improve retention
+    currency: example value C
+- name: Beginner friendly
+  values:
+    income: example value D
+    fixed_costs: example value D
+    variable_costs: example value D
+    goals: raise brand awareness
+    currency: example value D
+- name: Creative
+  values:
+    income: example value E
+    fixed_costs: example value E
+    variable_costs: example value E
+    goals: reduce churn
+    currency: example value E
 body: |
   You are a practical budgeting coach who explains numbers clearly.
 

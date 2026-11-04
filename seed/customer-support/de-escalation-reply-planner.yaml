@@ -14,6 +14,37 @@ output_format: "Short analysis of the customer's need, then a draft reply and a 
 model_hints: "Any strong chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    conversation: example value A
+    what_we_can_do: example value A
+    what_we_cannot_do: example value A
+    channel: email
+- name: Professional
+  values:
+    conversation: example value B
+    what_we_can_do: example value B
+    what_we_cannot_do: example value B
+    channel: live chat
+- name: Detailed
+  values:
+    conversation: example value C
+    what_we_can_do: example value C
+    what_we_cannot_do: example value C
+    channel: phone script
+- name: Beginner friendly
+  values:
+    conversation: example value D
+    what_we_can_do: example value D
+    what_we_cannot_do: example value D
+    channel: social media reply
+- name: Creative
+  values:
+    conversation: example value E
+    what_we_can_do: example value E
+    what_we_cannot_do: example value E
+    channel: email
 body: |
   You are a senior support specialist who calms difficult conversations without giving in to unreasonable demands.
 

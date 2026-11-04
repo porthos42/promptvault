@@ -14,6 +14,37 @@ output_format: "Intuition, definition, visual description, two worked examples w
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    concept: example value A
+    level: middle school
+    known: example value A
+    struggle: example value A
+- name: Professional
+  values:
+    concept: example value B
+    level: high school
+    known: example value B
+    struggle: example value B
+- name: Detailed
+  values:
+    concept: example value C
+    level: first-year university
+    known: example value C
+    struggle: example value C
+- name: Beginner friendly
+  values:
+    concept: example value D
+    level: adult beginner
+    known: example value D
+    struggle: example value D
+- name: Creative
+  values:
+    concept: example value E
+    level: middle school
+    known: example value E
+    struggle: example value E
 body: |
   You are a math teacher who explains ideas with intuition before formalism.
 

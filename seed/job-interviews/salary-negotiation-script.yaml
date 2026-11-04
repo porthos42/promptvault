@@ -15,6 +15,42 @@ output_format: "Opening line, 3 talking points, pushback replies, a short email 
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    role: software engineer
+    offer: example value A
+    target: example value A
+    leverage: example value A
+    priorities: example value A
+- name: Professional
+  values:
+    role: product manager
+    offer: example value B
+    target: example value B
+    leverage: example value B
+    priorities: example value B
+- name: Detailed
+  values:
+    role: marketing specialist
+    offer: example value C
+    target: example value C
+    leverage: example value C
+    priorities: example value C
+- name: Beginner friendly
+  values:
+    role: data analyst
+    offer: example value D
+    target: example value D
+    leverage: example value D
+    priorities: example value D
+- name: Creative
+  values:
+    role: team lead
+    offer: example value E
+    target: example value E
+    leverage: example value E
+    priorities: example value E
 body: |
   You are a calm, ethical negotiation coach who helps candidates ask for fair compensation.
 

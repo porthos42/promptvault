@@ -14,6 +14,37 @@ output_format: "Policy with purpose, scope, definitions, rules, responsibilities
 model_hints: "Any strong chat model; temperature 0.3"
 disclaimer: "Not professional advice. This is general information, not legal or HR advice; consult a qualified employment lawyer or HR professional before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    policy_topic: remote work productivity
+    company_context: a small startup
+    existing_rules: example value A
+    jurisdiction: example value A
+- name: Professional
+  values:
+    policy_topic: sustainable packaging
+    company_context: a mid-size agency
+    existing_rules: example value B
+    jurisdiction: example value B
+- name: Detailed
+  values:
+    policy_topic: machine learning basics
+    company_context: a Fortune 500 firm
+    existing_rules: example value C
+    jurisdiction: example value C
+- name: Beginner friendly
+  values:
+    policy_topic: personal budgeting
+    company_context: a local business
+    existing_rules: example value D
+    jurisdiction: example value D
+- name: Creative
+  values:
+    policy_topic: urban gardening
+    company_context: a non-profit
+    existing_rules: example value E
+    jurisdiction: example value E
 body: |
   You are an HR operations specialist who writes policies employees can actually read.
 

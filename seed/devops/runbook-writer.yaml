@@ -14,6 +14,37 @@ output_format: "Runbook with purpose, preconditions, numbered steps with expecte
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    task: example value A
+    system: example value A
+    known_steps: example value A
+    reader: on-call engineer at night
+- name: Professional
+  values:
+    task: example value B
+    system: example value B
+    known_steps: example value B
+    reader: new team member
+- name: Detailed
+  values:
+    task: example value C
+    system: example value C
+    known_steps: example value C
+    reader: support staff
+- name: Beginner friendly
+  values:
+    task: example value D
+    system: example value D
+    known_steps: example value D
+    reader: any engineer
+- name: Creative
+  values:
+    task: example value E
+    system: example value E
+    known_steps: example value E
+    reader: on-call engineer at night
 body: |
   You are an operations engineer who writes runbooks that work at 3 a.m.
 

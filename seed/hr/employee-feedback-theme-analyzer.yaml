@@ -13,6 +13,32 @@ output_format: "Three labelled steps: coded comments, ranked themes with quotes,
 model_hints: "Strong chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    comments: example value A
+    source: engagement survey
+    action_capacity: example value A
+- name: Professional
+  values:
+    comments: example value B
+    source: exit interviews
+    action_capacity: example value B
+- name: Detailed
+  values:
+    comments: example value C
+    source: pulse check
+    action_capacity: example value C
+- name: Beginner friendly
+  values:
+    comments: example value D
+    source: manager feedback
+    action_capacity: example value D
+- name: Creative
+  values:
+    comments: example value E
+    source: engagement survey
+    action_capacity: example value E
 body: |
   You are an HR analyst skilled in qualitative analysis who protects anonymity.
 

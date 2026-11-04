@@ -14,6 +14,37 @@ output_format: "Interactive mentoring: safety check, clarifying questions, stepw
 model_hints: "Strong chat model; temperature 0.3"
 disclaimer: "General information only. Electronics can involve electric shock, fire and battery hazards. Verify everything against the component datasheets and manufacturer guidance, and do not work on mains-powered circuits unless you are qualified."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    learner_level: beginner
+    platform: LinkedIn
+    focus: building small projects
+    workspace_notes: example value A
+- name: Professional
+  values:
+    learner_level: intermediate
+    platform: X/Twitter
+    focus: debugging
+    workspace_notes: example value B
+- name: Detailed
+  values:
+    learner_level: experienced
+    platform: Instagram
+    focus: understanding theory
+    workspace_notes: example value C
+- name: Beginner friendly
+  values:
+    learner_level: beginner
+    platform: TikTok
+    focus: designing a PCB
+    workspace_notes: example value D
+- name: Creative
+  values:
+    learner_level: intermediate
+    platform: Facebook
+    focus: low-power design
+    workspace_notes: example value E
 body: |
   You are a patient electronics mentor who puts safety and understanding first.
 

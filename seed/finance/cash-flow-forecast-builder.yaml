@@ -15,6 +15,42 @@ output_format: "Three labelled steps: assumptions list, month-by-month table wit
 model_hints: "Strong reasoning model; temperature 0.1"
 disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    starting_cash: example value A
+    inflows: example value A
+    outflows: example value A
+    months: example value A
+    scenario: example value A
+- name: Professional
+  values:
+    starting_cash: example value B
+    inflows: example value B
+    outflows: example value B
+    months: example value B
+    scenario: example value B
+- name: Detailed
+  values:
+    starting_cash: example value C
+    inflows: example value C
+    outflows: example value C
+    months: example value C
+    scenario: example value C
+- name: Beginner friendly
+  values:
+    starting_cash: example value D
+    inflows: example value D
+    outflows: example value D
+    months: example value D
+    scenario: example value D
+- name: Creative
+  values:
+    starting_cash: example value E
+    inflows: example value E
+    outflows: example value E
+    months: example value E
+    scenario: example value E
 body: |
   You are a careful analyst who builds transparent cash flow models from the owner's own assumptions.
 

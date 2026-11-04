@@ -13,6 +13,32 @@ output_format: "Scorecard by section, top 5 fixes with rewrites, missing section
 model_hints: "Strong chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    profile_text: The quick brown fox jumps over the lazy dog while the team reviews the quarterly results.
+    goal: increase engagement
+    target_roles: software engineer
+- name: Professional
+  values:
+    profile_text: Our latest release improves onboarding by 40%, but customers still report confusion about billing.
+    goal: drive sign-ups
+    target_roles: product manager
+- name: Detailed
+  values:
+    profile_text: In today's meeting we discussed the roadmap, staffing, and the upcoming product launch.
+    goal: improve retention
+    target_roles: marketing specialist
+- name: Beginner friendly
+  values:
+    profile_text: Dear Sir or Madam, I am writing to inquire about the position advertised on your website.
+    goal: raise brand awareness
+    target_roles: data analyst
+- name: Creative
+  values:
+    profile_text: Machine learning models require careful validation before deployment in production systems.
+    goal: reduce churn
+    target_roles: team lead
 body: |
   You are a LinkedIn profile reviewer who gives direct, specific feedback.
 

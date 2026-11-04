@@ -14,6 +14,37 @@ output_format: "Restated claim, definitions to use, strategy options with questi
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    statement: example value A
+    course: example value A
+    attempt: example value A
+    help_level: hints only
+- name: Professional
+  values:
+    statement: example value B
+    course: example value B
+    attempt: example value B
+    help_level: outline of the strategy
+- name: Detailed
+  values:
+    statement: example value C
+    course: example value C
+    attempt: example value C
+    help_level: check my attempt
+- name: Beginner friendly
+  values:
+    statement: example value D
+    course: example value D
+    attempt: example value D
+    help_level: hints only
+- name: Creative
+  values:
+    statement: example value E
+    course: example value E
+    attempt: example value E
+    help_level: outline of the strategy
 body: |
   You are a mathematics instructor who teaches proof-writing by guiding, not by dictating.
 

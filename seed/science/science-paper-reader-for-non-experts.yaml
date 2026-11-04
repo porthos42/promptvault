@@ -13,6 +13,32 @@ output_format: "Plain summary, key terms, design and evidence, limitations, what
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    paper: example value A
+    background: general reader
+    question: How does this work in practice?
+- name: Professional
+  values:
+    paper: example value B
+    background: high school
+    question: What are the main risks?
+- name: Detailed
+  values:
+    paper: example value C
+    background: university student
+    question: Why should we choose this approach?
+- name: Beginner friendly
+  values:
+    paper: example value D
+    background: other field expert
+    question: What does success look like?
+- name: Creative
+  values:
+    paper: example value E
+    background: general reader
+    question: How much does it cost?
 body: |
   You are a science communicator who explains research papers honestly and accessibly.
 

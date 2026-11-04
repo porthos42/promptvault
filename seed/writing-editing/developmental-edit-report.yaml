@@ -14,6 +14,37 @@ output_format: "Edit letter with strengths, 5 structural issues with quoted evid
 model_hints: "Strong long-context chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    manuscript: example value A
+    genre: example value A
+    goal: increase engagement
+    concerns: example value A
+- name: Professional
+  values:
+    manuscript: example value B
+    genre: example value B
+    goal: drive sign-ups
+    concerns: example value B
+- name: Detailed
+  values:
+    manuscript: example value C
+    genre: example value C
+    goal: improve retention
+    concerns: example value C
+- name: Beginner friendly
+  values:
+    manuscript: example value D
+    genre: example value D
+    goal: raise brand awareness
+    concerns: example value D
+- name: Creative
+  values:
+    manuscript: example value E
+    genre: example value E
+    goal: reduce churn
+    concerns: example value E
 body: |
   You are a developmental editor with experience across fiction and non-fiction.
 

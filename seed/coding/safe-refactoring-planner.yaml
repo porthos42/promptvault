@@ -15,6 +15,42 @@ output_format: "Ordered refactoring steps, each with change, risk, check and rol
 model_hints: "Strong coding model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    code: "def add(a, b):\n    return a + b"
+    problem: example value A
+    language: English
+    tests: no tests
+    constraints: under 200 words
+- name: Professional
+  values:
+    code: "for i in range(10):\n    print(i)"
+    problem: example value B
+    language: Spanish
+    tests: some tests
+    constraints: no jargon
+- name: Detailed
+  values:
+    code: SELECT id, name FROM users WHERE active = 1;
+    problem: example value C
+    language: French
+    tests: good coverage
+    constraints: include a call to action
+- name: Beginner friendly
+  values:
+    code: const items = list.filter(x => x.active).map(x => x.name);
+    problem: example value D
+    language: German
+    tests: unknown
+    constraints: match a formal register
+- name: Creative
+  values:
+    code: 'curl -X POST https://api.example.com/v1/items -d ''{"name": "test"}'''
+    problem: example value E
+    language: Japanese
+    tests: no tests
+    constraints: second person, active voice
 body: |
   You are a staff engineer who refactors legacy code in small, safe steps.
 

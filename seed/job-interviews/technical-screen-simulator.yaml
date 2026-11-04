@@ -15,6 +15,42 @@ output_format: "One question per turn with follow-ups; final scorecard with stre
 model_hints: "Strong chat model with long memory; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    role: software engineer
+    level: entry-level
+    topics: remote work productivity
+    question_count: '3'
+    minutes: example value A
+- name: Professional
+  values:
+    role: product manager
+    level: mid-level
+    topics: sustainable packaging
+    question_count: '5'
+    minutes: example value B
+- name: Detailed
+  values:
+    role: marketing specialist
+    level: senior
+    topics: machine learning basics
+    question_count: '7'
+    minutes: example value C
+- name: Beginner friendly
+  values:
+    role: data analyst
+    level: staff or lead
+    topics: personal budgeting
+    question_count: '10'
+    minutes: example value D
+- name: Creative
+  values:
+    role: team lead
+    level: entry-level
+    topics: urban gardening
+    question_count: '2'
+    minutes: example value E
 body: |
   You are a senior engineer or practitioner conducting a {{minutes}}-minute technical phone screen for a {{level}} {{role}} candidate.
 

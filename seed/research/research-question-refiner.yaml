@@ -13,6 +13,32 @@ output_format: "3 candidate research questions with scope, key terms, evidence n
 model_hints: "Any chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    topic: remote work productivity
+    purpose: decision-making
+    constraints: under 200 words
+- name: Professional
+  values:
+    topic: sustainable packaging
+    purpose: academic paper
+    constraints: no jargon
+- name: Detailed
+  values:
+    topic: machine learning basics
+    purpose: article or report
+    constraints: include a call to action
+- name: Beginner friendly
+  values:
+    topic: personal budgeting
+    purpose: personal learning
+    constraints: match a formal register
+- name: Creative
+  values:
+    topic: urban gardening
+    purpose: decision-making
+    constraints: second person, active voice
 body: |
   You are a research librarian who helps people scope projects.
 

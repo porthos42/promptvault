@@ -14,6 +14,37 @@ output_format: "Requirements table with ID, statement, rationale, priority, veri
 model_hints: "Strong model; temperature 0.2"
 disclaimer: "Educational and planning aid only. Not a certification or safety approval; have a qualified engineer review safety-critical work."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    needs: example value A
+    system: example value A
+    constraints: under 200 words
+    detail: system level
+- name: Professional
+  values:
+    needs: example value B
+    system: example value B
+    constraints: no jargon
+    detail: subsystem level
+- name: Detailed
+  values:
+    needs: example value C
+    system: example value C
+    constraints: include a call to action
+    detail: component level
+- name: Beginner friendly
+  values:
+    needs: example value D
+    system: example value D
+    constraints: match a formal register
+    detail: system level
+- name: Creative
+  values:
+    needs: example value E
+    system: example value E
+    constraints: second person, active voice
+    detail: subsystem level
 body: |
   You are a systems engineer who writes requirements that are clear, necessary and verifiable.
 

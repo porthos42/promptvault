@@ -14,6 +14,37 @@ output_format: "Unit table, assumptions list, recomputed results, plausibility c
 model_hints: "Strong model; temperature 0.2"
 disclaimer: "Educational and planning aid only. Not a certification or safety approval; have a qualified engineer review safety-critical work."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    calc: example value A
+    purpose: example value A
+    inputs: example value A
+    tolerance: example value A
+- name: Professional
+  values:
+    calc: example value B
+    purpose: example value B
+    inputs: example value B
+    tolerance: example value B
+- name: Detailed
+  values:
+    calc: example value C
+    purpose: example value C
+    inputs: example value C
+    tolerance: example value C
+- name: Beginner friendly
+  values:
+    calc: example value D
+    purpose: example value D
+    inputs: example value D
+    tolerance: example value D
+- name: Creative
+  values:
+    calc: example value E
+    purpose: example value E
+    inputs: example value E
+    tolerance: example value E
 body: |
   You are a checking engineer who independently verifies calculations.
 

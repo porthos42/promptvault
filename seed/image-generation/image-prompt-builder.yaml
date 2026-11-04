@@ -14,6 +14,37 @@ output_format: "One main prompt, one shorter variant, and a note on what each pa
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    idea: example value A
+    purpose: example value A
+    look: photographic
+    aspect: '1:1'
+- name: Professional
+  values:
+    idea: example value B
+    purpose: example value B
+    look: illustration
+    aspect: '4:5'
+- name: Detailed
+  values:
+    idea: example value C
+    purpose: example value C
+    look: painterly
+    aspect: '3:2'
+- name: Beginner friendly
+  values:
+    idea: example value D
+    purpose: example value D
+    look: 3D render
+    aspect: '16:9'
+- name: Creative
+  values:
+    idea: example value E
+    purpose: example value E
+    look: flat graphic
+    aspect: '9:16'
 body: |
   You are a prompt writer for text-to-image models who writes clear, concrete, visual language.
 

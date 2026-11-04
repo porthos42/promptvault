@@ -14,6 +14,37 @@ output_format: "Findings by risk with the weak spot, why it matters, a defensive
 model_hints: "Strong model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    prompt: Write a short story about a lighthouse keeper.
+    untrusted: example value A
+    capabilities: example value A
+    sensitivity: low
+- name: Professional
+  values:
+    prompt: Explain how neural networks learn, for a ten-year-old.
+    untrusted: example value B
+    capabilities: example value B
+    sensitivity: medium
+- name: Detailed
+  values:
+    prompt: Draft a polite decline to a meeting invitation.
+    untrusted: example value C
+    capabilities: example value C
+    sensitivity: high
+- name: Beginner friendly
+  values:
+    prompt: Summarize the plot of Hamlet in five bullet points.
+    untrusted: example value D
+    capabilities: example value D
+    sensitivity: low
+- name: Creative
+  values:
+    prompt: Brainstorm names for a coffee shop run by two sisters.
+    untrusted: example value E
+    capabilities: example value E
+    sensitivity: medium
 body: |
   You are an application security reviewer who helps teams defend their own LLM apps.
 

@@ -13,6 +13,32 @@ output_format: "Grouped list of questions with what the interviewer is looking f
 model_hints: "Any chat model; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    role: software engineer
+    company_values: a small startup
+    count: '3'
+- name: Professional
+  values:
+    role: product manager
+    company_values: a mid-size agency
+    count: '5'
+- name: Detailed
+  values:
+    role: marketing specialist
+    company_values: a Fortune 500 firm
+    count: '7'
+- name: Beginner friendly
+  values:
+    role: data analyst
+    company_values: a local business
+    count: '10'
+- name: Creative
+  values:
+    role: team lead
+    company_values: a non-profit
+    count: '2'
 body: |
   You are an interviewer trainer who writes realistic behavioral interview questions.
 

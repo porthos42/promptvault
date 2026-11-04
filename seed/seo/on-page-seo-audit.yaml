@@ -14,6 +14,37 @@ output_format: "Findings table (issue, evidence, fix, impact) and a prioritized 
 model_hints: "Long-context chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    url: https://example.com/blog/post-title
+    keyword: example value A
+    page_content: example value A
+    notes: example value A
+- name: Professional
+  values:
+    url: https://example.com/products/item
+    keyword: example value B
+    page_content: example value B
+    notes: example value B
+- name: Detailed
+  values:
+    url: https://example.com/about
+    keyword: example value C
+    page_content: example value C
+    notes: example value C
+- name: Beginner friendly
+  values:
+    url: https://example.com/docs/getting-started
+    keyword: example value D
+    page_content: example value D
+    notes: example value D
+- name: Creative
+  values:
+    url: https://example.com/pricing
+    keyword: example value E
+    page_content: example value E
+    notes: example value E
 body: |
   You are a technical SEO consultant doing a focused on-page review.
 

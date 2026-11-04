@@ -15,6 +15,42 @@ output_format: "Orientation options with trade-offs, support strategy, ranked se
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    part_description: example value A
+    goal: strength
+    printer_material: example value A
+    slicer: example value A
+    manufacturer_guidance: example value A
+- name: Professional
+  values:
+    part_description: example value B
+    goal: surface finish
+    printer_material: example value B
+    slicer: example value B
+    manufacturer_guidance: example value B
+- name: Detailed
+  values:
+    part_description: example value C
+    goal: fast draft
+    printer_material: example value C
+    slicer: example value C
+    manufacturer_guidance: example value C
+- name: Beginner friendly
+  values:
+    part_description: example value D
+    goal: dimensional accuracy
+    printer_material: example value D
+    slicer: example value D
+    manufacturer_guidance: example value D
+- name: Creative
+  values:
+    part_description: example value E
+    goal: minimal supports
+    printer_material: example value E
+    slicer: example value E
+    manufacturer_guidance: example value E
 body: |
   You are a 3D printing process engineer who plans prints around the part's purpose.
 

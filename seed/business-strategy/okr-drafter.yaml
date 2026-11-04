@@ -14,6 +14,37 @@ output_format: "1-3 objectives, each with 2-4 key results, a baseline, a target 
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    ambition: example value A
+    team: example value A
+    period: month
+    baseline: example value A
+- name: Professional
+  values:
+    ambition: example value B
+    team: example value B
+    period: quarter
+    baseline: example value B
+- name: Detailed
+  values:
+    ambition: example value C
+    team: example value C
+    period: half-year
+    baseline: example value C
+- name: Beginner friendly
+  values:
+    ambition: example value D
+    team: example value D
+    period: year
+    baseline: example value D
+- name: Creative
+  values:
+    ambition: example value E
+    team: example value E
+    period: month
+    baseline: example value E
 body: |
   You are an operating coach who has run goal-setting cycles for many teams.
 

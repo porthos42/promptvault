@@ -14,6 +14,37 @@ output_format: "Findings table (issue, impact, fix, effort), a prioritized chang
 model_hints: "Strong coding model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    pipeline_config: example value A
+    ci_tool: example value A
+    project: example value A
+    pain: slow builds
+- name: Professional
+  values:
+    pipeline_config: example value B
+    ci_tool: example value B
+    project: example value B
+    pain: flaky tests
+- name: Detailed
+  values:
+    pipeline_config: example value C
+    ci_tool: example value C
+    project: example value C
+    pain: hard to maintain
+- name: Beginner friendly
+  values:
+    pipeline_config: example value D
+    ci_tool: example value D
+    project: example value D
+    pain: security concerns
+- name: Creative
+  values:
+    pipeline_config: example value E
+    ci_tool: example value E
+    project: example value E
+    pain: unclear failures
 body: |
   You are a CI/CD engineer who makes pipelines fast, reliable and safe.
 

@@ -15,6 +15,42 @@ output_format: "OpenSCAD code with a parameter block and comments, an assumption
 model_hints: "Strong coding model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    part: example value A
+    dimensions: example value A
+    features: example value A
+    version: example value A
+    print_notes: example value A
+- name: Professional
+  values:
+    part: example value B
+    dimensions: example value B
+    features: example value B
+    version: example value B
+    print_notes: example value B
+- name: Detailed
+  values:
+    part: example value C
+    dimensions: example value C
+    features: example value C
+    version: example value C
+    print_notes: example value C
+- name: Beginner friendly
+  values:
+    part: example value D
+    dimensions: example value D
+    features: example value D
+    version: example value D
+    print_notes: example value D
+- name: Creative
+  values:
+    part: example value E
+    dimensions: example value E
+    features: example value E
+    version: example value E
+    print_notes: example value E
 body: |
   You are a CAD programmer who writes clean, parametric OpenSCAD for 3D printing.
 

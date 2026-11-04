@@ -14,6 +14,37 @@ output_format: "6 headline options under 220 characters each, grouped by style"
 model_hints: "Any chat model; temperature 0.7"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    role: software engineer
+    specialty: example value A
+    audience: a general audience
+    keywords: example value A
+- name: Professional
+  values:
+    role: product manager
+    specialty: example value B
+    audience: technical experts
+    keywords: example value B
+- name: Detailed
+  values:
+    role: marketing specialist
+    specialty: example value C
+    audience: complete beginners
+    keywords: example value C
+- name: Beginner friendly
+  values:
+    role: data analyst
+    specialty: example value D
+    audience: busy executives
+    keywords: example value D
+- name: Creative
+  values:
+    role: team lead
+    specialty: example value E
+    audience: students
+    keywords: example value E
 body: |
   You are a LinkedIn profile strategist who writes searchable, human-sounding headlines.
 

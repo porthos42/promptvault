@@ -13,6 +13,32 @@ output_format: "Corrected text followed by a change table: original, corrected, 
 model_hints: "Any chat model; temperature 0.1"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    text: The quick brown fox jumps over the lazy dog while the team reviews the quarterly results.
+    language_variant: US English
+    style_notes: concise
+- name: Professional
+  values:
+    text: Our latest release improves onboarding by 40%, but customers still report confusion about billing.
+    language_variant: UK English
+    style_notes: detailed
+- name: Detailed
+  values:
+    text: In today's meeting we discussed the roadmap, staffing, and the upcoming product launch.
+    language_variant: Canadian English
+    style_notes: step-by-step
+- name: Beginner friendly
+  values:
+    text: Dear Sir or Madam, I am writing to inquire about the position advertised on your website.
+    language_variant: Australian English
+    style_notes: conversational
+- name: Creative
+  values:
+    text: Machine learning models require careful validation before deployment in production systems.
+    language_variant: US English
+    style_notes: academic
 body: |
   You are a meticulous proofreader.
 

@@ -12,6 +12,27 @@ output_format: "Priorities, hidden signals, red flags, fit check and questions t
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    job_posting: software engineer
+    my_background: example value A
+- name: Professional
+  values:
+    job_posting: data analyst
+    my_background: example value B
+- name: Detailed
+  values:
+    job_posting: product manager
+    my_background: example value C
+- name: Beginner friendly
+  values:
+    job_posting: marketing manager
+    my_background: example value D
+- name: Creative
+  values:
+    job_posting: customer success lead
+    my_background: example value E
 body: |
   You are a recruiter who reads job postings critically and explains them to candidates.
 

@@ -14,6 +14,37 @@ output_format: "Interactive assistant behavior: diagnose read-only first, propos
 model_hints: "Strong chat model; temperature 0.1"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    environment: example value A
+    access_mode: advise only, I run commands
+    escalation: example value A
+    risk_tolerance: strict
+- name: Professional
+  values:
+    environment: example value B
+    access_mode: draft commands for my review
+    escalation: example value B
+    risk_tolerance: normal
+- name: Detailed
+  values:
+    environment: example value C
+    access_mode: advise only, I run commands
+    escalation: example value C
+    risk_tolerance: relaxed outside production
+- name: Beginner friendly
+  values:
+    environment: example value D
+    access_mode: draft commands for my review
+    escalation: example value D
+    risk_tolerance: strict
+- name: Creative
+  values:
+    environment: example value E
+    access_mode: advise only, I run commands
+    escalation: example value E
+    risk_tolerance: normal
 body: |
   You are a cautious site reliability engineer assisting an operator.
 

@@ -14,6 +14,37 @@ output_format: "A ready-to-use prompt in a code block with a reasoning section, 
 model_hints: "Strong model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    task: example value A
+    answer_type: short answer
+    risk: low
+    model: Any chat model
+- name: Professional
+  values:
+    task: example value B
+    answer_type: number with units
+    risk: medium
+    model: Small local model
+- name: Detailed
+  values:
+    task: example value C
+    answer_type: choice from a list
+    risk: high
+    model: Reasoning model
+- name: Beginner friendly
+  values:
+    task: example value D
+    answer_type: decision with reasons
+    risk: low
+    model: Any chat model
+- name: Creative
+  values:
+    task: example value E
+    answer_type: short answer
+    risk: medium
+    model: Small local model
 body: |
   You are a prompt engineer who designs prompts for dependable reasoning.
 

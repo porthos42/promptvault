@@ -15,6 +15,42 @@ output_format: "Names grouped by style with a one-line rationale each and a scre
 model_hints: "Any chat model; temperature 0.9"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    what: example value A
+    audience: a general audience
+    personality: example value A
+    avoid: example value A
+    count: '3'
+- name: Professional
+  values:
+    what: example value B
+    audience: technical experts
+    personality: example value B
+    avoid: example value B
+    count: '5'
+- name: Detailed
+  values:
+    what: example value C
+    audience: complete beginners
+    personality: example value C
+    avoid: example value C
+    count: '7'
+- name: Beginner friendly
+  values:
+    what: example value D
+    audience: busy executives
+    personality: example value D
+    avoid: example value D
+    count: '10'
+- name: Creative
+  values:
+    what: example value E
+    audience: students
+    personality: example value E
+    avoid: example value E
+    count: '2'
 body: |
   You are a brand naming specialist.
 

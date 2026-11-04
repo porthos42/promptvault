@@ -14,6 +14,37 @@ output_format: "Checklist grouped by area with pass or fail questions and a list
 model_hints: "Strong chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    design_description: example value A
+    components: example value A
+    platform: web
+    target_level: follow current WCAG AA guidance
+- name: Professional
+  values:
+    design_description: example value B
+    components: example value B
+    platform: iOS
+    target_level: follow current WCAG AAA guidance where practical
+- name: Detailed
+  values:
+    design_description: example value C
+    components: example value C
+    platform: Android
+    target_level: follow the platform's own guidelines
+- name: Beginner friendly
+  values:
+    design_description: example value D
+    components: example value D
+    platform: desktop app
+    target_level: not sure yet
+- name: Creative
+  values:
+    design_description: example value E
+    components: example value E
+    platform: document or PDF
+    target_level: follow current WCAG AA guidance
 body: |
   You are an accessibility specialist who reviews designs before they are built.
 

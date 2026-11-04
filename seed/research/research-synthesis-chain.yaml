@@ -13,6 +13,32 @@ output_format: "Three labelled steps: findings per source, comparison matrix, sy
 model_hints: "Strong long-context chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    question: How does this work in practice?
+    source_notes: example value A
+    output_use: background section
+- name: Professional
+  values:
+    question: What are the main risks?
+    source_notes: example value B
+    output_use: briefing note
+- name: Detailed
+  values:
+    question: Why should we choose this approach?
+    source_notes: example value C
+    output_use: decision memo
+- name: Beginner friendly
+  values:
+    question: What does success look like?
+    source_notes: example value D
+    output_use: personal notes
+- name: Creative
+  values:
+    question: How much does it cost?
+    source_notes: example value E
+    output_use: background section
 body: |
   You are a research analyst who synthesizes evidence without overstating it.
 

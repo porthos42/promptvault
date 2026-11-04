@@ -52,6 +52,7 @@ def snapshot(prompt: Prompt) -> dict[str, Any]:
     snap["category"] = prompt.category.slug if prompt.category else None
     snap["tags"] = sorted(t.name for t in prompt.tags)
     snap["variables"] = prompt.variables
+    snap["variations"] = prompt.variations
     return snap
 
 
@@ -125,6 +126,27 @@ def _apply(session: Session, prompt: Prompt, data: dict[str, Any]) -> None:
     )
     prompt.variables = var_svc.merge_variables(prompt.body, declared)
     prompt.body_hash = body_hash(prompt.body)
+    prompt.variations = _clean_variations(
+        data.get("variations") if "variations" in data else prompt.variations,
+        {v["name"] for v in prompt.variables},
+    )
+
+
+def _clean_variations(raw: Any, var_names: set[str]) -> list[dict[str, Any]]:
+    """Keep only known variables, drop empty values and nameless variations, dedupe by name."""
+    out: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for entry in raw or []:
+        name = str(entry.get("name", "")).strip() if isinstance(entry, dict) else ""
+        if not name or name in seen:
+            continue
+        values = entry.get("values") or {}
+        if not isinstance(values, dict):
+            continue
+        cleaned = {str(k): str(v) for k, v in values.items() if k in var_names and str(v).strip()}
+        out.append({"name": name, "values": cleaned})
+        seen.add(name)
+    return out
 
 
 def create_prompt(session: Session, data: dict[str, Any]) -> Prompt:

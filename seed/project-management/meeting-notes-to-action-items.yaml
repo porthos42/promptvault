@@ -13,6 +13,32 @@ output_format: "Decisions list, action-item table (task, owner, due), open quest
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    notes: example value A
+    meeting_title: The Future of Remote Work
+    attendees: example value A
+- name: Professional
+  values:
+    notes: example value B
+    meeting_title: A Beginner's Guide to Baking
+    attendees: example value B
+- name: Detailed
+  values:
+    notes: example value C
+    meeting_title: Ten Lessons from Our First Year
+    attendees: example value C
+- name: Beginner friendly
+  values:
+    notes: example value D
+    meeting_title: Why Data Beats Opinion
+    attendees: example value D
+- name: Creative
+  values:
+    notes: example value E
+    meeting_title: Getting Started with Automation
+    attendees: example value E
 body: |
   You are a meticulous project coordinator.
 

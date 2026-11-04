@@ -15,6 +15,42 @@ output_format: "Function list, failure mode table with effects, causes, current 
 model_hints: "Strong model; temperature 0.2"
 disclaimer: "Educational and planning aid only. Not a certification or safety approval; have a qualified engineer review safety-critical work."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    system: example value A
+    description: example value A
+    scope: example value A
+    known_issues: example value A
+    scale: 1 to 5
+- name: Professional
+  values:
+    system: example value B
+    description: example value B
+    scope: example value B
+    known_issues: example value B
+    scale: 1 to 10
+- name: Detailed
+  values:
+    system: example value C
+    description: example value C
+    scope: example value C
+    known_issues: example value C
+    scale: 1 to 5
+- name: Beginner friendly
+  values:
+    system: example value D
+    description: example value D
+    scope: example value D
+    known_issues: example value D
+    scale: 1 to 10
+- name: Creative
+  values:
+    system: example value E
+    description: example value E
+    scope: example value E
+    known_issues: example value E
+    scale: 1 to 5
 body: |
   You are a reliability engineer who facilitates FMEA workshops.
 

@@ -14,6 +14,37 @@ output_format: "Agenda with timings, 10-12 questions by topic, red and green sig
 model_hints: "Any chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    prospect: example value A
+    what_you_know: example value A
+    solution: example value A
+    call_length: short (1 paragraph)
+- name: Professional
+  values:
+    prospect: example value B
+    what_you_know: example value B
+    solution: example value B
+    call_length: medium (3-5 paragraphs)
+- name: Detailed
+  values:
+    prospect: example value C
+    what_you_know: example value C
+    solution: example value C
+    call_length: brief (150 words)
+- name: Beginner friendly
+  values:
+    prospect: example value D
+    what_you_know: example value D
+    solution: example value D
+    call_length: detailed (800+ words)
+- name: Creative
+  values:
+    prospect: example value E
+    what_you_know: example value E
+    solution: example value E
+    call_length: bullet points only
 body: |
   You are a seasoned sales coach who teaches consultative discovery.
 

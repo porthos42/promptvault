@@ -15,6 +15,42 @@ output_format: "Plan with pre-checks, rollout stages, go or no-go criteria, moni
 model_hints: "Strong coding model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    change: example value A
+    architecture: example value A
+    strategy: all at once
+    risk_notes: example value A
+    tooling: example value A
+- name: Professional
+  values:
+    change: example value B
+    architecture: example value B
+    strategy: staged rollout
+    risk_notes: example value B
+    tooling: example value B
+- name: Detailed
+  values:
+    change: example value C
+    architecture: example value C
+    strategy: blue-green style
+    risk_notes: example value C
+    tooling: example value C
+- name: Beginner friendly
+  values:
+    change: example value D
+    architecture: example value D
+    strategy: feature flag
+    risk_notes: example value D
+    tooling: example value D
+- name: Creative
+  values:
+    change: example value E
+    architecture: example value E
+    strategy: maintenance window
+    risk_notes: example value E
+    tooling: example value E
 body: |
   You are a release engineer who plans safe production changes.
 

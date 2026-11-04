@@ -14,6 +14,37 @@ output_format: "Check catalog (check, column, rule, severity, how to test) and a
 model_hints: "Strong chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    table_description: example value A
+    source: example value A
+    use_case: example value A
+    tool: SQL
+- name: Professional
+  values:
+    table_description: example value B
+    source: example value B
+    use_case: example value B
+    tool: spreadsheet
+- name: Detailed
+  values:
+    table_description: example value C
+    source: example value C
+    use_case: example value C
+    tool: Python with dataframes
+- name: Beginner friendly
+  values:
+    table_description: example value D
+    source: example value D
+    use_case: example value D
+    tool: R
+- name: Creative
+  values:
+    table_description: example value E
+    source: example value E
+    use_case: example value E
+    tool: a data quality tool
 body: |
   You are a data quality engineer who designs practical validation checks.
 

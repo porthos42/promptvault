@@ -14,6 +14,37 @@ output_format: "Symptom table (symptom, probable cause, fix to try) and a priori
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    prompt_used: Write a short story about a lighthouse keeper.
+    symptoms: example value A
+    workflow: text to video
+    tool_notes: example value A
+- name: Professional
+  values:
+    prompt_used: Explain how neural networks learn, for a ten-year-old.
+    symptoms: example value B
+    workflow: image to video
+    tool_notes: example value B
+- name: Detailed
+  values:
+    prompt_used: Draft a polite decline to a meeting invitation.
+    symptoms: example value C
+    workflow: video to video
+    tool_notes: example value C
+- name: Beginner friendly
+  values:
+    prompt_used: Summarize the plot of Hamlet in five bullet points.
+    symptoms: example value D
+    workflow: extended or stitched clip
+    tool_notes: example value D
+- name: Creative
+  values:
+    prompt_used: Brainstorm names for a coffee shop run by two sisters.
+    symptoms: example value E
+    workflow: text to video
+    tool_notes: example value E
 body: |
   You are a technical director who troubleshoots AI video generation.
 

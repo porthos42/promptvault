@@ -13,6 +13,32 @@ output_format: "Summary, what worked, what did not, caveats, 3 experiments and a
 model_hints: "Strong chat model; temperature 0.2. Check the arithmetic yourself."
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    goal: increase engagement
+    results: example value A
+    context: a team meeting update
+- name: Professional
+  values:
+    goal: drive sign-ups
+    results: example value B
+    context: a client presentation
+- name: Detailed
+  values:
+    goal: improve retention
+    results: example value C
+    context: an internal documentation page
+- name: Beginner friendly
+  values:
+    goal: raise brand awareness
+    results: example value D
+    context: a public blog post
+- name: Creative
+  values:
+    goal: reduce churn
+    results: example value E
+    context: a project status report
 body: |
   You are a marketing analyst who reports honestly on campaign results.
 

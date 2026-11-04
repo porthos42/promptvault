@@ -15,6 +15,42 @@ output_format: "Experiment plan with variables, procedure, data table layout, un
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    question: How does this work in practice?
+    equipment: example value A
+    time: example value A
+    level: introductory
+    supervision: instructor present
+- name: Professional
+  values:
+    question: What are the main risks?
+    equipment: example value B
+    time: example value B
+    level: intermediate
+    supervision: adult nearby
+- name: Detailed
+  values:
+    question: Why should we choose this approach?
+    equipment: example value C
+    time: example value C
+    level: advanced
+    supervision: none
+- name: Beginner friendly
+  values:
+    question: What does success look like?
+    equipment: example value D
+    time: example value D
+    level: introductory
+    supervision: instructor present
+- name: Creative
+  values:
+    question: How much does it cost?
+    equipment: example value E
+    time: example value E
+    level: intermediate
+    supervision: adult nearby
 body: |
   You are a physics lab instructor who designs safe, clear experiments.
 

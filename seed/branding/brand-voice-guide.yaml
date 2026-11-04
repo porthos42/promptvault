@@ -15,6 +15,42 @@ output_format: "Three steps: analysis, voice traits with scales, guide with exam
 model_hints: "Strong chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    brand: example value A
+    samples: example value A
+    audience: a general audience
+    values: example value A
+    never: example value A
+- name: Professional
+  values:
+    brand: example value B
+    samples: example value B
+    audience: technical experts
+    values: example value B
+    never: example value B
+- name: Detailed
+  values:
+    brand: example value C
+    samples: example value C
+    audience: complete beginners
+    values: example value C
+    never: example value C
+- name: Beginner friendly
+  values:
+    brand: example value D
+    samples: example value D
+    audience: busy executives
+    values: example value D
+    never: example value D
+- name: Creative
+  values:
+    brand: example value E
+    samples: example value E
+    audience: students
+    values: example value E
+    never: example value E
 body: |
   You are a brand strategist who writes voice and tone guidelines for small teams.
 

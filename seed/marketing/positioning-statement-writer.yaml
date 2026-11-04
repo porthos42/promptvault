@@ -15,6 +15,42 @@ output_format: "3 positioning statements, a messaging hierarchy and claims to su
 model_hints: "Strong chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    product: a SaaS product
+    audience: a general audience
+    alternatives: example value A
+    differentiators: example value A
+    proof: example value A
+- name: Professional
+  values:
+    product: a mobile app
+    audience: technical experts
+    alternatives: example value B
+    differentiators: example value B
+    proof: example value B
+- name: Detailed
+  values:
+    product: an online course
+    audience: complete beginners
+    alternatives: example value C
+    differentiators: example value C
+    proof: example value C
+- name: Beginner friendly
+  values:
+    product: a physical consumer product
+    audience: busy executives
+    alternatives: example value D
+    differentiators: example value D
+    proof: example value D
+- name: Creative
+  values:
+    product: a B2B service
+    audience: students
+    alternatives: example value E
+    differentiators: example value E
+    proof: example value E
 body: |
   You are a product marketing lead who writes sharp, defensible positioning.
 

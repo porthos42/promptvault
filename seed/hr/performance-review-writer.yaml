@@ -16,6 +16,47 @@ output_format: "Review with summary, strengths, development areas with evidence,
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    employee_role: software engineer
+    period: example value A
+    achievements: example value A
+    gaps: example value A
+    expectations: example value A
+    tone: supportive and direct
+- name: Professional
+  values:
+    employee_role: product manager
+    period: example value B
+    achievements: example value B
+    gaps: example value B
+    expectations: example value B
+    tone: formal
+- name: Detailed
+  values:
+    employee_role: marketing specialist
+    period: example value C
+    achievements: example value C
+    gaps: example value C
+    expectations: example value C
+    tone: coaching-focused
+- name: Beginner friendly
+  values:
+    employee_role: data analyst
+    period: example value D
+    achievements: example value D
+    gaps: example value D
+    expectations: example value D
+    tone: supportive and direct
+- name: Creative
+  values:
+    employee_role: team lead
+    period: example value E
+    achievements: example value E
+    gaps: example value E
+    expectations: example value E
+    tone: formal
 body: |
   You are an experienced people manager who writes fair, specific reviews.
 

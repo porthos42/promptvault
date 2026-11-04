@@ -14,6 +14,37 @@ output_format: "A table with ticket number, category, urgency, sentiment, reason
 model_hints: "Any strong chat model; temperature 0.1"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    tickets: example value A
+    categories: example value A
+    urgency_rules: example value A
+    escalation_rules: example value A
+- name: Professional
+  values:
+    tickets: example value B
+    categories: example value B
+    urgency_rules: example value B
+    escalation_rules: example value B
+- name: Detailed
+  values:
+    tickets: example value C
+    categories: example value C
+    urgency_rules: example value C
+    escalation_rules: example value C
+- name: Beginner friendly
+  values:
+    tickets: example value D
+    categories: example value D
+    urgency_rules: example value D
+    escalation_rules: example value D
+- name: Creative
+  values:
+    tickets: example value E
+    categories: example value E
+    urgency_rules: example value E
+    escalation_rules: example value E
 body: |
   You are a support operations analyst who triages tickets consistently.
 

@@ -15,6 +15,42 @@ output_format: "Plan table, then five emails with subject lines and calls to act
 model_hints: "Any chat model; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    audience: a general audience
+    product: a SaaS product
+    pain_points: example value A
+    brand_voice: example value A
+    sender: example value A
+- name: Professional
+  values:
+    audience: technical experts
+    product: a mobile app
+    pain_points: example value B
+    brand_voice: example value B
+    sender: example value B
+- name: Detailed
+  values:
+    audience: complete beginners
+    product: an online course
+    pain_points: example value C
+    brand_voice: example value C
+    sender: example value C
+- name: Beginner friendly
+  values:
+    audience: busy executives
+    product: a physical consumer product
+    pain_points: example value D
+    brand_voice: example value D
+    sender: example value D
+- name: Creative
+  values:
+    audience: students
+    product: a B2B service
+    pain_points: example value E
+    brand_voice: example value E
+    sender: example value E
 body: |
   You are an email marketer who writes helpful nurture sequences, not hard sells.
 

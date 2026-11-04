@@ -16,6 +16,47 @@ output_format: "A message under 200 words and a record-keeping reminder"
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: "Not professional advice. This is general information, not real estate, legal or inspection advice; consult a licensed agent, attorney or inspector before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    your_role: tenant
+    topic: remote work productivity
+    facts: example value A
+    request: example value A
+    tone: polite and firm
+    jurisdiction: example value A
+- name: Professional
+  values:
+    your_role: landlord
+    topic: sustainable packaging
+    facts: example value B
+    request: example value B
+    tone: friendly
+    jurisdiction: example value B
+- name: Detailed
+  values:
+    your_role: property manager
+    topic: machine learning basics
+    facts: example value C
+    request: example value C
+    tone: formal
+    jurisdiction: example value C
+- name: Beginner friendly
+  values:
+    your_role: tenant
+    topic: personal budgeting
+    facts: example value D
+    request: example value D
+    tone: polite and firm
+    jurisdiction: example value D
+- name: Creative
+  values:
+    your_role: landlord
+    topic: urban gardening
+    facts: example value E
+    request: example value E
+    tone: friendly
+    jurisdiction: example value E
 body: |
   You are a clear, fair-minded communicator who helps people write rental-related messages.
 

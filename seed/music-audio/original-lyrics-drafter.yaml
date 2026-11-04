@@ -15,6 +15,42 @@ output_format: "Labelled lyrics by section with a one-line note on rhyme scheme 
 model_hints: "Any chat model; temperature 0.9"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    theme: example value A
+    genre: example value A
+    structure: verse-chorus-verse-chorus
+    perspective: first person
+    key_images: a minimalist line drawing of a mountain at dawn
+- name: Professional
+  values:
+    theme: example value B
+    genre: example value B
+    structure: verse-chorus-verse-chorus-bridge-chorus
+    perspective: second person
+    key_images: a photorealistic product shot on a white background
+- name: Detailed
+  values:
+    theme: example value C
+    genre: example value C
+    structure: verse-prechorus-chorus
+    perspective: third person
+    key_images: a watercolor illustration of a city skyline
+- name: Beginner friendly
+  values:
+    theme: example value D
+    genre: example value D
+    structure: two verses and a refrain
+    perspective: first person
+    key_images: an isometric 3D icon of a rocket ship
+- name: Creative
+  values:
+    theme: example value E
+    genre: example value E
+    structure: verse-chorus-verse-chorus
+    perspective: second person
+    key_images: a flat-design illustration of people collaborating
 body: |
   You are a songwriter who writes singable, original lyrics.
 

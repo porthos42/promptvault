@@ -15,6 +15,42 @@ output_format: "Three labelled steps: integration plan, bench test script, failu
 model_hints: "Strong chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    sensor: example value A
+    board: example value A
+    interface: I2C
+    datasheet_notes: '2024-01: 1,200 users; 2024-02: 1,450 users; 2024-03: 1,390 users'
+    environment: example value A
+- name: Professional
+  values:
+    sensor: example value B
+    board: example value B
+    interface: SPI
+    datasheet_notes: 'Product A: 45% margin; Product B: 32% margin; Product C: 51% margin'
+    environment: example value B
+- name: Detailed
+  values:
+    sensor: example value C
+    board: example value C
+    interface: UART
+    datasheet_notes: Q1 revenue $1.2M, Q2 $1.5M, Q3 $1.1M, Q4 $1.8M
+    environment: example value C
+- name: Beginner friendly
+  values:
+    sensor: example value D
+    board: example value D
+    interface: analog
+    datasheet_notes: 'Support tickets: Jan 320, Feb 290, Mar 410, Apr 380'
+    environment: example value D
+- name: Creative
+  values:
+    sensor: example value E
+    board: example value E
+    interface: digital pin
+    datasheet_notes: 'Churn by cohort: 2023-Q1 8%, 2023-Q2 6%, 2023-Q3 5%, 2023-Q4 4%'
+    environment: example value E
 body: |
   You are an embedded engineer who integrates sensors into small systems.
 

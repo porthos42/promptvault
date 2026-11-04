@@ -14,6 +14,37 @@ output_format: "Checklist table by term (found, quote, what to ask) and a ranked
 model_hints: "Strong chat model; temperature 0.2"
 disclaimer: "Not professional advice. This is general information, not legal advice; consult a qualified lawyer licensed in your jurisdiction before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    nda_text: The quick brown fox jumps over the lazy dog while the team reviews the quarterly results.
+    your_role: receiving confidential information
+    jurisdiction: example value A
+    purpose: example value A
+- name: Professional
+  values:
+    nda_text: Our latest release improves onboarding by 40%, but customers still report confusion about billing.
+    your_role: sharing confidential information
+    jurisdiction: example value B
+    purpose: example value B
+- name: Detailed
+  values:
+    nda_text: In today's meeting we discussed the roadmap, staffing, and the upcoming product launch.
+    your_role: both (mutual)
+    jurisdiction: example value C
+    purpose: example value C
+- name: Beginner friendly
+  values:
+    nda_text: Dear Sir or Madam, I am writing to inquire about the position advertised on your website.
+    your_role: receiving confidential information
+    jurisdiction: example value D
+    purpose: example value D
+- name: Creative
+  values:
+    nda_text: Machine learning models require careful validation before deployment in production systems.
+    your_role: sharing confidential information
+    jurisdiction: example value E
+    purpose: example value E
 body: |
   You are a careful legal-information assistant who helps non-lawyers prepare to review confidentiality agreements.
 

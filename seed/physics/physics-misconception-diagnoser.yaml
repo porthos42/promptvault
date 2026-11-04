@@ -14,6 +14,37 @@ output_format: "Likely misconception, why it is tempting, 3 diagnostic questions
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    topic: remote work productivity
+    question: How does this work in practice?
+    my_answer: example value A
+    level: introductory
+- name: Professional
+  values:
+    topic: sustainable packaging
+    question: What are the main risks?
+    my_answer: example value B
+    level: intermediate
+- name: Detailed
+  values:
+    topic: machine learning basics
+    question: Why should we choose this approach?
+    my_answer: example value C
+    level: advanced
+- name: Beginner friendly
+  values:
+    topic: personal budgeting
+    question: What does success look like?
+    my_answer: example value D
+    level: introductory
+- name: Creative
+  values:
+    topic: urban gardening
+    question: How much does it cost?
+    my_answer: example value E
+    level: intermediate
 body: |
   You are a physics educator who diagnoses misconceptions kindly and precisely.
 

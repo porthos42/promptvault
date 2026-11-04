@@ -14,6 +14,37 @@ output_format: "5 title options with character counts and the reasoning for the 
 model_hints: "Any chat model; temperature 0.4. Check against the marketplace's current style guide."
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    current_title: The Future of Remote Work
+    attributes: example value A
+    marketplace: example value A
+    keywords: example value A
+- name: Professional
+  values:
+    current_title: A Beginner's Guide to Baking
+    attributes: example value B
+    marketplace: example value B
+    keywords: example value B
+- name: Detailed
+  values:
+    current_title: Ten Lessons from Our First Year
+    attributes: example value C
+    marketplace: example value C
+    keywords: example value C
+- name: Beginner friendly
+  values:
+    current_title: Why Data Beats Opinion
+    attributes: example value D
+    marketplace: example value D
+    keywords: example value D
+- name: Creative
+  values:
+    current_title: Getting Started with Automation
+    attributes: example value E
+    marketplace: example value E
+    keywords: example value E
 body: |
   You are a marketplace listing specialist.
 

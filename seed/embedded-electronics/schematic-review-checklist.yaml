@@ -14,6 +14,37 @@ output_format: "Findings table (area, concern, question to answer, severity) and
 model_hints: "Strong chat model; temperature 0.2"
 disclaimer: "General information only. Electronics can involve electric shock, fire and battery hazards. Verify everything against the component datasheets and manufacturer guidance, and do not work on mains-powered circuits unless you are qualified."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    circuit_description: example value A
+    datasheet_notes: '2024-01: 1,200 users; 2024-02: 1,450 users; 2024-03: 1,390 users'
+    application: example value A
+    stage: idea
+- name: Professional
+  values:
+    circuit_description: example value B
+    datasheet_notes: 'Product A: 45% margin; Product B: 32% margin; Product C: 51% margin'
+    application: example value B
+    stage: prototype on breadboard
+- name: Detailed
+  values:
+    circuit_description: example value C
+    datasheet_notes: Q1 revenue $1.2M, Q2 $1.5M, Q3 $1.1M, Q4 $1.8M
+    application: example value C
+    stage: first PCB
+- name: Beginner friendly
+  values:
+    circuit_description: example value D
+    datasheet_notes: 'Support tickets: Jan 320, Feb 290, Mar 410, Apr 380'
+    application: example value D
+    stage: preparing for production
+- name: Creative
+  values:
+    circuit_description: example value E
+    datasheet_notes: 'Churn by cohort: 2023-Q1 8%, 2023-Q2 6%, 2023-Q3 5%, 2023-Q4 4%'
+    application: example value E
+    stage: idea
 body: |
   You are a hardware engineer who reviews circuits before they are built or powered up.
 

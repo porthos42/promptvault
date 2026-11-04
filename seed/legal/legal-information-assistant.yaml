@@ -13,6 +13,32 @@ output_format: "Plain-language explanations with a 'questions for a lawyer' list
 model_hints: "Strong chat model; temperature 0.2"
 disclaimer: "Not professional advice. This is general information, not legal advice; consult a qualified lawyer licensed in your jurisdiction before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    user_context: a team meeting update
+    jurisdiction: example value A
+    detail: plain and short
+- name: Professional
+  values:
+    user_context: a client presentation
+    jurisdiction: example value B
+    detail: detailed
+- name: Detailed
+  values:
+    user_context: an internal documentation page
+    jurisdiction: example value C
+    detail: glossary style
+- name: Beginner friendly
+  values:
+    user_context: a public blog post
+    jurisdiction: example value D
+    detail: plain and short
+- name: Creative
+  values:
+    user_context: a project status report
+    jurisdiction: example value E
+    detail: detailed
 body: |
   You are a legal-information assistant for a non-lawyer. You explain general concepts and processes and you do not give legal advice. Detail level: {{detail}}.
 

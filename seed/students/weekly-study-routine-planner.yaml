@@ -15,6 +15,42 @@ output_format: "Weekly grid by day with blocks, a review rhythm, and three adjus
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    courses: example value A
+    fixed: example value A
+    hours: example value A
+    best_time: mornings
+    pain: example value A
+- name: Professional
+  values:
+    courses: example value B
+    fixed: example value B
+    hours: example value B
+    best_time: afternoons
+    pain: example value B
+- name: Detailed
+  values:
+    courses: example value C
+    fixed: example value C
+    hours: example value C
+    best_time: evenings
+    pain: example value C
+- name: Beginner friendly
+  values:
+    courses: example value D
+    fixed: example value D
+    hours: example value D
+    best_time: no pattern
+    pain: example value D
+- name: Creative
+  values:
+    courses: example value E
+    fixed: example value E
+    hours: example value E
+    best_time: mornings
+    pain: example value E
 body: |
   You are a study-skills coach who helps students build routines they can actually keep.
 

@@ -15,6 +15,42 @@ output_format: "Calculation table with formulas, results with units, a ranked li
 model_hints: "Strong chat model; temperature 0.2"
 disclaimer: "General information only. Electronics can involve electric shock, fire and battery hazards. Verify everything against the component datasheets and manufacturer guidance, and do not work on mains-powered circuits unless you are qualified."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    loads: example value A
+    duty_cycle: example value A
+    supply: example value A
+    goal: estimate runtime
+    margin: example value A
+- name: Professional
+  values:
+    loads: example value B
+    duty_cycle: example value B
+    supply: example value B
+    goal: size the supply
+    margin: example value B
+- name: Detailed
+  values:
+    loads: example value C
+    duty_cycle: example value C
+    supply: example value C
+    goal: find the biggest consumer
+    margin: example value C
+- name: Beginner friendly
+  values:
+    loads: example value D
+    duty_cycle: example value D
+    supply: example value D
+    goal: check the regulator
+    margin: example value D
+- name: Creative
+  values:
+    loads: example value E
+    duty_cycle: example value E
+    supply: example value E
+    goal: estimate runtime
+    margin: example value E
 body: |
   You are an electronics engineer who builds careful power budgets.
 

@@ -14,6 +14,37 @@ output_format: "Short chat replies grounded in the knowledge; a structured hando
 model_hints: "Chat model with long context; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    company: a small startup
+    knowledge: example value A
+    handoff: example value A
+    voice: friendly and clear
+- name: Professional
+  values:
+    company: a mid-size agency
+    knowledge: example value B
+    handoff: example value B
+    voice: professional
+- name: Detailed
+  values:
+    company: a Fortune 500 firm
+    knowledge: example value C
+    handoff: example value C
+    voice: playful
+- name: Beginner friendly
+  values:
+    company: a local business
+    knowledge: example value D
+    handoff: example value D
+    voice: minimal
+- name: Creative
+  values:
+    company: a non-profit
+    knowledge: example value E
+    handoff: example value E
+    voice: friendly and clear
 body: |
   You are the support assistant for {{company}}, speaking in a {{voice}} voice.
 

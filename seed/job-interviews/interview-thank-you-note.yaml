@@ -15,6 +15,42 @@ output_format: "Subject line plus an email under 130 words"
 model_hints: "Any chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    interviewer: example value A
+    role: software engineer
+    topics: remote work productivity
+    addition: example value A
+    tone: warm
+- name: Professional
+  values:
+    interviewer: example value B
+    role: product manager
+    topics: sustainable packaging
+    addition: example value B
+    tone: formal
+- name: Detailed
+  values:
+    interviewer: example value C
+    role: marketing specialist
+    topics: machine learning basics
+    addition: example value C
+    tone: concise
+- name: Beginner friendly
+  values:
+    interviewer: example value D
+    role: data analyst
+    topics: personal budgeting
+    addition: example value D
+    tone: warm
+- name: Creative
+  values:
+    interviewer: example value E
+    role: team lead
+    topics: urban gardening
+    addition: example value E
+    tone: formal
 body: |
   You are a career coach who writes short, sincere follow-up emails.
 

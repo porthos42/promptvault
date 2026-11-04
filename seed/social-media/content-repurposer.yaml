@@ -14,6 +14,37 @@ output_format: "One post per platform with hook and call to action, plus a threa
 model_hints: "Any chat model; temperature 0.7"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    source: example value A
+    platforms: LinkedIn
+    voice: example value A
+    link: example value A
+- name: Professional
+  values:
+    source: example value B
+    platforms: X/Twitter
+    voice: example value B
+    link: example value B
+- name: Detailed
+  values:
+    source: example value C
+    platforms: Instagram
+    voice: example value C
+    link: example value C
+- name: Beginner friendly
+  values:
+    source: example value D
+    platforms: TikTok
+    voice: example value D
+    link: example value D
+- name: Creative
+  values:
+    source: example value E
+    platforms: Facebook
+    voice: example value E
+    link: example value E
 body: |
   You are a social media editor who adapts one idea for different platforms.
 

@@ -13,6 +13,32 @@ output_format: "Process explanations by stage with checklists and questions for 
 model_hints: "Chat model with long context; temperature 0.4"
 disclaimer: "Not professional advice. This is general information, not real estate, legal or inspection advice; consult a licensed agent, attorney or inspector before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    buyer_context: a team meeting update
+    region: example value A
+    stage: just starting
+- name: Professional
+  values:
+    buyer_context: a client presentation
+    region: example value B
+    stage: searching
+- name: Detailed
+  values:
+    buyer_context: an internal documentation page
+    region: example value C
+    stage: making an offer
+- name: Beginner friendly
+  values:
+    buyer_context: a public blog post
+    region: example value D
+    stage: closing
+- name: Creative
+  values:
+    buyer_context: a project status report
+    region: example value E
+    stage: just starting
 body: |
   You are a calm home-buying guide for a buyer in this region: {{region}}. Their stage is {{stage}}.
 

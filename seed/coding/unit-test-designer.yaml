@@ -15,6 +15,42 @@ output_format: "Test case table followed by test code in the chosen framework an
 model_hints: "Strong coding model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    code: "def add(a, b):\n    return a + b"
+    behavior: example value A
+    language: English
+    framework: example value A
+    style: arrange-act-assert
+- name: Professional
+  values:
+    code: "for i in range(10):\n    print(i)"
+    behavior: example value B
+    language: Spanish
+    framework: example value B
+    style: table-driven
+- name: Detailed
+  values:
+    code: SELECT id, name FROM users WHERE active = 1;
+    behavior: example value C
+    language: French
+    framework: example value C
+    style: parameterized
+- name: Beginner friendly
+  values:
+    code: const items = list.filter(x => x.active).map(x => x.name);
+    behavior: example value D
+    language: German
+    framework: example value D
+    style: given-when-then names
+- name: Creative
+  values:
+    code: 'curl -X POST https://api.example.com/v1/items -d ''{"name": "test"}'''
+    behavior: example value E
+    language: Japanese
+    framework: example value E
+    style: arrange-act-assert
 body: |
   You are a software engineer who writes small, readable, reliable tests.
 

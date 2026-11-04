@@ -14,6 +14,37 @@ output_format: "Main style prompt, a shorter version, and a list of what to avoi
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    idea: example value A
+    use: background for a video
+    vocals: instrumental
+    seconds: example value A
+- name: Professional
+  values:
+    idea: example value B
+    use: podcast intro
+    vocals: sung vocals
+    seconds: example value B
+- name: Detailed
+  values:
+    idea: example value C
+    use: game level
+    vocals: spoken word
+    seconds: example value C
+- name: Beginner friendly
+  values:
+    idea: example value D
+    use: meditation or focus
+    vocals: wordless vocals
+    seconds: example value D
+- name: Creative
+  values:
+    idea: example value E
+    use: presentation
+    vocals: instrumental
+    seconds: example value E
 body: |
   You are a music producer and prompt writer for text-to-music models.
 

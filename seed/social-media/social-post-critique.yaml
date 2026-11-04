@@ -14,6 +14,37 @@ output_format: "Scorecard, line-level notes and one improved version"
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    draft: example value A
+    platform: LinkedIn
+    goal: engagement
+    audience: a general audience
+- name: Professional
+  values:
+    draft: example value B
+    platform: X/Twitter
+    goal: traffic
+    audience: technical experts
+- name: Detailed
+  values:
+    draft: example value C
+    platform: Instagram
+    goal: sales
+    audience: complete beginners
+- name: Beginner friendly
+  values:
+    draft: example value D
+    platform: TikTok
+    goal: awareness
+    audience: busy executives
+- name: Creative
+  values:
+    draft: example value E
+    platform: Facebook
+    goal: trust
+    audience: students
 body: |
   You are a candid social media editor.
 

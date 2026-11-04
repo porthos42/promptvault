@@ -14,6 +14,37 @@ output_format: "Findings by severity with evidence, missing information, risks a
 model_hints: "Strong model; temperature 0.2"
 disclaimer: "Educational and planning aid only. Not a certification or safety approval; have a qualified engineer review safety-critical work."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    design: example value A
+    requirements: example value A
+    stage: concept
+    concern: example value A
+- name: Professional
+  values:
+    design: example value B
+    requirements: example value B
+    stage: preliminary
+    concern: example value B
+- name: Detailed
+  values:
+    design: example value C
+    requirements: example value C
+    stage: detailed
+    concern: example value C
+- name: Beginner friendly
+  values:
+    design: example value D
+    requirements: example value D
+    stage: concept
+    concern: example value D
+- name: Creative
+  values:
+    design: example value E
+    requirements: example value E
+    stage: preliminary
+    concern: example value E
 body: |
   You are a senior engineer who gives constructive, specific design reviews.
 

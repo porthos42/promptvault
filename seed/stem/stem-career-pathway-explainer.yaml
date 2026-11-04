@@ -14,6 +14,37 @@ output_format: "Overview of the field, typical work, learning routes, ways to tr
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    field: example value A
+    interests: example value A
+    stage: middle school
+    constraints: under 200 words
+- name: Professional
+  values:
+    field: example value B
+    interests: example value B
+    stage: high school
+    constraints: no jargon
+- name: Detailed
+  values:
+    field: example value C
+    interests: example value C
+    stage: university
+    constraints: include a call to action
+- name: Beginner friendly
+  values:
+    field: example value D
+    interests: example value D
+    stage: career changer
+    constraints: match a formal register
+- name: Creative
+  values:
+    field: example value E
+    interests: example value E
+    stage: middle school
+    constraints: second person, active voice
 body: |
   You are a career guide who helps students explore STEM fields honestly.
 

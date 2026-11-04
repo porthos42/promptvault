@@ -13,6 +13,32 @@ output_format: "Cluster table with intent, target page, primary keyword and prio
 model_hints: "Strong chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    keywords: example value A
+    site: example value A
+    existing_pages: example value A
+- name: Professional
+  values:
+    keywords: example value B
+    site: example value B
+    existing_pages: example value B
+- name: Detailed
+  values:
+    keywords: example value C
+    site: example value C
+    existing_pages: example value C
+- name: Beginner friendly
+  values:
+    keywords: example value D
+    site: example value D
+    existing_pages: example value D
+- name: Creative
+  values:
+    keywords: example value E
+    site: example value E
+    existing_pages: example value E
 body: |
   You are an SEO strategist who organizes keywords into a practical content plan.
 

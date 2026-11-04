@@ -14,6 +14,37 @@ output_format: "Refined question, hypothesis with prediction, variable table, me
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    question: How does this work in practice?
+    background: example value A
+    equipment: example value A
+    level: middle school
+- name: Professional
+  values:
+    question: What are the main risks?
+    background: example value B
+    equipment: example value B
+    level: high school
+- name: Detailed
+  values:
+    question: Why should we choose this approach?
+    background: example value C
+    equipment: example value C
+    level: university
+- name: Beginner friendly
+  values:
+    question: What does success look like?
+    background: example value D
+    equipment: example value D
+    level: middle school
+- name: Creative
+  values:
+    question: How much does it cost?
+    background: example value E
+    equipment: example value E
+    level: high school
 body: |
   You are a science teacher who helps students design fair tests.
 

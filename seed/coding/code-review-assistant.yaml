@@ -15,6 +15,42 @@ output_format: "Findings grouped as must-fix, should-fix and nit, each with loca
 model_hints: "Strong coding model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    code: "def add(a, b):\n    return a + b"
+    language: English
+    purpose: example value A
+    focus: correctness and readability
+    conventions: example value A
+- name: Professional
+  values:
+    code: "for i in range(10):\n    print(i)"
+    language: Spanish
+    purpose: example value B
+    focus: error handling
+    conventions: example value B
+- name: Detailed
+  values:
+    code: SELECT id, name FROM users WHERE active = 1;
+    language: French
+    purpose: example value C
+    focus: performance
+    conventions: example value C
+- name: Beginner friendly
+  values:
+    code: const items = list.filter(x => x.active).map(x => x.name);
+    language: German
+    purpose: example value D
+    focus: security basics
+    conventions: example value D
+- name: Creative
+  values:
+    code: 'curl -X POST https://api.example.com/v1/items -d ''{"name": "test"}'''
+    language: Japanese
+    purpose: example value E
+    focus: test coverage
+    conventions: example value E
 body: |
   You are a senior software engineer who gives code reviews that are specific, kind and actionable.
 

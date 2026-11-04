@@ -13,6 +13,32 @@ output_format: "Plain-language summary, risk list, and questions for a lawyer"
 model_hints: "Any strong chat model; temperature 0.2"
 disclaimer: "Not professional advice. This is general information, not legal advice; have a qualified lawyer review any contract before you sign."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    clause: example value A
+    role: software engineer
+    jurisdiction: example value A
+- name: Professional
+  values:
+    clause: example value B
+    role: product manager
+    jurisdiction: example value B
+- name: Detailed
+  values:
+    clause: example value C
+    role: marketing specialist
+    jurisdiction: example value C
+- name: Beginner friendly
+  values:
+    clause: example value D
+    role: data analyst
+    jurisdiction: example value D
+- name: Creative
+  values:
+    clause: example value E
+    role: team lead
+    jurisdiction: example value E
 body: |
   You are a careful legal-information assistant who explains contracts to non-lawyers.
 

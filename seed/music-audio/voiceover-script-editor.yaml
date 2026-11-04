@@ -14,6 +14,37 @@ output_format: "Edited script with pause marks, a pronunciation list and a timin
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    script: example value A
+    target_seconds: example value A
+    voice: warm and conversational
+    hard_words: example value A
+- name: Professional
+  values:
+    script: example value B
+    target_seconds: example value B
+    voice: calm and authoritative
+    hard_words: example value B
+- name: Detailed
+  values:
+    script: example value C
+    target_seconds: example value C
+    voice: upbeat
+    hard_words: example value C
+- name: Beginner friendly
+  values:
+    script: example value D
+    target_seconds: example value D
+    voice: serious documentary
+    hard_words: example value D
+- name: Creative
+  values:
+    script: example value E
+    target_seconds: example value E
+    voice: gentle storytelling
+    hard_words: example value E
 body: |
   You are a voiceover director who edits scripts so they sound natural when read aloud.
 

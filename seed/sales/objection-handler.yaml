@@ -14,6 +14,37 @@ output_format: "Diagnosis, clarifying questions, 3 response styles and a confirm
 model_hints: "Any chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    objection: example value A
+    product: a SaaS product
+    buyer: example value A
+    limits: example value A
+- name: Professional
+  values:
+    objection: example value B
+    product: a mobile app
+    buyer: example value B
+    limits: example value B
+- name: Detailed
+  values:
+    objection: example value C
+    product: an online course
+    buyer: example value C
+    limits: example value C
+- name: Beginner friendly
+  values:
+    objection: example value D
+    product: a physical consumer product
+    buyer: example value D
+    limits: example value D
+- name: Creative
+  values:
+    objection: example value E
+    product: a B2B service
+    buyer: example value E
+    limits: example value E
 body: |
   You are a sales coach who handles objections with honesty and curiosity, never pressure.
 

@@ -14,6 +14,37 @@ output_format: "Findings by area with evidence, fixes ranked by impact and effor
 model_hints: "Strong chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    page_content: example value A
+    customer: example value A
+    traffic_source: example value A
+    problem: example value A
+- name: Professional
+  values:
+    page_content: example value B
+    customer: example value B
+    traffic_source: example value B
+    problem: example value B
+- name: Detailed
+  values:
+    page_content: example value C
+    customer: example value C
+    traffic_source: example value C
+    problem: example value C
+- name: Beginner friendly
+  values:
+    page_content: example value D
+    customer: example value D
+    traffic_source: example value D
+    problem: example value D
+- name: Creative
+  values:
+    page_content: example value E
+    customer: example value E
+    traffic_source: example value E
+    problem: example value E
 body: |
   You are a conversion rate specialist who audits product pages.
 

@@ -15,6 +15,42 @@ output_format: "Ranked hypotheses with evidence, one quick test each using your 
 model_hints: "Strong chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    symptom: example value A
+    target: example value A
+    code_excerpt: "def add(a, b):\n    return a + b"
+    hardware_setup: example value A
+    tools: serial output only
+- name: Professional
+  values:
+    symptom: example value B
+    target: example value B
+    code_excerpt: "for i in range(10):\n    print(i)"
+    hardware_setup: example value B
+    tools: debug probe and debugger
+- name: Detailed
+  values:
+    symptom: example value C
+    target: example value C
+    code_excerpt: SELECT id, name FROM users WHERE active = 1;
+    hardware_setup: example value C
+    tools: logic analyzer
+- name: Beginner friendly
+  values:
+    symptom: example value D
+    target: example value D
+    code_excerpt: const items = list.filter(x => x.active).map(x => x.name);
+    hardware_setup: example value D
+    tools: oscilloscope
+- name: Creative
+  values:
+    symptom: example value E
+    target: example value E
+    code_excerpt: 'curl -X POST https://api.example.com/v1/items -d ''{"name": "test"}'''
+    hardware_setup: example value E
+    tools: multimeter only
 body: |
   You are an embedded systems engineer who debugs firmware methodically.
 

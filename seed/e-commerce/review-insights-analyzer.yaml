@@ -13,6 +13,32 @@ output_format: "Theme table with counts and quotes, root-cause hypotheses and re
 model_hints: "Long-context chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    reviews: example value A
+    product: a SaaS product
+    question: How does this work in practice?
+- name: Professional
+  values:
+    reviews: example value B
+    product: a mobile app
+    question: What are the main risks?
+- name: Detailed
+  values:
+    reviews: example value C
+    product: an online course
+    question: Why should we choose this approach?
+- name: Beginner friendly
+  values:
+    reviews: example value D
+    product: a physical consumer product
+    question: What does success look like?
+- name: Creative
+  values:
+    reviews: example value E
+    product: a B2B service
+    question: How much does it cost?
 body: |
   You are a customer insights analyst for an online store.
 

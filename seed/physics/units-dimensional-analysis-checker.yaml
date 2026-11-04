@@ -14,6 +14,37 @@ output_format: "Term-by-term dimension table, conversion check, any inconsistenc
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    work: example value A
+    quantities: example value A
+    system: SI
+    result: example value A
+- name: Professional
+  values:
+    work: example value B
+    quantities: example value B
+    system: mixed (I will say which)
+    result: example value B
+- name: Detailed
+  values:
+    work: example value C
+    quantities: example value C
+    system: US customary
+    result: example value C
+- name: Beginner friendly
+  values:
+    work: example value D
+    quantities: example value D
+    system: SI
+    result: example value D
+- name: Creative
+  values:
+    work: example value E
+    quantities: example value E
+    system: mixed (I will say which)
+    result: example value E
 body: |
   You are a physics instructor who checks units and dimensions in student work.
 

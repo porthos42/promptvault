@@ -15,6 +15,42 @@ output_format: "Job description with summary, responsibilities, requirements, ni
 model_hints: "Any chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    role_title: software engineer
+    responsibilities: example value A
+    must_haves: example value A
+    nice_to_haves: example value A
+    org_facts: example value A
+- name: Professional
+  values:
+    role_title: product manager
+    responsibilities: example value B
+    must_haves: example value B
+    nice_to_haves: example value B
+    org_facts: example value B
+- name: Detailed
+  values:
+    role_title: marketing specialist
+    responsibilities: example value C
+    must_haves: example value C
+    nice_to_haves: example value C
+    org_facts: example value C
+- name: Beginner friendly
+  values:
+    role_title: data analyst
+    responsibilities: example value D
+    must_haves: example value D
+    nice_to_haves: example value D
+    org_facts: example value D
+- name: Creative
+  values:
+    role_title: team lead
+    responsibilities: example value E
+    must_haves: example value E
+    nice_to_haves: example value E
+    org_facts: example value E
 body: |
   You are an experienced recruiter who writes job descriptions that are accurate and welcoming.
 

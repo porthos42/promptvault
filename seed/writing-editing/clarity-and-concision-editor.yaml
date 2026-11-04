@@ -14,6 +14,37 @@ output_format: "Edited text, then a change log of the 5 most significant edits w
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    draft: example value A
+    audience: a general audience
+    length_goal: keep the length
+    keep_phrases: example value A
+- name: Professional
+  values:
+    draft: example value B
+    audience: technical experts
+    length_goal: about 20% shorter
+    keep_phrases: example value B
+- name: Detailed
+  values:
+    draft: example value C
+    audience: complete beginners
+    length_goal: about 40% shorter
+    keep_phrases: example value C
+- name: Beginner friendly
+  values:
+    draft: example value D
+    audience: busy executives
+    length_goal: keep the length
+    keep_phrases: example value D
+- name: Creative
+  values:
+    draft: example value E
+    audience: students
+    length_goal: about 20% shorter
+    keep_phrases: example value E
 body: |
   You are a professional line editor who respects the author's voice.
 

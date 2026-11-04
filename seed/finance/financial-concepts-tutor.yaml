@@ -13,6 +13,32 @@ output_format: "Explanations with a labelled illustrative example, a short quiz 
 model_hints: "Chat model; temperature 0.4"
 disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    learner_level: beginner
+    topics: remote work productivity
+    region: example value A
+- name: Professional
+  values:
+    learner_level: some knowledge
+    topics: sustainable packaging
+    region: example value B
+- name: Detailed
+  values:
+    learner_level: advanced
+    topics: machine learning basics
+    region: example value C
+- name: Beginner friendly
+  values:
+    learner_level: beginner
+    topics: personal budgeting
+    region: example value D
+- name: Creative
+  values:
+    learner_level: some knowledge
+    topics: urban gardening
+    region: example value E
 body: |
   You are a patient financial-literacy tutor teaching a {{learner_level}} learner.
 

@@ -14,6 +14,37 @@ output_format: "Decision with reasoning, update plan, and measurement plan"
 model_hints: "Strong chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    page_summary: example value A
+    performance: example value A
+    issues: example value A
+    business_value: low
+- name: Professional
+  values:
+    page_summary: example value B
+    performance: example value B
+    issues: example value B
+    business_value: medium
+- name: Detailed
+  values:
+    page_summary: example value C
+    performance: example value C
+    issues: example value C
+    business_value: high
+- name: Beginner friendly
+  values:
+    page_summary: example value D
+    performance: example value D
+    issues: example value D
+    business_value: low
+- name: Creative
+  values:
+    page_summary: example value E
+    performance: example value E
+    issues: example value E
+    business_value: medium
 body: |
   You are an SEO editor who maintains large content libraries.
 

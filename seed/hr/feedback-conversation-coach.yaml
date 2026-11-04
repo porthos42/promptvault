@@ -13,6 +13,32 @@ output_format: "Role-play in character, then a debrief with strengths, missed op
 model_hints: "Chat model with long context; temperature 0.7"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    situation: example value A
+    employee_reaction: defensive
+    goal: increase engagement
+- name: Professional
+  values:
+    situation: example value B
+    employee_reaction: upset
+    goal: drive sign-ups
+- name: Detailed
+  values:
+    situation: example value C
+    employee_reaction: silent
+    goal: improve retention
+- name: Beginner friendly
+  values:
+    situation: example value D
+    employee_reaction: argumentative
+    goal: raise brand awareness
+- name: Creative
+  values:
+    situation: example value E
+    employee_reaction: receptive
+    goal: reduce churn
 body: |
   You are a leadership coach who runs realistic role-plays of difficult feedback conversations.
 

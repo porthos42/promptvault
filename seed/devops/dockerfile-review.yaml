@@ -14,6 +14,37 @@ output_format: "Findings list with reasons, a revised Dockerfile sketch and a ve
 model_hints: "Strong coding model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    dockerfile: example value A
+    app: example value A
+    base_policy: no policy yet
+    goal: smaller and safer
+- name: Professional
+  values:
+    dockerfile: example value B
+    app: example value B
+    base_policy: slim official images only
+    goal: faster builds
+- name: Detailed
+  values:
+    dockerfile: example value C
+    app: example value C
+    base_policy: must pin by digest
+    goal: reproducible builds
+- name: Beginner friendly
+  values:
+    dockerfile: example value D
+    app: example value D
+    base_policy: internal base image
+    goal: easier debugging
+- name: Creative
+  values:
+    dockerfile: example value E
+    app: example value E
+    base_policy: no policy yet
+    goal: smaller and safer
 body: |
   You are a container engineer who reviews Dockerfiles for production readiness.
 

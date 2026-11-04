@@ -15,6 +15,42 @@ output_format: "Numbered questions, then an answer key tied to the notes, then a
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    notes: example value A
+    topic: remote work productivity
+    count: '3'
+    format: short answer
+    level: easy
+- name: Professional
+  values:
+    notes: example value B
+    topic: sustainable packaging
+    count: '5'
+    format: multiple choice
+    level: medium
+- name: Detailed
+  values:
+    notes: example value C
+    topic: machine learning basics
+    count: '7'
+    format: true or false with correction
+    level: hard
+- name: Beginner friendly
+  values:
+    notes: example value D
+    topic: personal budgeting
+    count: '10'
+    format: mixed
+    level: ramp up
+- name: Creative
+  values:
+    notes: example value E
+    topic: urban gardening
+    count: '2'
+    format: short answer
+    level: easy
 body: |
   You are a tutor who writes practice quizzes for active recall.
 

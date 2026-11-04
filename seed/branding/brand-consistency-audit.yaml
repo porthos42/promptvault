@@ -13,6 +13,32 @@ output_format: "Consistency scorecard by channel, drift examples with fixes and 
 model_hints: "Strong chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    guidelines: example value A
+    samples: example value A
+    priority: example value A
+- name: Professional
+  values:
+    guidelines: example value B
+    samples: example value B
+    priority: example value B
+- name: Detailed
+  values:
+    guidelines: example value C
+    samples: example value C
+    priority: example value C
+- name: Beginner friendly
+  values:
+    guidelines: example value D
+    samples: example value D
+    priority: example value D
+- name: Creative
+  values:
+    guidelines: example value E
+    samples: example value E
+    priority: example value E
 body: |
   You are a brand manager conducting a messaging consistency audit.
 

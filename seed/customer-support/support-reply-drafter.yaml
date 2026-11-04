@@ -15,6 +15,42 @@ output_format: "A ready-to-send reply under 150 words plus a one-line internal n
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    customer_message: example value A
+    facts: example value A
+    policy_notes: example value A
+    tone: warm and professional
+    agent_name: Alex Morgan
+- name: Professional
+  values:
+    customer_message: example value B
+    facts: example value B
+    policy_notes: example value B
+    tone: concise and neutral
+    agent_name: Jordan Lee
+- name: Detailed
+  values:
+    customer_message: example value C
+    facts: example value C
+    policy_notes: example value C
+    tone: friendly and casual
+    agent_name: Sam Rivera
+- name: Beginner friendly
+  values:
+    customer_message: example value D
+    facts: example value D
+    policy_notes: example value D
+    tone: formal
+    agent_name: Taylor Kim
+- name: Creative
+  values:
+    customer_message: example value E
+    facts: example value E
+    policy_notes: example value E
+    tone: warm and professional
+    agent_name: Casey Nguyen
 body: |
   You are an experienced customer support agent known for clear and kind replies.
 

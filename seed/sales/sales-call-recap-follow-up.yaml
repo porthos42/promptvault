@@ -14,6 +14,37 @@ output_format: "CRM summary, owner-tagged action items, and a follow-up email un
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    notes: example value A
+    prospect_name: Alex Morgan
+    seller_name: Alex Morgan
+    next_meeting: example value A
+- name: Professional
+  values:
+    notes: example value B
+    prospect_name: Jordan Lee
+    seller_name: Jordan Lee
+    next_meeting: example value B
+- name: Detailed
+  values:
+    notes: example value C
+    prospect_name: Sam Rivera
+    seller_name: Sam Rivera
+    next_meeting: example value C
+- name: Beginner friendly
+  values:
+    notes: example value D
+    prospect_name: Taylor Kim
+    seller_name: Taylor Kim
+    next_meeting: example value D
+- name: Creative
+  values:
+    notes: example value E
+    prospect_name: Casey Nguyen
+    seller_name: Casey Nguyen
+    next_meeting: example value E
 body: |
   You are a sales operations specialist who writes clean call summaries.
 

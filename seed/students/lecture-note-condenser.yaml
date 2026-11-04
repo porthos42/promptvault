@@ -14,6 +14,37 @@ output_format: "Study sheet with key ideas, definitions, relationships, gaps in 
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    notes: example value A
+    course: example value A
+    length: half a page
+    goal: increase engagement
+- name: Professional
+  values:
+    notes: example value B
+    course: example value B
+    length: one page
+    goal: drive sign-ups
+- name: Detailed
+  values:
+    notes: example value C
+    course: example value C
+    length: two pages
+    goal: improve retention
+- name: Beginner friendly
+  values:
+    notes: example value D
+    course: example value D
+    length: half a page
+    goal: raise brand awareness
+- name: Creative
+  values:
+    notes: example value E
+    course: example value E
+    length: one page
+    goal: reduce churn
 body: |
   You are a study coach who helps students turn raw notes into clear study sheets.
 

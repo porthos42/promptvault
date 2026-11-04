@@ -13,6 +13,32 @@ output_format: "3 alternative bullets, each under 25 words"
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    job_title: software engineer
+    bullet: example value A
+    metrics: example value A
+- name: Professional
+  values:
+    job_title: data analyst
+    bullet: example value B
+    metrics: example value B
+- name: Detailed
+  values:
+    job_title: product manager
+    bullet: example value C
+    metrics: example value C
+- name: Beginner friendly
+  values:
+    job_title: marketing manager
+    bullet: example value D
+    metrics: example value D
+- name: Creative
+  values:
+    job_title: customer success lead
+    bullet: example value E
+    metrics: example value E
 body: |
   You are an expert resume writer who specializes in ATS-friendly resumes.
 

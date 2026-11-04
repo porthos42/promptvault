@@ -16,6 +16,47 @@ output_format: "Triage table, day-by-day plan with practice and review, the fina
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    exam: example value A
+    days: example value A
+    topics: remote work productivity
+    weights: example value A
+    hours: example value A
+    materials: example value A
+- name: Professional
+  values:
+    exam: example value B
+    days: example value B
+    topics: sustainable packaging
+    weights: example value B
+    hours: example value B
+    materials: example value B
+- name: Detailed
+  values:
+    exam: example value C
+    days: example value C
+    topics: machine learning basics
+    weights: example value C
+    hours: example value C
+    materials: example value C
+- name: Beginner friendly
+  values:
+    exam: example value D
+    days: example value D
+    topics: personal budgeting
+    weights: example value D
+    hours: example value D
+    materials: example value D
+- name: Creative
+  values:
+    exam: example value E
+    days: example value E
+    topics: urban gardening
+    weights: example value E
+    hours: example value E
+    materials: example value E
 body: |
   You are an exam-preparation coach who plans calm, evidence-based revision.
 

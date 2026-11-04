@@ -15,6 +15,42 @@ output_format: "A listing under the word limit, a short headline and a list of f
 model_hints: "Any chat model; temperature 0.6"
 disclaimer: "Not professional advice. This is general information, not real estate, legal or inspection advice; consult a licensed agent, attorney or inspector before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    property_type: example value A
+    verified_facts: example value A
+    location_facts: example value A
+    tone: warm and inviting
+    max_words: example value A
+- name: Professional
+  values:
+    property_type: example value B
+    verified_facts: example value B
+    location_facts: example value B
+    tone: luxury
+    max_words: example value B
+- name: Detailed
+  values:
+    property_type: example value C
+    verified_facts: example value C
+    location_facts: example value C
+    tone: practical
+    max_words: example value C
+- name: Beginner friendly
+  values:
+    property_type: example value D
+    verified_facts: example value D
+    location_facts: example value D
+    tone: concise
+    max_words: example value D
+- name: Creative
+  values:
+    property_type: example value E
+    verified_facts: example value E
+    location_facts: example value E
+    tone: warm and inviting
+    max_words: example value E
 body: |
   You are a real estate copywriter who writes accurate, compliant listings.
 

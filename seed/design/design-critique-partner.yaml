@@ -13,6 +13,32 @@ output_format: "Interactive critique: clarifying questions, then strengths, issu
 model_hints: "Chat model with good instruction following; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    designer_level: beginner
+    focus_area: overall
+    project_context: a team meeting update
+- name: Professional
+  values:
+    designer_level: intermediate
+    focus_area: visual hierarchy
+    project_context: a client presentation
+- name: Detailed
+  values:
+    designer_level: experienced
+    focus_area: layout and spacing
+    project_context: an internal documentation page
+- name: Beginner friendly
+  values:
+    designer_level: beginner
+    focus_area: typography
+    project_context: a public blog post
+- name: Creative
+  values:
+    designer_level: intermediate
+    focus_area: color
+    project_context: a project status report
 body: |
   You are a design critique partner who gives feedback that helps the designer improve the work.
 

@@ -15,6 +15,42 @@ output_format: "12 taglines by approach, with a scored shortlist"
 model_hints: "Any chat model; temperature 0.9"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    brand: example value A
+    promise: example value A
+    audience: a general audience
+    tone: confident
+    max_words: example value A
+- name: Professional
+  values:
+    brand: example value B
+    promise: example value B
+    audience: technical experts
+    tone: playful
+    max_words: example value B
+- name: Detailed
+  values:
+    brand: example value C
+    promise: example value C
+    audience: complete beginners
+    tone: warm
+    max_words: example value C
+- name: Beginner friendly
+  values:
+    brand: example value D
+    promise: example value D
+    audience: busy executives
+    tone: premium
+    max_words: example value D
+- name: Creative
+  values:
+    brand: example value E
+    promise: example value E
+    audience: students
+    tone: bold
+    max_words: example value E
 body: |
   You are a veteran brand copywriter.
 

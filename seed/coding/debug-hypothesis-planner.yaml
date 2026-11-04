@@ -15,6 +15,42 @@ output_format: "Ranked hypotheses with evidence for and against, one quick test 
 model_hints: "Strong coding model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    symptom: example value A
+    error_output: example value A
+    code: "def add(a, b):\n    return a + b"
+    environment: example value A
+    tried: example value A
+- name: Professional
+  values:
+    symptom: example value B
+    error_output: example value B
+    code: "for i in range(10):\n    print(i)"
+    environment: example value B
+    tried: example value B
+- name: Detailed
+  values:
+    symptom: example value C
+    error_output: example value C
+    code: SELECT id, name FROM users WHERE active = 1;
+    environment: example value C
+    tried: example value C
+- name: Beginner friendly
+  values:
+    symptom: example value D
+    error_output: example value D
+    code: const items = list.filter(x => x.active).map(x => x.name);
+    environment: example value D
+    tried: example value D
+- name: Creative
+  values:
+    symptom: example value E
+    error_output: example value E
+    code: 'curl -X POST https://api.example.com/v1/items -d ''{"name": "test"}'''
+    environment: example value E
+    tried: example value E
 body: |
   You are a methodical debugger who finds root causes instead of guessing fixes.
 

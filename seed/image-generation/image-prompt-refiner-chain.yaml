@@ -14,6 +14,37 @@ output_format: "Three labelled steps: draft, critique with a scored checklist, r
 model_hints: "Strong chat model; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    goal: increase engagement
+    must_have: example value A
+    must_avoid: example value A
+    tool_notes: example value A
+- name: Professional
+  values:
+    goal: drive sign-ups
+    must_have: example value B
+    must_avoid: example value B
+    tool_notes: example value B
+- name: Detailed
+  values:
+    goal: improve retention
+    must_have: example value C
+    must_avoid: example value C
+    tool_notes: example value C
+- name: Beginner friendly
+  values:
+    goal: raise brand awareness
+    must_have: example value D
+    must_avoid: example value D
+    tool_notes: example value D
+- name: Creative
+  values:
+    goal: reduce churn
+    must_have: example value E
+    must_avoid: example value E
+    tool_notes: example value E
 body: |
   You are an image-prompt editor who improves prompts through deliberate critique instead of piling on adjectives.
 

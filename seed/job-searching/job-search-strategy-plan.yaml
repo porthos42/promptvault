@@ -15,6 +15,42 @@ output_format: "Plan with targets, channel mix, weekly schedule, metrics and ris
 model_hints: "Strong chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    goal: increase engagement
+    background: example value A
+    hours: example value A
+    timeline: 1 month
+    constraints: under 200 words
+- name: Professional
+  values:
+    goal: drive sign-ups
+    background: example value B
+    hours: example value B
+    timeline: 3 months
+    constraints: no jargon
+- name: Detailed
+  values:
+    goal: improve retention
+    background: example value C
+    hours: example value C
+    timeline: 6 months
+    constraints: include a call to action
+- name: Beginner friendly
+  values:
+    goal: raise brand awareness
+    background: example value D
+    hours: example value D
+    timeline: no deadline
+    constraints: match a formal register
+- name: Creative
+  values:
+    goal: reduce churn
+    background: example value E
+    hours: example value E
+    timeline: 1 month
+    constraints: second person, active voice
 body: |
   You are an experienced career strategist who plans job searches for people at all levels.
 

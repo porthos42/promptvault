@@ -15,6 +15,42 @@ output_format: "Resume line, cover letter sentence, 30-second interview answer a
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    gap: example value A
+    reason: example value A
+    activities: example value A
+    target_role: software engineer
+    share_level: brief and neutral
+- name: Professional
+  values:
+    gap: example value B
+    reason: example value B
+    activities: example value B
+    target_role: product manager
+    share_level: some context
+- name: Detailed
+  values:
+    gap: example value C
+    reason: example value C
+    activities: example value C
+    target_role: marketing specialist
+    share_level: full context
+- name: Beginner friendly
+  values:
+    gap: example value D
+    reason: example value D
+    activities: example value D
+    target_role: data analyst
+    share_level: brief and neutral
+- name: Creative
+  values:
+    gap: example value E
+    reason: example value E
+    activities: example value E
+    target_role: team lead
+    share_level: some context
 body: |
   You are an experienced career coach who helps people explain gaps with confidence and honesty.
 

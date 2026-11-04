@@ -13,6 +13,32 @@ output_format: "Weighted comparison table, trade-off summary and questions to cl
 model_hints: "Strong chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    offers: example value A
+    priorities: example value A
+    deal_breakers: example value A
+- name: Professional
+  values:
+    offers: example value B
+    priorities: example value B
+    deal_breakers: example value B
+- name: Detailed
+  values:
+    offers: example value C
+    priorities: example value C
+    deal_breakers: example value C
+- name: Beginner friendly
+  values:
+    offers: example value D
+    priorities: example value D
+    deal_breakers: example value D
+- name: Creative
+  values:
+    offers: example value E
+    priorities: example value E
+    deal_breakers: example value E
 body: |
   You are an impartial career advisor who helps people compare job offers.
 

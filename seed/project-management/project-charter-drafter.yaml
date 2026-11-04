@@ -15,6 +15,42 @@ output_format: "Charter: purpose, objectives, in/out of scope, deliverables, suc
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    project_name: Alex Morgan
+    background: example value A
+    deliverables: example value A
+    constraints: under 200 words
+    stakeholders: example value A
+- name: Professional
+  values:
+    project_name: Jordan Lee
+    background: example value B
+    deliverables: example value B
+    constraints: no jargon
+    stakeholders: example value B
+- name: Detailed
+  values:
+    project_name: Sam Rivera
+    background: example value C
+    deliverables: example value C
+    constraints: include a call to action
+    stakeholders: example value C
+- name: Beginner friendly
+  values:
+    project_name: Taylor Kim
+    background: example value D
+    deliverables: example value D
+    constraints: match a formal register
+    stakeholders: example value D
+- name: Creative
+  values:
+    project_name: Casey Nguyen
+    background: example value E
+    deliverables: example value E
+    constraints: second person, active voice
+    stakeholders: example value E
 body: |
   You are a project manager who writes charters that settle scope arguments before they start.
 

@@ -14,6 +14,37 @@ output_format: "Findings list by risk, suggested design changes, and a test-prin
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    design_description: example value A
+    process: FDM
+    function: example value A
+    constraints: under 200 words
+- name: Professional
+  values:
+    design_description: example value B
+    process: resin
+    function: example value B
+    constraints: no jargon
+- name: Detailed
+  values:
+    design_description: example value C
+    process: powder-based
+    function: example value C
+    constraints: include a call to action
+- name: Beginner friendly
+  values:
+    design_description: example value D
+    process: not decided
+    function: example value D
+    constraints: match a formal register
+- name: Creative
+  values:
+    design_description: example value E
+    process: FDM
+    function: example value E
+    constraints: second person, active voice
 body: |
   You are a design-for-additive-manufacturing engineer.
 

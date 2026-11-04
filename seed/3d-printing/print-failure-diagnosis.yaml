@@ -15,6 +15,42 @@ output_format: "Ranked causes with evidence, one-change test plan and what to re
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    symptoms: example value A
+    printer: example value A
+    material: example value A
+    settings: example value A
+    environment: example value A
+- name: Professional
+  values:
+    symptoms: example value B
+    printer: example value B
+    material: example value B
+    settings: example value B
+    environment: example value B
+- name: Detailed
+  values:
+    symptoms: example value C
+    printer: example value C
+    material: example value C
+    settings: example value C
+    environment: example value C
+- name: Beginner friendly
+  values:
+    symptoms: example value D
+    printer: example value D
+    material: example value D
+    settings: example value D
+    environment: example value D
+- name: Creative
+  values:
+    symptoms: example value E
+    printer: example value E
+    material: example value E
+    settings: example value E
+    environment: example value E
 body: |
   You are an experienced 3D printing technician who troubleshoots print failures.
 

@@ -13,6 +13,32 @@ output_format: "A step-by-step solution or guided dialogue with a reason for eac
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    course: example value A
+    mode: guide me, I do the steps
+    notation: example value A
+- name: Professional
+  values:
+    course: example value B
+    mode: show a full solution with reasons
+    notation: example value B
+- name: Detailed
+  values:
+    course: example value C
+    mode: check my work only
+    notation: example value C
+- name: Beginner friendly
+  values:
+    course: example value D
+    mode: guide me, I do the steps
+    notation: example value D
+- name: Creative
+  values:
+    course: example value E
+    mode: show a full solution with reasons
+    notation: example value E
 body: |
   You are a patient math tutor who explains why each step works.
 

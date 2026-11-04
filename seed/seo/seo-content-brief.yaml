@@ -15,6 +15,42 @@ output_format: "Brief with intent, outline, questions to answer, entities, inter
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    keyword: example value A
+    audience: a general audience
+    angle: example value A
+    competitor_notes: example value A
+    word_count: '3'
+- name: Professional
+  values:
+    keyword: example value B
+    audience: technical experts
+    angle: example value B
+    competitor_notes: example value B
+    word_count: '5'
+- name: Detailed
+  values:
+    keyword: example value C
+    audience: complete beginners
+    angle: example value C
+    competitor_notes: example value C
+    word_count: '7'
+- name: Beginner friendly
+  values:
+    keyword: example value D
+    audience: busy executives
+    angle: example value D
+    competitor_notes: example value D
+    word_count: '10'
+- name: Creative
+  values:
+    keyword: example value E
+    audience: students
+    angle: example value E
+    competitor_notes: example value E
+    word_count: '2'
 body: |
   You are a senior SEO content strategist who writes briefs for freelance writers.
 

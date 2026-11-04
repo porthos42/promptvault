@@ -14,6 +14,37 @@ output_format: "Report with summary, purpose, method, results, discussion, limit
 model_hints: "Strong model; temperature 0.3"
 disclaimer: "Educational and planning aid only. Not a certification or safety approval; have a qualified engineer review safety-critical work."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    findings: example value A
+    purpose: example value A
+    audience: technical peers
+    length: 1 page
+- name: Professional
+  values:
+    findings: example value B
+    purpose: example value B
+    audience: management
+    length: 2 to 3 pages
+- name: Detailed
+  values:
+    findings: example value C
+    purpose: example value C
+    audience: client
+    length: 5 pages
+- name: Beginner friendly
+  values:
+    findings: example value D
+    purpose: example value D
+    audience: mixed
+    length: 1 page
+- name: Creative
+  values:
+    findings: example value E
+    purpose: example value E
+    audience: technical peers
+    length: 2 to 3 pages
 body: |
   You are an engineer and technical writer who produces precise, readable reports.
 

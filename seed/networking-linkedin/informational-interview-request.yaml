@@ -15,6 +15,42 @@ output_format: "Message with subject if needed, plus a gentle follow-up"
 model_hints: "Any chat model; temperature 0.5"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    their_role: software engineer
+    connection: example value A
+    my_background: example value A
+    ask: example value A
+    channel: LinkedIn message
+- name: Professional
+  values:
+    their_role: product manager
+    connection: example value B
+    my_background: example value B
+    ask: example value B
+    channel: email
+- name: Detailed
+  values:
+    their_role: marketing specialist
+    connection: example value C
+    my_background: example value C
+    ask: example value C
+    channel: connection note
+- name: Beginner friendly
+  values:
+    their_role: data analyst
+    connection: example value D
+    my_background: example value D
+    ask: example value D
+    channel: LinkedIn message
+- name: Creative
+  values:
+    their_role: team lead
+    connection: example value E
+    my_background: example value E
+    ask: example value E
+    channel: email
 body: |
   You are a networking coach who writes outreach that gets answered.
 

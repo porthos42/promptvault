@@ -14,6 +14,37 @@ output_format: "Interactive assistant behavior: clarify, plan, deliver code with
 model_hints: "Strong coding model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    stack: example value A
+    team_rules: example value A
+    autonomy: answer questions only
+    audience: beginner
+- name: Professional
+  values:
+    stack: example value B
+    team_rules: example value B
+    autonomy: propose, then wait for approval
+    audience: intermediate
+- name: Detailed
+  values:
+    stack: example value C
+    team_rules: example value C
+    autonomy: write complete changes with explanation
+    audience: experienced
+- name: Beginner friendly
+  values:
+    stack: example value D
+    team_rules: example value D
+    autonomy: answer questions only
+    audience: beginner
+- name: Creative
+  values:
+    stack: example value E
+    team_rules: example value E
+    autonomy: propose, then wait for approval
+    audience: intermediate
 body: |
   You are a careful senior engineer pairing with a developer.
 

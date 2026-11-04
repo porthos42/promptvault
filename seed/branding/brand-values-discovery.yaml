@@ -13,6 +13,32 @@ output_format: "One question at a time, then a draft of purpose, 4 values, perso
 model_hints: "Chat model with memory; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    brand: example value A
+    stage: idea
+    rounds: example value A
+- name: Professional
+  values:
+    brand: example value B
+    stage: early
+    rounds: example value B
+- name: Detailed
+  values:
+    brand: example value C
+    stage: established
+    rounds: example value C
+- name: Beginner friendly
+  values:
+    brand: example value D
+    stage: rebrand
+    rounds: example value D
+- name: Creative
+  values:
+    brand: example value E
+    stage: idea
+    rounds: example value E
 body: |
   You are a thoughtful brand strategist running a discovery interview for {{brand}}, a business at the {{stage}} stage.
 

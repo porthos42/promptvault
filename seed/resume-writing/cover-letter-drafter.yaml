@@ -16,6 +16,47 @@ output_format: "A cover letter under the word limit, then 2 notes on what to per
 model_hints: "Any chat model; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    job_title: software engineer
+    company: a small startup
+    job_summary: software engineer
+    achievements: example value A
+    why_company: a small startup
+    word_limit: example value A
+- name: Professional
+  values:
+    job_title: data analyst
+    company: a mid-size agency
+    job_summary: data analyst
+    achievements: example value B
+    why_company: a mid-size agency
+    word_limit: example value B
+- name: Detailed
+  values:
+    job_title: product manager
+    company: a Fortune 500 firm
+    job_summary: product manager
+    achievements: example value C
+    why_company: a Fortune 500 firm
+    word_limit: example value C
+- name: Beginner friendly
+  values:
+    job_title: marketing manager
+    company: a local business
+    job_summary: marketing manager
+    achievements: example value D
+    why_company: a local business
+    word_limit: example value D
+- name: Creative
+  values:
+    job_title: customer success lead
+    company: a non-profit
+    job_summary: customer success lead
+    achievements: example value E
+    why_company: a non-profit
+    word_limit: example value E
 body: |
   You are an experienced career coach who writes concise cover letters hiring managers actually finish.
 

@@ -16,6 +16,47 @@ output_format: "A letter with subject line, factual summary, evidence list, spec
 model_hints: "Any strong chat model; temperature 0.3"
 disclaimer: "Not professional advice. This is general information, not legal advice; consult a qualified lawyer licensed in your jurisdiction before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    recipient_role: software engineer
+    facts: example value A
+    evidence: example value A
+    requested_outcome: example value A
+    tone: firm and polite
+    jurisdiction: example value A
+- name: Professional
+  values:
+    recipient_role: product manager
+    facts: example value B
+    evidence: example value B
+    requested_outcome: example value B
+    tone: neutral
+    jurisdiction: example value B
+- name: Detailed
+  values:
+    recipient_role: marketing specialist
+    facts: example value C
+    evidence: example value C
+    requested_outcome: example value C
+    tone: conciliatory
+    jurisdiction: example value C
+- name: Beginner friendly
+  values:
+    recipient_role: data analyst
+    facts: example value D
+    evidence: example value D
+    requested_outcome: example value D
+    tone: firm and polite
+    jurisdiction: example value D
+- name: Creative
+  values:
+    recipient_role: team lead
+    facts: example value E
+    evidence: example value E
+    requested_outcome: example value E
+    tone: neutral
+    jurisdiction: example value E
 body: |
   You are a clear, even-handed writer who drafts dispute correspondence for non-lawyers.
 

@@ -15,6 +15,42 @@ output_format: "Four labeled steps ending with a final prompt in a code block, p
 model_hints: "Strong model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    goal: increase engagement
+    audience: a general audience
+    context: a team meeting update
+    format: markdown
+    model: Any chat model
+- name: Professional
+  values:
+    goal: drive sign-ups
+    audience: technical experts
+    context: a client presentation
+    format: plain text
+    model: Small local model
+- name: Detailed
+  values:
+    goal: improve retention
+    audience: complete beginners
+    context: an internal documentation page
+    format: bullet list
+    model: Reasoning model
+- name: Beginner friendly
+  values:
+    goal: raise brand awareness
+    audience: busy executives
+    context: a public blog post
+    format: table
+    model: Any chat model
+- name: Creative
+  values:
+    goal: reduce churn
+    audience: students
+    context: a project status report
+    format: JSON
+    model: Small local model
 body: |
   You are a prompt engineer who builds clear, testable prompts.
 

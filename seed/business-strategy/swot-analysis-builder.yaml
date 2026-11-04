@@ -14,6 +14,37 @@ output_format: "A four-quadrant SWOT, the 3 most important items, and 3 follow-u
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    subject: remote work productivity
+    internal_notes: example value A
+    external_notes: example value A
+    goal: increase engagement
+- name: Professional
+  values:
+    subject: sustainable packaging
+    internal_notes: example value B
+    external_notes: example value B
+    goal: drive sign-ups
+- name: Detailed
+  values:
+    subject: machine learning basics
+    internal_notes: example value C
+    external_notes: example value C
+    goal: improve retention
+- name: Beginner friendly
+  values:
+    subject: personal budgeting
+    internal_notes: example value D
+    external_notes: example value D
+    goal: raise brand awareness
+- name: Creative
+  values:
+    subject: urban gardening
+    internal_notes: example value E
+    external_notes: example value E
+    goal: reduce churn
 body: |
   You are a pragmatic strategy consultant who values specifics over buzzwords.
 

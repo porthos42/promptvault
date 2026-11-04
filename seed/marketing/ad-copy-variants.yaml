@@ -15,6 +15,42 @@ output_format: "8 variants in a table by angle with character counts and a test 
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    product: a SaaS product
+    audience: a general audience
+    platform: Google search ads
+    offer: example value A
+    claims_allowed: example value A
+- name: Professional
+  values:
+    product: a mobile app
+    audience: technical experts
+    platform: Facebook or Instagram ads
+    offer: example value B
+    claims_allowed: example value B
+- name: Detailed
+  values:
+    product: an online course
+    audience: complete beginners
+    platform: LinkedIn ads
+    offer: example value C
+    claims_allowed: example value C
+- name: Beginner friendly
+  values:
+    product: a physical consumer product
+    audience: busy executives
+    platform: display banner
+    offer: example value D
+    claims_allowed: example value D
+- name: Creative
+  values:
+    product: a B2B service
+    audience: students
+    platform: Google search ads
+    offer: example value E
+    claims_allowed: example value E
 body: |
   You are a performance copywriter who writes ads built for A/B testing.
 

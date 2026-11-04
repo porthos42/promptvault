@@ -14,6 +14,37 @@ output_format: "Register table: id, risk statement, cause, impact, probability, 
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    project_summary: example value A
+    phase: initiation
+    known_worries: example value A
+    risk_count: '3'
+- name: Professional
+  values:
+    project_summary: example value B
+    phase: planning
+    known_worries: example value B
+    risk_count: '5'
+- name: Detailed
+  values:
+    project_summary: example value C
+    phase: execution
+    known_worries: example value C
+    risk_count: '7'
+- name: Beginner friendly
+  values:
+    project_summary: example value D
+    phase: closing
+    known_worries: example value D
+    risk_count: '10'
+- name: Creative
+  values:
+    project_summary: example value E
+    phase: initiation
+    known_worries: example value E
+    risk_count: '2'
 body: |
   You are a risk-aware project manager.
 

@@ -47,6 +47,7 @@ subtitle: "Draft v0.1"
 | category_id | FK | one primary category |
 | tags | many-to-many | free-form, lowercase |
 | variables | JSON | `[{name, label, default, type, options}]`, auto-detected from body |
+| variations | JSON | `[{name, values: {variable: value}}]` — named presets that prefill variables |
 | model_hints | JSON | recommended models/params (e.g. "Claude, GPT-4o, temp 0.3") |
 | output_format | text | optional, e.g. "table", "JSON", "email" |
 | difficulty | enum | beginner / intermediate / advanced |
@@ -59,9 +60,22 @@ subtitle: "Draft v0.1"
 
 **Categories** are hierarchical (category → subcategory) with an icon and sort order.
 
+**Category management (UI: Data → Categories tab):** users can add, rename, move under a
+parent and delete categories from the UI (REST: `POST/PATCH/DELETE /api/v1/categories`).
+Deleting a category keeps its prompts — they become uncategorised — and its subcategories
+become top-level. Seeded categories are data in `seed/categories.yaml`; the loader creates
+missing ones on boot and never renames or moves existing ones.
+
 ## 3.3 Variable Fill & Copy
 
 - The prompt detail view renders a form from `variables`.
+- **Variation selector:** each prompt can carry named variations (`variations` on the data
+  model) — a dropdown above the variable form lists them by name; picking one prefills the
+  fields with its stored values in one click. Seeded prompts ship with five variations
+  (Quick start, Professional, Detailed, Beginner friendly, Creative) generated from the
+  prompt's variables; users add, rename or delete their own from the same dropdown
+  ("Save current as" stores the filled fields under a new name, "Delete variation" removes
+  the loaded one). New prompts start with an empty list.
 - Live preview shows the rendered prompt. One-click Copy, plus "Copy as system / user / JSON messages".
 - Fill values can be saved as presets per prompt.
 
@@ -477,6 +491,17 @@ variables:
   - { name: job_title, label: Target job title, type: text }
   - { name: bullet, label: Original bullet, type: textarea }
   - { name: metrics, label: Known numbers (optional), type: textarea, default: "" }
+variations:
+  - name: Quick start
+    values: { job_title: "software engineer", bullet: "Worked on the payments team", metrics: "processed $2M/yr" }
+  - name: Professional
+    values: { job_title: "senior product manager", bullet: "Led the discovery phase", metrics: "3 epics shipped" }
+  - name: Detailed
+    values: { job_title: "staff data scientist", bullet: "Built the churn model", metrics: "18% retention lift" }
+  - name: Beginner friendly
+    values: { job_title: "junior developer", bullet: "Fixed UI bugs", metrics: "12 tickets" }
+  - name: Creative
+    values: { job_title: "brand designer", bullet: "Redesigned the logo", metrics: "40% engagement" }
 output_format: "3 alternative bullets, each under 25 words"
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null

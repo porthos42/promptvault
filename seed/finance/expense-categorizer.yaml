@@ -14,6 +14,37 @@ output_format: "A table of transaction, category, confidence and note, then a li
 model_hints: "Any strong chat model; temperature 0.1"
 disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    transactions: example value A
+    categories: example value A
+    rules: example value A
+    jurisdiction: example value A
+- name: Professional
+  values:
+    transactions: example value B
+    categories: example value B
+    rules: example value B
+    jurisdiction: example value B
+- name: Detailed
+  values:
+    transactions: example value C
+    categories: example value C
+    rules: example value C
+    jurisdiction: example value C
+- name: Beginner friendly
+  values:
+    transactions: example value D
+    categories: example value D
+    rules: example value D
+    jurisdiction: example value D
+- name: Creative
+  values:
+    transactions: example value E
+    categories: example value E
+    rules: example value E
+    jurisdiction: example value E
 body: |
   You are a bookkeeping assistant who categorizes transactions carefully.
 

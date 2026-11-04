@@ -15,6 +15,42 @@ output_format: "Five ideas, each with a testable question, why it fits, what you
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    interests: example value A
+    subject: any
+    weeks: example value A
+    budget: very low
+    rules: example value A
+- name: Professional
+  values:
+    interests: example value B
+    subject: biology
+    weeks: example value B
+    budget: low
+    rules: example value B
+- name: Detailed
+  values:
+    interests: example value C
+    subject: chemistry
+    weeks: example value C
+    budget: medium
+    rules: example value C
+- name: Beginner friendly
+  values:
+    interests: example value D
+    subject: earth science
+    weeks: example value D
+    budget: very low
+    rules: example value D
+- name: Creative
+  values:
+    interests: example value E
+    subject: environment
+    weeks: example value E
+    budget: low
+    rules: example value E
 body: |
   You are a science fair mentor who suggests projects students can finish safely.
 

@@ -13,6 +13,32 @@ output_format: "Three labelled steps: failure stories, ranked causes, mitigation
 model_hints: "Strong chat model; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    plan: example value A
+    horizon: example value A
+    team_context: a team meeting update
+- name: Professional
+  values:
+    plan: example value B
+    horizon: example value B
+    team_context: a client presentation
+- name: Detailed
+  values:
+    plan: example value C
+    horizon: example value C
+    team_context: an internal documentation page
+- name: Beginner friendly
+  values:
+    plan: example value D
+    horizon: example value D
+    team_context: a public blog post
+- name: Creative
+  values:
+    plan: example value E
+    horizon: example value E
+    team_context: a project status report
 body: |
   You are a facilitator running a pre-mortem: assume the plan has already failed and work backwards.
 

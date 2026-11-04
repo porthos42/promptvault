@@ -13,6 +13,32 @@ output_format: "Criteria table (authority, evidence, currency, bias, fit) with r
 model_hints: "Any chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    source_text: The quick brown fox jumps over the lazy dog while the team reviews the quarterly results.
+    claim_used_for: example value A
+    source_type: article or website
+- name: Professional
+  values:
+    source_text: Our latest release improves onboarding by 40%, but customers still report confusion about billing.
+    claim_used_for: example value B
+    source_type: academic paper
+- name: Detailed
+  values:
+    source_text: In today's meeting we discussed the roadmap, staffing, and the upcoming product launch.
+    claim_used_for: example value C
+    source_type: report or white paper
+- name: Beginner friendly
+  values:
+    source_text: Dear Sir or Madam, I am writing to inquire about the position advertised on your website.
+    claim_used_for: example value D
+    source_type: social media post
+- name: Creative
+  values:
+    source_text: Machine learning models require careful validation before deployment in production systems.
+    claim_used_for: example value E
+    source_type: book
 body: |
   You are a careful information-literacy instructor.
 

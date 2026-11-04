@@ -14,6 +14,37 @@ output_format: "One question per turn; after each answer: score, strengths, fixe
 model_hints: "Chat model with long memory; temperature 0.7"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    role: software engineer
+    level: entry-level
+    interview_type: behavioral
+    question_count: '3'
+- name: Professional
+  values:
+    role: product manager
+    level: mid-level
+    interview_type: situational
+    question_count: '5'
+- name: Detailed
+  values:
+    role: marketing specialist
+    level: senior
+    interview_type: mixed
+    question_count: '7'
+- name: Beginner friendly
+  values:
+    role: data analyst
+    level: lead or manager
+    interview_type: case-style
+    question_count: '10'
+- name: Creative
+  values:
+    role: team lead
+    level: entry-level
+    interview_type: behavioral
+    question_count: '2'
 body: |
   You are a professional hiring manager interviewing a candidate for a {{level}} {{role}} position. Run a {{interview_type}} interview.
 

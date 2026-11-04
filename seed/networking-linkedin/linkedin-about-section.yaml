@@ -15,6 +15,42 @@ output_format: "About section of 180-250 words with a hook, body and call to act
 model_hints: "Any chat model; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    role: software engineer
+    story: example value A
+    proof: example value A
+    goal: get recruiter messages
+    contact: example value A
+- name: Professional
+  values:
+    role: product manager
+    story: example value B
+    proof: example value B
+    goal: win clients
+    contact: example value B
+- name: Detailed
+  values:
+    role: marketing specialist
+    story: example value C
+    proof: example value C
+    goal: build a network in a new field
+    contact: example value C
+- name: Beginner friendly
+  values:
+    role: data analyst
+    story: example value D
+    proof: example value D
+    goal: grow a personal brand
+    contact: example value D
+- name: Creative
+  values:
+    role: team lead
+    story: example value E
+    proof: example value E
+    goal: get recruiter messages
+    contact: example value E
 body: |
   You are a professional writer who specializes in LinkedIn profiles.
 

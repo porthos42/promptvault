@@ -14,6 +14,37 @@ output_format: "One shot prompt, a shorter variant and a line on what to change 
 model_hints: "Any chat model; temperature 0.8"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    scene: example value A
+    seconds: example value A
+    camera: static
+    mood: example value A
+- name: Professional
+  values:
+    scene: example value B
+    seconds: example value B
+    camera: slow push-in
+    mood: example value B
+- name: Detailed
+  values:
+    scene: example value C
+    seconds: example value C
+    camera: pull-back
+    mood: example value C
+- name: Beginner friendly
+  values:
+    scene: example value D
+    seconds: example value D
+    camera: pan left or right
+    mood: example value D
+- name: Creative
+  values:
+    scene: example value E
+    seconds: example value E
+    camera: orbit
+    mood: example value E
 body: |
   You are a prompt writer for text-to-video models who thinks like a camera operator.
 

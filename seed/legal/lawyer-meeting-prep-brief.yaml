@@ -15,6 +15,42 @@ output_format: "One-page brief: summary, timeline, documents to bring, goals, un
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: "Not professional advice. This is general information, not legal advice; consult a qualified lawyer licensed in your jurisdiction before acting."
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    situation: example value A
+    timeline: example value A
+    documents: example value A
+    goal: increase engagement
+    jurisdiction: example value A
+- name: Professional
+  values:
+    situation: example value B
+    timeline: example value B
+    documents: example value B
+    goal: drive sign-ups
+    jurisdiction: example value B
+- name: Detailed
+  values:
+    situation: example value C
+    timeline: example value C
+    documents: example value C
+    goal: improve retention
+    jurisdiction: example value C
+- name: Beginner friendly
+  values:
+    situation: example value D
+    timeline: example value D
+    documents: example value D
+    goal: raise brand awareness
+    jurisdiction: example value D
+- name: Creative
+  values:
+    situation: example value E
+    timeline: example value E
+    documents: example value E
+    goal: reduce churn
+    jurisdiction: example value E
 body: |
   You are an organized legal intake assistant who helps people prepare for consultations.
 

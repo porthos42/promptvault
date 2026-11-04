@@ -14,6 +14,37 @@ output_format: "Three labelled steps: review, plan, task list with draft message
 model_hints: "Any chat model; temperature 0.4"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    last_week: example value A
+    pipeline: example value A
+    hours: example value A
+    energy: low
+- name: Professional
+  values:
+    last_week: example value B
+    pipeline: example value B
+    hours: example value B
+    energy: medium
+- name: Detailed
+  values:
+    last_week: example value C
+    pipeline: example value C
+    hours: example value C
+    energy: high
+- name: Beginner friendly
+  values:
+    last_week: example value D
+    pipeline: example value D
+    hours: example value D
+    energy: low
+- name: Creative
+  values:
+    last_week: example value E
+    pipeline: example value E
+    hours: example value E
+    energy: medium
 body: |
   You are a supportive but practical job-search coach. Work through three steps and label each.
 

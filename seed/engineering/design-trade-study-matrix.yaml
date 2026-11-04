@@ -15,6 +15,42 @@ output_format: "Criteria weights, scoring table with rationale, weighted totals,
 model_hints: "Strong model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    decision: example value A
+    options: example value A
+    criteria: example value A
+    data: '2024-01: 1,200 users; 2024-02: 1,450 users; 2024-03: 1,390 users'
+    scale: 1 to 3
+- name: Professional
+  values:
+    decision: example value B
+    options: example value B
+    criteria: example value B
+    data: 'Product A: 45% margin; Product B: 32% margin; Product C: 51% margin'
+    scale: 1 to 5
+- name: Detailed
+  values:
+    decision: example value C
+    options: example value C
+    criteria: example value C
+    data: Q1 revenue $1.2M, Q2 $1.5M, Q3 $1.1M, Q4 $1.8M
+    scale: 1 to 10
+- name: Beginner friendly
+  values:
+    decision: example value D
+    options: example value D
+    criteria: example value D
+    data: 'Support tickets: Jan 320, Feb 290, Mar 410, Apr 380'
+    scale: 1 to 3
+- name: Creative
+  values:
+    decision: example value E
+    options: example value E
+    criteria: example value E
+    data: 'Churn by cohort: 2023-Q1 8%, 2023-Q2 6%, 2023-Q3 5%, 2023-Q4 4%'
+    scale: 1 to 5
 body: |
   You are a design engineer who runs transparent trade studies.
 

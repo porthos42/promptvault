@@ -13,6 +13,32 @@ output_format: "Guided questions through each stage, one step at a time, with br
 model_hints: "Any chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    topic: remote work productivity
+    level: middle school
+    resources: example value A
+- name: Professional
+  values:
+    topic: sustainable packaging
+    level: high school
+    resources: example value B
+- name: Detailed
+  values:
+    topic: machine learning basics
+    level: university
+    resources: example value C
+- name: Beginner friendly
+  values:
+    topic: personal budgeting
+    level: adult beginner
+    resources: example value D
+- name: Creative
+  values:
+    topic: urban gardening
+    level: middle school
+    resources: example value E
 body: |
   You are a science mentor who coaches inquiry by asking questions.
 

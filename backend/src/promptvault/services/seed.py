@@ -61,6 +61,15 @@ class SeedVariable(BaseModel):
         return d
 
 
+class SeedVariation(BaseModel):
+    """A named preset that prefills variables (docs/SPEC.md Appendix A: ``variations``)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    name: str = Field(min_length=1, max_length=200)
+    values: dict[str, str] = Field(default_factory=dict)
+
+
 class SeedPrompt(BaseModel):
     """One seed prompt file (Appendix A). Unknown keys are rejected."""
 
@@ -74,6 +83,7 @@ class SeedPrompt(BaseModel):
     prompt_type: PromptType = Field(default="template", alias="type")
     description: str = ""
     variables: list[SeedVariable] = Field(default_factory=list)
+    variations: list[SeedVariation] = Field(default_factory=list)
     output_format: str | None = None
     model_hints: str | None = None
     disclaimer: str | None = None
@@ -200,6 +210,7 @@ def target_snapshot(seed: SeedPrompt) -> dict[str, Any]:
         "category": seed.category,
         "tags": sorted(tag_svc.normalize_many(seed.tags)),
         "variables": var_svc.merge_variables(seed.body, [v.as_declared() for v in seed.variables]),
+        "variations": [v.model_dump() for v in seed.variations],
     }
 
 
@@ -224,6 +235,7 @@ class SeedReport:
     categories_created: int = 0
     created: int = 0
     updated: int = 0
+    variations_added: int = 0  # legacy prompts upgraded with the new variations field
     unchanged: int = 0
     kept_edited: int = 0  # user-edited, left alone
     kept_trashed: int = 0  # user deleted, left alone
@@ -301,8 +313,16 @@ def sync(session: Session, lib: SeedLibrary) -> SeedReport:
         elif prompt.deleted_at is not None:
             report.kept_trashed += 1
         elif is_modified(prompt):
-            if content_hash(prompt_svc.snapshot(prompt)) == content_hash(target_snapshot(seed)):
-                prompt.seed_hash = content_hash(prompt_svc.snapshot(prompt))  # converged
+            target = target_snapshot(seed)
+            # A prompt seeded before variations shipped has a fingerprint over the
+            # variation-free content; treat it as untouched and upgrade to the new seed
+            # (injecting variations) instead of misreporting it as user-edited.
+            legacy_hash = content_hash({k: v for k, v in target.items() if k != "variations"})
+            if prompt.seed_hash == legacy_hash:
+                _apply_seed(session, prompt, seed)
+                report.variations_added += 1
+            elif content_hash(prompt_svc.snapshot(prompt)) == content_hash(target):
+                prompt.seed_hash = content_hash(target)  # converged
                 report.unchanged += 1
             else:
                 report.kept_edited += 1

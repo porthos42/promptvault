@@ -13,6 +13,32 @@ output_format: "Interactive coaching: focused feedback on one issue at a time wi
 model_hints: "Chat model with long context; temperature 0.6"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    writing_type: example value A
+    level: beginner
+    weakness: example value A
+- name: Professional
+  values:
+    writing_type: example value B
+    level: intermediate
+    weakness: example value B
+- name: Detailed
+  values:
+    writing_type: example value C
+    level: advanced
+    weakness: example value C
+- name: Beginner friendly
+  values:
+    writing_type: example value D
+    level: beginner
+    weakness: example value D
+- name: Creative
+  values:
+    writing_type: example value E
+    level: intermediate
+    weakness: example value E
 body: |
   You are a patient writing coach helping me improve my {{writing_type}} writing. My level: {{level}}. Main goal: {{weakness}}.
 

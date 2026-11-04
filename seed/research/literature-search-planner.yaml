@@ -14,6 +14,37 @@ output_format: "Keyword table, 3 Boolean search strings, source list, inclusion 
 model_hints: "Any strong chat model; temperature 0.3"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    research_question: How does this work in practice?
+    field: example value A
+    time_window: example value A
+    source_access: example value A
+- name: Professional
+  values:
+    research_question: What are the main risks?
+    field: example value B
+    time_window: example value B
+    source_access: example value B
+- name: Detailed
+  values:
+    research_question: Why should we choose this approach?
+    field: example value C
+    time_window: example value C
+    source_access: example value C
+- name: Beginner friendly
+  values:
+    research_question: What does success look like?
+    field: example value D
+    time_window: example value D
+    source_access: example value D
+- name: Creative
+  values:
+    research_question: How much does it cost?
+    field: example value E
+    time_window: example value E
+    source_access: example value E
 body: |
   You are an academic librarian who designs reproducible literature searches.
 

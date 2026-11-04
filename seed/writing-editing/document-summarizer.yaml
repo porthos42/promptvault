@@ -14,6 +14,37 @@ output_format: "Summary at the chosen length, key points, decisions or conclusio
 model_hints: "Long-context chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    document: example value A
+    reader: a general audience
+    length: one sentence
+    focus: example value A
+- name: Professional
+  values:
+    document: example value B
+    reader: a domain expert
+    length: one paragraph
+    focus: example value B
+- name: Detailed
+  values:
+    document: example value C
+    reader: a first-time user
+    length: half a page
+    focus: example value C
+- name: Beginner friendly
+  values:
+    document: example value D
+    reader: a hiring manager
+    length: one page
+    focus: example value D
+- name: Creative
+  values:
+    document: example value E
+    reader: a student
+    length: one sentence
+    focus: example value E
 body: |
   You are an analyst who writes accurate summaries for busy readers.
 

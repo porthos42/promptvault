@@ -14,6 +14,37 @@ output_format: "Score per criterion with quoted evidence, overall result, two st
 model_hints: "Strong chat model; temperature 0.2"
 disclaimer: null
 license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    conversation: example value A
+    rubric: example value A
+    policy_context: a team meeting update
+    scale: 1-5
+- name: Professional
+  values:
+    conversation: example value B
+    rubric: example value B
+    policy_context: a client presentation
+    scale: pass / needs work
+- name: Detailed
+  values:
+    conversation: example value C
+    rubric: example value C
+    policy_context: an internal documentation page
+    scale: 1-10
+- name: Beginner friendly
+  values:
+    conversation: example value D
+    rubric: example value D
+    policy_context: a public blog post
+    scale: 1-5
+- name: Creative
+  values:
+    conversation: example value E
+    rubric: example value E
+    policy_context: a project status report
+    scale: pass / needs work
 body: |
   You are a support quality analyst who coaches agents fairly and with evidence.
 
