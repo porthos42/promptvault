@@ -11,10 +11,10 @@ import copy
 import logging
 import threading
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from sqlalchemy import update
+from sqlalchemy import delete, update
 from sqlalchemy.orm import Session, sessionmaker
 
 from promptvault.importers import pipeline
@@ -39,6 +39,23 @@ def create_job(session: Session, importer: str, rows: list[dict[str, Any]]) -> I
     session.add(job)
     session.flush()
     return job
+
+
+def prune_finished_jobs(session: Session, retention_days: int) -> int:
+    """Drop finished (done/failed) jobs older than `retention_days` at startup.
+
+    A negative value disables pruning. Running/pending jobs are never touched.
+    """
+    if retention_days < 0:
+        return 0
+    cutoff = datetime.now(UTC) - timedelta(days=retention_days)
+    res = session.execute(
+        delete(ImportJob).where(
+            ImportJob.status.in_(TERMINAL),
+            ImportJob.created_at < cutoff,
+        )
+    )
+    return int(getattr(res, "rowcount", 0) or 0)
 
 
 def fail_interrupted(session: Session) -> int:

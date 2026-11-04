@@ -48,6 +48,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         with app.state.session_factory() as session:
             if fail_interrupted(session):
                 log.warning("Marked interrupted import jobs as failed")
+            if settings.import_job_retention_days >= 0:
+                from promptvault.importers.jobs import prune_finished_jobs
+
+                pruned_jobs = prune_finished_jobs(session, settings.import_job_retention_days)
+                if pruned_jobs:
+                    log.info("Pruned %d finished import job(s)", pruned_jobs)
             session.commit()
         yield
         app.state.job_runner.shutdown()

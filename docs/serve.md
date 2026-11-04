@@ -2,6 +2,19 @@
 
 Prompt Vault v1 has **no authentication**: a service should stay on the loopback interface and be reachable only over SSH, a VPN, or a reverse proxy with auth and TLS. These are documentation-only examples (no unit files are shipped or packaged); adapt the paths and user to your system.
 
+## Backups
+
+`promptvault backup` writes a timestamped SQLite snapshot (a `VACUUM INTO` copy of the whole
+database) into `PV_BACKUP_DIR` (default `<data>/backups`) and keeps the last 7
+(`PV_BACKUP_KEEP`). Run it from cron or Task Scheduler — see below.
+
+To restore: stop the server, move the current database file aside
+(`<data>/promptvault.db` plus any `-wal`/`-shm` files), copy the chosen
+`promptvault-backup-*.db` over `<data>/promptvault.db`, then start the server again —
+migrations run automatically, and the backup is always at or older than the live schema.
+
+Example cron line (daily at 03:15): `15 3 * * * promptvault backup >> <data>/backups/backup.log 2>&1`
+
 ## Linux with systemd
 
 Create a dedicated user (no login) and a data directory it owns:

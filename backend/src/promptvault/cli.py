@@ -23,6 +23,7 @@ from promptvault.db import make_engine, make_session_factory, run_migrations
 from promptvault.importers import local as import_local
 from promptvault.importers import pipeline
 from promptvault.schemas import PromptCreate, PromptPatch
+from promptvault.services import backup as backup_svc
 from promptvault.services import categories as cat_svc
 from promptvault.services import export as export_svc
 from promptvault.services import prompts as svc
@@ -677,6 +678,36 @@ def share(
         rec = export_svc.to_record(p, svc.current_version(session, p.id))
         text, _missing = export_svc.share_snippet(rec, fmt, export_svc.parse_values(values))
         typer.echo(text, nl=False)
+
+
+@app.command()
+def backup(
+    dir: Annotated[
+        Path | None,
+        typer.Option(
+            "--dir",
+            help="Backup directory (default: <data_dir>/backups, PV_BACKUP_DIR).",
+        ),
+    ] = None,
+    keep: Annotated[
+        int | None,
+        typer.Option(
+            "--keep",
+            help="Backups kept in the directory, including the new one (default PV_BACKUP_KEEP=7).",
+        ),
+    ] = None,
+) -> None:
+    """Write a timestamped SQLite snapshot of the whole library and prune old backups."""
+    s = get_settings()
+    target_dir = dir or s.resolved_backup_dir
+    n = s.backup_keep if keep is None else keep
+    with _db() as session:
+        path = backup_svc.create_backup(session, target_dir, keep=n)
+    typer.echo(f"Backup written: {path} ({path.stat().st_size} bytes)")
+    typer.echo(
+        "Restore: stop the server, replace <data_dir>/promptvault.db (plus any -wal/-shm "
+        "files) with this file, then start the server again."
+    )
 
 
 @app.command()

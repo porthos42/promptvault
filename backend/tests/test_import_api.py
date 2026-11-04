@@ -283,3 +283,37 @@ def test_failed_job_ends_the_stream_with_failed(
     events = sse_events(client, job["id"])
     assert events[-1][0] == "failed" and "kaboom" in events[-1][1]["error"]
     assert client.get("/api/v1/prompts").json()["total"] == 0
+
+
+class TestJobPruning:
+    """`prune_finished_jobs` drops finished jobs older than N days at startup (M5)."""
+
+    def test_prunes_old_finished_jobs_keeps_recent_and_running(self, client: TestClient) -> None:
+        from datetime import UTC, datetime, timedelta
+
+        from promptvault.importers.jobs import prune_finished_jobs
+
+        with client.app.state.session_factory() as s:  # type: ignore[attr-defined]
+            old_done = ImportJob(importer="passthrough", status="done", total=1)
+            old_done.created_at = datetime.now(UTC) - timedelta(days=40)
+            old_failed = ImportJob(importer="passthrough", status="failed", total=1)
+            old_failed.created_at = datetime.now(UTC) - timedelta(days=40)
+            fresh_done = ImportJob(importer="passthrough", status="done", total=1)
+            running_old = ImportJob(importer="passthrough", status="running", total=1)
+            running_old.created_at = datetime.now(UTC) - timedelta(days=40)
+            s.add_all([old_done, old_failed, fresh_done, running_old])
+            s.commit()
+
+            assert prune_finished_jobs(s, 30) == 2
+            s.commit()
+            remaining = {j.status for j in s.scalars(select(ImportJob)).all()}
+            assert remaining == {"done", "running"}
+
+    def test_negative_retention_days_disables_pruning(self, client: TestClient) -> None:
+        from promptvault.importers.jobs import prune_finished_jobs
+
+        with client.app.state.session_factory() as s:  # type: ignore[attr-defined]
+            s.add(ImportJob(importer="passthrough", status="done", total=0))
+            s.commit()
+            assert prune_finished_jobs(s, -1) == 0
+            assert int(s.scalar(select(func.count()).select_from(ImportJob)) or 0) == 1

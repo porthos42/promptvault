@@ -26,6 +26,8 @@ promptvault import <github|url|huggingface> <https://...> [--config C] [--split 
 promptvault export <json|csv|xlsx|markdown> [PATH | -] [-c slug] [-t tag ...] [--favorite] [-q QUERY] [--id ID ...]
     [--include-trashed] [--zip] [--force] [--no-bom] [--raw] [--pretty] [--json]
 promptvault share <id-or-prefix> [--format markdown|text|json] [--values name=value ...]
+
+promptvault backup [--dir D] [--keep N]     # timestamped SQLite snapshot into PV_BACKUP_DIR, keeps last 7
 ```
 
 See [Import & export](import-export.md) for the options in detail. Configuration is via `PV_*` environment variables — see [Configuration](configuration.md).

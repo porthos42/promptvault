@@ -14,6 +14,9 @@ Environment variables (prefix `PV_`) or a `.env` file. See [.env.example](https:
 | `PV_IMPORT_MAX_ROWS` | `2000` | Rows per import request |
 | `PV_IMPORT_MAX_PAYLOAD_BYTES` | `5242880` | Import request body cap (base64 adds a third) |
 | `PV_EXPORT_MAX_ROWS` | `50000` | Prompts per API export; a larger selection answers 413 (the CLI has no cap) |
+| `PV_BACKUP_DIR` | `<data>/backups` | Where `promptvault backup` writes its timestamped SQLite snapshots |
+| `PV_BACKUP_KEEP` | `7` | How many backup snapshots `promptvault backup` keeps in the directory |
+| `PV_IMPORT_JOB_RETENTION_DAYS` | `30` | Finished import jobs older than this are pruned at server start (negative disables) |
 | `PV_GITHUB_TOKEN` | none | Optional GitHub token (env only, never accepted in a request); sent only to api.github.com and raw.githubusercontent.com to raise the rate limit |
 | `PV_IMPORT_ALLOW_PRIVATE_HOSTS` | empty | Comma separated host names, IPs or CIDRs that URL importers may reach even if private (exact match, any port) |
 | `PV_IMPORT_FETCH_TIMEOUT` | `30` | Seconds per fetched URL |

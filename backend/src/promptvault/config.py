@@ -31,11 +31,20 @@ class Settings(BaseSettings):
     import_fetch_max_bytes: int = 5 * 1024 * 1024  # per fetched response, after decompression
     import_github_max_files: int = 200  # files fetched per GitHub repo or gist import
     export_max_rows: int = 50_000  # prompts per API export; larger selections get a 413
+    backup_dir: Path | None = None  # default: <data_dir>/backups (promptvault backup)
+    backup_keep: int = 7  # backup copies kept in backup_dir (including the newest)
+    import_job_retention_days: int = 30  # finished import jobs older than this are pruned at start
 
     @field_validator("data_dir", mode="before")
     @classmethod
     def _expand(cls, v: object) -> object:
         return Path(str(v)).expanduser() if v is not None else v
+
+    @property
+    def resolved_backup_dir(self) -> Path:
+        if self.backup_dir is not None:
+            return self.backup_dir
+        return self.data_dir / "backups"
 
     @property
     def resolved_database_url(self) -> str:
