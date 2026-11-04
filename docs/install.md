@@ -65,10 +65,10 @@ docker compose -f docker/docker-compose.yml up -d            # pulls the publish
 docker compose -f docker/compose.postgres.yml --env-file .env up -d --build   # experimental PostgreSQL variant
 ```
 
-`PV_TAG` (image tag, default `edge`), `PV_BIND` (host address, default loopback) and `PV_HOST_PORT` (default `8080`) go in a `.env` file next to the compose file. The SQLite compose runs the container with a read-only root filesystem, no capabilities and `no-new-privileges`. Verify: `docker compose -f docker/docker-compose.yml ps` shows `healthy`.
+`PV_TAG` (image tag, default `latest`), `PV_BIND` (host address, default loopback) and `PV_HOST_PORT` (default `8080`) go in a `.env` file next to the compose file. The SQLite compose runs the container with a read-only root filesystem, no capabilities and `no-new-privileges`. Verify: `docker compose -f docker/docker-compose.yml ps` shows `healthy`.
 
-!!! note "Compose default tag stays `edge` for now"
-    The compose file keeps `edge` as the default until the first release exists and users have had a reason to pin versions; the planned follow-up flips the default to `latest` after the first release-PR merge. Set `PV_TAG=latest` (or a specific version) to pin earlier.
+!!! note "Pinning a specific version"
+    Since release 0.2.0 the compose default is `latest` (the newest published release). Set `PV_TAG=edge` to track the latest main, or `PV_TAG=1.0.0` (any version) to pin a specific release.
 
 ## From source (start scripts)
 

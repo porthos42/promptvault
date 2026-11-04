@@ -96,7 +96,7 @@ docker compose -f docker/docker-compose.yml up -d --build    # builds it from th
 # from a downloaded copy of the file: docker compose up -d
 ```
 
-`PV_TAG` (image tag, default `edge`), `PV_BIND` (host address, default loopback) and `PV_HOST_PORT` (default `8080`) can be set in a `.env` file next to the compose file or exported. **Prompt Vault v1 has no authentication, so the port is published on the loopback interface only.** Do not bind it to all interfaces or forward it to the internet without a reverse proxy that adds authentication and TLS.
+`PV_TAG` (image tag, default `latest`), `PV_BIND` (host address, default loopback) and `PV_HOST_PORT` (default `8080`) can be set in a `.env` file next to the compose file or exported. **Prompt Vault v1 has no authentication, so the port is published on the loopback interface only.** Do not bind it to all interfaces or forward it to the internet without a reverse proxy that adds authentication and TLS.
 
 - Data lives in `/data` (database and nothing else). The container runs as uid 10001; a bind mount must be writable by that user (`chown 10001 <dir>`). Migrations and the seed library run at every start, so updating is `docker compose pull && docker compose up -d`; your data volume is upgraded in place (tested from the M1b and M2f databases).
 - The CLI works inside the container, e.g. a backup: `docker exec promptvault promptvault export json - > backup.json`, or `promptvault list`, `promptvault import ...`.
