@@ -90,22 +90,28 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
           onChange={(e) => setQ(e.target.value)}
         />
         {commands}
-        <ul role="listbox" aria-label="Quick jump results">
-          {items.map((p, i) => (
-            <li
-              key={p.id}
-              role="option"
-              aria-selected={i === active}
-              data-active={i === active}
-              onMouseEnter={() => setActive(i)}
-              onClick={() => open(p)}
-            >
-              <strong>{p.title}</strong>
-              <span className="dim small">{p.category?.name}</span>
-            </li>
-          ))}
-          {items.length === 0 && <li className="dim">No results</li>}
-        </ul>
+        {items.length > 0 ? (
+          <ul role="listbox" aria-label="Quick jump results">
+            {items.map((p, i) => (
+              <li
+                key={p.id}
+                role="option"
+                aria-selected={i === active}
+                data-active={i === active}
+                onMouseEnter={() => setActive(i)}
+                onClick={() => open(p)}
+              >
+                <strong>{p.title}</strong>
+                <span className="dim small">{p.category?.name}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          // A bare <li> inside role=listbox trips axe (aria-required-children /
+          // aria-required-parent) while the list is loading or empty; keep the
+          // listbox only when it actually holds options.
+          <p className="dim empty">No results</p>
+        )}
         <p className="palette-hint dim">↑↓ to move, Enter to open, Esc to close</p>
       </div>
     </div>

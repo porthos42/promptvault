@@ -93,6 +93,8 @@ button.icon { width: var(--target); padding: 0; display: inline-grid; place-item
 .group-row button[aria-expanded='true'] .chev { transform: rotate(90deg); }
 .sidebar .subnav { margin-left: var(--s-5); display: flex; flex-direction: column; gap: 1px; padding-bottom: var(--s-1); }
 .subnav .navlink { font-size: var(--fs-sm); }
+.subnav.nested { margin-left: var(--s-3); padding-bottom: 0; font-size: 0.75rem; }
+.subnav.nested .navlink { font-size: inherit; }
 .nav-foot { margin-top: var(--s-3); padding-top: var(--s-2); }
 .backdrop { display: none; }
 .main { min-width: 0; overflow: hidden; display: flex; flex-direction: column; border-left: 1px solid var(--line); }

@@ -21,8 +21,14 @@ export async function deletePrompt(request: APIRequestContext, id: string) {
 
 /** Wipe every prompt (library + trash) so tests start from a clean state. */
 export async function cleanLibrary(request: APIRequestContext) {
-  const list = await (await request.get(`${API}/prompts?limit=1000`)).json();
-  for (const p of list.items ?? []) await deletePrompt(request, p.id);
+  // The list endpoint caps limit at 200 (a 1000 gives a 422 and, unawaited,
+  // silently cleans nothing), so page through in batches until empty.
+  for (;;) {
+    const list = await (await request.get(`${API}/prompts?limit=200`)).json();
+    const items: { id: string }[] = list.items ?? [];
+    if (items.length === 0) break;
+    for (const p of items) await deletePrompt(request, p.id);
+  }
   // One bulk purge instead of per-item permanent deletes: atomic and fast,
   // so no trash item survives into the next test and trips dedupe.
   await request.delete(`${API}/trash`);

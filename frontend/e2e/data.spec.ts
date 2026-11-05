@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { cleanLibrary } from "./helpers";
+import { cleanLibrary, createPrompt } from "./helpers";
 
 const CSV = "e2e/fixtures/sample-prompts.csv";
 
@@ -36,7 +36,12 @@ test("import two prompts through the wizard with a real CSV", async ({ page }) =
   await expect(page.getByText("Wizard title two")).toBeVisible();
 });
 
-test("export the library as JSON and download it", async ({ page }) => {
+test("export the library as JSON and download it", async ({ page, request }) => {
+  // The suite cleans the library before each test, so seed the content this
+  // export is supposed to contain (it used to lean on leftover state).
+  await createPrompt(request, "Export alpha", "Body {{a}} {{b}} {{c}}");
+  await createPrompt(request, "Export beta", "Body two");
+
   await page.goto("/data?tab=export");
 
   const download = page.waitForEvent("download");

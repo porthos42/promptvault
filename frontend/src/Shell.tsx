@@ -122,9 +122,21 @@ export default function Shell() {
                 </div>
                 {expanded && (
                   <ul id={panel} className="subnav">
-                    {children.map((c) => (
-                      <li key={c.slug}>{link(c)}</li>
-                    ))}
+                    {children.map((c) => {
+                      const subs = kids(c.slug)
+                      return (
+                        <li key={c.slug}>
+                          {link(c)}
+                          {subs.length > 0 && (
+                            <ul className="subnav nested">
+                              {subs.map((s) => (
+                                <li key={s.slug}>{link(s)}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </li>
+                      )
+                    })}
                   </ul>
                 )}
               </div>
