@@ -27,6 +27,7 @@ function prompt(): Prompt {
     difficulty: 'beginner',
     prompt_type: 'template',
     disclaimer: null,
+    variations: [],
     source: 'seed',
     is_favorite: false,
     use_count: 0,
