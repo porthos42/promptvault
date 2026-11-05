@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 # The PyPI name "promptvault" belongs to an unrelated project, so the distribution is
 # "prompt-vault". The import package and the CLI command stay "promptvault".
 name = "prompt-vault"
-version = "0.2.0"
+version = "0.3.0"
 description = "Prompt Vault: a self-hosted, searchable prompt engineering library with 200+ ready-to-use prompts."
 readme = "README.md"
 license = "MIT"
