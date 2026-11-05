@@ -15,6 +15,7 @@ from typing import Annotated, Any
 import click
 import typer
 from pydantic import ValidationError
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from promptvault import __version__
@@ -22,6 +23,7 @@ from promptvault.config import get_settings
 from promptvault.db import make_engine, make_session_factory, run_migrations
 from promptvault.importers import local as import_local
 from promptvault.importers import pipeline
+from promptvault.models import Prompt
 from promptvault.schemas import PromptCreate, PromptPatch
 from promptvault.services import backup as backup_svc
 from promptvault.services import categories as cat_svc
@@ -296,6 +298,37 @@ def trash_purge(
     """Permanently delete everything in Trash (optionally only items older than N days)."""
     with _db() as session:
         typer.echo(f"Purged {svc.purge_trash(session, older_than_days)} prompt(s)")
+
+
+@app.command()
+def clear(
+    category: CategoryOpt = None,
+    purge: Annotated[
+        bool, typer.Option("--purge", help="Also delete permanently (skips the Trash undo).")
+    ] = False,
+    yes: Annotated[bool, typer.Option("--yes", "-y", help="Don't ask for confirmation.")] = False,
+) -> None:
+    """Move every prompt (or every prompt of --category) to Trash."""
+    with _db() as session:
+        f = svc.ListFilters(category=category)
+        total = svc.list_prompts(session, f, 1).total
+        scope = f"in category '{category}'" if category else "in the library"
+        if total == 0:
+            typer.echo(f"No prompts {scope}.")
+            return
+        action = "Permanently delete" if purge else "Move to Trash"
+        if not yes and not typer.confirm(f"{action} {total} prompt(s) {scope}?"):
+            raise typer.Exit(1)
+        ids: list[str] = []
+        while page := svc.list_prompts(session, f, 500).items:
+            batch = [p.id for p in page]
+            svc.bulk_apply(session, batch, "delete", [], None)  # leaves the live list
+            ids += batch
+        if purge:
+            for p in session.scalars(select(Prompt).where(Prompt.id.in_(ids))):
+                session.delete(p)
+            session.flush()
+        typer.echo(f"{'Deleted' if purge else 'Moved to Trash:'} {len(ids)} prompt(s)")
 
 
 @category_app.command("list")

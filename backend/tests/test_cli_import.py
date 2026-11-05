@@ -132,3 +132,15 @@ def test_xlsx_file(tmp_path: Path) -> None:
     path = tmp_path / "p.xlsx"
     wb.save(path)
     assert "1 created" in run("import", "xlsx", str(path), "--yes")
+
+
+def test_clear_trashes_everything_and_unblocks_reimport(csv_file: Path) -> None:
+    run("import", "csv", str(csv_file), "--yes")
+    run("clear", input="n\n", code=1)
+    assert count() == 2
+    assert "Moved to Trash: 2" in run("clear", "--yes")
+    assert count() == 0 and "No prompts" in run("clear", "--yes")
+    # trashed prompts are never matched as duplicates, so a re-import creates fresh ones
+    assert "2 created" in run("import", "csv", str(csv_file), "--yes")
+    assert "Deleted 2" in run("clear", "--yes", "--purge")
+    assert "(2 in Trash)" in run("trash", "list")  # only the earlier, non-purged batch
