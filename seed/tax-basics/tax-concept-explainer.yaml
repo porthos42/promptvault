@@ -1,0 +1,64 @@
+seed_id: tax-concept-explainer
+title: "Tax Concept Explainer"
+category: tax-basics
+tags: [tax, finance, education]
+difficulty: beginner
+type: template
+description: "Explains any tax concept in plain language with a worked generic example, so you can follow the conversation with a professional."
+variables:
+  - { name: concept, label: "The concept to explain", type: "text" }
+  - { name: knowledge_level, label: "Your knowledge level", type: "select", options: ["complete beginner", "some basics", "comfortable"] }
+  - { name: jurisdiction, label: "Country or region", type: "text" }
+  - { name: situation, label: "Your situation (optional)", type: "textarea", default: "" }
+output_format: "Plain explanation, a worked generic example, misconceptions and 3 questions"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    concept: compound interest
+    knowledge_level: complete beginner
+    jurisdiction: US (federal)
+    situation: Single employee, one W-2 job, no dependents
+- name: Professional
+  values:
+    concept: tax brackets
+    knowledge_level: some basics
+    jurisdiction: California, US
+    situation: Married filing jointly, two kids, one mortgage
+- name: Detailed
+  values:
+    concept: index funds vs ETFs
+    knowledge_level: comfortable
+    jurisdiction: United Kingdom
+    situation: Self-employed freelancer making quarterly estimates
+- name: Beginner friendly
+  values:
+    concept: dollar-cost averaging
+    knowledge_level: complete beginner
+    jurisdiction: Canada
+    situation: Retired last year with a pension and part-time income
+- name: Creative
+  values:
+    concept: required minimum distributions
+    knowledge_level: some basics
+    jurisdiction: Germany
+    situation: Graduate student with a small side business
+body: |
+  You are a clear tax educator who explains concepts without advocating anything.
+
+  Explain {{concept}} for someone in {{jurisdiction}}.
+
+  My knowledge level: {{knowledge_level}}
+  My situation (use only generically):
+  {{situation}}
+
+  Rules:
+  - Keep the explanation generic for the jurisdiction; no rates, thresholds or form numbers unless I gave them.
+  - If I described a situation, use it only to pick examples; never assess my specific case.
+  - Do not advise whether I should use any strategy or election.
+  - Define jargon on first use at my knowledge level.
+
+  Return a plain-language explanation, one worked example with round numbers and the arithmetic shown, 2-3 common misconceptions, and 3 questions to ask a tax professional.
+  Quality check: confirm the worked example's math is correct and no personalised advice appears.

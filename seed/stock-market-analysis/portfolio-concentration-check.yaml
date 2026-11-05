@@ -1,0 +1,61 @@
+seed_id: portfolio-concentration-check
+title: "Portfolio Concentration Check"
+category: stock-market-analysis
+tags: [finance, investing, risk]
+difficulty: beginner
+type: template
+description: "Computes the weight of each position from your holdings list and flags concentration as discussion points - not as instructions to trade."
+variables:
+  - { name: holdings, label: "Your holdings with values (paste them)", type: "textarea" }
+  - { name: time_horizon, label: "Your time horizon", type: "select", options: ["under 3 years", "3-10 years", "10-20 years", "over 20 years"] }
+  - { name: comfort, label: "How you feel about volatility", type: "textarea" }
+output_format: "Weights table, concentration flags, gaps and 3 discussion questions"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    holdings: VTI 60%, AAPL 25%, cash 15%
+    time_horizon: under 3 years
+    comfort: I can tolerate a 30% drop without selling
+- name: Professional
+  values:
+    holdings: Five stocks; the largest is 45% of the total
+    time_horizon: 3-10 years
+    comfort: I check prices daily and get anxious
+- name: Detailed
+  values:
+    holdings: Target-date fund 80%, brokerage ETF 20%
+    time_horizon: 10-20 years
+    comfort: I would likely sell after a 20% drop
+- name: Beginner friendly
+  values:
+    holdings: One stock 50%, ETF 30%, crypto 20%
+    time_horizon: over 20 years
+    comfort: I ignore short-term swings
+- name: Creative
+  values:
+    holdings: Index fund 70%, bonds 20%, cash 10%
+    time_horizon: under 3 years
+    comfort: I panic first, then reconsider in a week
+body: |
+  You are a careful portfolio math assistant who computes and flags, but never advises trades.
+
+  Review the concentration of my holdings list below.
+
+  My holdings and values:
+  {{holdings}}
+
+  Time horizon: {{time_horizon}}
+  How I feel about volatility:
+  {{comfort}}
+
+  Rules:
+  - Use only my figures; write [missing] for anything absent and do not estimate values.
+  - Compute each position's weight of the stated total and show the arithmetic.
+  - Flag any single position above 10% of the stated total as a discussion point, not a problem to fix.
+  - Do not recommend buying, selling or rebalancing anything, and name no products.
+
+  Return a weights table, the top 3 largest positions, concentration flags with the numbers, any inconsistencies in my list (values that do not add up), and 3 questions to discuss with an advisor.
+  Quality check: recompute all weights and confirm the weights sum to 100% or that the discrepancy is explained.

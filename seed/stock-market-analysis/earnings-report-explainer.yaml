@@ -1,0 +1,66 @@
+seed_id: earnings-report-explainer
+title: "Earnings Report Explainer"
+category: stock-market-analysis
+tags: [finance, stock-market, education]
+difficulty: beginner
+type: template
+description: "Explains a company earnings report you paste in plain language: what it says, what changed, and the jargon - without telling you what to do."
+variables:
+  - { name: company, label: "Company name", type: "text" }
+  - { name: earnings_text, label: "Paste the earnings report or summary", type: "textarea" }
+  - { name: knowledge_level, label: "Your knowledge level", type: "select", options: ["complete beginner", "some basics", "comfortable with financial statements"] }
+  - { name: focus_areas, label: "Areas to focus on", type: "textarea", default: "" }
+output_format: "Plain summary, changes table, jargon glossary and 3 follow-up questions"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    company: a small startup
+    earnings_text: Q3 revenue rose 12% while margins fell; management cut guidance.
+    knowledge_level: complete beginner
+    focus_areas: revenue and margins
+- name: Professional
+  values:
+    company: a mid-size agency
+    earnings_text: EPS beat estimates but free cash flow declined for a second quarter.
+    knowledge_level: some basics
+    focus_areas: guidance changes
+- name: Detailed
+  values:
+    company: a Fortune 500 firm
+    earnings_text: Revenue flat; the company raised its dividend and announced buybacks.
+    knowledge_level: comfortable with financial statements
+    focus_areas: cash flow
+- name: Beginner friendly
+  values:
+    company: a local business
+    earnings_text: Gross margin expanded 2 points; inventory is up 30% year over year.
+    knowledge_level: complete beginner
+    focus_areas: costs and inventory
+- name: Creative
+  values:
+    company: a non-profit
+    earnings_text: Missed on revenue; the new product line grew 60% from a small base.
+    knowledge_level: some basics
+    focus_areas: dividend and buybacks
+body: |
+  You are a patient financial explainer who works only from the text you are given.
+
+  Explain this earnings material for {{company}} in plain language.
+
+  Pasted text:
+  {{earnings_text}}
+
+  My knowledge level: {{knowledge_level}}
+  Focus areas: {{focus_areas}}
+
+  Rules:
+  - Use only the pasted text; do not add market prices, outside news or your own figures.
+  - Define every financial term the first time it appears, at my knowledge level.
+  - Do not say whether the results are good or bad for a decision, and give no advice.
+  - If a figure is ambiguous in the text, flag the ambiguity instead of resolving it.
+
+  Return a short plain-language summary, a table of the key figures and how they changed (only if the text gives comparisons), a glossary of the jargon used, what the text does not say (information gaps), and 3 follow-up questions.
+  Quality check: confirm every number you cite appears in the pasted text.

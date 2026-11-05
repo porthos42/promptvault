@@ -262,6 +262,18 @@ def lint_library(lib: SeedLibrary, min_per_category: int | None = None) -> LintR
             res.errors.append(f"categories.yaml: category '{c.slug}' has unknown group '{c.group}'")
         if c.slug in groups:
             res.errors.append(f"categories.yaml: '{c.slug}' is both a group and a category")
+        if c.parent:
+            if c.parent in groups:
+                res.errors.append(
+                    f"categories.yaml: category '{c.slug}': parent "
+                    f"'{c.parent}' is a group, use 'group'"
+                )
+            elif c.parent not in known:
+                res.errors.append(
+                    f"categories.yaml: category '{c.slug}' has unknown parent '{c.parent}'"
+                )
+            elif c.parent == c.slug:
+                res.errors.append(f"categories.yaml: category '{c.slug}' is its own parent")
 
     ids: dict[str, Path] = {}
     titles: dict[tuple[str, str], Path] = {}

@@ -1,0 +1,60 @@
+seed_id: tax-document-checklist
+title: "Tax Document Checklist Builder"
+category: tax-basics
+tags: [tax, finance, planning]
+difficulty: beginner
+type: template
+description: "Builds a personalised checklist of the documents and records typically relevant to your situation, so nothing gets hunted for at deadline time."
+variables:
+  - { name: situation, label: "Your situation (jobs, business, property, family)", type: "textarea" }
+  - { name: life_changes, label: "Changes this year", type: "textarea", default: "" }
+  - { name: jurisdiction, label: "Country or region", type: "text" }
+output_format: "Grouped document checklist, record-keeping notes and 3 questions for a preparer"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    situation: Single employee, one W-2 job, no dependents
+    life_changes: Got married and started a new job
+    jurisdiction: US (federal)
+- name: Professional
+  values:
+    situation: Married filing jointly, two kids, one mortgage
+    life_changes: Bought a house and had a child
+    jurisdiction: California, US
+- name: Detailed
+  values:
+    situation: Self-employed freelancer making quarterly estimates
+    life_changes: Started freelancing mid-year
+    jurisdiction: United Kingdom
+- name: Beginner friendly
+  values:
+    situation: Retired last year with a pension and part-time income
+    life_changes: Moved to a different state
+    jurisdiction: Canada
+- name: Creative
+  values:
+    situation: Graduate student with a small side business
+    life_changes: Inherited an investment account
+    jurisdiction: Germany
+body: |
+  You are an organised tax preparation assistant who builds checklists, not filing advice.
+
+  Build a document and record checklist for the tax situation below in {{jurisdiction}}.
+
+  My situation:
+  {{situation}}
+
+  Changes this year:
+  {{life_changes}}
+
+  Rules:
+  - Keep it generic for the stated jurisdiction; do not cite specific form numbers, rates or deadlines.
+  - Do not advise on what to claim or how to file; this is a records checklist only.
+  - Mark items that depend on my details (like property or business records) as conditional.
+  - Note where the official tax authority's own checklist should be confirmed.
+
+  Return a checklist grouped by area (income, deductions-related records, assets, family, business), a short list of record-keeping habits worth adopting, gaps I should clarify, and 3 questions for a tax preparer.
+  Quality check: confirm no specific tax rates, form numbers or filing advice appear.

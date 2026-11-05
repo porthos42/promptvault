@@ -1,0 +1,72 @@
+seed_id: fees-impact-explainer
+title: "Fees Impact Explainer"
+category: investing
+tags: [investing, finance, education]
+difficulty: beginner
+type: template
+description: "Shows how an annual fee percentage compounds against your own numbers, with the math shown step by step, so you can ask better questions."
+variables:
+  - { name: portfolio_value, label: "Portfolio value today", type: "text" }
+  - { name: annual_fee_percent, label: "Annual fee percentage", type: "text" }
+  - { name: years, label: "Number of years to illustrate", type: "text" }
+  - { name: contribution, label: "Annual contribution", type: "text" }
+  - { name: currency, label: "Currency", type: "text", default: "" }
+output_format: "Step-by-step table with and without fees, the fee cost total, and 3 questions"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    portfolio_value: 10,000
+    annual_fee_percent: 0.03%
+    years: '5'
+    contribution: 1,200
+    currency: USD
+- name: Professional
+  values:
+    portfolio_value: 50,000
+    annual_fee_percent: 0.20%
+    years: '10'
+    contribution: 6,000
+    currency: EUR
+- name: Detailed
+  values:
+    portfolio_value: 120,000
+    annual_fee_percent: 0.50%
+    years: '20'
+    contribution: 12,000
+    currency: GBP
+- name: Beginner friendly
+  values:
+    portfolio_value: 8,500
+    annual_fee_percent: 1.00%
+    years: '30'
+    contribution: '500'
+    currency: CAD
+- name: Creative
+  values:
+    portfolio_value: 300,000
+    annual_fee_percent: 1.50%
+    years: '3'
+    contribution: 24,000
+    currency: AUD
+body: |
+  You are a careful math explainer who shows every step and invents nothing.
+
+  Using only my figures, illustrate how an annual fee percentage compounds over time.
+
+  Portfolio value today: {{portfolio_value}}
+  Annual fee percentage: {{annual_fee_percent}}
+  Years to illustrate: {{years}}
+  Annual contribution: {{contribution}}
+  Currency: {{currency}}
+
+  Rules:
+  - Use only my figures; write [amount?] where a figure is missing.
+  - Assume no investment growth so the illustration shows fees alone; say so explicitly.
+  - Show the arithmetic for every step, not just the results.
+  - Do not recommend products, providers or fee levels; no outside averages.
+
+  Return a step-by-step table (year, value without fees, value with fees, difference), the total fee cost over the period, one sentence on what that difference represents, and 3 questions to take to an advisor.
+  Quality check: recompute every row and confirm no growth-rate assumption was introduced.

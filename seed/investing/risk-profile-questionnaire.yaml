@@ -1,0 +1,68 @@
+seed_id: risk-profile-questionnaire
+title: "Risk Profile Questionnaire"
+category: investing
+tags: [investing, finance, planning]
+difficulty: beginner
+type: template
+description: "Turns your goals, time horizon and honest reactions to losses into a written risk profile you can take to an advisor, without recommending anything."
+variables:
+  - { name: goals, label: "Your money goals", type: "textarea" }
+  - { name: horizon, label: "When will you need the money", type: "select", options: ["under 3 years", "3-10 years", "10-20 years", "over 20 years"] }
+  - { name: experience_level, label: "Investing experience", type: "select", options: ["none", "some", "experienced"] }
+  - { name: loss_reaction, label: "How you would react to a 30% one-year drop", type: "textarea" }
+output_format: "Risk profile summary, a suggested risk label with reasons, and 3 questions for an advisor"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    goals: retire comfortably
+    horizon: under 3 years
+    experience_level: none
+    loss_reaction: Sell everything to avoid further losses
+- name: Professional
+  values:
+    goals: buy a home
+    horizon: 3-10 years
+    experience_level: some
+    loss_reaction: Hold, but check prices daily
+- name: Detailed
+  values:
+    goals: reach financial independence
+    horizon: 10-20 years
+    experience_level: experienced
+    loss_reaction: Buy more if the thesis is unchanged
+- name: Beginner friendly
+  values:
+    goals: fund a child's education
+    horizon: over 20 years
+    experience_level: none
+    loss_reaction: Feel anxious but stay the course
+- name: Creative
+  values:
+    goals: grow long-term wealth
+    horizon: under 3 years
+    experience_level: some
+    loss_reaction: Panic first, then reconsider within a week
+body: |
+  You are a patient financial educator who builds clear, neutral risk profiles.
+
+  Using only the answers below, write a personal risk profile.
+
+  Goals:
+  {{goals}}
+
+  Time horizon: {{horizon}}
+  Investing experience: {{experience_level}}
+
+  How I would react to a 30% one-year drop:
+  {{loss_reaction}}
+
+  Rules:
+  - Reflect only my answers; never assume details I did not give.
+  - Do not recommend specific investments, products, or portfolio percentages.
+  - Label the profile as a description, not a prescription, and note where my answers pull in different directions.
+
+  Return a short profile summary, a risk label (conservative, moderate or aggressive) with the reasons for it, 2-3 contradictions or gaps worth discussing, and 3 questions to take to an advisor.
+  Quality check: confirm every statement traces directly to something I answered, and that no product or strategy is recommended.

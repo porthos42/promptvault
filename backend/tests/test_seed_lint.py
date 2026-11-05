@@ -260,6 +260,26 @@ def test_categories_file_checks(tmp_path: Path) -> None:
     assert "both a group and a category" in errs
 
 
+def test_parent_checks(tmp_path: Path) -> None:
+    cats = {
+        "groups": [{"slug": "career", "name": "Career"}],
+        "categories": [
+            {"slug": "finance", "name": "Finance"},
+            {"slug": "investing", "name": "Investing", "parent": "finance"},
+            {"slug": "crypto", "name": "Crypto", "parent": "ghost"},
+            {"slug": "loop", "name": "Loop", "parent": "loop"},
+            {"slug": "wrong", "name": "Wrong", "parent": "career"},
+        ],
+    }
+    root = write_library(tmp_path / "seed", [], categories=cats)
+    errs = "\n".join(lint_dir(root).errors)
+    assert "unknown parent 'ghost'" in errs
+    assert "'loop' is its own parent" in errs
+    assert "parent 'career' is a group, use 'group'" in errs
+    # The valid nesting itself raises no error.
+    assert "category 'investing'" not in errs
+
+
 def test_invalid_yaml_and_missing_categories_file(tmp_path: Path) -> None:
     root = tmp_path / "seed"
     (root / "x").mkdir(parents=True)

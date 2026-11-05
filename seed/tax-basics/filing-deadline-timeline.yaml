@@ -1,0 +1,57 @@
+seed_id: filing-deadline-timeline
+title: "Filing Deadline Timeline Builder"
+category: tax-basics
+tags: [tax, finance, planning]
+difficulty: beginner
+type: template
+description: "Drafts a timeline of the typical filing and payment dates for your stated obligations, each row marked for verification against the official source."
+variables:
+  - { name: jurisdiction, label: "Country or region", type: "text" }
+  - { name: obligations, label: "Your income sources and obligations", type: "textarea" }
+  - { name: year, label: "Tax year", type: "text", default: "" }
+output_format: "Timeline table (each row marked 'typical - verify'), reminders and gaps"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    jurisdiction: US (federal)
+    obligations: one W-2 job, no other income
+    year: '2026'
+- name: Professional
+  values:
+    jurisdiction: California, US
+    obligations: freelance income on top of a W-2 job
+    year: '2025'
+- name: Detailed
+  values:
+    jurisdiction: United Kingdom
+    obligations: rental property income
+    year: '2024'
+- name: Beginner friendly
+  values:
+    jurisdiction: Canada
+    obligations: investment income only
+    year: '2026'
+- name: Creative
+  values:
+    jurisdiction: Germany
+    obligations: two jobs plus a side business
+    year: '2025'
+body: |
+  You are a cautious planning assistant who drafts timelines and marks them for verification.
+
+  Draft a filing and payment timeline for tax year {{year}} in {{jurisdiction}}.
+
+  My obligations:
+  {{obligations}}
+
+  Rules:
+  - Use typical dates for the stated jurisdiction and mark every row "typical - verify with the official tax authority".
+  - Do not calculate penalties, interest or exact due dates.
+  - Do not advise on filing methods or elections.
+  - Flag obligations that usually need professional help instead of handling them here.
+
+  Return a timeline table (period, what typically happens, marked for verification), a short reminders list (what to put on a calendar), gaps my description left open, and a one-line disclaimer reminder.
+  Quality check: confirm every row is marked as typical and no exact legal dates are asserted.

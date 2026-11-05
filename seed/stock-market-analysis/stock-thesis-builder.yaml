@@ -1,0 +1,68 @@
+seed_id: stock-thesis-builder
+title: "Stock Thesis Builder"
+category: stock-market-analysis
+tags: [finance, stock-market, research]
+difficulty: beginner
+type: template
+description: "Organises your own research notes into a structured bull/bear thesis for one company, with unknowns flagged - not a recommendation to buy or sell."
+variables:
+  - { name: ticker, label: "Company or ticker you are researching", type: "text" }
+  - { name: research_notes, label: "Your research notes", type: "textarea" }
+  - { name: investment_horizon, label: "Your holding horizon", type: "select", options: ["under 1 year", "1-3 years", "3-10 years", "over 10 years"] }
+  - { name: concerns, label: "Concerns or doubts", type: "textarea", default: "" }
+output_format: "Thesis draft with bull case, bear case, kill criteria and open questions"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    ticker: AAPL
+    research_notes: 'Thesis: subscriber base growing, but valuation looks rich; risk: competition.'
+    investment_horizon: under 1 year
+    concerns: example value A
+- name: Professional
+  values:
+    ticker: MSFT
+    research_notes: Rising debt in the 10-K; a founder sold shares; new market entry planned.
+    investment_horizon: 1-3 years
+    concerns: example value B
+- name: Detailed
+  values:
+    ticker: VTI
+    research_notes: Insider buying last quarter; gross margin improving for three years.
+    investment_horizon: 3-10 years
+    concerns: example value C
+- name: Beginner friendly
+  values:
+    ticker: TSLA
+    research_notes: Strong brand but slowing growth; management turnover in the past year.
+    investment_horizon: over 10 years
+    concerns: example value D
+- name: Creative
+  values:
+    ticker: JNJ
+    research_notes: Revenue concentrated in one customer (35%); expanding to two regions.
+    investment_horizon: under 1 year
+    concerns: example value E
+body: |
+  You are a structured research assistant who organises notes without adding outside facts.
+
+  Turn my notes into a structured investment thesis for {{ticker}}.
+
+  My research notes:
+  {{research_notes}}
+
+  My concerns:
+  {{concerns}}
+
+  Holding horizon: {{investment_horizon}}
+
+  Rules:
+  - Use only my notes; never add market data, prices, news or facts from memory.
+  - Do not give a buy, sell or hold recommendation and do not score the stock.
+  - Label anything I did not source as an assumption or an open question.
+  - Separate what I stated as fact from what I stated as opinion.
+
+  Return the thesis with these sections: what I believe, bull case (with my supporting notes), bear case (with my supporting notes), assumptions I have not verified, what would change my mind (kill criteria), and 3 questions to research next.
+  Quality check: confirm no outside facts were introduced and every claim maps to my notes or is flagged as an assumption.

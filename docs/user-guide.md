@@ -49,9 +49,10 @@ Press <kbd>Ctrl</kbd>+<kbd>K</kbd> (or <kbd>Cmd</kbd>+<kbd>K</kbd>) anywhere to 
 
 The **Data** page has a **Categories** tab where you add, rename, re-parent and delete
 categories. Deleting a category keeps its prompts (they become uncategorised) and turns
-its subcategories into top-level categories. The seeded category tree (43 categories in
-8 groups) is loaded on first start; anything you change here is yours and survives
-upgrades.
+its subcategories into top-level categories. The seeded category tree (47 categories in
+8 groups — finance nests the Investing, Stock Market Analysis, Tax Basics and
+Retirement Planning subcategories) is loaded on first start; anything you change here is
+yours and survives upgrades.
 
 ### Creating a prompt
 

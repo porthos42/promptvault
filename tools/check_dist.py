@@ -13,7 +13,7 @@ import zipfile
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-MIN_SEED = 213
+MIN_SEED = 233
 
 
 def seed_count(names: list[str], prefix: str) -> int:

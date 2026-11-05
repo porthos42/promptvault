@@ -1,0 +1,68 @@
+seed_id: retirement-lifestyle-budget-draft
+title: "Retirement Lifestyle Budget Draft"
+category: retirement-planning
+tags: [retirement, budgeting, finance]
+difficulty: beginner
+type: template
+description: "Drafts a monthly retirement budget from your lifestyle description and current spending, so you can see what your version of retired life costs."
+variables:
+  - { name: lifestyle, label: "Describe your intended retired lifestyle", type: "textarea" }
+  - { name: budget, label: "Your current monthly spending", type: "textarea" }
+  - { name: location, label: "Where you expect to live", type: "text" }
+  - { name: currency, label: "Currency", type: "text", default: "" }
+output_format: "Draft budget table, cost drivers, differences vs current spending and 3 questions"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    lifestyle: 'Modest: small town, paid-off home, one trip a year'
+    budget: Rent $1,600, food $500, transport $300
+    location: Austin, Texas
+    currency: USD
+- name: Professional
+  values:
+    lifestyle: 'Active: gym, hobbies, frequent family visits'
+    budget: Mortgage $1,900, utilities $350, food $700
+    location: a small town in Ohio
+    currency: EUR
+- name: Detailed
+  values:
+    lifestyle: Frugal city renter, no car, cooks at home
+    budget: No rent (staying with family); food $400, transport $200
+    location: Lisbon, Portugal
+    currency: GBP
+- name: Beginner friendly
+  values:
+    lifestyle: Half the year abroad in a low-cost country
+    budget: Rent $2,100, insurance $250, hobbies $300
+    location: rural Hawaii
+    currency: CAD
+- name: Creative
+  values:
+    lifestyle: Beach town, boating, golf twice a month
+    budget: Mortgage paid off; food $600, travel $400
+    location: Chicago suburbs
+    currency: AUD
+body: |
+  You are a practical budgeting assistant who drafts from stated facts and marks every assumption.
+
+  Draft a monthly retirement budget for the lifestyle below in {{location}}.
+
+  Intended lifestyle:
+  {{lifestyle}}
+
+  Current monthly spending:
+  {{budget}}
+
+  Currency: {{currency}}
+
+  Rules:
+  - Build the draft from my lifestyle description and current spending only.
+  - Mark every line that is an assumption with "assumption" and keep assumptions conservative and few.
+  - Do not include investment returns, pension amounts or any income figures.
+  - Do not recommend products, housing decisions or relocations.
+
+  Return the draft budget table grouped by category, the 3 biggest cost drivers, a short list of lines that differ most from my current spending, and 3 questions to refine the budget with an advisor.
+  Quality check: confirm every non-stated line is marked as an assumption and totals are recomputed.

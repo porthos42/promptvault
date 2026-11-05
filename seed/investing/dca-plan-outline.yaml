@@ -1,0 +1,68 @@
+seed_id: dca-plan-outline
+title: "Dollar-Cost Averaging Plan Outline"
+category: investing
+tags: [investing, finance, planning]
+difficulty: beginner
+type: template
+description: "Turns a monthly amount and timeline into a simple dollar-cost averaging schedule outline with the totals worked out, using only your figures."
+variables:
+  - { name: monthly_amount, label: "Amount you can invest per month", type: "text" }
+  - { name: timeline, label: "How long you plan to keep this up", type: "text" }
+  - { name: existing_holdings, label: "What you already hold (names only)", type: "textarea" }
+  - { name: constraints, label: "Constraints or preferences", type: "textarea" }
+output_format: "Schedule table with running totals, a gap summary, and 3 questions for an advisor"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    monthly_amount: '200'
+    timeline: about 5 years
+    existing_holdings: VTI 60%, AAPL 25%, cash 15%
+    constraints: keep monthly effort low
+- name: Professional
+  values:
+    monthly_amount: '500'
+    timeline: about 10 years
+    existing_holdings: Five stocks; the largest is 45% of the total
+    constraints: no more than 15 minutes of attention per week
+- name: Detailed
+  values:
+    monthly_amount: '1000'
+    timeline: about 20 years
+    existing_holdings: Target-date fund 80%, brokerage ETF 20%
+    constraints: avoid anything needing constant monitoring
+- name: Beginner friendly
+  values:
+    monthly_amount: '2500'
+    timeline: about 30 years
+    existing_holdings: One stock 50%, ETF 30%, crypto 20%
+    constraints: keep an emergency fund untouched first
+- name: Creative
+  values:
+    monthly_amount: '150'
+    timeline: under 3 years
+    existing_holdings: Index fund 70%, bonds 20%, cash 10%
+    constraints: nothing locked away past the stated horizon
+body: |
+  You are a methodical planning assistant who organises figures without giving investment advice.
+
+  Draft a dollar-cost averaging schedule outline from my figures below.
+
+  Monthly amount: {{monthly_amount}}
+  Timeline: {{timeline}}
+  What I already hold (names only):
+  {{existing_holdings}}
+
+  Constraints:
+  {{constraints}}
+
+  Rules:
+  - Use only my figures; write [amount?] for anything missing and state the assumption.
+  - Show the running total for every row so I can verify the math.
+  - Do not recommend what to buy, when to buy it, or any specific product.
+  - Do not use outside market data, averages or expected returns.
+
+  Return a schedule table (month, amount, running total), the total invested over the stated timeline, any gaps or conflicts in my inputs, and 3 questions to take to an advisor.
+  Quality check: recompute the running totals and confirm no product, ticker or return assumption appears.

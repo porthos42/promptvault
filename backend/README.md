@@ -1,7 +1,7 @@
 # Prompt Vault
 
-A self-hosted, searchable prompt engineering library: 213 ready-to-use prompts across 35
-categories, full create/edit/delete, full-text search, variable fill-in, import (JSON, CSV, XLSX,
+A self-hosted, searchable prompt engineering library: 233 ready-to-use prompts across 39
+categories (finance nests investing, stock-market, tax and retirement subcategories), full create/edit/delete, full-text search, variable fill-in, import (JSON, CSV, XLSX,
 Markdown, GitHub, web pages, Hugging Face) and export. Single-user and local-first; the data is a
 SQLite file in `~/.promptvault`.
 

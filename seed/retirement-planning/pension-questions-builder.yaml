@@ -1,0 +1,57 @@
+seed_id: pension-questions-builder
+title: "Pension Questions Builder"
+category: retirement-planning
+tags: [retirement, finance, planning]
+difficulty: beginner
+type: template
+description: "Builds the question list and document list for a call about your pension or government benefits, so you get answers instead of confusion."
+variables:
+  - { name: pension_type, label: "Pension or benefit type", type: "text" }
+  - { name: jurisdiction, label: "Country or region", type: "text" }
+  - { name: situation, label: "Your situation", type: "textarea" }
+output_format: "Grouped question list, documents to gather, gaps and one reminder line"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    pension_type: employer 401(k)
+    jurisdiction: US (federal)
+    situation: Single employee, one W-2 job, no dependents
+- name: Professional
+  values:
+    pension_type: state teacher's pension
+    jurisdiction: California, US
+    situation: Married filing jointly, two kids, one mortgage
+- name: Detailed
+  values:
+    pension_type: government civil service pension
+    jurisdiction: United Kingdom
+    situation: Self-employed freelancer making quarterly estimates
+- name: Beginner friendly
+  values:
+    pension_type: private company pension plan
+    jurisdiction: Canada
+    situation: Retired last year with a pension and part-time income
+- name: Creative
+  values:
+    pension_type: military retirement
+    jurisdiction: Germany
+    situation: Graduate student with a small side business
+body: |
+  You are a thorough preparation assistant who builds question lists for benefits conversations.
+
+  Prepare a question list for discussing my {{pension_type}} in {{jurisdiction}}.
+
+  My situation:
+  {{situation}}
+
+  Rules:
+  - Do not state eligibility rules, ages, amounts or formulas; frame those as questions.
+  - Do not advise me on claiming timing or strategy.
+  - Group questions by theme: eligibility, amounts, timing, taxes, survivor or dependant provisions, paperwork.
+  - List the documents and records I should have ready, generically.
+
+  Return the question list grouped by theme, a document checklist, the gaps in my description that an administrator will need, and a one-line reminder to verify answers against the official source.
+  Quality check: confirm no rule, age or amount is asserted as fact.

@@ -1,0 +1,66 @@
+seed_id: retirement-account-explainer
+title: "Retirement Account Explainer"
+category: retirement-planning
+tags: [retirement, finance, education]
+difficulty: beginner
+type: template
+description: "Explains how a retirement account type generally works in your jurisdiction - rules categories, glossary and questions - with no product recommendations."
+variables:
+  - { name: account_type, label: "Account type", type: "text" }
+  - { name: jurisdiction, label: "Country or region", type: "text" }
+  - { name: situation, label: "Your situation", type: "textarea", default: "" }
+  - { name: questions, label: "Specific questions", type: "textarea", default: "" }
+output_format: "Plain explanation, rules categories, glossary and 3 questions for an advisor"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    account_type: 401(k)
+    jurisdiction: US (federal)
+    situation: Single employee, one W-2 job, no dependents
+    questions: How does this work in practice?
+- name: Professional
+  values:
+    account_type: Roth IRA
+    jurisdiction: California, US
+    situation: Married filing jointly, two kids, one mortgage
+    questions: What are the main risks?
+- name: Detailed
+  values:
+    account_type: traditional IRA
+    jurisdiction: United Kingdom
+    situation: Self-employed freelancer making quarterly estimates
+    questions: Why should we choose this approach?
+- name: Beginner friendly
+  values:
+    account_type: taxable brokerage
+    jurisdiction: Canada
+    situation: Retired last year with a pension and part-time income
+    questions: What does success look like?
+- name: Creative
+  values:
+    account_type: employer pension plan
+    jurisdiction: Germany
+    situation: Graduate student with a small side business
+    questions: How much does it cost?
+body: |
+  You are a neutral retirement educator who explains account mechanics without selling anything.
+
+  Explain how {{account_type}} generally works in {{jurisdiction}}.
+
+  My situation (context only):
+  {{situation}}
+
+  My specific questions:
+  {{questions}}
+
+  Rules:
+  - Keep it generic for the jurisdiction; no provider names, no specific products, no rate figures.
+  - Organise mechanics into categories: contributions, tax treatment, access rules, employer involvement, what happens on job change.
+  - Do not assess whether the account suits me or recommend any choice.
+  - Mark rules that commonly change with legislation as "verify current rules".
+
+  Return a plain-language explanation, the rules categories with short notes, a glossary, general answers to my questions (no personal judgement), and 3 questions for an advisor or plan administrator.
+  Quality check: confirm no provider or product names appear and changeable rules are marked for verification.

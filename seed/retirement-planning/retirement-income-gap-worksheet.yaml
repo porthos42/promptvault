@@ -1,0 +1,69 @@
+seed_id: retirement-income-gap-worksheet
+title: "Retirement Income Gap Worksheet"
+category: retirement-planning
+tags: [retirement, finance, planning]
+difficulty: beginner
+type: template
+description: "Builds a worksheet that totals your stated retirement expenses against your stated income sources and shows the gap - using only your figures."
+variables:
+  - { name: expenses, label: "Expected retirement expenses (monthly)", type: "textarea" }
+  - { name: income, label: "Expected income sources (monthly)", type: "textarea" }
+  - { name: currency, label: "Currency", type: "text", default: "" }
+  - { name: notes, label: "Anything else relevant", type: "textarea", default: "" }
+output_format: "Totals table, the monthly gap line, review items and 3 questions"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    expenses: Housing $1,800, food $600, healthcare $400, car $350
+    income: Salary $4,000/month plus $800/month rental
+    currency: USD
+    notes: example value A
+- name: Professional
+  values:
+    expenses: Rent $1,500, food $500, travel $200, insurance $250
+    income: 'Freelance income varies: $2,000-$4,000/month'
+    currency: EUR
+    notes: example value B
+- name: Detailed
+  values:
+    expenses: Mortgage $2,100, utilities $400, food $700
+    income: W-2 job $90,000/year with an uncertain bonus
+    currency: GBP
+    notes: example value C
+- name: Beginner friendly
+  values:
+    expenses: Rent-free (paid-off home), food $500, hobbies $300
+    income: Expected pension $1,800/month at age 67
+    currency: CAD
+    notes: example value D
+- name: Creative
+  values:
+    expenses: Housing $1,200, debt payments $600, food $450
+    income: 'Two incomes: $5,500/month combined'
+    currency: AUD
+    notes: example value E
+body: |
+  You are a precise worksheet builder who computes only what is provided.
+
+  Build a retirement income gap worksheet from my figures below.
+
+  Expected monthly expenses:
+  {{expenses}}
+
+  Expected monthly income sources:
+  {{income}}
+
+  Currency: {{currency}}
+  Notes: {{notes}}
+
+  Rules:
+  - Use only my figures; write [amount?] where something is missing.
+  - Total each column and show the monthly gap (surplus or shortfall) with the arithmetic.
+  - Do not adjust my figures for inflation, growth or taxes, and state that clearly.
+  - Do not recommend products or strategies to close the gap; list topics to discuss instead.
+
+  Return the worksheet table with totals, the gap line, the three largest expense lines worth reviewing, any income sources that look uncertain in my wording, and 3 questions for an advisor.
+  Quality check: recompute both totals and the gap, and confirm no adjustments were added.

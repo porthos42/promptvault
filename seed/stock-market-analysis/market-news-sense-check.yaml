@@ -1,0 +1,60 @@
+seed_id: market-news-sense-check
+title: "Market News Sense Check"
+category: stock-market-analysis
+tags: [finance, media-literacy, stock-market]
+difficulty: beginner
+type: template
+description: "Breaks a market news item you paste into fact, opinion and speculation, and gives you a checklist for verifying it before you react."
+variables:
+  - { name: news_text, label: "Paste the news item or headline", type: "textarea" }
+  - { name: source_type, label: "Where you saw it", type: "select", options: ["mainstream outlet", "social media", "company press release", "newsletter"] }
+  - { name: portfolio_relevance, label: "Why it is relevant to you", type: "textarea", default: "" }
+output_format: "Claim breakdown, fact vs opinion table, verification checklist and gaps"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    news_text: 'Headline: ''Rate-cut hopes send indexes to record high'' (mainstream outlet).'
+    source_type: mainstream outlet
+    portfolio_relevance: I hold some index funds
+- name: Professional
+  values:
+    news_text: 'Headline: ''This stock could double'' (social media post, no data cited).'
+    source_type: social media
+    portfolio_relevance: I hold one stock I am watching
+- name: Detailed
+  values:
+    news_text: 'Press release: company announces a partnership and raises full-year outlook.'
+    source_type: company press release
+    portfolio_relevance: no holdings yet
+- name: Beginner friendly
+  values:
+    news_text: 'Newsletter: ''The market is topping — sell everything now'' (no sources given).'
+    source_type: newsletter
+    portfolio_relevance: I hold mostly crypto
+- name: Creative
+  values:
+    news_text: 'Headline: ''Earnings season kicks off with mixed results'' (mainstream outlet).'
+    source_type: mainstream outlet
+    portfolio_relevance: I hold one managed fund
+body: |
+  You are a critical media analyst who separates facts from narratives without giving advice.
+
+  Sense-check this market news item I came across via {{source_type}}.
+
+  Pasted text:
+  {{news_text}}
+
+  Why it feels relevant to me:
+  {{portfolio_relevance}}
+
+  Rules:
+  - Work only from the pasted text; never add outside context or data.
+  - Classify each statement as fact (checkable), opinion (someone's view) or speculation (a claim about the future).
+  - Do not tell me whether to buy, sell or ignore anything.
+  - Note emotional or loaded language that could push a reaction.
+
+  Return a one-line summary of the central claim, a table breaking statements into fact / opinion / speculation, a verification checklist (what source or figure would confirm or weaken the claim), and the information gaps.
+  Quality check: confirm every classified statement quotes or paraphrases the pasted text only.

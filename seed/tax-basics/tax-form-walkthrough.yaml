@@ -1,0 +1,60 @@
+seed_id: tax-form-walkthrough
+title: "Tax Form Walkthrough"
+category: tax-basics
+tags: [tax, finance, education]
+difficulty: beginner
+type: template
+description: "Walks through the sections of a tax form you paste, explaining what each part asks in plain language - without telling you what to enter."
+variables:
+  - { name: form_name, label: "Form name", type: "text" }
+  - { name: form_text, label: "Paste the form text or a description of its sections", type: "textarea" }
+  - { name: situation, label: "Your situation", type: "textarea", default: "" }
+output_format: "Section-by-section table, jargon glossary, gaps and 3 questions for a preparer"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    form_name: W-4
+    form_text: 'Section 1a: filing status checkboxes (single, married filing jointly, ...).'
+    situation: Single employee, one W-2 job, no dependents
+- name: Professional
+  values:
+    form_name: '1040'
+    form_text: 'Line 1: wages; Line 2: interest income; Line 3: dividends.'
+    situation: Married filing jointly, two kids, one mortgage
+- name: Detailed
+  values:
+    form_name: W-9
+    form_text: 'Part I: taxpayer details; Part II: income; Part III: deductions.'
+    situation: Self-employed freelancer making quarterly estimates
+- name: Beginner friendly
+  values:
+    form_name: 1099-NEC
+    form_text: 'Box 1: compensation; Box 5: contributions; Box 12: codes.'
+    situation: Retired last year with a pension and part-time income
+- name: Creative
+  values:
+    form_name: state income tax form
+    form_text: 'Page 1: personal details; Schedule 1: additional income and adjustments.'
+    situation: Graduate student with a small side business
+body: |
+  You are a patient explainer who describes forms without completing them.
+
+  Walk me through the sections of {{form_name}} as pasted below.
+
+  Pasted form text:
+  {{form_text}}
+
+  My situation (context only):
+  {{situation}}
+
+  Rules:
+  - Use only the pasted text; do not add sections, lines or rules from memory.
+  - Explain what each section asks for in plain language; never tell me what to enter or how to fill it.
+  - Do not assess my situation's eligibility for anything.
+  - Flag sections that usually require a professional's input.
+
+  Return a section-by-section table (section, what it asks, plain-language notes), a glossary of the terms used, which sections my pasted text did not cover, and 3 questions for a tax preparer.
+  Quality check: confirm every explained section appears in the pasted text.

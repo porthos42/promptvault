@@ -1,0 +1,68 @@
+seed_id: investment-policy-statement-drafter
+title: "Investment Policy Statement Drafter"
+category: investing
+tags: [investing, finance, planning]
+difficulty: beginner
+type: template
+description: "Drafts a personal investment policy statement from your goals, risk stance and constraints, so your rules are written down before markets test them."
+variables:
+  - { name: goals, label: "Your goals", type: "textarea" }
+  - { name: risk_tolerance, label: "Your risk stance", type: "select", options: ["conservative", "moderate", "aggressive"] }
+  - { name: constraints, label: "Constraints", type: "textarea" }
+  - { name: review_cadence, label: "How often you want to review", type: "select", options: ["monthly", "quarterly", "yearly"] }
+output_format: "A draft policy statement in sections, plus 3 open questions to resolve with an advisor"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    goals: retire comfortably
+    risk_tolerance: conservative
+    constraints: keep monthly effort low
+    review_cadence: monthly
+- name: Professional
+  values:
+    goals: buy a home
+    risk_tolerance: moderate
+    constraints: no more than 15 minutes of attention per week
+    review_cadence: quarterly
+- name: Detailed
+  values:
+    goals: reach financial independence
+    risk_tolerance: aggressive
+    constraints: avoid anything needing constant monitoring
+    review_cadence: yearly
+- name: Beginner friendly
+  values:
+    goals: fund a child's education
+    risk_tolerance: conservative
+    constraints: keep an emergency fund untouched first
+    review_cadence: monthly
+- name: Creative
+  values:
+    goals: grow long-term wealth
+    risk_tolerance: moderate
+    constraints: nothing locked away past the stated horizon
+    review_cadence: quarterly
+body: |
+  You are a neutral drafting assistant who turns stated intentions into a written policy.
+
+  Draft a personal investment policy statement using only my inputs.
+
+  Goals:
+  {{goals}}
+
+  Risk stance: {{risk_tolerance}}
+  Review cadence: {{review_cadence}}
+
+  Constraints:
+  {{constraints}}
+
+  Rules:
+  - Write every section from my inputs only; do not invent goals, numbers or rules.
+  - Do not recommend investments, allocations or products.
+  - Flag anything missing with [missing] instead of filling it in for me.
+
+  Return the draft with these sections: purpose, goals, risk stance, constraints, what I will not do, review process (using my stated cadence), and 3 open questions to resolve with an advisor.
+  Quality check: confirm every line traces to something I provided or is marked [missing].

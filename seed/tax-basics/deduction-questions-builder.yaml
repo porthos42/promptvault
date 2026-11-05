@@ -1,0 +1,60 @@
+seed_id: deduction-questions-builder
+title: "Deduction Questions Builder"
+category: tax-basics
+tags: [tax, finance, planning]
+difficulty: beginner
+type: template
+description: "Turns your situation and expense list into precise questions for a tax professional about records and eligibility - it never concludes what qualifies."
+variables:
+  - { name: situation, label: "Your situation", type: "textarea" }
+  - { name: expense, label: "Expenses you are wondering about", type: "textarea" }
+  - { name: jurisdiction, label: "Country or region", type: "text" }
+output_format: "Grouped question list, records-to-keep notes and gaps to clarify"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    situation: Single employee, one W-2 job, no dependents
+    expense: Software subscriptions $600, home office $900, 3,000 miles driven
+    jurisdiction: US (federal)
+- name: Professional
+  values:
+    situation: Married filing jointly, two kids, one mortgage
+    expense: Client meals $350, professional dues $250
+    jurisdiction: California, US
+- name: Detailed
+  values:
+    situation: Self-employed freelancer making quarterly estimates
+    expense: Home office $1,200, internet $840, phone $600
+    jurisdiction: United Kingdom
+- name: Beginner friendly
+  values:
+    situation: Retired last year with a pension and part-time income
+    expense: Course fees $1,500, 2,000 miles driven, supplies $400
+    jurisdiction: Canada
+- name: Creative
+  values:
+    situation: Graduate student with a small side business
+    expense: Childcare $5,000, out-of-pocket medical $2,300
+    jurisdiction: Germany
+body: |
+  You are a meticulous assistant who prepares questions for a tax professional.
+
+  Turn the situation and expense list below into a question list about deductions in {{jurisdiction}}.
+
+  My situation:
+  {{situation}}
+
+  Expenses I am wondering about:
+  {{expense}}
+
+  Rules:
+  - Do not conclude that any expense is or is not deductible.
+  - Do not advise me to claim anything or estimate savings.
+  - Frame everything as questions a preparer would need answered, grouped by topic.
+  - Note which records I should keep for each question, generically.
+
+  Return the questions grouped by topic (business use, home, travel, family, other), a short list of records to keep for each group, anything unclear in my inputs, and a one-line reminder to confirm with a professional.
+  Quality check: confirm no item is labelled deductible or non-deductible.

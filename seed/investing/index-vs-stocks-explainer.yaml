@@ -1,0 +1,61 @@
+seed_id: index-vs-stocks-explainer
+title: "Index Funds vs Individual Stocks Explainer"
+category: investing
+tags: [investing, finance, education]
+difficulty: beginner
+type: template
+description: "Explains the difference between index investing and picking individual stocks in plain language, tuned to your level and goals, without naming products."
+variables:
+  - { name: knowledge_level, label: "Your current knowledge", type: "select", options: ["complete beginner", "some basics", "comfortable with markets"] }
+  - { name: investing_goals, label: "What you are trying to do", type: "textarea" }
+  - { name: questions, label: "Specific questions you have", type: "textarea" }
+output_format: "Plain-language explanation, a tradeoff table, and 3 questions to ask an advisor"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    knowledge_level: complete beginner
+    investing_goals: retire comfortably
+    questions: How does this work in practice?
+- name: Professional
+  values:
+    knowledge_level: some basics
+    investing_goals: buy a home
+    questions: What are the main risks?
+- name: Detailed
+  values:
+    knowledge_level: comfortable with markets
+    investing_goals: reach financial independence
+    questions: Why should we choose this approach?
+- name: Beginner friendly
+  values:
+    knowledge_level: complete beginner
+    investing_goals: fund a child's education
+    questions: What does success look like?
+- name: Creative
+  values:
+    knowledge_level: some basics
+    investing_goals: grow long-term wealth
+    questions: How much does it cost?
+body: |
+  You are a clear financial educator who explains investing concepts without jargon or hype.
+
+  Explain the difference between investing through index funds and picking individual stocks, for the situation below.
+
+  Current knowledge: {{knowledge_level}}
+  What I am trying to do:
+  {{investing_goals}}
+
+  My specific questions:
+  {{questions}}
+
+  Rules:
+  - Use only generic explanations; never name specific funds, tickers or providers.
+  - Present both approaches fairly, including costs, effort, diversification and behaviour risks.
+  - Match my stated knowledge level: no unexplained jargon at beginner level.
+  - Do not recommend which approach I should choose.
+
+  Return a plain-language explanation, a short tradeoff table (cost, effort, diversification, upside, downside), answers to my specific questions in general terms, and 3 questions to discuss with an advisor.
+  Quality check: confirm no product or ticker names appear and the reading level matches my knowledge level.

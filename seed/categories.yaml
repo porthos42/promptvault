@@ -30,6 +30,11 @@ categories:
   - { slug: business-strategy, name: "Business Strategy", group: business }
   - { slug: hr, name: "HR", group: business }
   - { slug: finance, name: "Finance", group: business }
+  # Finance subcategories (nested: parent = finance)
+  - { slug: investing, name: "Investing", parent: finance }
+  - { slug: stock-market-analysis, name: "Stock Market Analysis", parent: finance }
+  - { slug: tax-basics, name: "Tax Basics", parent: finance }
+  - { slug: retirement-planning, name: "Retirement Planning", parent: finance }
   - { slug: project-management, name: "Project Management", group: business }
   - { slug: customer-support, name: "Customer Support", group: business }
   # Professional

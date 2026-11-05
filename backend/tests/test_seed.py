@@ -144,6 +144,40 @@ def test_trashed_seed_prompt_is_not_resurrected(session: Any, lib_dir: Path) -> 
     assert p.deleted_at is not None
 
 
+def test_parent_declared_subcategory_nests(session: Any, tmp_path: Path) -> None:
+    cats = {
+        "min_per_category": 0,
+        "groups": [{"slug": "business", "name": "Business"}],
+        "categories": [
+            {"slug": "finance", "name": "Finance", "group": "business"},
+            {"slug": "investing", "name": "Investing", "parent": "finance"},
+        ],
+    }
+    lib_dir = write_library(
+        tmp_path / "seed-nested",
+        [good_prompt(category="investing")],
+        categories=cats,
+    )
+    seed_svc.sync(session, seed_svc.load_library(lib_dir))
+    parent = session.scalar(select(Category).where(Category.slug == "finance"))
+    child = session.scalar(select(Category).where(Category.slug == "investing"))
+    assert parent is not None and child is not None
+    assert child.parent_id == parent.id
+
+
+def test_unknown_parent_is_not_fatal(session: Any, tmp_path: Path) -> None:
+    cats = {
+        "min_per_category": 0,
+        "categories": [{"slug": "orphan", "name": "Orphan", "parent": "ghost"}],
+    }
+    lib_dir = write_library(
+        tmp_path / "seed-orphan", [good_prompt(category="orphan")], categories=cats
+    )
+    seed_svc.sync(session, seed_svc.load_library(lib_dir))
+    child = session.scalar(select(Category).where(Category.slug == "orphan"))
+    assert child is not None and child.parent_id is None
+
+
 def test_existing_category_is_not_renamed_or_moved(session: Any, lib_dir: Path) -> None:
     seed_svc.sync(session, seed_svc.load_library(lib_dir))
     cat = session.scalar(select(Category).where(Category.slug == "legal"))

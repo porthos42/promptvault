@@ -1,0 +1,57 @@
+seed_id: valuation-multiple-comparison
+title: "Valuation Multiple Comparison Table"
+category: stock-market-analysis
+tags: [finance, stock-market, education]
+difficulty: beginner
+type: template
+description: "Builds a clean comparison table from the multiples you supply and explains what each metric does and does not tell you."
+variables:
+  - { name: companies_data, label: "Companies and their figures (paste them)", type: "textarea" }
+  - { name: metric, label: "Metric to compare", type: "select", options: ["P/E", "EV/EBITDA", "P/S", "P/B", "dividend yield"] }
+  - { name: industry, label: "Industry or sector", type: "text" }
+output_format: "Comparison table, metric explanation, limitations and 3 questions"
+model_hints: "Any chat model; temperature 0.2"
+disclaimer: "Not professional advice. This is general information, not financial, tax or investment advice; consult a qualified financial or tax advisor before acting."
+license: CC0-1.0
+variations:
+- name: Quick start
+  values:
+    companies_data: Company A P/E 18; Company B P/E 24; Company C P/E 12
+    metric: P/E
+    industry: technology
+- name: Professional
+  values:
+    companies_data: AAPL P/E 28 vs MSFT P/E 32
+    metric: EV/EBITDA
+    industry: healthcare
+- name: Detailed
+  values:
+    companies_data: Retailer EV/EBITDA 9 vs software firm EV/EBITDA 21
+    metric: P/S
+    industry: finance
+- name: Beginner friendly
+  values:
+    companies_data: Bank P/B 1.1 vs industrial P/B 3.4
+    metric: P/B
+    industry: retail
+- name: Creative
+  values:
+    companies_data: 'Dividend yields: 2.1%, 3.4%, 5.8%'
+    metric: dividend yield
+    industry: education
+body: |
+  You are a neutral finance tutor who explains metrics and computes only what you are given.
+
+  Build a comparison of the figures below on the {{metric}} metric for the {{industry}} industry.
+
+  My data:
+  {{companies_data}}
+
+  Rules:
+  - Use only the figures I pasted; write [missing] for gaps instead of estimating.
+  - Explain what {{metric}} means, how it is computed, and its known blind spots, in general terms.
+  - Do not rank the companies as better or worse and make no recommendation.
+  - If my figures mix different metrics, say so and do not convert them.
+
+  Return a clean comparison table, a short explanation of the metric and its limitations for this kind of business, anything odd or inconsistent in my data, and 3 questions to take to an advisor.
+  Quality check: confirm the table reproduces exactly the figures I provided.

@@ -2,7 +2,7 @@
 """Smoke test an INSTALLED Prompt Vault (wheel in a venv, pipx, uv tool, uvx ...). Stdlib only.
 
     python tools/dist_smoke.py --bin PATH_TO_promptvault [--port N] [--data-dir DIR]
-                               [--expect-xlsx 0|1] [--expect-seed 213] [--expect-version X]
+                               [--expect-xlsx 0|1] [--expect-seed 233] [--expect-version X]
 
 Checks: `promptvault version`, serve on a spare port, health, `/` serves the UI, the seed library is
 loaded, create + list through the API, `export json`, XLSX unavailable/available as expected, then
@@ -78,7 +78,7 @@ def main() -> int:
     ap.add_argument("--port", type=int, default=0)
     ap.add_argument("--data-dir", default="")
     ap.add_argument("--expect-xlsx", type=int, choices=[0, 1], default=0)
-    ap.add_argument("--expect-seed", type=int, default=213)
+    ap.add_argument("--expect-seed", type=int, default=233)
     ap.add_argument("--expect-version", default="")
     ap.add_argument("--min-seed", action="store_true", help="seed count may be larger")
     args = ap.parse_args()

@@ -116,6 +116,7 @@ class SeedCategory(BaseModel):
     slug: str
     name: str
     group: str | None = None
+    parent: str | None = None  # slug of another category -> nested subcategory
     icon: str | None = None
 
     _v_slug = field_validator("slug")(_slug)
@@ -269,7 +270,9 @@ def sync_categories(session: Session, lib: SeedLibrary) -> int:
                 {
                     "name": c.name,
                     "slug": c.slug,
-                    "parent": c.group if c.group in existing else None,
+                    # Nested subcategories take their declared parent; plain
+                    # categories hang off their top-level group.
+                    "parent": (c.parent or c.group) if (c.parent or c.group) in existing else None,
                     "icon": c.icon,
                     "sort_order": order,
                 },
