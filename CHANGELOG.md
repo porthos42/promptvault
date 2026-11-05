@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0](https://github.com/porthos42/promptvault/compare/v0.2.0...v0.3.0) (2026-11-05)
+
+
+### Features
+
+* category CRUD and named prompt variations ([6a9d00c](https://github.com/porthos42/promptvault/commit/6a9d00c2caa74c0939f85d92cdf388db4109cfbb))
+* **cli:** add 'clear' command to trash or purge all prompts in bulk ([896e06e](https://github.com/porthos42/promptvault/commit/896e06edabc96ca16bdf06a5d39b82b8b82dfdee))
+* **seed:** finance subcategory tree with 20 new prompts (M5 follow-up) ([d8c9ee4](https://github.com/porthos42/promptvault/commit/d8c9ee4b8379c49020564b89fd9c9c00e4dbc339))
+* **v1:** playwright e2e coverage, axe a11y sweeps and search/cold-start benchmarks (M5) ([50c55b9](https://github.com/porthos42/promptvault/commit/50c55b962cd4adaf6902e85acd27c0670e8fb6c3))
+* **v1:** playwright e2e coverage, axe a11y sweeps, perf benchmarks and bundle budget (M5) ([88fed9b](https://github.com/porthos42/promptvault/commit/88fed9b93b71e038aa9f09563c362036599642f7))
+* **v1:** promptvault backup command with keep-7 rotation and import-job pruning (M5) ([c8ea1aa](https://github.com/porthos42/promptvault/commit/c8ea1aa47aa0dffc73c49c581dd20e049423bfca))
+
+
+### Bug Fixes
+
+* **tests:** add the variations field to the three prompt fixtures that predate it ([ec63922](https://github.com/porthos42/promptvault/commit/ec6392291e56db5e69e8e74ee11451a708f1e1cb))
+* **ui/e2e:** unmask and fix the M6 E2E regressions CI never ran ([f820adb](https://github.com/porthos42/promptvault/commit/f820adbe56ace3750f93171ad05bf6073aaf18e7))
+
 ## [0.2.0](https://github.com/porthos42/promptvault/compare/v0.1.0...v0.2.0) (2026-11-04)
 
 
