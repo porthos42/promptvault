@@ -15,6 +15,7 @@ promptvault edit <id-or-prefix> [--title ..] [--body-file f.md | --editor] [-t t
 promptvault rm <id> [--permanent]      # to Trash; --permanent only for trashed prompts
 promptvault restore <id>
 promptvault trash list | purge [--older-than-days N]
+promptvault clear [-c slug] [--purge] [--yes]   # trash every prompt (or one category); --purge deletes for good
 promptvault category list | add NAME [--parent slug] | rm SLUG
 promptvault tag list | rename OLD NEW | rm NAME
 

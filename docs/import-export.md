@@ -24,6 +24,19 @@ Formats: JSON, CSV, XLSX (extra), Markdown — a folder, or one ZIP of `<categor
 - Every format re-imports through the matching importer and restores content and provenance (title, body, description, category, tags, difficulty, type, model hints, output format, disclaimer, license, source URL). Ids, favorites, ratings, use counts, timestamps and variable labels/defaults are in the file but are **not** restored, and importers never create categories.
 - Restoring into an empty install: use `--on-duplicate keep_both` if you have near-duplicate prompts and `--confirm-license` if some have no license.
 
+## Replacing a library
+
+Import matches duplicates on the prompt **body** (exact, then fuzzy at 92% similarity), never on id or title. Lightly edited prompts are flagged as duplicates (`--on-duplicate replace` overwrites them); heavily rewritten ones look new and would be created next to the originals. To swap a whole library, export a backup, then clear it and import:
+
+```bash
+promptvault export json backup.json
+promptvault clear            # asks first; -c SLUG limits it to one category, --yes skips the prompt
+promptvault import json rewritten.json --dry-run
+promptvault import json rewritten.json --yes
+```
+
+`clear` moves prompts to Trash (restorable), and Trash is never matched as a duplicate, so the import creates fresh prompts. `clear --purge` deletes them permanently, but only the prompts it just cleared; use `promptvault trash purge` to empty the rest of Trash. Seed prompts clear like any other.
+
 ## Round trip
 
 Export → import into an empty database → export again produces identical content for all four formats (tested in CI). The round trip is intentionally *content and provenance* lossless, not state-lossless.
